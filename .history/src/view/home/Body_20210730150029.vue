@@ -13,7 +13,7 @@
 
                 <!-- 搜索框 -->
                 <div class="search">
-                  <el-select v-model="params.selectValue" @change="search" placeholder="选择状态" clearable size="small" class="selectAvro">
+                  <!-- <el-select v-model="selectValue" @change="search" placeholder="审批状态" clearable size="small" class="selectAvro">
                     <el-option
                     style="padding:0 18px 0 10px;"
                       v-for="item in select"
@@ -21,7 +21,7 @@
                       :label="item.label"
                       :value="item.value">
                     </el-option>
-                  </el-select>
+                  </el-select> -->
                   <form>
                     <input
                       type="text"
@@ -398,6 +398,7 @@ export default {
         value: '3',
         label: '通过'
       }],
+      selectValue: '',
       currentIndex: 1, // 查看审批数据
       list: [
         {
@@ -450,8 +451,7 @@ export default {
         limit: 5, // 每页显示5条记录
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
-        dname: '', // 查询数据
-        selectValue: '' // 查询状态
+        dname: '' // 查询数据
       },
       dialogFormVisible: false, // 不让修改窗口打开
       form: {
@@ -959,7 +959,7 @@ form {
   padding-left: 105px;
   border: 2px solid #dadce0;
   border-right: 0;
-  border-radius: 4px 2px 2px 4px;
+  border-radius: 2px;
   color: black;
   font-size: 16px;
 }

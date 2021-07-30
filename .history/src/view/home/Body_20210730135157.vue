@@ -10,18 +10,8 @@
             >
             <el-col :span="8">
               <div class="searchfa">
-
                 <!-- 搜索框 -->
                 <div class="search">
-                  <el-select v-model="params.selectValue" @change="search" placeholder="选择状态" clearable size="small" class="selectAvro">
-                    <el-option
-                    style="padding:0 18px 0 10px;"
-                      v-for="item in select"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
                   <form>
                     <input
                       type="text"
@@ -33,6 +23,12 @@
                   </form>
                 </div>
 
+                 <el-radio-group v-model="radio3" size="small">
+                  <el-radio label="1" border>全部</el-radio>
+                  <el-radio label="2" border >未送审</el-radio>
+                  <el-radio label="2" border >通过</el-radio>
+                  <el-radio label="2" border >驳回</el-radio>
+                </el-radio-group>
               </div>
             </el-col>
             <el-col :span="8">
@@ -385,19 +381,7 @@ export default {
     //   }
     // }
     return {
-      select: [{
-        value: '0',
-        label: '未送审'
-      }, {
-        value: '1',
-        label: '审核中'
-      }, {
-        value: '2',
-        label: '驳回'
-      }, {
-        value: '3',
-        label: '通过'
-      }],
+      radio3: '1',
       currentIndex: 1, // 查看审批数据
       list: [
         {
@@ -450,8 +434,7 @@ export default {
         limit: 5, // 每页显示5条记录
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
-        dname: '', // 查询数据
-        selectValue: '' // 查询状态
+        dname: '' // 查询数据
       },
       dialogFormVisible: false, // 不让修改窗口打开
       form: {
@@ -579,7 +562,6 @@ export default {
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
-      console.log('111111111111111')
       const url = '/webneed/findAllNeed'
       // const url = '/web/listUser';
       const { data: res } = await this.$ajax.get(url, {
@@ -932,38 +914,37 @@ tbody tr:hover {
   margin-top: 15px;
   margin-left: 50%;
 }
-.selectAvro {
-  width: 89px;
-  position: absolute;
-  margin-top: 1px;
-  z-index: 10;
-}
+
 .searchfa {
-}
-.search {
-  position: relative;
-  float: left;
-  width: 100%;
-  height: 30px;
-  display: flex;
+  margin-left: 35px;
 }
 form {
   position: relative;
   width: 350px;
 }
+.search {
+  margin-left: 5px;
+  float: left;
+
+  height: 30px;
+}
+
 .search input {
+  float: left;
   border: none;
   outline: none;
-  width: 61.5%;
+  width: 95.5%;
   height: 30px;
-  padding-left: 105px;
+  padding-left: 13px;
   border: 2px solid #dadce0;
   border-right: 0;
-  border-radius: 4px 2px 2px 4px;
+  border-radius: 5px;
   color: black;
   font-size: 16px;
 }
+
 .search button {
+  float: left;
   border: none;
   outline: none;
   height: 30px;
@@ -971,9 +952,9 @@ form {
   cursor: pointer;
   position: absolute;
   top: 1.6px;
-  right: 26.5px;
+  right: 0;
   background: #dadce0;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 5px 5px 0;
 }
 .search button:hover {
   background-color: #c8c8c8;
@@ -993,17 +974,4 @@ form {
 input::-webkit-input-placeholder {
   color: #c7c8c9;
 }
-</style>
-<style >
-.selectAvro div .el-input__inner {
-  padding: 0 5px;
-  border-radius:4px 0 0 4px ;
-}
-.search .el-select .el-input.is-focus .el-input__inner {
-  border-color: #dadce0;
-}
-.selectAvro div .el-input__inner:focus{
-  border-color: #dadce0;
-}
-
 </style>

@@ -3,7 +3,7 @@
     <el-drawer
       title="审批信息"
       :before-close="handleClose"
-      :visible.sync="dialog"
+      :visible.sync="this.$store.state.dialogDraw"
       direction="rtl"
       custom-class="demo-drawer"
       ref="drawer"
@@ -18,7 +18,7 @@
               finish-status="success"
             >
               <el-step title="已提交"></el-step>
-              <el-step title="审核"></el-step>
+              <el-step title="审核中"></el-step>
               <el-step title="通过"></el-step>
             </el-steps>
           </div>
@@ -123,11 +123,10 @@
         <div class="demo-drawer__footer">
           <el-button @click="cancelForm">关 闭</el-button>
           <el-button
-            v-show="form.uptype==2"
             type="primary"
-            @click="upData()"
+            @click="$refs.drawer.closeDrawer()"
             :loading="loading"
-            >{{ loading ? "提交中 ..." : "再次提交" }}</el-button
+            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
           >
         </div>
       </div>
@@ -197,7 +196,7 @@ export default {
     }
   },
   methods: {
-    upData () {
+    handleClose (done) {
       if (this.loading) {
         return
       }
@@ -205,8 +204,7 @@ export default {
         .then(_ => {
           this.loading = true
           this.timer = setTimeout(() => {
-            // this.$store.commit('ChangeDraw')
-            this.dialog = !this.dialog
+            this.$store.commit('ChangeDraw')
             // 动画关闭需要一定的时间
             setTimeout(() => {
               this.loading = false
@@ -214,41 +212,19 @@ export default {
           }, 300)
         })
         .catch(_ => {})
-    },
-    handleClose (done) {
-      // if (this.loading) {
-      //   return
-      // }
-      // this.$confirm('确定要提交表单吗？')
-      //   .then(_ => {
-      //     this.loading = true
-      //     this.timer = setTimeout(() => {
-      //       // this.$store.commit('ChangeDraw')
-      this.dialog = !this.dialog
-      //       // 动画关闭需要一定的时间
-      //       setTimeout(() => {
-      //         this.loading = false
-      //       }, 300)
-      //     }, 300)
-      //   })
-      //   .catch(_ => {})
-      // this.$emit('close', 1)
+      this.$emit('close', 1)
     },
     cancelForm () {
       this.loading = false
-      // this.$store.commit('ChangeDraw')
-      this.dialog = !this.dialog
-
+      this.$store.commit('ChangeDraw')
       clearTimeout(this.timer)
     },
     msg () {
       console.log(this.listIn, 'draw输出')
     },
     getFatherData () {
-      setTimeout(() => { this.form = this.listIn }, 0) // props得到数据会有延迟所以得这样设置
-    },
-    showDraw () {
-      this.dialog = !this.dialog
+      this.form = this.listIn
+      console.log('11111111111')
     }
   }
 }

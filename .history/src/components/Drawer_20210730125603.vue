@@ -123,11 +123,10 @@
         <div class="demo-drawer__footer">
           <el-button @click="cancelForm">关 闭</el-button>
           <el-button
-            v-show="form.uptype==2"
             type="primary"
-            @click="upData()"
+            @click="$refs.drawer.closeDrawer()"
             :loading="loading"
-            >{{ loading ? "提交中 ..." : "再次提交" }}</el-button
+            >{{ loading ? "提交中 ..." : "确 定" }}</el-button
           >
         </div>
       </div>
@@ -197,7 +196,7 @@ export default {
     }
   },
   methods: {
-    upData () {
+    handleClose (done) {
       if (this.loading) {
         return
       }
@@ -206,7 +205,7 @@ export default {
           this.loading = true
           this.timer = setTimeout(() => {
             // this.$store.commit('ChangeDraw')
-            this.dialog = !this.dialog
+            this.dialog = !tgis.dialog
             // 动画关闭需要一定的时间
             setTimeout(() => {
               this.loading = false
@@ -214,31 +213,11 @@ export default {
           }, 300)
         })
         .catch(_ => {})
-    },
-    handleClose (done) {
-      // if (this.loading) {
-      //   return
-      // }
-      // this.$confirm('确定要提交表单吗？')
-      //   .then(_ => {
-      //     this.loading = true
-      //     this.timer = setTimeout(() => {
-      //       // this.$store.commit('ChangeDraw')
-      this.dialog = !this.dialog
-      //       // 动画关闭需要一定的时间
-      //       setTimeout(() => {
-      //         this.loading = false
-      //       }, 300)
-      //     }, 300)
-      //   })
-      //   .catch(_ => {})
-      // this.$emit('close', 1)
+      this.$emit('close', 1)
     },
     cancelForm () {
       this.loading = false
-      // this.$store.commit('ChangeDraw')
-      this.dialog = !this.dialog
-
+      this.$store.commit('ChangeDraw')
       clearTimeout(this.timer)
     },
     msg () {

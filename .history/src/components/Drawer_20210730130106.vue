@@ -125,7 +125,7 @@
           <el-button
             v-show="form.uptype==2"
             type="primary"
-            @click="upData()"
+            @click="$refs.drawer.closeDrawer()"
             :loading="loading"
             >{{ loading ? "提交中 ..." : "再次提交" }}</el-button
           >
@@ -197,24 +197,6 @@ export default {
     }
   },
   methods: {
-    upData () {
-      if (this.loading) {
-        return
-      }
-      this.$confirm('确定要提交表单吗？')
-        .then(_ => {
-          this.loading = true
-          this.timer = setTimeout(() => {
-            // this.$store.commit('ChangeDraw')
-            this.dialog = !this.dialog
-            // 动画关闭需要一定的时间
-            setTimeout(() => {
-              this.loading = false
-            }, 300)
-          }, 300)
-        })
-        .catch(_ => {})
-    },
     handleClose (done) {
       // if (this.loading) {
       //   return

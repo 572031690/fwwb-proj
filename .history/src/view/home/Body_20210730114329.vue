@@ -1,3 +1,4 @@
+
 <template>
   <div class="right-body" id="body">
     <div class="bodyheart">
@@ -10,18 +11,8 @@
             >
             <el-col :span="8">
               <div class="searchfa">
-
                 <!-- 搜索框 -->
                 <div class="search">
-                  <el-select v-model="params.selectValue" @change="search" placeholder="选择状态" clearable size="small" class="selectAvro">
-                    <el-option
-                    style="padding:0 18px 0 10px;"
-                      v-for="item in select"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
                   <form>
                     <input
                       type="text"
@@ -32,7 +23,6 @@
                     <button type="submit"></button>
                   </form>
                 </div>
-
               </div>
             </el-col>
             <el-col :span="8">
@@ -88,10 +78,7 @@
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-          <tr
-            v-for="(item, key) in list"
-            :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
-          >
+          <tr v-for="(item, key) in list" :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }">
             <td class="body-td1">
               <div class="cell" id="cellid">
                 {{ item.needid }}
@@ -133,16 +120,25 @@
               </div>
             </td>
             <td class="body-td1">
-              <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
-                <button id="modify" @click="edData(item)">
+              <div class="cell" v-if="item.uptype == 0 || item.uptype == 2 ">
+                <button
+                  id="modify"
+                  @click="edData(item)"
+                >
                   编辑
                 </button>
-                <button id="delete" @click="deletedata(item)">
+                <button
+                  id="delete"
+                  @click="deletedata(item)"
+                >
                   删除
                 </button>
               </div>
               <div v-if="item.uptype == 1 || item.uptype == 3">
-                <button class="approval" @click="seeApproval(key)">
+                <button
+                  class="approval"
+                  @click="seeApproval(key)"
+                >
                   查看审批
                 </button>
               </div>
@@ -151,20 +147,18 @@
               <div class="cell" v-if="!item.uptype">
                 <button id="modify" @click="upData(item)">提交</button>
               </div>
-              <div class="cell" v-if="item.uptype == 1">审批中....</div>
+              <div class="cell" v-if="item.uptype==1">审批中....</div>
               <div v-if="item.uptype == 2">
-                <button class="approval" @click="seeApproval(key)">
-                  驳回结果
-                </button>
+                <button class="approval" @click="seeApproval(key)">驳回结果</button>
               </div>
-              <div class="cell" v-if="item.uptype == 3">审批通过</div>
+              <div class="cell" v-if="item.uptype==3">审批通过</div>
             </td>
           </tr>
         </tbody>
 
         <!-- 修改表单/ 提交表单 -->
         <el-dialog
-          :title="form.showtype == 0 ? '修改数据' : '提交送审'"
+          :title="form.showtype == 0  ? '修改数据':'提交送审' "
           :visible.sync="dialogFormVisible"
           :modal-append-to-body="false"
           :close-on-click-modal="false"
@@ -253,7 +247,7 @@
             <el-button
               type="primary"
               @click="submitForm('form')"
-              v-show="!form.showtype"
+              v-show="!form.showtype "
               >保 存</el-button
             >
             <el-button
@@ -366,7 +360,7 @@
         </el-pagination>
       </div>
 
-      <Drawer :listIn="list[currentIndex]" @close="drawerClose" ref="Draw"></Drawer>
+      <Drawer :listIn="list[currentIndex]"></Drawer>
     </div>
   </div>
 </template>
@@ -385,24 +379,11 @@ export default {
     //   }
     // }
     return {
-      select: [{
-        value: '0',
-        label: '未送审'
-      }, {
-        value: '1',
-        label: '审核中'
-      }, {
-        value: '2',
-        label: '驳回'
-      }, {
-        value: '3',
-        label: '通过'
-      }],
       currentIndex: 1, // 查看审批数据
       list: [
         {
           needid: 1,
-          needtitle: '马佳辉1',
+          needtitle: '马佳辉',
           itemtype: 5454165,
           itemid: 1373201546,
           neednum: '3',
@@ -413,7 +394,7 @@ export default {
         },
         {
           needid: 1,
-          needtitle: '马佳辉2',
+          needtitle: '马佳辉',
           itemtype: 5454165,
           itemid: 1373201546,
           neednum: '3',
@@ -424,7 +405,7 @@ export default {
         },
         {
           needid: 1,
-          needtitle: '马佳辉3',
+          needtitle: '马佳辉',
           itemtype: 5454165,
           itemid: 1373201546,
           neednum: '3',
@@ -435,7 +416,7 @@ export default {
         },
         {
           needid: 1,
-          needtitle: '马佳辉4',
+          needtitle: '马佳辉',
           itemtype: 5454165,
           itemid: 1373201546,
           neednum: '3',
@@ -450,8 +431,7 @@ export default {
         limit: 5, // 每页显示5条记录
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
-        dname: '', // 查询数据
-        selectValue: '' // 查询状态
+        dname: '' // 查询数据
       },
       dialogFormVisible: false, // 不让修改窗口打开
       form: {
@@ -510,9 +490,6 @@ export default {
     }
   },
   methods: {
-    drawerClose (val) {
-      console.log(val, '=------------')
-    },
     // 添加方法跳转添加界面
     gethomeAdd () {
       this.dialogFormVisibleadd = true
@@ -551,8 +528,7 @@ export default {
     },
     seeApproval (e) {
       this.currentIndex = e
-      this.$refs.Draw.getFatherData()
-      this.$refs.Draw.showDraw()
+      this.$store.commit('ChangeDraw')
       // this.$store.commit('ChangeDraw')
     },
     upData (e) {
@@ -579,7 +555,6 @@ export default {
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
-      console.log('111111111111111')
       const url = '/webneed/findAllNeed'
       // const url = '/web/listUser';
       const { data: res } = await this.$ajax.get(url, {
@@ -611,7 +586,7 @@ export default {
     },
     // 提交送审
     updateForm (formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('是否确定提交送审?', '提示', {
             confirmButtonText: '确定',
@@ -628,7 +603,7 @@ export default {
     },
     // 编辑表单的验证数据
     submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('是否确定保存编辑此条数据?', '提示', {
             confirmButtonText: '确定',
@@ -668,7 +643,7 @@ export default {
             }
           }
         )
-        .then(res => {
+        .then((res) => {
           console.log(res)
           if (res.data.code == 101) {
             this.$message({
@@ -681,14 +656,14 @@ export default {
             this.$message.error('错了哦，修改失败1')
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err)
           this.$message.error('错了哦，修改失败')
         })
     },
     // 添加表单验证
     submitFormadd (formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('是否确定保存添加此条数据?', '提示', {
             confirmButtonText: '确定',
@@ -743,7 +718,7 @@ export default {
     Drawer
   }
 }
-</script>
+</script >
 <style scoped>
 .right-body {
   padding: 20px;
@@ -801,15 +776,13 @@ export default {
   cursor: pointer;
 }
 .bodyadd:hover,
-#modify:hover,
-.approval:hover {
+#modify:hover, .approval:hover {
   background-color: #f0f7ff;
   color: #8ebaed;
   border: 1px solid #8ebaed;
 }
 .bodyadd:active,
-#modify:active,
-.approval:active {
+#modify:active,.approval:active {
   border: 1px solid #144379;
 }
 #delete:hover {
@@ -864,6 +837,7 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   background-color: white;
+
 }
 #modify {
   color: #8c959c;
@@ -932,38 +906,37 @@ tbody tr:hover {
   margin-top: 15px;
   margin-left: 50%;
 }
-.selectAvro {
-  width: 89px;
-  position: absolute;
-  margin-top: 1px;
-  z-index: 10;
-}
+
 .searchfa {
-}
-.search {
-  position: relative;
-  float: left;
-  width: 100%;
-  height: 30px;
-  display: flex;
+  margin-left: 35px;
 }
 form {
   position: relative;
   width: 350px;
 }
+.search {
+  margin-left: 5px;
+  float: left;
+
+  height: 30px;
+}
+
 .search input {
+  float: left;
   border: none;
   outline: none;
-  width: 61.5%;
+  width: 95.5%;
   height: 30px;
-  padding-left: 105px;
+  padding-left: 13px;
   border: 2px solid #dadce0;
   border-right: 0;
-  border-radius: 4px 2px 2px 4px;
+  border-radius: 5px;
   color: black;
   font-size: 16px;
 }
+
 .search button {
+  float: left;
   border: none;
   outline: none;
   height: 30px;
@@ -971,9 +944,9 @@ form {
   cursor: pointer;
   position: absolute;
   top: 1.6px;
-  right: 26.5px;
+  right: 0;
   background: #dadce0;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 5px 5px 0;
 }
 .search button:hover {
   background-color: #c8c8c8;
@@ -993,17 +966,4 @@ form {
 input::-webkit-input-placeholder {
   color: #c7c8c9;
 }
-</style>
-<style >
-.selectAvro div .el-input__inner {
-  padding: 0 5px;
-  border-radius:4px 0 0 4px ;
-}
-.search .el-select .el-input.is-focus .el-input__inner {
-  border-color: #dadce0;
-}
-.selectAvro div .el-input__inner:focus{
-  border-color: #dadce0;
-}
-
 </style>

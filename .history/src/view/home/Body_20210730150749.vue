@@ -13,7 +13,7 @@
 
                 <!-- 搜索框 -->
                 <div class="search">
-                  <el-select v-model="params.selectValue" @change="search" placeholder="选择状态" clearable size="small" class="selectAvro">
+                  <el-select v-model="selectValue" @change="search" placeholder="选择状态" clearable size="small" class="selectAvro">
                     <el-option
                     style="padding:0 18px 0 10px;"
                       v-for="item in select"
