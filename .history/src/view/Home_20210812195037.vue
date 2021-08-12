@@ -33,7 +33,76 @@
             </div>
           </transition>
         </div>
+
+        <!-- <div class="navhome" @click="changearrow()" v-if="item.type === 'tips'">
+          <img :src="item.imgSrc" class="navhome-img" />
+          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
+          <img :src="item.imgtips" class="arrow" ref="arrow" />
+        </div> -->
       </div>
+      <!-- <router-link to="/home/homewel">
+        <div class="navhome">
+          <img src="../assets/homeimg.png" class="navhome-img" />
+          <span class="spans1" ref="spans1">首页</span>
+        </div>
+      </router-link>
+      <div class="navhome" @click="changearrow()" id="listlep">
+        <img src="../assets/item.png" class="navhome-img" />
+        <span ref="spans2">列表详情</span>
+        <img src="../assets/小箭头.png" class="arrow" ref="arrow" />
+      </div> -->
+
+      <!-- <div class="navhome-box" ref="navhomebox">
+        <transition name="navhom">
+          <div class="navhome-son" v-show="navSonShow">
+            <div @click="goToRouter">
+              <div class="namehome-son1">
+                <img src="../assets/body.png" class="navson-img" />
+                <span ref="spans7">需求表</span>
+              </div>
+            </div>
+            <router-link to="/home/item">
+              <div class="namehome-son1">
+                <img src="../assets/material.png" class="navson-img" />
+                <span ref="spans6">材料</span>
+              </div>
+            </router-link>
+
+            <router-link to="/home/buy">
+              <div class="namehome-son1">
+                <img src="../assets/buy.png" class="navson-img" />
+                <span ref="spans5">购买订单</span>
+              </div>
+            </router-link>
+          </div>
+        </transition>
+      </div> -->
+
+      <!-- <div class="navhome-box" ref="navhomebox">
+        <transition name="navhom">
+          <div class="navhome-son" v-show="navSonShow">
+            <div @click="goToRouter(item)" v-for="(item, index) in routerList">
+              <div class="namehome-son1">
+                <img :src="item.imgSrc" class="navson-img" />
+                <span :ref="item.ref">{{ item.label }}</span>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div> -->
+
+      <!-- <router-link to="/home/department" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/department.png" class="navhome-img" />
+          <span ref="spans3">部门管理</span>
+        </div>
+      </router-link>
+      <router-link to="/home/user" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/user.png" class="navhome-img" />
+          <span ref="spans8">用户信息</span>
+        </div>
+      </router-link> -->
     </div>
 
     <div
@@ -51,6 +120,7 @@
         </div>
 
         <span>首页</span>
+        <!-- <v-search class="searchfa"></v-search> -->
 
         <div class="topright">
           <span class="top-time">{{ nowTime }}</span>
@@ -79,7 +149,7 @@
 // import $ from 'jquery'
 // 引入搜索框
 import EditData from "../unusercom/EditData.vue";
-import { routerList } from "../assets/data/homeRouter";
+
 export default {
   data() {
     return {
@@ -95,7 +165,78 @@ export default {
       lastTime: 0, // 默认上一次点击时间为0
       admin: true,
       routerChioce: 1,
-      routerList
+      routerList: [
+        {
+          type: "router",
+          index: 1,
+          path: "/home/homewel",
+          label: "首页",
+          ref: "spans1",
+          disabled: false,
+          imgSrc: require("@/assets/homeimg.png"),
+          showtab: true,
+          childrenList: []
+        },
+        {
+          type: "tips",
+          index: 2,
+          path: "",
+          label: "列表详情",
+          ref: "spans2",
+          disabled: true,
+          imgSrc: require("@/assets/item.png"),
+          imgtips: require("@/assets/小箭头.png"),
+          showtab: true,
+          childrenList: [
+            {
+              index: 21,
+              path: "/home/body",
+              label: "需求表",
+              ref: "spans7",
+              disabled: false,
+              imgSrc: require("@/assets/body.png")
+            },
+            {
+              index: 22,
+              path: "/home/item",
+              label: "材料",
+              ref: "spans6",
+              disabled: false,
+              imgSrc: require("@/assets/material.png")
+            },
+            {
+              index: 23,
+              path: "/home/buy",
+              label: "购买订单",
+              ref: "spans5",
+              disabled: false,
+              imgSrc: require("@/assets/buy.png")
+            }
+          ]
+        },
+        {
+          type: "router",
+          index: 3,
+          path: "/home/department",
+          label: "部门管理",
+          ref: "spans3",
+          disabled: false,
+          imgSrc: require("@/assets/department.png"),
+          showtab: true,
+          childrenList: []
+        },
+        {
+          type: "router",
+          index: 4,
+          path: "/home/user",
+          label: "用户信息",
+          ref: "spans8",
+          disabled: false,
+          imgSrc: require("@/assets/user.png"),
+          showtab: true,
+          childrenList: []
+        }
+      ]
     };
   },
   methods: {
@@ -109,6 +250,9 @@ export default {
         this.$refs.arrow[0].style.transform = "rotate(90deg)";
         this.arrowflag = !this.arrowflag;
       }
+      // e.srcElement.style.transform="'rotate('+this.key+'deg)'";
+      // e.srcElement.style.transform="rotate(180deg)";
+      // console.log(e.srcElement.dataset.aid);
     },
     // 右边栏三条杠点击事件
     changehomeimg() {
@@ -130,17 +274,29 @@ export default {
       this.$refs.rightnavtopimghome.style.transform = rotate;
       this.imghomeflag = !this.imghomeflag;
       const me = this;
+      const spanList = [];
       setTimeout(function() {
         me.routerList.forEach(item => {
+          console.log(me.$refs[item.ref][0], "dsadasd");
           me.$refs[item.ref][0].style.display = status;
           if (item.childrenList.length) {
             item.childrenList.forEach(val => {
-              me.$refs[val.ref][0].style.display = status;
+              me.$refs[item.ref][0].style.display = status;
             });
           }
         });
         me.$refs.arrow[0].style.display = status;
       }, times);
+      // setTimeout(function() {
+      //   me.$refs.spans1[0].style.display = status;
+      //   me.$refs.spans2[0].style.display = status;
+      //   me.$refs.spans3[0].style.display = status;
+      //   me.$refs.arrow[0].style.display = status;
+      //   me.$refs.spans5[0].style.display = status;
+      //   me.$refs.spans6[0].style.display = status;
+      //   me.$refs.spans7[0].style.display = status;
+      //   me.$refs.spans8[0].style.display = status;
+      // }, times);
     },
     // 开始动画文字出现延迟
     changehomeimgCreate() {
@@ -163,6 +319,13 @@ export default {
         });
       });
     },
+
+    // init(){
+    //     this.$nextTick(()=>{
+    //     var flagwel = this.$store.state.flagwel;
+    //     this.$refs.welcomehome.style.display=flagwel;
+    //     })
+    // }
     // 显示当前时间（年月日时分秒）
     timeFormate(timeStamp) {
       const year = new Date(timeStamp).getFullYear();
@@ -233,8 +396,11 @@ export default {
     // 'v-body':Body
     "v-editdata": EditData
   },
+  // store,
   mounted() {
     this.nowTimes();
+    // document.getElementById('rightnav-topimghome').style.cursor = 'not-allowed' //设置鼠标样式为不可点击
+
     this.changehomeimgCreate();
     // 实现左边子栏的缓慢消失
     // $(document).ready(function(){

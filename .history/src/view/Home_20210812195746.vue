@@ -33,7 +33,76 @@
             </div>
           </transition>
         </div>
+
+        <!-- <div class="navhome" @click="changearrow()" v-if="item.type === 'tips'">
+          <img :src="item.imgSrc" class="navhome-img" />
+          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
+          <img :src="item.imgtips" class="arrow" ref="arrow" />
+        </div> -->
       </div>
+      <!-- <router-link to="/home/homewel">
+        <div class="navhome">
+          <img src="../assets/homeimg.png" class="navhome-img" />
+          <span class="spans1" ref="spans1">首页</span>
+        </div>
+      </router-link>
+      <div class="navhome" @click="changearrow()" id="listlep">
+        <img src="../assets/item.png" class="navhome-img" />
+        <span ref="spans2">列表详情</span>
+        <img src="../assets/小箭头.png" class="arrow" ref="arrow" />
+      </div> -->
+
+      <!-- <div class="navhome-box" ref="navhomebox">
+        <transition name="navhom">
+          <div class="navhome-son" v-show="navSonShow">
+            <div @click="goToRouter">
+              <div class="namehome-son1">
+                <img src="../assets/body.png" class="navson-img" />
+                <span ref="spans7">需求表</span>
+              </div>
+            </div>
+            <router-link to="/home/item">
+              <div class="namehome-son1">
+                <img src="../assets/material.png" class="navson-img" />
+                <span ref="spans6">材料</span>
+              </div>
+            </router-link>
+
+            <router-link to="/home/buy">
+              <div class="namehome-son1">
+                <img src="../assets/buy.png" class="navson-img" />
+                <span ref="spans5">购买订单</span>
+              </div>
+            </router-link>
+          </div>
+        </transition>
+      </div> -->
+
+      <!-- <div class="navhome-box" ref="navhomebox">
+        <transition name="navhom">
+          <div class="navhome-son" v-show="navSonShow">
+            <div @click="goToRouter(item)" v-for="(item, index) in routerList">
+              <div class="namehome-son1">
+                <img :src="item.imgSrc" class="navson-img" />
+                <span :ref="item.ref">{{ item.label }}</span>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div> -->
+
+      <!-- <router-link to="/home/department" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/department.png" class="navhome-img" />
+          <span ref="spans3">部门管理</span>
+        </div>
+      </router-link>
+      <router-link to="/home/user" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/user.png" class="navhome-img" />
+          <span ref="spans8">用户信息</span>
+        </div>
+      </router-link> -->
     </div>
 
     <div
@@ -51,6 +120,7 @@
         </div>
 
         <span>首页</span>
+        <!-- <v-search class="searchfa"></v-search> -->
 
         <div class="topright">
           <span class="top-time">{{ nowTime }}</span>

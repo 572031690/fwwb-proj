@@ -1,39 +1,55 @@
 <template>
   <div id="Home" ref="gobacklogin">
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
-      <div v-for="item in routerList" v-show="item.showtab">
-        <div @click="judgeType(item)" class="navhome">
-          <img :src="item.imgSrc" class="navhome-img" />
-          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
-          <img
-            v-if="item.type === 'tips'"
-            :src="item.imgtips"
-            class="arrow"
-            ref="arrow"
-          />
+      <router-link to="/home/homewel">
+        <div class="navhome">
+          <img src="../assets/homeimg.png" class="navhome-img" />
+          <span class="spans1" ref="spans1">首页</span>
         </div>
-        <!-- 子列表 -->
-        <div
-          class="navhome-box"
-          ref="navhomebox"
-          v-if="item.childrenList.length"
-          v-show="item.showtab"
-        >
-          <transition name="navhom">
-            <div class="navhome-son" v-show="navSonShow">
-              <div
-                @click="goToRouter(item)"
-                v-for="(item, index) in item.childrenList"
-              >
-                <div class="namehome-son1">
-                  <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref">{{ item.label }}</span>
-                </div>
+      </router-link>
+      <div class="navhome" @click="changearrow()" id="listlep">
+        <img src="../assets/item.png" class="navhome-img" />
+        <span ref="spans2">列表详情</span>
+        <img src="../assets/小箭头.png" class="arrow" ref="arrow" />
+      </div>
+
+      <div class="navhome-box" ref="navhomebox">
+        <transition name="navhom">
+          <div class="navhome-son" v-show="navSonShow">
+            <div @click="goToRouter(item)" v-for="(item, index) in routerList">
+              <div class="namehome-son1">
+                <img :src="item.imgSrc" class="navson-img" />
+                <span ref="spans7">{{ item.name }}</span>
               </div>
             </div>
-          </transition>
-        </div>
+            <router-link to="/home/item">
+              <div class="namehome-son1">
+                <img src="../assets/material.png" class="navson-img" />
+                <span ref="spans6">材料</span>
+              </div>
+            </router-link>
+
+            <router-link to="/home/buy">
+              <div class="namehome-son1">
+                <img src="../assets/buy.png" class="navson-img" />
+                <span ref="spans5">购买订单</span>
+              </div>
+            </router-link>
+          </div>
+        </transition>
       </div>
+      <router-link to="/home/department" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/department.png" class="navhome-img" />
+          <span ref="spans3">部门管理</span>
+        </div>
+      </router-link>
+      <router-link to="/home/user" v-show="admin">
+        <div class="navhome">
+          <img src="../assets/user.png" class="navhome-img" />
+          <span ref="spans8">用户信息</span>
+        </div>
+      </router-link>
     </div>
 
     <div
@@ -51,6 +67,7 @@
         </div>
 
         <span>首页</span>
+        <!-- <v-search class="searchfa"></v-search> -->
 
         <div class="topright">
           <span class="top-time">{{ nowTime }}</span>
@@ -79,7 +96,7 @@
 // import $ from 'jquery'
 // 引入搜索框
 import EditData from "../unusercom/EditData.vue";
-import { routerList } from "../assets/data/homeRouter";
+
 export default {
   data() {
     return {
@@ -94,8 +111,14 @@ export default {
       navSonShow: true,
       lastTime: 0, // 默认上一次点击时间为0
       admin: true,
-      routerChioce: 1,
-      routerList
+      routerList: [
+        {
+          path: "/home/body",
+          label: "需求表",
+          disabled: false,
+          imgSrc: "../assets/body.png"
+        }
+      ]
     };
   },
   methods: {
@@ -103,12 +126,15 @@ export default {
     changearrow() {
       this.navSonShow = !this.navSonShow;
       if (this.arrowflag) {
-        this.$refs.arrow[0].style.transform = "rotate(270deg)";
+        this.$refs.arrow.style.transform = "rotate(270deg)";
         this.arrowflag = !this.arrowflag;
       } else {
-        this.$refs.arrow[0].style.transform = "rotate(90deg)";
+        this.$refs.arrow.style.transform = "rotate(90deg)";
         this.arrowflag = !this.arrowflag;
       }
+      // e.srcElement.style.transform="'rotate('+this.key+'deg)'";
+      // e.srcElement.style.transform="rotate(180deg)";
+      // console.log(e.srcElement.dataset.aid);
     },
     // 右边栏三条杠点击事件
     changehomeimg() {
@@ -131,15 +157,14 @@ export default {
       this.imghomeflag = !this.imghomeflag;
       const me = this;
       setTimeout(function() {
-        me.routerList.forEach(item => {
-          me.$refs[item.ref][0].style.display = status;
-          if (item.childrenList.length) {
-            item.childrenList.forEach(val => {
-              me.$refs[val.ref][0].style.display = status;
-            });
-          }
-        });
-        me.$refs.arrow[0].style.display = status;
+        me.$refs.spans1.style.display = status;
+        me.$refs.spans2.style.display = status;
+        me.$refs.spans3.style.display = status;
+        me.$refs.arrow.style.display = status;
+        me.$refs.spans5.style.display = status;
+        me.$refs.spans6.style.display = status;
+        me.$refs.spans7.style.display = status;
+        me.$refs.spans8.style.display = status;
       }, times);
     },
     // 开始动画文字出现延迟
@@ -163,6 +188,13 @@ export default {
         });
       });
     },
+
+    // init(){
+    //     this.$nextTick(()=>{
+    //     var flagwel = this.$store.state.flagwel;
+    //     this.$refs.welcomehome.style.display=flagwel;
+    //     })
+    // }
     // 显示当前时间（年月日时分秒）
     timeFormate(timeStamp) {
       const year = new Date(timeStamp).getFullYear();
@@ -211,30 +243,26 @@ export default {
       clearInterval(this.thistime);
     },
     getAdminType() {
+      // console.log(typeof this.departmentID)
       if (this.departmentID === "10000") {
-        this.routerList[2].showtab = true;
-        this.routerList[3].showtab = true;
+        this.admin = true;
       } else {
-        this.routerList[2].showtab = false;
-        this.routerList[3].showtab = false;
+        this.admin = false;
       }
     },
-    judgeType(val) {
-      if (val.type === "tips") this.changearrow();
-      if (val.type === "router") this.goToRouter(val);
-    },
     goToRouter(val) {
-      if (!val.disabled) {
-        this.$router.push({ path: val.path });
-      } // 页面跳转
+      this.$router.push({ path: val.path }); // 页面跳转
     }
   },
   components: {
     // 'v-body':Body
     "v-editdata": EditData
   },
+  // store,
   mounted() {
     this.nowTimes();
+    // document.getElementById('rightnav-topimghome').style.cursor = 'not-allowed' //设置鼠标样式为不可点击
+
     this.changehomeimgCreate();
     // 实现左边子栏的缓慢消失
     // $(document).ready(function(){
