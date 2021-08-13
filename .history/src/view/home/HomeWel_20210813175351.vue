@@ -9,10 +9,7 @@
       </div>
       <div class="tabbody"><div class="tabbodys"></div></div>
     </div>
-    <div class="tabmid">
-      <div class="tabmidtop"></div>
-      <mapChina class="bodymap"></mapChina>
-    </div>
+    <div><mapChina class="bodymap"></mapChina></div>
     <div class="bodyright">
       <div class="tabbody"><div class="tabbodys"></div></div>
       <div class="tabbody"><div class="tabbodys"></div></div>
@@ -61,8 +58,8 @@ export default {
 .tabbodys::before {
   content: "";
   position: absolute;
-  height: 10px;
-  width: 10px;
+  height: 20px;
+  width: 20px;
 }
 .tabbody::after {
   top: 2px;
@@ -88,22 +85,9 @@ export default {
   border-bottom: 2px solid #02a6b5;
   border-right: 2px solid #02a6b5;
 }
-.tabmid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.tabmidtop {
-  position: absolute;
-  top: 0;
-  border: 2px solid black;
-  height: 20%;
-  width: 60%;
-}
 .bodymap {
-  width: 41vw;
-  height: 41vw;
+  width: 45vw;
+  height: 45vw;
   /* background-color: #031255; */
 }
 /* .welcomehome {

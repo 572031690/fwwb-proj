@@ -92,13 +92,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 }
 .tabmidtop {
   position: absolute;
   top: 0;
   border: 2px solid black;
-  height: 20%;
+  height: 30%;
   width: 60%;
 }
 .bodymap {
