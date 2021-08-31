@@ -2,7 +2,7 @@
   <div>
     <!-- 添加模板 -->
     <el-dialog
-      title="添加数据"
+      :title="dialogData.dialogType==='add'?'添加数据':'修改数据'"
       :visible.sync="dialogFormVisibleadd"
       :modal-append-to-body="false"
       :close-on-click-modal="false"
@@ -38,7 +38,7 @@
           </el-date-picker>
 
             <el-select
-              v-model="dialogData.formList[item.dataName]"
+              v-model.number="dialogData.formList[item.dataName]"
               placeholder="请选择类型"
               v-if="item.putType === 'select'"
             >
@@ -87,7 +87,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">添 加</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{dialogData.dialogType==='add'?'添 加':'修 改'}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -125,30 +125,31 @@ export default {
       })
     },
     async adddata () {
-      this.$emit('updata')
       var data = {}
       for (const i in this.dialogData.formList) {
         data[i] = this.dialogData.formList[i]
       }
       console.log(data, 'datadatadata')
       // $ajax请求
-      const url = this.dialogData.addUrl
-      const { data: res } = await this.$ajax.post(url, data, {}).catch(() => {
+      const url = this.dialogData.url
+      await this.$ajax.post(url, data, {}).then(res => {
+        const {data} = res
+        if(data.code === "101") {
+          this.$message({
+            type: 'success',
+            message: this.dialogData.dialogType ==='add'?'添加成功!':'修改成功'
+          })
+          this.$emit('updata')
+          this.dialogFormVisibleadd = false
+        }else{
+          this.$message.error( this.dialogData.dialogType==='add'?'错了哦，添加失败':'错了哦，修改失败')
+        }
+      }).catch(() => {
         this.$message({
           type: 'error',
           message: '网络异常'
         })
       })
-      if (res) {
-        this.$message({
-          type: 'success',
-          message: '添加成功!'
-        })
-        this.$emit('updata')
-        this.dialogFormVisibleadd = false
-      } else {
-        this.$message.error('错了哦，添加失败')
-      }
     }
   }
 }

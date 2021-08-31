@@ -107,75 +107,6 @@
           </tr>
         </tbody>
 
-        <!-- 修改表单 -->
-        <el-dialog
-          title="修改数据"
-          :visible.sync="dialogFormVisible"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="form"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="员工ID" prop="userId">
-              <el-input
-                type="age"
-                v-model.number="form.userId"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" style="width:400px"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="pass">
-              <el-input v-model="form.pass" style="width:400px"></el-input>
-            </el-form-item>
-            <el-form-item label="电话" prop="tel">
-              <el-input
-                type="age"
-                v-model.number="form.tel"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="部门编号" prop="dpart">
-              <el-select v-model="form.dpart" placeholder="请选择编号">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="员工号" prop="employeeid">
-              <el-input
-                type="age"
-                v-model.number="form.employeeid"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <!-- <el-form-item >
-                                        <el-button type="primary" @click="submitForm('form')" class="onsub">立即创建</el-button>
-                                        <el-button @click="dialogFormVisible = false">取消</el-button>
-                                    </el-form-item> -->
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm('form')"
-              >保 存</el-button
-            >
-          </div>
-        </el-dialog>
-
         <!-- </el-table> -->
       </div>
       <div class="table-bottom">
@@ -191,22 +122,58 @@
         >
         </el-pagination>
       </div>
+      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
+
     </div>
   </div>
 </template>
 <script>
+import addDialog from '../../components/addDataDialog.vue'
 export default {
+  components: {
+    addDialog
+  },
   data () {
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.form.pass) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    }
     return {
+      dialogData: {
+        dialogType:'',
+        dataTableList: [
+          {
+            label: '姓名',
+            putType: 'input',
+            dataName: 'username'
+          },
+          {
+            label: '密码',
+            putType: 'input',
+            dataName: 'password'
+          },
+          {
+            label: '电话',
+            putType: 'numput',
+            dataName: 'telNum'
+          },
+          {
+            label: '部门编号',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'departmentid'
+          },
+          {
+            label: '员工号',
+            putType: 'numput',
+            dataName: 'employeeid'
+          }
+        ],
+        formList: {
+          username: "",
+          password: "",
+          telNum: "",
+          departmentid: "",
+          employeeid: ""
+        },
+        url: '',
+      },
       list: [
         {
           userid: 1,
@@ -233,50 +200,19 @@ export default {
         dname: '' // 查询数据
       },
       dialogFormVisible: false, // 不让修改窗口打开
-      form: {
-        userId: '',
-        name: '',
-        pass: '',
-        tel: '',
-        dpart: '',
-        employeeid: ''
-      },
-      // 定义表单验证规则
-      rules: {
-        userId: [
-          { required: true, message: 'ID不能为空', trigger: 'blur' },
-          { type: 'number', message: 'ID必须为数字值' }
-        ],
-        name: [
-          { required: true, message: '请输入姓名名称', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-        ],
-        pass: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
-        ],
-        tel: [
-          { required: true, message: '请输入电话号码', trigger: 'blur' },
-          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' } // 手机号码验证！！！！
-          // { min: 9, max: 15, message: '长度不能小于9位', trigger: 'blur' }
-        ],
-        dpart: [
-          { required: true, message: '请选择部门编号', trigger: 'change' }
-        ],
-        employeeid: [
-          { required: true, message: '请输入员工编号', trigger: 'change' },
-          { type: 'number', message: '编号为数字值', trigger: 'blur' }
-        ]
-        //   address: [
-        //     { required: true, message: '请填写地址', trigger: 'blur' }
-        //   ]
-      }
     }
   },
   methods: {
     // 添加方法跳转添加界面
     gethomeAdd () {
-      this.$router.push({ path: '/home/add' })
+      this.dialogData.dialogType='add'
+      this.dialogData.url="/web/saveUser"
+      delete this.dialogData.formList.userid
+      for (const i in this.dialogData.formList) {
+       this.dialogData.formList[i] = ''
+      }
+      this.$refs.addDialog.dialogFormVisibleadd = true
+      // this.$router.push({ path: '/home/add' })
     },
     // 删除方法
     deletedata (e) {
@@ -287,21 +223,23 @@ export default {
       })
         .then(async () => {
           const url = '/web/deleteUser'
-          const { data: res } = await this.$ajax.get(url, {
+          await this.$ajax.get(url, {
             params: {
               userid: e.userid
             }
+          }).then(res=> {
+             if (res) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.search()
+              this.list.splice(e, 1)
+            } else {
+              this.$message.error('错了哦，删除失败')
+            }
           })
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            this.search()
-            this.list.splice(e, 1)
-          } else {
-            this.$message, error('错了哦，删除失败')
-          }
+         
         })
         .catch(() => {
           this.$message({
@@ -313,29 +251,35 @@ export default {
     // 打开修改蒙版表单
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
-      this.form.userId = e.userid
-      this.form.name = e.username.toString()
-      this.form.pass = e.password.toString() // data内如何直接拿pass过来会显示not string所以要转化成string类型防止后面rule一直被触发
-      this.form.tel = e.telNum
-      this.form.dpart = e.departmentid
-      this.form.employeeid = parseInt(e.employeeid) // 转换成int
-      this.dialogFormVisible = true
+      this.dialogData.dialogType='edit'
+      for (const i in this.dialogData.formList) {
+        if(i==="departmentid" || i==="employeeid") this.dialogData.formList[i] =parseInt(e[i])
+        else this.dialogData.formList[i] = e[i]
+      }
+      this.dialogData.formList.userid = parseInt(e.userid)
+      this.dialogData.url="/web/updateUser"
+      this.$refs.addDialog.dialogFormVisibleadd = true
     },
+
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
       const url = 'web/listUser'
       // const url = '/web/listUser';
-      const { data: res } = await this.$ajax.get(url, {
+     await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
+      }).then((res) => {
+        const {data} = res
+        this.list = data.list // 获取里面的data数据
+        this.params.total = data.count // 获取后台传过来的总数据条数
+        this.params.page = data.page // 将后端的当前页反传回来
+      }).catch(() => {
+        this.$message.error("网络异常")
       })
-      console.log(res)
-      this.list = res.list // 获取里面的data数据
-      this.params.total = res.count // 获取后台传过来的总数据条数
-      this.params.page = res.page // 将后端的当前页反传回来
+      
     },
     // 页码
     handleSizeChange (val) {
@@ -347,79 +291,16 @@ export default {
       console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
-    },
-
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
-    },
-    // 编辑表单的验证数据
-    submitForm (formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm('是否确定保存编辑此条数据?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.editdata()
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-
-    editdata () {
-      // $ajax请求
-      const url = '/web/updateUser'
-      console.log(this.form.name)
-      this.$ajax
-        .post(
-          url,
-          {
-            userid: this.form.userId,
-            username: this.form.name,
-            password: this.form.pass,
-            telNum: this.form.tel,
-            departmentid: this.form.dpart,
-            employeeid: this.form.employeeid
-          },
-          {
-            Headers: {
-              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            }
-          }
-        )
-        .then(res => {
-          console.log(res)
-          if (res.data.code == 101) {
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
-            })
-            this.dialogFormVisible = false
-            this.search() // 从新调用页面获取表单数据
-          } else {
-            this.$message.error('错了哦，修改失败1')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          this.$message.error('错了哦，修改失败')
-        })
     }
   },
   mounted () {
-    // var ps=String.split(this.form.pass);
-    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
     }, 400)
     // 调用方法获取后端数据
     this.search()
-  },
-  components: {}
+  }
+ 
 }
 </script>
 <style scoped>

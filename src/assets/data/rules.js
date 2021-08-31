@@ -3,21 +3,21 @@ export const rulesData = {
     { required: true, message: "ID不能为空", trigger: "blur" },
     { type: "number", message: "ID必须为数字值" }
   ],
-  name: [
+  username: [
     { required: true, message: "请输入姓名", trigger: "blur" },
     { min: 2, max: 6, message: "长度在 2 到 6 个字符", trigger: "blur" }
   ],
-  pass: [
+  password: [
     { required: true, message: "请输入密码", trigger: "blur" },
     { min: 6, max: 24, message: "长度不能小于六位", trigger: "blur" }
   ],
-  tel: [
+  telNum: [
     { required: true, message: "请输入电话号码", trigger: "blur" },
     { pattern: /^1[3456789]\d{9}$/, message: "手机号格式不正确" } // 手机号码验证！！！！
     // { type: 'number', message: '电话为数字值',trigger: 'blur'},
     // { min: 9, max: 15, message: '长度不能小于9位', trigger: 'blur' }
   ],
-  dpart: [{ required: true, message: "请选择部门编号", trigger: "change" }],
+  departmentid: [{ required: true, message: "请选择部门编号", trigger: "change" }],
   employeeid: [
     { required: true, message: "请输入员工编号", trigger: "change" },
     { type: "number", message: "编号为数字值", trigger: "blur" }
