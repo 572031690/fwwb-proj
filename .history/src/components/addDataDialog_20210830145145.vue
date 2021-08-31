@@ -1,0 +1,113 @@
+<template>
+  <div>
+    <!-- 添加模板 -->
+    <el-dialog
+      title="添加数据"
+      :visible.sync="dialogFormVisibleadd"
+      :modal-append-to-body="false"
+      :close-on-click-modal="false"
+      :show-close="false"
+      center
+      width="35%"
+    >
+      <el-form
+        :model="addform"
+        :rules="rulesData"
+        ref="form"
+        label-width="120px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="购买单名" prop="buytitle">
+          <el-input v-model="addform.buytitle" style="width:400px"></el-input>
+        </el-form-item>
+        <el-form-item label="日期" prop="btime">
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="addform.btime"
+              style="width: 150px;"
+            ></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <!-- <el-col :span="11">
+                                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+                                        </el-col> -->
+        </el-form-item>
+        <el-form-item label="类型" prop="itemtype">
+          <el-select v-model="addform.itemtype" placeholder="请选择类型">
+            <el-option label="10000" value="10000"></el-option>
+            <el-option label="996" value="996"></el-option>
+            <el-option label="007" value="007"></el-option>
+            <el-option label="123" value="123"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="类型ID" prop="itemid">
+          <el-select v-model="addform.itemid" placeholder="请选择ID">
+            <el-option label="10000" value="10000"></el-option>
+            <el-option label="996" value="996"></el-option>
+            <el-option label="007" value="007"></el-option>
+            <el-option label="123" value="123"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数量" prop="num">
+          <!-- <el-input type="age" v-model.number="form.neednum" auto-complete="off" style="width:400px"></el-input> -->
+          <el-input-number
+            v-model="addform.num"
+            :step="50"
+            :min="50"
+            :max="999999999"
+            label="描述文字"
+          ></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="购买编号" prop="buyerid">
+          <el-input
+            type="age"
+            v-model.number="addform.buyerid"
+            auto-complete="off"
+            style="width:400px"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="负责人编号" prop="neederid">
+          <el-input
+            type="age"
+            v-model.number="list[0].neederid"
+            auto-complete="off"
+            style="width:400px"
+            disabled
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
+        <el-button type="primary" @click="submitFormadd('addform')"
+          >添 加</el-button
+        >
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { rulesData } from "../assets/data/rules";
+export default {
+  data() {
+    return {
+      rulesData,
+      dataTableList: [
+        { label: "购买单名", rules: "needtitle", putType: "input" },
+        { label: "日期", rules: "btime", putType: "date" },
+        {
+          label: "类型",
+          rules: "itemtype",
+          putType: "select",
+          selectData: [10000, 996, 007, 123]
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style></style>
