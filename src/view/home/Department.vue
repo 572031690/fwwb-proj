@@ -56,7 +56,7 @@
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-          <tr v-for="(item, key) in list">
+          <tr v-for="(item, key) in list" :key="key">
             <td class="body-td2">
               <div class="cel2" id="cellid">
                 {{ item.departmentname }}
@@ -77,85 +77,7 @@
           </tr>
         </tbody>
 
-        <!-- 修改表单 -->
-        <el-dialog
-          title="修改数据"
-          :visible.sync="dialogFormVisible"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="form"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="部门名称" prop="departmentname">
-              <el-input
-                v-model="form.departmentname"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="部门编号" prop="departmentid">
-              <el-input
-                type="age"
-                v-model="form.departmentid"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm('form')"
-              >保 存</el-button
-            >
-          </div>
-        </el-dialog>
-
-        <!-- 添加模板 -->
-        <el-dialog
-          title="添加数据"
-          :visible.sync="dialogFormVisibleadd"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="addform"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="部门名称" prop="departmentname">
-              <el-input
-                v-model="addform.departmentname"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="部门编号" prop="departmentid">
-              <el-input
-                type="age"
-                v-model.number="addform.departmentid"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-            <el-button type="primary" @click="submitFormadd('addform')"
-              >添 加</el-button
-            >
-          </div>
-        </el-dialog>
+      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
 
         <!-- </el-table> -->
       </div>
@@ -176,19 +98,33 @@
   </div>
 </template>
 <script>
+import addDialog from '../../components/addDataDialog.vue'
 export default {
+  components: {
+    addDialog
+  },
   data() {
-    // 验证两次密码输入是否一致
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
+      dialogData: {
+        dialogType:'',
+        dataTableList: [
+          {
+            label: '部门姓名',
+            putType: 'input',
+            dataName: 'departmentname'
+          },
+          {
+            label: '部门编号',
+            putType: 'numput',
+            dataName: 'departmentid'
+          }
+        ],
+        formList: {
+          departmentname: "",
+          departmentid: ""
+        },
+        url: '',
+      },
       // 表内静态数据列表
       list: [
         {
@@ -202,34 +138,19 @@ export default {
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
         dname: "" // 查询数据
-      },
-      dialogFormVisible: false, // 不让修改窗口打开
-      form: {
-        departmentname: "",
-        departmentid: ""
-      },
-      dialogFormVisibleadd: false, // 不让添加窗口打开
-      addform: {
-        departmentname: "",
-        departmentid: ""
-      },
-      // 定义表单验证规则
-      rules: {
-        departmentname: [
-          { required: true, message: "请输入需求单名", trigger: "blur" },
-          { min: 2, max: 15, message: "长度在 2 到 15 个字符", trigger: "blur" }
-        ],
-        departmentid: [
-          { required: true, message: "ID不能为空", trigger: "blur" },
-          { type: "number", message: "ID必须为数字值" }
-        ]
       }
     };
   },
   methods: {
     // 添加方法跳转添加界面
     gethomeAdd() {
-      this.dialogFormVisibleadd = true;
+      // this.dialogFormVisibleadd = true;
+      this.dialogData.dialogType='add'
+      this.dialogData.url="/webbuy/addBuy"
+      for (const i in this.dialogData.formList) {
+       this.dialogData.formList[i] = ''
+      }
+      this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // 删除方法
     deletedata(e) {
@@ -266,26 +187,35 @@ export default {
     // 打开修改蒙版表单
     seeData(e) {
       // 编辑按钮 点击后显示编辑对话框
-      this.form.departmentname = e.departmentname.toString();
-      this.form.departmentid = parseInt(e.departmentid); // 转换成int
+      // this.form.departmentname = e.departmentname.toString();
+      this.dialogData.dialogType='edit'
+      for (const i in this.dialogData.formList) {
+        if(i==="departmentid") this.dialogData.formList[i] =parseInt(e[i])
+        else this.dialogData.formList[i] = e[i]
+      }
+      this.dialogData.url="/webbuy/updateBuy"
+      this.$refs.addDialog.dialogFormVisibleadd = true
 
-      this.dialogFormVisible = true;
     },
     // ajax请求后台数据 获得list数据 并用于分页
-    async search() {
-      const url = "/webDepartment/findAllDepartment";
-      // const url = '/web/listUser';
-      const { data: res } = await this.$ajax.get(url, {
+   async search () {
+      const url = '/webDepartment/findAllDepartment'
+     await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
-      });
-      console.log(res);
-      this.list = res; // 获取里面的data数据
-      this.params.total = res.count; // 获取后台传过来的总数据条数
-      this.params.page = res.page; // 将后端的当前页反传回来
+      }).then((res) => {
+        console.log(res);
+        const {data} = res
+        this.list = data // 获取里面的data数据
+        this.params.total = data.count // 获取后台传过来的总数据条数
+        this.params.page = data.page // 将后端的当前页反传回来
+      }).catch(() => {
+        this.$message.error("网络异常")
+      })
+      
     },
     // 页码
     handleSizeChange(val) {
@@ -301,111 +231,6 @@ export default {
 
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    // 编辑表单的验证数据
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存编辑此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.editdata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 编辑表单请求
-    editdata() {
-      // $ajax请求
-
-      const url = "/webbuy/updateBuy";
-      console.log(this.form);
-      this.$ajax
-        .post(
-          url,
-          {
-            buyid: this.form.buyid,
-            buytitle: this.form.buytitle,
-            btime: this.form.btime,
-            itemtype: this.form.itemtype,
-            itemid: this.form.itemid,
-            num: this.form.num,
-            buyerid: this.form.buyerid,
-            neederid: this.form.neederid
-          },
-          {
-            Headers: {
-              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-            }
-          }
-        )
-        .then(res => {
-          console.log(res);
-          if (res.data.code == 101) {
-            this.$message({
-              type: "success",
-              message: "修改成功!"
-            });
-            this.dialogFormVisible = false;
-            this.search(); // 从新调用页面获取表单数据
-          } else {
-            this.$message.error("错了哦，修改失败1");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("错了哦，修改失败");
-        });
-    },
-    // 添加表单验证
-    submitFormadd(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存添加此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.adddata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 添加表单请求
-    async adddata() {
-      // $ajax请求
-      const url = "/webbuy/addBuy";
-      const { data: res } = await this.$ajax.post(
-        url,
-        {
-          buyid: this.addform.buyid,
-          buytitle: this.addform.buytitle,
-          btime: this.addform.btime,
-          itemtype: this.addform.itemtype,
-          itemid: this.addform.itemid,
-          num: this.addform.num,
-          buyerid: this.addform.buyerid,
-          neederid: this.addform.neederid
-        },
-        {}
-      );
-      if (res) {
-        this.$message({
-          type: "success",
-          message: "添加成功!"
-        });
-        this.search();
-      } else {
-        this.$message.error("错了哦，添加失败");
-      }
     }
   },
   mounted() {
@@ -416,8 +241,7 @@ export default {
     }, 400);
     // 调用方法获取后端数据
     this.search();
-  },
-  components: {}
+  }
 };
 </script>
 <style scoped>

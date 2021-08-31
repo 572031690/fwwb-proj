@@ -102,191 +102,8 @@
           </tr>
         </tbody>
 
-        <!-- 修改表单 -->
-        <el-dialog
-          title="修改数据"
-          :visible.sync="dialogFormVisible"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="form"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="编号ID" prop="needid">
-              <el-input
-                type="age"
-                v-model.number="form.needid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="需求单名" prop="needtitle">
-              <el-input v-model="form.needtitle" style="width:400px"></el-input>
-            </el-form-item>
-            <el-form-item label="类型" prop="itemtype">
-              <el-select v-model="form.itemtype" placeholder="请选择类型">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="类型ID" prop="itemid">
-              <el-select v-model="form.itemid" placeholder="请选择ID">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="数量" prop="neednum">
-              <!-- <el-input type="age" v-model.number="form.neednum" auto-complete="off" style="width:400px"></el-input> -->
-              <el-input-number
-                v-model="form.neednum"
-                :step="50"
-                :min="50"
-                :max="999999999"
-                label="描述文字"
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item label="需求日期" prop="needday">
-              <el-col :span="11">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="form.needday"
-                  style="width: 150px;"
-                ></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <!-- <el-col :span="11">
-                                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                                        </el-col> -->
-            </el-form-item>
-            <el-form-item label="负责人部门编号" prop="neederid">
-              <el-input
-                type="age"
-                v-model="form.neederid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="详情" prop="comment">
-              <el-input
-                type="textarea"
-                v-model.number="form.comment"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm('form')"
-              >保 存</el-button
-            >
-          </div>
-        </el-dialog>
-
-        <!-- 添加模板 -->
-        <el-dialog
-          title="添加数据"
-          :visible.sync="dialogFormVisibleadd"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="addform"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="需求单名" prop="needtitle">
-              <el-input
-                v-model="addform.needtitle"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="类型" prop="itemtype">
-              <el-select v-model="addform.itemtype" placeholder="请选择类型">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="类型ID" prop="itemid">
-              <el-select v-model="addform.itemid" placeholder="请选择ID">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="数量" prop="neednum">
-              <!-- <el-input type="age" v-model.number="form.neednum" auto-complete="off" style="width:400px"></el-input> -->
-              <el-input-number
-                v-model="addform.neednum"
-                :step="50"
-                :min="50"
-                :max="999999999"
-                label="描述文字"
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item label="需求日期" prop="needday">
-              <el-col :span="11">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="addform.needday"
-                  style="width: 150px;"
-                ></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <!-- <el-col :span="11">
-                                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                                        </el-col> -->
-            </el-form-item>
-            <el-form-item label="负责人部门编号" prop="neederid">
-              <el-input
-                type="age"
-                v-model="list[0].neederid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="详情" prop="comment">
-              <el-input
-                type="textarea"
-                v-model.number="addform.comment"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-            <el-button type="primary" @click="submitFormadd('addform')"
-              >添 加</el-button
-            >
-          </div>
-        </el-dialog>
-
-        <!-- </el-table> -->
+      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
+      
       </div>
       <div class="table-bottom">
         <!-- 底部页码功能 -->
@@ -305,18 +122,67 @@
   </div>
 </template>
 <script>
+import addDialog from '../../components/addDataDialog.vue'
+
 export default {
+  components: {
+    addDialog
+  },
   data() {
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
+      dialogData: {
+        dialogType:'',
+        dataTableList: [
+          {
+            label: '需求单名',
+            putType: 'input',
+            dataName: 'needtitle'
+          },
+          {
+            label: '需求日期',
+            putType: 'date',
+            dataName: 'needday'
+          },
+           {
+            label: '类型',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemtype'
+          },
+          {
+            label: '类型ID',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemid'
+          },
+          {
+            label: '数量',
+            putType: 'num',
+            dataName: 'neednum'
+          },
+          {
+            label: '负责人部门号',
+            putType: 'disput',
+            dataName: 'neederid'
+          },
+          {
+            label: '详情',
+            putType: 'textarea',
+            dataName: 'comment'
+          }
+        ],
+        formList: {
+          itemid: "",
+          needtitle:"",
+          needday:"",
+          itemtype: "",
+          itemid:"",
+          neednum: "",
+          neederid: "",
+          comment: ""
+        },
+        url: '',
+      },
       list: [
         {
           itemid: 1,
@@ -332,45 +198,21 @@ export default {
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
         dname: "" // 查询数据
-      },
-      dialogFormVisible: false, // 不让修改窗口打开
-      form: {
-        itemid: "",
-        itemtype: "",
-        comment: "",
-        num: "",
-        unit: ""
-      },
-      dialogFormVisibleadd: false, // 不让添加窗口打开
-      addform: {
-        itemid: "",
-        itemtype: "",
-        comment: "",
-        num: "",
-        unit: ""
-      },
-      // 定义表单验证规则
-      rules: {
-        itemid: [
-          { required: true, message: "ID不能为空", trigger: "blur" },
-          { type: "number", message: "ID必须为数字值" }
-        ],
-        itemtype: [
-          { required: true, message: "请选择需求类型", trigger: "change" }
-        ],
-        comment: [{ required: true, message: "请填写详情", trigger: "blur" }],
-        num: [
-          { required: true, message: "需求数量不能为空", trigger: "blur" },
-          { type: "number", message: "需求数量必须为数字值" }
-        ],
-        unit: [{ required: true, message: "单位不能为空", trigger: "blur" }]
       }
     };
   },
   methods: {
     // 添加方法跳转添加界面
     gethomeAdd() {
-      this.dialogFormVisibleadd = true;
+      this.dialogData.dialogType='add'
+      this.dialogData.url="/webneed/addNeed"
+      if(this.dialogData.dataTableList[0].label==="编号ID") this.dialogData.dataTableList.splice(0,1)
+      for (const i in this.dialogData.formList) {
+       this.dialogData.formList[i] = ''
+      }
+      this.$refs.addDialog.dialogFormVisibleadd = true
+
+      // this.dialogFormVisibleadd = true;
     },
     // 删除方法
     deletedata(e) {
@@ -407,15 +249,16 @@ export default {
     // 打开修改蒙版表单
     seeData(e) {
       // 编辑按钮 点击后显示编辑对话框
-      this.form.needtitle = e.needtitle.toString();
-      this.form.itemtype = e.itemtype;
-      this.form.itemid = e.itemid;
-      this.form.neednum = parseInt(e.neednum); // 转换成int
-      // this.form.neednum=e.neednum.toString();  //data内如何直接拿pass过来会显示not string所以要转化成string类型防止后面rule一直被触发
-      this.form.neederid = parseInt(e.neederid); // 转换成int
-      this.form.comment = e.comment.toString();
-
-      this.dialogFormVisible = true;
+      this.dialogData.dialogType='edit'
+      for (const i in this.dialogData.formList) {
+        if(i==="neednum" || i==="neederid") this.dialogData.formList[i] =parseInt(e[i])
+        else this.dialogData.formList[i] = e[i].toString();
+      }
+      this.dialogData.url="/webneed/updateNeed"
+      if(this.dialogData.dataTableList[0].label==="需求单名") this.dialogData.dataTableList.splice(0,0,{label: '编号ID',
+            putType: 'disput',
+            dataName: 'itemid'})
+      this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search() {
@@ -443,112 +286,6 @@ export default {
       console.log(`当前页: ${val}`);
       this.params.page = val;
       this.search();
-    },
-
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    // 编辑表单的验证数据
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存编辑此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.editdata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 编辑表单请求
-    editdata() {
-      // $ajax请求
-
-      const url = "/webneed/updateNeed";
-      console.log(this.form);
-      this.$ajax
-        .post(
-          url,
-          {
-            needtitle: this.form.needtitle,
-            itemtype: this.form.itemtype,
-            itemid: this.form.itemid,
-            neednum: this.form.neednum,
-            comment: this.form.comment
-          },
-          {
-            Headers: {
-              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-            }
-          }
-        )
-        .then(res => {
-          console.log(res);
-          if (res.data.code == 101) {
-            this.$message({
-              type: "success",
-              message: "修改成功!"
-            });
-            this.dialogFormVisible = false;
-            this.search(); // 从新调用页面获取表单数据
-          } else {
-            this.$message.error("错了哦，修改失败1");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("错了哦，修改失败");
-        });
-    },
-    // 添加表单验证
-    submitFormadd(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存添加此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.adddata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 添加表单请求
-    async adddata() {
-      // $ajax请求
-      const url = "/webneed/addNeed";
-      const { data: res } = await this.$ajax.post(
-        url,
-        {
-          needid: this.addform.needid,
-          needtitle: this.addform.needtitle,
-          itemtype: this.addform.itemtype,
-          itemid: this.addform.itemid,
-          neednum: this.addform.neednum,
-          needday: this.addform.needday,
-          neederid: this.addform.neederid,
-          comment: this.addform.comment
-        },
-        {}
-      );
-      if (res) {
-        this.$message({
-          type: "success",
-          message: "添加成功!"
-        });
-        this.search();
-      } else {
-        this.$message.error("错了哦，添加失败");
-      }
     }
   },
   mounted() {
@@ -559,8 +296,7 @@ export default {
     }, 400);
     // 调用方法获取后端数据
     this.search();
-  },
-  components: {}
+  }
 };
 </script>
 <style scoped>

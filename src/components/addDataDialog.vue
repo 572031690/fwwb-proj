@@ -7,6 +7,7 @@
       :modal-append-to-body="false"
       :close-on-click-modal="false"
       :show-close="false"
+      top="12vh"
       center
       width="35%"
     >
@@ -94,6 +95,9 @@
 </template>
 
 <script>
+/* post请求
+类型 putType： textarea disput numput num select date input
+*/
 import { rulesData } from '../assets/data/rules'
 export default {
   props: {

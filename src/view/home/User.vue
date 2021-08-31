@@ -67,7 +67,7 @@
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-          <tr v-for="(item, key) in list">
+          <tr v-for="(item, key) in list" :key="key">
             <td class="body-td1">
               <div class="cell" id="cellid">
                 {{ item.userid }}
@@ -208,6 +208,7 @@ export default {
       this.dialogData.dialogType='add'
       this.dialogData.url="/web/saveUser"
       delete this.dialogData.formList.userid
+      if(this.dialogData.dataTableList[0].label==="编号") this.dialogData.dataTableList.splice(0,1)
       for (const i in this.dialogData.formList) {
        this.dialogData.formList[i] = ''
       }
@@ -257,6 +258,9 @@ export default {
         else this.dialogData.formList[i] = e[i]
       }
       this.dialogData.formList.userid = parseInt(e.userid)
+      if(this.dialogData.dataTableList[0].label==="姓名") this.dialogData.dataTableList.splice(0,0,{label: '编号',
+            putType: 'disput',
+            dataName: 'userid'})
       this.dialogData.url="/web/updateUser"
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
@@ -264,13 +268,14 @@ export default {
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
       const url = 'web/listUser'
-     await this.$ajax.get(url, {
+      await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
       }).then((res) => {
+        console.log(res);
         const {data} = res
         this.list = data.list // 获取里面的data数据
         this.params.total = data.count // 获取后台传过来的总数据条数

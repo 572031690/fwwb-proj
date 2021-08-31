@@ -124,193 +124,8 @@
           </tr>
         </tbody>
 
-        <!-- 修改表单 -->
-        <el-dialog
-          title="修改数据"
-          :visible.sync="dialogFormVisible"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="form"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="编号ID" prop="buyid">
-              <el-input
-                type="age"
-                v-model.number="form.buyid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="购买单名" prop="buytitle">
-              <el-input v-model="form.buytitle" style="width:400px"></el-input>
-            </el-form-item>
-            <el-form-item label="日期" prop="btime">
-              <el-col :span="11">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="form.btime"
-                  style="width: 150px;"
-                ></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <!-- <el-col :span="11">
-                                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                                        </el-col> -->
-            </el-form-item>
-            <el-form-item label="类型" prop="itemtype">
-              <el-select v-model="form.itemtype" placeholder="请选择类型">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="类型ID" prop="itemid">
-              <el-select v-model="form.itemid" placeholder="请选择ID">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="数量" prop="num">
-              <!-- <el-input type="age" v-model.number="form.neednum" auto-complete="off" style="width:400px"></el-input> -->
-              <el-input-number
-                v-model="form.num"
-                :step="50"
-                :min="50"
-                :max="999999999"
-                label="描述文字"
-              ></el-input-number>
-            </el-form-item>
-
-            <el-form-item label="购买编号" prop="buyerid">
-              <el-input
-                type="age"
-                v-model="form.buyerid"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="负责人编号" prop="neederid">
-              <el-input
-                type="age"
-                v-model="form.neederid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm('form')"
-              >保 存</el-button
-            >
-          </div>
-        </el-dialog>
-
-        <!-- 添加模板 -->
-        <el-dialog
-          title="添加数据"
-          :visible.sync="dialogFormVisibleadd"
-          :modal-append-to-body="false"
-          :close-on-click-modal="false"
-          :show-close="false"
-          center
-          width="35%"
-        >
-          <el-form
-            :model="addform"
-            :rules="rules"
-            ref="form"
-            label-width="120px"
-            class="demo-ruleForm"
-          >
-            <el-form-item label="购买单名" prop="buytitle">
-              <el-input
-                v-model="addform.buytitle"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="日期" prop="btime">
-              <el-col :span="11">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="addform.btime"
-                  style="width: 150px;"
-                ></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <!-- <el-col :span="11">
-                                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                                        </el-col> -->
-            </el-form-item>
-            <el-form-item label="类型" prop="itemtype">
-              <el-select v-model="addform.itemtype" placeholder="请选择类型">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="类型ID" prop="itemid">
-              <el-select v-model="addform.itemid" placeholder="请选择ID">
-                <el-option label="10000" value="10000"></el-option>
-                <el-option label="996" value="996"></el-option>
-                <el-option label="007" value="007"></el-option>
-                <el-option label="123" value="123"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="数量" prop="num">
-              <!-- <el-input type="age" v-model.number="form.neednum" auto-complete="off" style="width:400px"></el-input> -->
-              <el-input-number
-                v-model="addform.num"
-                :step="50"
-                :min="50"
-                :max="999999999"
-                label="描述文字"
-              ></el-input-number>
-            </el-form-item>
-
-            <el-form-item label="购买编号" prop="buyerid">
-              <el-input
-                type="age"
-                v-model.number="addform.buyerid"
-                auto-complete="off"
-                style="width:400px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="负责人编号" prop="neederid">
-              <el-input
-                type="age"
-                v-model.number="addform.neederid"
-                auto-complete="off"
-                style="width:400px"
-                disabled
-              ></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-            <el-button type="primary" @click="submitFormadd('form')"
-              >添 加</el-button
-            >
-          </div>
-        </el-dialog>
-
-        <!-- </el-table> -->
+      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
+      
       </div>
       <div class="table-bottom">
         <!-- 底部页码功能 -->
@@ -329,19 +144,66 @@
   </div>
 </template>
 <script>
+import addDialog from '../../components/addDataDialog.vue'
 export default {
+  components: {
+    addDialog
+  },
   data() {
-    // 验证两次密码输入是否一致
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.pass) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
+      dialogData: {
+        dialogType:'',
+        dataTableList: [
+          {
+            label: '购买单名',
+            putType: 'input',
+            dataName: 'buytitle'
+          },
+          {
+            label: '日期',
+            putType: 'date',
+            dataName: 'btime'
+          },
+           {
+            label: '类型',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemtype'
+          },
+          {
+            label: '类型ID',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemid'
+          },
+          {
+            label: '数量',
+            putType: 'num',
+            dataName: 'num'
+          },
+          {
+            label: '购买编号',
+            putType: 'numput',
+            dataName: 'buyerid'
+          },
+          {
+            label: '负责人编号',
+            putType: 'disput',
+            dataName: 'neederid'
+          }
+        ],
+        formList: {
+          buyid: "",
+          buytitle: "",
+          btime: "",
+          itemtype: "",
+          itemid: "",
+          num: "",
+          buyerid: "",
+          neederid: 15
+        },
+        url: '',
+      },
       // 表内静态数据列表
       list: [
         {
@@ -361,67 +223,21 @@ export default {
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
         dname: "" // 查询数据
-      },
-      dialogFormVisible: false, // 不让修改窗口打开
-      form: {
-        buyid: "",
-        buytitle: "",
-        btime: "",
-        itemtype: "",
-        itemid: "",
-        num: "",
-        buyerid: "",
-        neederid: 15
-      },
-      dialogFormVisibleadd: false, // 不让添加窗口打开
-      addform: {
-        buyid: "",
-        buytitle: "",
-        btime: "",
-        itemtype: "",
-        itemid: "",
-        num: "",
-        buyerid: "",
-        neederid: 15
-      },
-      // 定义表单验证规则
-      rules: {
-        buyid: [
-          { required: true, message: "ID不能为空", trigger: "blur" },
-          { type: "number", message: "ID必须为数字值" }
-        ],
-        buytitle: [
-          { required: true, message: "请输入需求单名", trigger: "blur" },
-          { min: 2, max: 15, message: "长度在 2 到 15 个字符", trigger: "blur" }
-        ],
-        btime: [
-          { required: true, message: "需求日期不能为空", trigger: "blur" }
-        ],
-        itemtype: [
-          { required: true, message: "请选择需求类型", trigger: "change" }
-        ],
-        itemid: [
-          { required: true, message: "请选择需求编号", trigger: "change" }
-        ],
-        num: [
-          { required: true, message: "需求数量不能为空", trigger: "blur" },
-          { type: "number", message: "需求数量必须为数字值" }
-        ],
-        buyerid: [
-          { required: true, message: "ID不能为空", trigger: "blur" },
-          { type: "number", message: "ID必须为数字值" }
-        ],
-        neederid: [
-          { required: true, message: "ID不能为空", trigger: "blur" },
-          { type: "number", message: "ID必须为数字值" }
-        ]
       }
     };
   },
   methods: {
-    // 添加方法跳转添加界面
+    // 添加方法打开添加界面
     gethomeAdd() {
-      this.dialogFormVisibleadd = true;
+      this.dialogData.dialogType='add'
+      this.dialogData.url="/webbuy/addBuy"
+      // this.dialogFormVisibleadd = true;
+      if(this.dialogData.dataTableList[0].label==="编号ID") this.dialogData.dataTableList.splice(0,1)
+      for (const i in this.dialogData.formList) {
+       this.dialogData.formList[i] = ''
+      }
+      this.$refs.addDialog.dialogFormVisibleadd = true
+
     },
     // 删除方法
     deletedata(e) {
@@ -458,16 +274,16 @@ export default {
     // 打开修改蒙版表单
     seeData(e) {
       // 编辑按钮 点击后显示编辑对话框
-      this.form.buyid = e.buyid;
-      this.form.buytitle = e.buytitle.toString();
-      this.form.btime = e.btime;
-      this.form.itemtype = e.itemtype;
-      this.form.itemid = parseInt(e.itemid); // 转换成int
-      // this.form.neednum=e.neednum.toString();  //data内如何直接拿pass过来会显示not string所以要转化成string类型防止后面rule一直被触发
-      this.form.num = parseInt(e.num);
-      this.form.buyerid = parseInt(e.buyerid); // 转换成int
-      this.form.neederid = parseInt(e.neederid);
-      this.dialogFormVisible = true;
+      this.dialogData.dialogType='edit'
+      for (const i in this.dialogData.formList) {
+        if(i==="itemid" || i==="num"|| i==="buyerid"|| i==="neederid") this.dialogData.formList[i] =parseInt(e[i])
+        else this.dialogData.formList[i] = e[i]
+      }
+      this.dialogData.url="/webbuy/updateBuy"
+      if(this.dialogData.dataTableList[0].label==="购买单名") this.dialogData.dataTableList.splice(0,0,{label: '编号ID',
+            putType: 'disput',
+            dataName: 'buyid'})
+      this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search() {
@@ -497,111 +313,9 @@ export default {
       this.search();
     },
 
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    // 编辑表单的验证数据
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存编辑此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.editdata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 编辑表单请求
-    editdata() {
-      // $ajax请求
-
-      const url = "/webbuy/updateBuy";
-      console.log(this.form);
-      this.$ajax
-        .post(
-          url,
-          {
-            buyid: this.form.buyid,
-            buytitle: this.form.buytitle,
-            btime: this.form.btime,
-            itemtype: this.form.itemtype,
-            itemid: this.form.itemid,
-            num: this.form.num,
-            buyerid: this.form.buyerid,
-            neederid: this.form.neederid
-          },
-          {
-            Headers: {
-              "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-            }
-          }
-        )
-        .then(res => {
-          console.log(res);
-          if (res.data.code == 101) {
-            this.$message({
-              type: "success",
-              message: "修改成功!"
-            });
-            this.dialogFormVisible = false;
-            this.search(); // 从新调用页面获取表单数据
-          } else {
-            this.$message.error("错了哦，修改失败1");
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("错了哦，修改失败");
-        });
-    },
-    // 添加表单验证
-    submitFormadd(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$confirm("是否确定保存添加此条数据?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-            this.adddata();
-          });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 添加表单请求
-    async adddata() {
-      var data = {
-        buyid: this.addform.buyid,
-        buytitle: this.addform.buytitle,
-        btime: this.addform.btime,
-        itemtype: this.addform.itemtype,
-        itemid: this.addform.itemid,
-        num: this.addform.num,
-        buyerid: this.addform.buyerid,
-        neederid: this.addform.neederid
-      };
-      // $ajax请求
-      const url = "/webbuy/addBuy";
-      const { data: res } = await this.$ajax.post(url, data, {});
-      if (res) {
-        this.$message({
-          type: "success",
-          message: "添加成功!"
-        });
-        this.search();
-      } else {
-        this.$message.error("错了哦，添加失败");
-      }
-    }
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
   },
   mounted() {
     // var ps=String.split(this.form.pass);
@@ -611,8 +325,7 @@ export default {
     }, 400);
     // 调用方法获取后端数据
     this.search();
-  },
-  components: {}
+  }
 };
 </script>
 <style scoped>

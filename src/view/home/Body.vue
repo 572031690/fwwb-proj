@@ -350,7 +350,7 @@ export default {
           comment: '',
           uptype: 0
         },
-        url: '/web/saveUser'
+        url: ''
       },
       select: [
         {
@@ -477,6 +477,7 @@ export default {
     // 添加方法打开界面
     gethomeAdd () {
       this.dialogData.formList.neederid = parseInt(this.list[0].neederid)
+      this.dialogData.url= "/web/saveUser"
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // 删除方法
