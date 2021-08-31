@@ -60,9 +60,9 @@ router.beforeEach((to, from, next) => {
     next()
   } else if (!store) {
     console.log('2')
-    // next('/login')
-    // alert('请先登录')
-    next()
+    next('/login')
+    alert('请先登录')
+    // next();
   } else {
     console.log('3')
     next()

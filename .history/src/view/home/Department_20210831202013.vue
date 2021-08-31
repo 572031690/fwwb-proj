@@ -174,7 +174,7 @@ export default {
             this.search()
             this.list.splice(e, 1)
           } else {
-            this.$message.error('错了哦，删除失败')
+            this.$message, error('错了哦，删除失败')
           }
         })
         .catch(() => {

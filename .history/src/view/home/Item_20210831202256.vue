@@ -41,11 +41,20 @@
           <thead>
             <!-- 表头 -->
             <tr>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门姓名</div>
+              <th colspan="1" rowspan="1" class="htop-th4">
+                <div class="cell">类型ID</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th3">
+                <div class="cell">类型</div>
               </th>
               <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门编号</div>
+                <div class="cell">描述</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">数量</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th1">
+                <div class="cell">单位</div>
               </th>
               <th colspan="1" rowspan="1" class="htop-th8">
                 <div class="cell">操作</div>
@@ -57,14 +66,30 @@
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
           <tr v-for="(item, key) in list" :key="key">
-            <td class="body-td2">
-              <div class="cel2" id="cellid">
-                {{ item.departmentname }}
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemid }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemtype }}
               </div>
             </td>
             <td class="body-td2">
-              <div class="cell2">
-                {{ item.departmentid }}
+              <div class="cell1">
+                {{ item.comment }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.neednum }}
+              </div>
+            </td>
+
+            <td class="body-td1">
+              <div class="cell1">
+                {{ item.needtitle }}
               </div>
             </td>
 
@@ -79,7 +104,6 @@
 
       <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
 
-        <!-- </el-table> -->
       </div>
       <div class="table-bottom">
         <!-- 底部页码功能 -->
@@ -99,6 +123,7 @@
 </template>
 <script>
 import addDialog from '../../components/addDataDialog.vue'
+
 export default {
   components: {
     addDialog
@@ -109,27 +134,61 @@ export default {
         dialogType: '',
         dataTableList: [
           {
-            label: '部门姓名',
+            label: '需求单名',
             putType: 'input',
-            dataName: 'departmentname'
+            dataName: 'needtitle'
           },
           {
-            label: '部门编号',
-            putType: 'numput',
-            dataName: 'departmentid'
+            label: '需求日期',
+            putType: 'date',
+            dataName: 'needday'
+          },
+          {
+            label: '类型',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemtype'
+          },
+          {
+            label: '类型ID',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemid'
+          },
+          {
+            label: '数量',
+            putType: 'num',
+            dataName: 'neednum'
+          },
+          {
+            label: '负责人部门号',
+            putType: 'disput',
+            dataName: 'neederid'
+          },
+          {
+            label: '详情',
+            putType: 'textarea',
+            dataName: 'comment'
           }
         ],
         formList: {
-          departmentname: '',
-          departmentid: ''
+          itemid: '',
+          needtitle: '',
+          needday: '',
+          itemtype: '',
+          neednum: '',
+          neederid: '',
+          comment: ''
         },
         url: ''
       },
-      // 表内静态数据列表
       list: [
         {
-          departmentname: 'sadasd',
-          departmentid: '马佳辉'
+          itemid: 1,
+          itemtype: '马佳辉',
+          comment: 5454165,
+          neednum: '3',
+          needtitle: '5'
         }
       ],
       loading2: true,
@@ -144,13 +203,15 @@ export default {
   methods: {
     // 添加方法跳转添加界面
     gethomeAdd () {
-      // this.dialogFormVisibleadd = true;
       this.dialogData.dialogType = 'add'
-      this.dialogData.url = '/webbuy/addBuy'
+      this.dialogData.url = '/webneed/addNeed'
+      if (this.dialogData.dataTableList[0].label === '编号ID') this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
       this.$refs.addDialog.dialogFormVisibleadd = true
+
+      // this.dialogFormVisibleadd = true;
     },
     // 删除方法
     deletedata (e) {
@@ -160,10 +221,10 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          const url = '/webDepartment/deleteDepartment'
+          const url = '/webneed/deleteNeed'
           const { data: res } = await this.$ajax.get(url, {
             params: {
-              departmentid: e.departmentid
+              itemid: e.itemid
             }
           })
           if (res) {
@@ -174,7 +235,7 @@ export default {
             this.search()
             this.list.splice(e, 1)
           } else {
-            this.$message.error('错了哦，删除失败')
+            this.$message, error('错了哦，删除失败')
           }
         })
         .catch(() => {
@@ -187,33 +248,36 @@ export default {
     // 打开修改蒙版表单
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
-      // this.form.departmentname = e.departmentname.toString();
       this.dialogData.dialogType = 'edit'
       for (const i in this.dialogData.formList) {
-        if (i === 'departmentid') this.dialogData.formList[i] = parseInt(e[i])
-        else this.dialogData.formList[i] = e[i]
+        if (i === 'neednum' || i === 'neederid') this.dialogData.formList[i] = parseInt(e[i])
+        else this.dialogData.formList[i] = e[i].toString()
       }
-      this.dialogData.url = '/webbuy/updateBuy'
+      this.dialogData.url = '/webneed/updateNeed'
+      if (this.dialogData.dataTableList[0].label === '需求单名') {
+        this.dialogData.dataTableList.splice(0, 0, {
+          label: '编号ID',
+          putType: 'disput',
+          dataName: 'itemid'
+        })
+      }
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
-      const url = '/webDepartment/findAllDepartment'
-      await this.$ajax.get(url, {
+      const url = '/webneed/findAllNeed'
+      // const url = '/web/listUser';
+      const { data: res } = await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
-      }).then((res) => {
-        console.log(res)
-        const { data } = res
-        this.list = data // 获取里面的data数据
-        this.params.total = data.count // 获取后台传过来的总数据条数
-        this.params.page = data.page // 将后端的当前页反传回来
-      }).catch(() => {
-        this.$message.error('网络异常')
       })
+      console.log(res)
+      this.list = res // 获取里面的data数据
+      this.params.total = res.count // 获取后台传过来的总数据条数
+      this.params.page = res.page // 将后端的当前页反传回来
     },
     // 页码
     handleSizeChange (val) {
@@ -225,10 +289,6 @@ export default {
       console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
-    },
-
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
     }
   },
   mounted () {

@@ -41,11 +41,29 @@
           <thead>
             <!-- 表头 -->
             <tr>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门姓名</div>
+              <th colspan="1" rowspan="1" class="htop-th1">
+                <div class="cell">编号</div>
               </th>
               <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门编号</div>
+                <div class="cell">购买单名</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th3">
+                <div class="cell">日期</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th4">
+                <div class="cell">类型</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">类型ID</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th6">
+                <div class="cell">数量</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">购买编号</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">提交者编号</div>
               </th>
               <th colspan="1" rowspan="1" class="htop-th8">
                 <div class="cell">操作</div>
@@ -56,18 +74,47 @@
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-          <tr v-for="(item, key) in list" :key="key">
-            <td class="body-td2">
-              <div class="cel2" id="cellid">
-                {{ item.departmentname }}
+          <tr v-for="(item, key) in list">
+            <td class="body-td1">
+              <div class="cell" id="cellid">
+                {{ item.buyid }}
               </div>
             </td>
             <td class="body-td2">
               <div class="cell2">
-                {{ item.departmentid }}
+                {{ item.buytitle }}
               </div>
             </td>
-
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.btime }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemtype }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemid }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell1">
+                {{ item.num }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.buyerid }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.neederid }}
+              </div>
+            </td>
             <td class="body-td1">
               <div class="cell">
                 <button id="modify" @click="seeData(item)">编辑</button>
@@ -79,7 +126,6 @@
 
       <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
 
-        <!-- </el-table> -->
       </div>
       <div class="table-bottom">
         <!-- 底部页码功能 -->
@@ -109,27 +155,66 @@ export default {
         dialogType: '',
         dataTableList: [
           {
-            label: '部门姓名',
+            label: '购买单名',
             putType: 'input',
-            dataName: 'departmentname'
+            dataName: 'buytitle'
           },
           {
-            label: '部门编号',
+            label: '日期',
+            putType: 'date',
+            dataName: 'btime'
+          },
+          {
+            label: '类型',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemtype'
+          },
+          {
+            label: '类型ID',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemid'
+          },
+          {
+            label: '数量',
+            putType: 'num',
+            dataName: 'num'
+          },
+          {
+            label: '购买编号',
             putType: 'numput',
-            dataName: 'departmentid'
+            dataName: 'buyerid'
+          },
+          {
+            label: '负责人编号',
+            putType: 'disput',
+            dataName: 'neederid'
           }
         ],
         formList: {
-          departmentname: '',
-          departmentid: ''
+          buyid: '',
+          buytitle: '',
+          btime: '',
+          itemtype: '',
+          itemid: '',
+          num: '',
+          buyerid: '',
+          neederid: 15
         },
         url: ''
       },
       // 表内静态数据列表
       list: [
         {
-          departmentname: 'sadasd',
-          departmentid: '马佳辉'
+          buyid: 1,
+          buytitle: '马佳辉',
+          btime: 1373201546,
+          itemtype: '3',
+          itemid: '5',
+          num: 'dsadsadas',
+          buyerid: 'sad',
+          neederid: 15
         }
       ],
       loading2: true,
@@ -142,11 +227,12 @@ export default {
     }
   },
   methods: {
-    // 添加方法跳转添加界面
+    // 添加方法打开添加界面
     gethomeAdd () {
-      // this.dialogFormVisibleadd = true;
       this.dialogData.dialogType = 'add'
       this.dialogData.url = '/webbuy/addBuy'
+      // this.dialogFormVisibleadd = true;
+      if (this.dialogData.dataTableList[0].label === '编号ID') this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
@@ -160,10 +246,10 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          const url = '/webDepartment/deleteDepartment'
+          const url = '/webbuy/deleteBuy'
           const { data: res } = await this.$ajax.get(url, {
             params: {
-              departmentid: e.departmentid
+              buyid: e.buyid
             }
           })
           if (res) {
@@ -174,7 +260,7 @@ export default {
             this.search()
             this.list.splice(e, 1)
           } else {
-            this.$message.error('错了哦，删除失败')
+            this.$message, error('错了哦，删除失败')
           }
         })
         .catch(() => {
@@ -187,33 +273,36 @@ export default {
     // 打开修改蒙版表单
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
-      // this.form.departmentname = e.departmentname.toString();
       this.dialogData.dialogType = 'edit'
       for (const i in this.dialogData.formList) {
-        if (i === 'departmentid') this.dialogData.formList[i] = parseInt(e[i])
+        if (i === 'itemid' || i === 'num' || i === 'buyerid' || i === 'neederid') this.dialogData.formList[i] = parseInt(e[i])
         else this.dialogData.formList[i] = e[i]
       }
       this.dialogData.url = '/webbuy/updateBuy'
+      if (this.dialogData.dataTableList[0].label === '购买单名') {
+        this.dialogData.dataTableList.splice(0, 0, {
+          label: '编号ID',
+          putType: 'disput',
+          dataName: 'buyid'
+        })
+      }
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
-      const url = '/webDepartment/findAllDepartment'
-      await this.$ajax.get(url, {
+      const url = '/webbuy/findAllBuy'
+      // const url = '/web/listUser';
+      const { data: res } = await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
-      }).then((res) => {
-        console.log(res)
-        const { data } = res
-        this.list = data // 获取里面的data数据
-        this.params.total = data.count // 获取后台传过来的总数据条数
-        this.params.page = data.page // 将后端的当前页反传回来
-      }).catch(() => {
-        this.$message.error('网络异常')
       })
+      console.log(res)
+      this.list = res // 获取里面的data数据
+      this.params.total = res.count // 获取后台传过来的总数据条数
+      this.params.page = res.page // 将后端的当前页反传回来
     },
     // 页码
     handleSizeChange (val) {
@@ -225,11 +314,11 @@ export default {
       console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
-    },
-
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
     }
+
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
   },
   mounted () {
     // var ps=String.split(this.form.pass);
@@ -261,7 +350,7 @@ export default {
 }
 .body-top {
   height: 45px;
-  width: 1210px;
+  width: 1400px;
   border: 1px solid #dadce0;
   border-radius: 4px;
 }
@@ -326,12 +415,12 @@ export default {
 
 .cell {
   height: 23px;
-  width: 99px;
+  width: 100%;
 }
 
 .cell1 {
   height: 23px;
-  width: 450px;
+  width: 300px;
   overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
   white-space: nowrap; /*设置文字在一行显示不能换行*/
   text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
@@ -370,7 +459,7 @@ tbody tr td {
   display: flex;
   align-content: space-between;
   justify-content: center;
-  width: 135.5px;
+  width: 120px;
   height: 35px;
   border: 1px solid #dadce0;
   padding-top: 10px;
@@ -380,7 +469,7 @@ tbody tr td {
   display: flex;
   align-content: space-between;
   justify-content: center;
-  width: 500px;
+  width: 350px;
 }
 .table-top thead tr .htop-th7 {
   display: flex;
@@ -397,7 +486,7 @@ tbody tr {
 }
 
 tbody tr .body-td2 {
-  width: 500px;
+  width: 350px;
 }
 tbody tr .body-td3 {
   width: 150px;
