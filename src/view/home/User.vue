@@ -12,7 +12,7 @@
               <div class="searchfa">
                 <!-- 搜索框 -->
                 <div class="search">
-                  <form>
+                  <form v-on:submit.prevent="search">
                     <input
                       type="text"
                       placeholder="请输入用户姓名"
@@ -264,7 +264,6 @@ export default {
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
       const url = 'web/listUser'
-      // const url = '/web/listUser';
      await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数

@@ -29,14 +29,14 @@
                     >
                     </el-option>
                   </el-select>
-                  <form>
+                  <form v-on:submit.prevent="search">
                     <input
                       type="text"
                       placeholder="请输入用户姓名"
                       @change="search"
                       v-model="params.dname"
                     />
-                    <button type="submit"></button>
+                    <button type="button"></button>
                   </form>
                 </div>
               </div>
@@ -313,17 +313,9 @@ export default {
     }
   },
   data () {
-    // var validatePass2 = (rule, value, callback) => {
-    //   if (value === '') {
-    //     callback(new Error('请再次输入密码'))
-    //   } else if (value !== this.form.pass) {
-    //     callback(new Error('两次输入密码不一致!'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     return {
       dialogData: {
+        dialogType:'',
         dataTableList: [
           {
             label: '需求单名',
@@ -358,7 +350,7 @@ export default {
           comment: '',
           uptype: 0
         },
-        addUrl: '/web/saveUser'
+        url: '/web/saveUser'
       },
       select: [
         {
@@ -919,7 +911,7 @@ input::-webkit-input-placeholder {
 <style>
 .selectAvro div .el-input__inner {
   text-align: center;
-  padding: 0 20px 0 5px;
+  padding: 0 24px 0 5px;
   border-radius: 4px 0 0 4px;
 }
 .search .el-select .el-input.is-focus .el-input__inner {

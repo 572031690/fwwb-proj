@@ -293,8 +293,8 @@ export default {
 <style scoped>
 #mapchina {
   position: relative;
-  width: 41vw;
-  height: 41vw;
+  width: 40vw;
+  height: 40vw;
   overflow: hidden;
   margin: 0 auto;
   margin-top: 93px;

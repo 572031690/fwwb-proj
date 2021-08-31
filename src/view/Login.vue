@@ -203,6 +203,8 @@ export default {
                 "sData",
                 res.data.user.departmentid
               ); // 将数据存储到浏览器内嵌的数据库内
+              this.logindata.uname=''
+              this.logindata.pass=''
               me.$router.push({ path: "home" }); // 页面跳转
               this.$notify({
                 // element登陆成功提示框右上边

@@ -12,14 +12,14 @@
               <div class="searchfa">
                 <!-- 搜索框 -->
                 <div class="search">
-                  <form>
+                  <form v-on:submit.prevent="search">
                     <input
                       type="text"
                       placeholder="请输入用户姓名"
                       @change="search"
                       v-model="params.dname"
                     />
-                    <button type="submit"></button>
+                    <button type="button"></button>
                   </form>
                 </div>
               </div>
