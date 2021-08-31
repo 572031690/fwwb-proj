@@ -21,8 +21,10 @@ export default {
 	    box-sizing: border-box;
 	}
 	form {
+
 	    position: relative;
 	    width: 350px;
+
 	}
 	.search {
 	    margin-left: 5px;
