@@ -40,36 +40,37 @@
         <div class="table-top">
           <thead>
             <!-- 表头 -->
-            <tr>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门姓名</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">部门编号</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th8">
-                <div class="cell">操作</div>
+
+            <tr >
+              <th v-for="(item,index) in tableText.tableTitle" 
+              :key="index" 
+              colspan="1" 
+              rowspan="1" 
+              :class="
+              item === '操作'?'htop-th1'
+              :'htop-th2'">
+                <div class="cell">{{item}}</div>
               </th>
             </tr>
+
           </thead>
         </div>
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-          <tr v-for="(item, key) in list" :key="key">
-            <td class="body-td2">
-              <div class="cel2" id="cellid">
-                {{ item.departmentname }}
-              </div>
-            </td>
-            <td class="body-td2">
-              <div class="cell2">
-                {{ item.departmentid }}
-              </div>
-            </td>
 
-            <td class="body-td1">
-              <div class="cell">
+           <tr v-for="(item, key) in list" :key="key">
+
+            <td v-for="(data,index) in tableText.tableBody" 
+            :key="index" 
+            :class="data==='opetation'? 'body-td1'
+            :'body-td2'" >
+
+              <div class="cell1" v-if="data!=='opetation'">
+                {{ item[data] }}
+              </div>
+
+              <div class="cell" v-if="data==='opetation'">
                 <button id="modify" @click="seeData(item)">编辑</button>
                 <button id="delete" @click="deletedata(item)">删除</button>
               </div>
@@ -105,6 +106,10 @@ export default {
   },
   data () {
     return {
+      tableText:{
+        tableTitle:['部门姓名','部门编号','操作'],
+        tableBody:['departmentname','departmentid','opetation']
+      },
       dialogData: {
         dialogType: '',
         dataTableList: [

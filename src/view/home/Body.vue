@@ -57,38 +57,18 @@
         <div class="table-top">
           <thead>
             <!-- 表头 -->
-            <tr>
-              <th colspan="1" rowspan="1" class="htop-th1">
-                <div class="cell">编号</div>
+            <tr >
+              <th v-for="(item,index) in tableText.tableTitle" 
+              :key="index" 
+              colspan="1" 
+              rowspan="1" 
+              :class="
+              item === '需求单名'?'htop-th7'
+              :item === '详情'?'htop-th2'
+              :'htop-th1'">
+                <div class="cell">{{item}}</div>
               </th>
-              <th colspan="1" rowspan="1" class="htop-th7">
-                <div class="cell">需求单名</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th3">
-                <div class="cell">类型</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th4">
-                <div class="cell">类型ID</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th5">
-                <div class="cell">数量</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th6">
-                <div class="cell">日期</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th5">
-                <div class="cell">需求部门编号</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">详情</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th8">
-                <div class="cell">操作</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th8">
-                <div class="cell">状态</div>
-              </th>
-            </tr>
+            </tr>      
           </thead>
         </div>
         <!-- 数据列表 -->
@@ -99,73 +79,46 @@
             :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
             :key="key"
           >
-            <td class="body-td1">
-              <div class="cell" id="cellid">
-                {{ item.needid }}
+
+            <td v-for="(data,index) in tableText.tableBody" 
+            :key="index" 
+            :class="data==='needtitle'? 'body-td3'
+            :data==='comment'?'body-td2'
+            :'body-td1'" >
+
+              <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
+                {{ item[data] }}
+              </div>
+               <div class="bodyButton" v-if="data==='opetation1'">
+                <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
+                  <button id="modify" @click="edData(item)">
+                    编辑
+                  </button>
+                  <button id="delete" @click="deletedata(item)">
+                    删除
+                  </button>
+                </div>
+                <div v-if="item.uptype == 1 || item.uptype == 3">
+                  <button class="approval" @click="seeApproval(key)">
+                    查看审批
+                  </button>
+                </div>
+              </div>
+
+               <div class="bodyButton" v-if="data==='opetation2'"> 
+                <div class="cell" v-if="!item.uptype">
+                  <button id="modify" @click="upData(item)">提交</button>
+                </div>
+                <div class="cell" v-if="item.uptype == 1">审批中....</div>
+                <div v-if="item.uptype == 2">
+                  <button class="approval" @click="seeApproval(key)">
+                    驳回结果
+                  </button>
+                </div>
+                <div class="cell" v-if="item.uptype == 3">审批通过</div>
               </div>
             </td>
-            <td class="body-td3">
-              <div class="cell3">
-                {{ item.needtitle }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.itemtype }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.itemid }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.neednum }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell1">
-                {{ item.needday }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.neederid }}
-              </div>
-            </td>
-            <td class="body-td2">
-              <div class="cell1">
-                {{ item.comment }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
-                <button id="modify" @click="edData(item)">
-                  编辑
-                </button>
-                <button id="delete" @click="deletedata(item)">
-                  删除
-                </button>
-              </div>
-              <div v-if="item.uptype == 1 || item.uptype == 3">
-                <button class="approval" @click="seeApproval(key)">
-                  查看审批
-                </button>
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell" v-if="!item.uptype">
-                <button id="modify" @click="upData(item)">提交</button>
-              </div>
-              <div class="cell" v-if="item.uptype == 1">审批中....</div>
-              <div v-if="item.uptype == 2">
-                <button class="approval" @click="seeApproval(key)">
-                  驳回结果
-                </button>
-              </div>
-              <div class="cell" v-if="item.uptype == 3">审批通过</div>
-            </td>
+
           </tr>
         </tbody>
 
@@ -305,15 +258,12 @@ export default {
     Drawer,
     addDialog
   },
-  watch: {
-    '$refs.addDialog.flag': {
-      handler: function (val) {
-        console.log('dddddddddddddddddddddd')
-      }
-    }
-  },
   data () {
     return {
+      tableText:{
+        tableTitle:['编号','需求单名','类型','类型ID','数量','日期','需求部门编号','详情','操作','状态'],
+        tableBody:['needid','needtitle','itemtype','itemid','neednum','needday','neederid','comment','opetation1','opetation2']
+      },
       dialogData: {
         dialogType: '',
         dataTableList: [
@@ -745,13 +695,17 @@ export default {
 }
 
 .cell {
-  height: 23px;
-  width: 100%;
+  height: 28px;
+  width: calc(100% - 5px);
+  overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap; /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
+
 }
 
 .cell1 {
   height: 23px;
-  width: 300px;
+  width: calc(100% - 5px);
   overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
   white-space: nowrap; /*设置文字在一行显示不能换行*/
   text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
@@ -834,7 +788,9 @@ tbody tr .body-td2 {
 tbody tr .body-td3 {
   width: 140px;
 }
-
+.bodyButton {
+  width: 100%;
+}
 tbody tr:hover {
   background-color: #f5f7fa;
 }

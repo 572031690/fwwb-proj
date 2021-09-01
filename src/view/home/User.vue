@@ -39,27 +39,16 @@
       >
         <div class="table-top">
           <thead>
-            <tr>
-              <th colspan="1" rowspan="1" class="htop-th1">
-                <div class="cell">编号</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th2">
-                <div class="cell">用户名</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th3">
-                <div class="cell">密码</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th4">
-                <div class="cell">电话号码</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th5">
-                <div class="cell">职工号</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th6">
-                <div class="cell">部门号</div>
-              </th>
-              <th colspan="1" rowspan="1" class="htop-th8">
-                <div class="cell">操作</div>
+            <tr >
+              <th v-for="(item,index) in tableText.tableTitle" 
+              :key="index" 
+              colspan="1" 
+              rowspan="1" 
+              :class="
+              item === '用户名'?'htop-th2'
+              :item === '密码'?'htop-th3'
+              :'htop-th1'">
+                <div class="cell">{{item}}</div>
               </th>
             </tr>
           </thead>
@@ -68,38 +57,18 @@
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
           <tr v-for="(item, key) in list" :key="key">
-            <td class="body-td1">
-              <div class="cell" id="cellid">
-                {{ item.userid }}
+
+            <td v-for="(data,index) in tableText.tableBody" 
+            :key="index" 
+            :class="data==='username'? 'body-td2'
+            :data==='password'?'body-td3'
+            :'body-td1'" >
+
+              <div class="cell" v-if="data!=='opetation'">
+                {{ item[data] }}
               </div>
-            </td>
-            <td class="body-td2">
-              <div class="cell">
-                {{ item.username }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.password }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.telNum }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
-                {{ item.employeeid }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell1">
-                {{ item.departmentid }}
-              </div>
-            </td>
-            <td class="body-td1">
-              <div class="cell">
+
+              <div class="cell" v-if="data==='opetation'">
                 <button id="modify" @click="seeData(item)">编辑</button>
                 <button id="delete" @click="deletedata(item)">删除</button>
               </div>
@@ -107,7 +76,6 @@
           </tr>
         </tbody>
 
-        <!-- </el-table> -->
       </div>
       <div class="table-bottom">
         <!-- 底部页码功能 -->
@@ -135,6 +103,10 @@ export default {
   },
   data () {
     return {
+      tableText:{
+        tableTitle:['编号','用户名','密码','电话号码','职工号','部门号','操作'],
+        tableBody:['userid','username','password','telNum','employeeid','departmentid','opetation']
+      },
       dialogData: {
         dialogType: '',
         dataTableList: [
@@ -317,13 +289,11 @@ export default {
 }
 .bodyheart {
   padding: 20px;
-
   display: flex;
   /*实现垂直居中*/
   align-items: center;
   /*实现水平居中*/
   justify-content: center;
-
   flex-direction: column;
 }
 .body-top {
@@ -392,11 +362,14 @@ export default {
 }
 
 .cell {
-  height: 23px;
-  width: 99px;
+  height: 28px;
+  width: 130px;
+  overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap; /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
 }
 
-.cell1 {
+ .cell1 { /* 不用*/
   height: 23px;
   width: 450px;
   overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
@@ -443,10 +416,10 @@ tbody tr td {
   text-align: center;
 }
 .table-top thead tr .htop-th2 {
-  display: flex;
-  align-content: space-between;
-  justify-content: center;
-  width: 500px;
+  width: 480px;
+}
+.table-top thead tr .htop-th3 {
+  width: 155.5px;
 }
 tbody tr {
   transition: all 0.2s;
@@ -457,7 +430,10 @@ tbody tr {
 }
 
 tbody tr .body-td2 {
-  width: 500px;
+  width: 480px;
+}
+tbody tr .body-td3 {
+  width: 155.5px;
 }
 
 tbody tr:hover {
