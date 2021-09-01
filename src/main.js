@@ -8,6 +8,7 @@ import * as echarts from "echarts";
 import axios from "axios"; // http://192.168.2.2 // 引入axios
 import "./assets/CSS/basic.css";
 import "./plugins/element.js";
+import 'font-awesome/css/font-awesome.css';
 Vue.prototype.$echarts = echarts;
 // 引入axios全局网络接口封装
 axios.defaults.baseURL = "http://localhost:8081/controller_war";

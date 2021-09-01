@@ -238,7 +238,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 /*无法选中图片文字方法*/
 span,
 div,
@@ -254,15 +254,14 @@ img {
   font-size: 30px;
   line-height: 30px;
   padding-top: 20px;
+  span {
+    text-decoration: none;
+    transition: all 0.2s;
+    &:hover {
+      color: #409eff;
+    }
+  }
 }
-.top-backhome span {
-  text-decoration: none;
-  transition: all 0.2s;
-}
-.top-backhome span:hover {
-  color: #409eff;
-}
-
 .login-top {
   position: relative;
   display: flex;
@@ -280,7 +279,8 @@ img {
   width: 390px;
   border: none;
   background: #409eff;
-  box-shadow: 0 0 12px #f3f3f3; /*阴影 */
+  box-shadow: 0 0 12px #f3f3f3;
+  /*阴影 */
 }
 /* .centerboxout-enter-active {
   transition: all 0.8s;
@@ -288,7 +288,6 @@ img {
 .centerboxout-enter {
   opacity: 0;
 } */
-
 .centerbox {
   margin-top: 10px;
   background-color: white;
@@ -303,7 +302,6 @@ img {
   height: 360px;
   width: 340px;
   display: flex;
-
   /* align-content: space-between; */
   /* justify-content: space-between; */
   flex-direction: column;
@@ -316,8 +314,10 @@ img {
   justify-content: space-between;
   margin-top: 5px;
 }
-.imgtop img {
-  margin-left: 120px;
+.imgtop {
+  img {
+    margin-left: 120px;
+  }
 }
 .logintip {
   align-items: center;
@@ -332,9 +332,10 @@ img {
   color: #409eff;
   text-align: center;
 }
-
-input::-webkit-input-placeholder {
-  color: #ecedee;
+input {
+  &::-webkit-input-placeholder {
+    color: #ecedee;
+  }
 }
 .inputbox {
   position: relative;
@@ -362,27 +363,31 @@ input::-webkit-input-placeholder {
   border-radius: 5px;
   outline: none;
 }
-.userimg::after {
-  content: "";
-  background: url(../assets/img/登陆.png);
-  background-size: 30px 30px;
-  background-repeat: no-repeat;
-  top: 23px;
-  left: 5px;
-  height: 38px;
-  width: 38px;
-  position: absolute;
+.userimg {
+  &::after {
+    content: "";
+    background: url(../assets/img/登陆.png);
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    top: 23px;
+    left: 5px;
+    height: 38px;
+    width: 38px;
+    position: absolute;
+  }
 }
-.passimg::after {
-  content: "";
-  background: url(../assets/img/密码.png);
-  background-size: 32px 32px;
-  background-repeat: no-repeat;
-  top: 5px;
-  left: 3px;
-  height: 38px;
-  width: 38px;
-  position: absolute;
+.passimg {
+  &::after {
+    content: "";
+    background: url(../assets/img/密码.png);
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    top: 5px;
+    left: 3px;
+    height: 38px;
+    width: 38px;
+    position: absolute;
+  }
 }
 .passeyes {
   height: 22px;
@@ -395,48 +400,48 @@ input::-webkit-input-placeholder {
 .regiserbox {
   display: flex;
   margin-top: 5px;
-}
-.regiserbox span {
-  margin-top: 9px;
-  font-size: 22px;
-  line-height: 22px;
-}
-.regiserbox .regisertext {
-  height: 35px;
-  width: 75px;
-  font-size: 21px;
-  padding: 0 6px;
-  outline: none;
-}
-.regiserbox .regiserimg {
-  margin-left: 13px;
+  span {
+    margin-top: 9px;
+    font-size: 22px;
+    line-height: 22px;
+  }
+  .regisertext {
+    height: 35px;
+    width: 75px;
+    font-size: 21px;
+    padding: 0 6px;
+    outline: none;
+  }
+  .regiserimg {
+    margin-left: 13px;
+  }
 }
 .loginbutton {
   display: flex;
   flex-direction: row;
   margin-top: 12px;
+  button {
+    width: 50%;
+    color: white;
+    font-size: 18px;
+    background-color: #409eff;
+    height: 38px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.5s;
+    /*缓慢hover显示 */
+    &:hover {
+      background-color: #73b8fe;
+      box-shadow: 0 0 12px#73b8fe;
+    }
+    &:active {
+      position: relative;
+      top: 0.5px;
+      left: 0.5px;
+    }
+  }
 }
-.loginbutton button {
-  width: 50%;
-  color: white;
-  font-size: 18px;
-  background-color: #409eff;
-  height: 38px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.5s; /*缓慢hover显示 */
-}
-.loginbutton button:hover {
-  background-color: #73b8fe;
-  box-shadow: 0 0 12px#73B8FE;
-}
-.loginbutton button:active {
-  position: relative;
-  top: 0.5px;
-  left: 0.5px;
-}
-
 #regiser {
   margin-left: 15px;
 }

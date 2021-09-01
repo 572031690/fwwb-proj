@@ -143,7 +143,7 @@ export default {
   mounted() {}
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
 .adddata {
   width: 32%;
   padding: 40px;

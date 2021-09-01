@@ -283,7 +283,7 @@ export default {
 <style>
 /* @import url("../assets/CSS/约束缩放.css"); */
 </style>
-<style scoped>
+<style lang="less" scoped>
 #Home {
   height: 100%;
   width: 100%;
@@ -291,23 +291,23 @@ export default {
   display: flex;
   flex-direction: row;
 }
-
 .leftNavigation {
   /* position: fixed; */
   display: inline-block;
   width: 10%;
   background-color: #304156;
-  height: 100vh; /*占满一个屏幕的高度 */
+  height: 100vh;
+  /*占满一个屏幕的高度 */
   animation: navlong 0.7s;
 }
 .leftNavigationChange {
   /* position: fixed; */
   width: 2.6%;
   background-color: #304156;
-  height: 100vh; /*占满一个屏幕的高度 */
+  height: 100vh;
+  /*占满一个屏幕的高度 */
   animation: navshort 0.7s;
 }
-
 @keyframes navlong {
   0% {
     width: 2.6%;
@@ -325,22 +325,31 @@ export default {
     width: 2.6%;
   }
 }
-.leftNavigation a {
-  text-decoration: none;
+.leftNavigation {
+    a {
+      text-decoration: none;
+    }
 }
 
 .navhome {
   display: flex;
-  flex-direction: row; /*水平排布*/
+  flex-direction: row;
+  /*水平排布*/
   align-items: center;
   height: 56px;
   width: 100%;
   background-color: #304156;
   transition: all 0.5s;
-}
-.navhome:hover {
-  background-color: #263445;
-  cursor: pointer;
+  &:hover {
+    background-color: #263445;
+    cursor: pointer;
+  }
+  span {
+    display: none;
+    font-size: 0.9vw;
+    line-height: 0.9vw;
+    color: #9fc6ff;
+  }
 }
 .navhome-img {
   /* -webkit-transform:rotate(90deg); */
@@ -349,12 +358,6 @@ export default {
   margin-left: 13%;
   color: #409eff;
 }
-.navhome span {
-  display: none;
-  font-size: 0.9vw;
-  line-height: 0.9vw;
-  color: #9fc6ff;
-}
 .arrow {
   display: none;
   margin-left: 5%;
@@ -362,16 +365,21 @@ export default {
   transition: all 0.5s;
   transform: rotate(90deg);
 }
-
-.navhom-enter-active,
+.navhom-enter-active {
+  transition: all 0.5s;
+}
 .navhom-leave-active {
   transition: all 0.5s;
 }
-.navhom-enter,
+.navhom-enter {
+  height: 0;
+}
 .navhom-leave-to {
   height: 0;
 }
-.navhom-enter-to,
+.navhom-enter-to {
+  height: 159px;
+}
 .navhom-leave {
   height: 159px;
 }
@@ -379,35 +387,36 @@ export default {
   cursor: pointer;
   background-color: #1f2d3d;
   overflow: hidden;
+  span {
+    display: none;
+    font-size: 0.8vw;
+    line-height: 0.8vw;
+    color: #9fc6ff;
+    margin-left: 6%;
+  }
 }
 .namehome-son1 {
   display: flex;
-  flex-direction: row; /*水平排布*/
+  flex-direction: row;
+  /*水平排布*/
   align-items: center;
   transition: all 1.5s;
   width: 100%;
   height: 53px;
-}
-.namehome-son1:hover {
-  background-color: #001121;
+  &:hover {
+    background-color: #001121;
+  }
 }
 .navson-img {
   width: 1.3vw;
   margin-left: 25%;
   color: #409eff;
 }
-.navhome-son span {
-  display: none;
-
-  font-size: 0.8vw;
-  line-height: 0.8vw;
-  color: #9fc6ff;
-  margin-left: 6%;
-}
 .rightNavigation {
   display: inline-block;
   width: 100%;
-  height: 100vh; /*占满一个屏幕的高度 */
+  height: 100vh;
+  /*占满一个屏幕的高度 */
   box-sizing: border-box;
   /* margin-left: 180px; */
   /* animation: rightNavlong 0.7s; */
@@ -443,6 +452,10 @@ export default {
   flex-direction: row;
   border-bottom: 1px solid #dadce0;
   border-top: 1px solid #dadce0;
+  span {
+    padding-top: 12px;
+    /* margin-left: 10px; */
+  }
 }
 .rightnav-topimg {
   padding: 0 14px;
@@ -453,10 +466,6 @@ export default {
   margin-top: 10px;
   height: 25px;
   transition: all 0.4s;
-}
-.rightnav-top span {
-  padding-top: 12px;
-  /* margin-left: 10px; */
 }
 .top-time {
   color: #409eff;
@@ -499,4 +508,5 @@ export default {
 .rightbody {
   height: calc(100% - 50px);
 }
+
 </style>

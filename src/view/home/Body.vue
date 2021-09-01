@@ -659,7 +659,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .right-body {
   padding: 20px;
   height: 85.9vh;
@@ -667,13 +667,11 @@ export default {
 }
 .bodyheart {
   padding: 20px;
-
   display: flex;
   /*实现垂直居中*/
   align-items: center;
   /*实现水平居中*/
   justify-content: center;
-
   flex-direction: column;
 }
 .body-top {
@@ -686,17 +684,17 @@ export default {
   margin: 7px 0;
   height: 28px;
   width: 100%;
-}
-.bodytop-heart img {
-  vertical-align: middle;
-  height: 26px;
-  margin: 0 10px;
-}
-.bodytop-heart span {
-  font-size: 16px;
-  line-height: 28px;
-  height: 28px;
-  vertical-align: middle;
+  img {
+    vertical-align: middle;
+    height: 26px;
+    margin: 0 10px;
+  }
+  span {
+    font-size: 16px;
+    line-height: 28px;
+    height: 28px;
+    vertical-align: middle;
+  }
 }
 .rightbody-topmid {
   height: 25px;
@@ -714,57 +712,27 @@ export default {
   float: right;
   margin-right: 15px;
   cursor: pointer;
+  &:hover {
+    background-color: #f0f7ff;
+    color: #8ebaed;
+    border: 1px solid #8ebaed;
+  }
+  &:active {
+    border: 1px solid #144379;
+  }
 }
-.bodyadd:hover,
-#modify:hover,
-.approval:hover {
-  background-color: #f0f7ff;
-  color: #8ebaed;
-  border: 1px solid #8ebaed;
-}
-.bodyadd:active,
-#modify:active,
-.approval:active {
-  border: 1px solid #144379;
-}
-#delete:hover {
-  background-color: #df808f;
-}
-#delete:active {
-  background: red;
-}
-.tablebody {
-  margin-top: 25px;
-  border: 0.5px solid #dadce0;
-  border-radius: 4px;
-  position: flex;
-  align-content: space-between;
-  justify-content: center;
-}
-
-.cell {
-  height: 23px;
-  width: 100%;
-}
-
-.cell1 {
-  height: 23px;
-  width: 300px;
-  overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
-  white-space: nowrap; /*设置文字在一行显示不能换行*/
-  text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
-}
-
-.cell button {
-  outline: none;
-  border: 0.5px solid #8c959c;
-  text-align: center;
-  font-size: 8px;
-  line-height: 26px;
-  height: 26px;
-  margin: 0 3px;
-  width: 41px;
-  border-radius: 4px;
+#modify {
+  color: #8c959c;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f7ff;
+    color: #8ebaed;
+    border: 1px solid #8ebaed;
+  }
+  &:active {
+    border: 1px solid #144379;
+  }
 }
 .approval {
   outline: none;
@@ -779,62 +747,122 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   background-color: white;
-}
-#modify {
-  color: #8c959c;
-  background-color: white;
-  cursor: pointer;
+  &:hover {
+    background-color: #f0f7ff;
+    color: #8ebaed;
+    border: 1px solid #8ebaed;
+  }
+  &:active {
+    border: 1px solid #144379;
+  }
 }
 #delete {
   color: #fff;
   background-color: red;
   cursor: pointer;
+  &:hover {
+    background-color: #df808f;
+  }
+  &:active {
+    background: red;
+  }
 }
-.table-top thead tr,
-.tbody tr {
-  display: flex;
-  flex-direction: row;
-}
-.table-top thead tr th,
-tbody tr td {
-  display: flex;
-  align-content: space-between;
-  justify-content: center;
-  width: 120px;
-  height: 35px;
-  border: 1px solid #dadce0;
-  padding-top: 10px;
-  text-align: center;
-}
-.table-top thead tr .htop-th2 {
-  display: flex;
-  align-content: space-between;
-  justify-content: center;
-  width: 350px;
-}
-.table-top thead tr .htop-th7 {
-  display: flex;
-  align-content: space-between;
-  justify-content: center;
-  width: 140px;
-}
-tbody tr {
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: row;
+.tablebody {
+  margin-top: 25px;
+  border: 0.5px solid #dadce0;
+  border-radius: 4px;
+  position: flex;
   align-content: space-between;
   justify-content: center;
 }
-
-tbody tr .body-td2 {
-  width: 350px;
+.cell {
+  height: 23px;
+  width: 100%;
+  button {
+    outline: none;
+    border: 0.5px solid #8c959c;
+    text-align: center;
+    font-size: 8px;
+    line-height: 26px;
+    height: 26px;
+    margin: 0 3px;
+    width: 41px;
+    border-radius: 4px;
+  }
 }
-tbody tr .body-td3 {
-  width: 140px;
+.cell1 {
+  height: 23px;
+  width: 300px;
+  overflow: hidden;
+  /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap;
+  /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis;
+  /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
 }
-
-tbody tr:hover {
-  background-color: #f5f7fa;
+.table-top {
+  thead {
+    tr {
+      display: flex;
+      flex-direction: row;
+      th {
+        display: flex;
+        align-content: space-between;
+        justify-content: center;
+        width: 120px;
+        height: 35px;
+        border: 1px solid #dadce0;
+        padding-top: 10px;
+        text-align: center;
+      }
+      .htop-th2 {
+        display: flex;
+        align-content: space-between;
+        justify-content: center;
+        width: 350px;
+      }
+      .htop-th7 {
+        display: flex;
+        align-content: space-between;
+        justify-content: center;
+        width: 140px;
+      }
+    }
+  }
+}
+.tbody {
+  tr {
+    display: flex;
+    flex-direction: row;
+  }
+}
+tbody {
+  tr {
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: center;
+    td {
+      display: flex;
+      align-content: space-between;
+      justify-content: center;
+      width: 120px;
+      height: 35px;
+      border: 1px solid #dadce0;
+      padding-top: 10px;
+      text-align: center;
+    }
+    .body-td2 {
+      width: 350px;
+    }
+    .body-td3 {
+      width: 140px;
+    }
+    &:hover {
+      background-color: #f5f7fa;
+    }
+  }
 }
 .uppdate {
   background: #eee;
@@ -861,64 +889,79 @@ tbody tr:hover {
   width: 100%;
   height: 30px;
   display: flex;
+  input {
+    border: none;
+    outline: none;
+    width: 61.5%;
+    height: 30px;
+    padding-left: 105px;
+    border: 2px solid #dadce0;
+    border-right: 0;
+    border-radius: 4px 2px 2px 4px;
+    color: black;
+    font-size: 16px;
+  }
+  button {
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 45px;
+    cursor: pointer;
+    position: absolute;
+    top: 1.6px;
+    right: 26.5px;
+    background: #dadce0;
+    border-radius: 0 2px 2px 0;
+    &:hover {
+      background-color: #c8c8c8;
+      box-shadow: 0 0 3px#c8c8c8;
+    }
+    &:active {
+      padding-left: 1px;
+      padding-top: 1px;
+      background: #dadce0;
+    }
+    &:before {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 16px;
+      color: #f9f0da;
+    }
+  }
 }
 form {
   position: relative;
   width: 350px;
 }
-.search input {
-  border: none;
-  outline: none;
-  width: 61.5%;
-  height: 30px;
-  padding-left: 105px;
-  border: 2px solid #dadce0;
-  border-right: 0;
-  border-radius: 4px 2px 2px 4px;
-  color: black;
-  font-size: 16px;
-}
-.search button {
-  border: none;
-  outline: none;
-  height: 30px;
-  width: 45px;
-  cursor: pointer;
-  position: absolute;
-  top: 1.6px;
-  right: 26.5px;
-  background: #dadce0;
-  border-radius: 0 2px 2px 0;
-}
-.search button:hover {
-  background-color: #c8c8c8;
-  box-shadow: 0 0 3px#C8C8C8;
-}
-.search button:active {
-  padding-left: 1px;
-  padding-top: 1px;
-  background: #dadce0;
-}
-.search button:before {
-  content: "\f002";
-  font-family: FontAwesome;
-  font-size: 16px;
-  color: #f9f0da;
-}
-input::-webkit-input-placeholder {
-  color: #c7c8c9;
+input {
+  &::-webkit-input-placeholder {
+    color: #c7c8c9;
+  }
 }
 </style>
-<style>
-.selectAvro div .el-input__inner {
-  text-align: center;
-  padding: 0 24px 0 5px;
-  border-radius: 4px 0 0 4px;
+<style lang="less">
+.selectAvro {
+  div {
+    .el-input__inner {
+      text-align: center;
+      padding: 0 24px 0 5px;
+      border-radius: 4px 0 0 4px;
+      &:focus {
+        border-color: #dadce0;
+      }
+    }
+  }
 }
-.search .el-select .el-input.is-focus .el-input__inner {
-  border-color: #dadce0;
+.search {
+  .el-select {
+    .el-input {
+      &.is-focus {
+        .el-input__inner {
+          border-color: #dadce0;
+        }
+      }
+    }
+  }
 }
-.selectAvro div .el-input__inner:focus {
-  border-color: #dadce0;
-}
+
 </style>

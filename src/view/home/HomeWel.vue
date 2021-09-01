@@ -103,7 +103,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .welbody {
   height: 100%;
   width: 100%;
@@ -112,7 +112,14 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.bodyleft,
+.bodyleft {
+  flex: 1;
+  height: 100%;
+  width: 25%;
+  /* width: 22%;
+  min-width: 22%;
+  max-width: 22%; */
+}
 .bodyright {
   flex: 1;
   height: 100%;
@@ -139,45 +146,53 @@ export default {
   margin: 5px;
   border: 1px solid rgba(47, 137, 207, 0.2);
   /* opacity: 0.3; */
+  &::after {
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: 0px;
+    left: 0px;
+    border-top: 2px solid #02a6b5;
+    border-left: 2px solid #02a6b5;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: 0px;
+    right: 0px;
+    border-top: 2px solid #02a6b5;
+    border-right: 2px solid #02a6b5;
+  }
 }
 .piechart {
   height: 100%;
   width: 100%;
 }
-.tabbody::after,
-.tabbody::before,
-.tabbodyafter::after,
-.tabbodyafter::before {
-  content: "";
-  position: absolute;
-  height: 10px;
-  width: 10px;
+.tabbodyafter {
+  &::after {
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    bottom: 0px;
+    left: 0px;
+    border-bottom: 2px solid #02a6b5;
+    border-left: 2px solid #02a6b5;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    bottom: 0px;
+    right: 0px;
+    border-bottom: 2px solid #02a6b5;
+    border-right: 2px solid #02a6b5;
+  }
 }
-.tabbody::after {
-  top: 0px;
-  left: 0px;
-  border-top: 2px solid #02a6b5;
-  border-left: 2px solid #02a6b5;
-}
-.tabbody::before {
-  top: 0px;
-  right: 0px;
-  border-top: 2px solid #02a6b5;
-  border-right: 2px solid #02a6b5;
-}
-.tabbodyafter::after {
-  bottom: 0px;
-  left: 0px;
-  border-bottom: 2px solid #02a6b5;
-  border-left: 2px solid #02a6b5;
-}
-.tabbodyafter::before {
-  bottom: 0px;
-  right: 0px;
-  border-bottom: 2px solid #02a6b5;
-  border-right: 2px solid #02a6b5;
-}
-
 .tabmidtop {
   position: absolute;
   /* height: 20%; */
@@ -186,14 +201,15 @@ export default {
   border: 2px solid rgb(13, 31, 107);
   left: 50%;
   background-color: rgb(13, 31, 107);
-  transform: translate(-50%, 0); /* 50%为自身尺寸的一半 */
+  transform: translate(-50%, 0);
+  /* 50%为自身尺寸的一半 */
 }
 .tabmidtopTitle {
   color: white;
   font-size: 1.1vw;
   padding: 8px 15px 5px;
 }
-.tabmidtopBody{
+.tabmidtopBody {
   display: flex;
   height: 50px;
   width: 95%;
@@ -201,64 +217,79 @@ export default {
   border: 1px solid rgba(47, 137, 207, 0.2);
 }
 /*引入图标字体文件*/
-    @font-face {
-        font-family: electronicFont;
-        src: url(../../assets/图标字体/DS-DIGIT.TTF);
-    }
-.tabmidtopBodyLeft, .tabmidtopBodyRight {
+@font-face {
+  font-family: electronicFont;
+  src: url(../../assets/图标字体/DS-DIGIT.TTF);
+}
+.tabmidtopBodyLeft {
   flex: 1;
   position: relative;
   color: rgb(255, 235, 123);
   text-align: center;
   font-size: 2vw;
   line-height: 50px;
-  font-family: 'electronicFont'
+  font-family: 'electronicFont';
+  span {
+    &:nth-child(2) {
+      font-size: 1vw;
+    }
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 35px;
+    border-top: 2px solid #02a6b5;
+    border-left: 2px solid #02a6b5;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    height: 35px;
+    width: 2px;
+    background-color: rgba(46, 147, 224, 0.2);
+  }
 }
-.tabmidtopBodyLeft span:nth-child(2), .tabmidtopBodyRight span:nth-child(2) {
-    font-size: 1vw;
-
-}
-.tabmidtopBodyLeft::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 15px;
-  width: 35px;
-  border-top: 2px solid #02a6b5;
-  border-left: 2px solid #02a6b5;
-}
-.tabmidtopBodyLeft::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  height: 35px;
-  width: 2px;
-  background-color:  rgba(46, 147, 224, 0.2);
-
-}
-.tabmidtopBodyRight::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 15px;
-  width: 35px;
-  border-bottom: 2px solid #02a6b5;
-  border-right: 2px solid #02a6b5;
+.tabmidtopBodyRight {
+  flex: 1;
+  position: relative;
+  color: rgb(255, 235, 123);
+  text-align: center;
+  font-size: 2vw;
+  line-height: 50px;
+  font-family: 'electronicFont';
+  span {
+    &:nth-child(2) {
+      font-size: 1vw;
+    }
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 15px;
+    width: 35px;
+    border-bottom: 2px solid #02a6b5;
+    border-right: 2px solid #02a6b5;
+  }
 }
 .tabmidtopBottom {
   display: flex;
   margin-top: 4px;
+  & > div {
+    font-size: 0.8vw;
+    flex: 1;
+    color: rgb(180, 187, 210);
+    text-align: center;
+  }
 }
-.tabmidtopBottom > div {
-  font-size: 0.8vw;
-  flex: 1;
-  color: rgb(180, 187, 210);
-  text-align: center;
-}
+
 /* .bodymap { */
 /* width: 41vw; */
 /* height: 41vw; */

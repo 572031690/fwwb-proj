@@ -255,7 +255,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .drawerStyle {
   padding: 10px 25px;
   overflow: auto;
