@@ -110,7 +110,7 @@ export default {
     // 控制获取验证码按钮是否可点击
     getCodeBtnDisable: {
       get () {
-        if (this.waitTime === 61) {
+        if (this.waitTime == 61) {
           if (this.form.tel && this.phoneNumberStyle) {
             return false
           }
@@ -199,8 +199,8 @@ export default {
             type: 'warning'
           }).then(() => {
             if (
-              this.form.tel === this.phone.num &&
-              this.form.rescode === this.phone.code
+              this.form.tel == this.phone.num &&
+              this.form.rescode == this.phone.code
             ) {
               this.register()
             } else {
@@ -235,26 +235,30 @@ export default {
         )
         .then(res => {
           console.log(res)
-          if (res.data.code === 100) {
+          if (res.data.code == 100) {
             this.$message({
               type: 'success',
               message: '注册成功!'
             })
             this.dialogFormVisible = false
-          } else if (res.data.code === 99) {
+          } else if (res.data.code == 99) {
             this.$message.error('用户名重复!')
           }
         })
-        .catch(() => {
+        .catch(error => {
           this.$message.error('网络异常') // element失败提示框上部
         })
     },
     // 关闭注册蒙版
     closeres () {
       this.dialogFormVisible = false
-      for (const i in this.form) {
-        this.form[i] = ''
-      }
+      this.form.name = '',
+      this.form.pass = '',
+      (this.form.repass = ''),
+      (this.form.tel = ''),
+      (this.form.rescode = ''),
+      (this.form.departmentid = ''),
+      (this.form.employeeid = '')
     },
     // 发送验证码 变数字倒数
     sendresCode () {
@@ -279,7 +283,8 @@ export default {
           } else {
             this.$message.error('发送失败！请稍后尝试') // element失败提示框上部
           }
-        }).catch(() => {
+        })
+        .catch(error => {
           this.$message.error('网络异常') // element失败提示框上部
         })
       // 因为下面用到了定时器，需要保存this指向

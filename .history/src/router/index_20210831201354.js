@@ -61,7 +61,8 @@ router.beforeEach((to, from, next) => {
   } else if (!store) {
     console.log('2')
     next('/login')
-    next();
+    this.$message.error('请先登录')
+    // next();
   } else {
     console.log('3')
     next()

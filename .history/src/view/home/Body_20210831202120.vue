@@ -57,18 +57,38 @@
         <div class="table-top">
           <thead>
             <!-- 表头 -->
-            <tr >
-              <th v-for="(item,index) in tableText.tableTitle" 
-              :key="index" 
-              colspan="1" 
-              rowspan="1" 
-              :class="
-              item === '需求单名'?'htop-th7'
-              :item === '详情'?'htop-th2'
-              :'htop-th1'">
-                <div class="cell">{{item}}</div>
+            <tr>
+              <th colspan="1" rowspan="1" class="htop-th1">
+                <div class="cell">编号</div>
               </th>
-            </tr>      
+              <th colspan="1" rowspan="1" class="htop-th7">
+                <div class="cell">需求单名</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th3">
+                <div class="cell">类型</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th4">
+                <div class="cell">类型ID</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">数量</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th6">
+                <div class="cell">日期</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">需求部门编号</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th2">
+                <div class="cell">详情</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th8">
+                <div class="cell">操作</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th8">
+                <div class="cell">状态</div>
+              </th>
+            </tr>
           </thead>
         </div>
         <!-- 数据列表 -->
@@ -79,46 +99,73 @@
             :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
             :key="key"
           >
-
-            <td v-for="(data,index) in tableText.tableBody" 
-            :key="index" 
-            :class="data==='needtitle'? 'body-td3'
-            :data==='comment'?'body-td2'
-            :'body-td1'" >
-
-              <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
-                {{ item[data] }}
-              </div>
-               <div class="bodyButton" v-if="data==='opetation1'">
-                <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
-                  <button id="modify" @click="edData(item)">
-                    编辑
-                  </button>
-                  <button id="delete" @click="deletedata(item)">
-                    删除
-                  </button>
-                </div>
-                <div v-if="item.uptype == 1 || item.uptype == 3">
-                  <button class="approval" @click="seeApproval(key)">
-                    查看审批
-                  </button>
-                </div>
-              </div>
-
-               <div class="bodyButton" v-if="data==='opetation2'"> 
-                <div class="cell" v-if="!item.uptype">
-                  <button id="modify" @click="upData(item)">提交</button>
-                </div>
-                <div class="cell" v-if="item.uptype == 1">审批中....</div>
-                <div v-if="item.uptype == 2">
-                  <button class="approval" @click="seeApproval(key)">
-                    驳回结果
-                  </button>
-                </div>
-                <div class="cell" v-if="item.uptype == 3">审批通过</div>
+            <td class="body-td1">
+              <div class="cell" id="cellid">
+                {{ item.needid }}
               </div>
             </td>
-
+            <td class="body-td3">
+              <div class="cell3">
+                {{ item.needtitle }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemtype }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemid }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.neednum }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell1">
+                {{ item.needday }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.neederid }}
+              </div>
+            </td>
+            <td class="body-td2">
+              <div class="cell1">
+                {{ item.comment }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
+                <button id="modify" @click="edData(item)">
+                  编辑
+                </button>
+                <button id="delete" @click="deletedata(item)">
+                  删除
+                </button>
+              </div>
+              <div v-if="item.uptype == 1 || item.uptype == 3">
+                <button class="approval" @click="seeApproval(key)">
+                  查看审批
+                </button>
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell" v-if="!item.uptype">
+                <button id="modify" @click="upData(item)">提交</button>
+              </div>
+              <div class="cell" v-if="item.uptype == 1">审批中....</div>
+              <div v-if="item.uptype == 2">
+                <button class="approval" @click="seeApproval(key)">
+                  驳回结果
+                </button>
+              </div>
+              <div class="cell" v-if="item.uptype == 3">审批通过</div>
+            </td>
           </tr>
         </tbody>
 
@@ -258,12 +305,15 @@ export default {
     Drawer,
     addDialog
   },
+  watch: {
+    '$refs.addDialog.flag': {
+      handler: function (val) {
+        console.log('dddddddddddddddddddddd')
+      }
+    }
+  },
   data () {
     return {
-      tableText:{
-        tableTitle:['编号','需求单名','类型','类型ID','数量','日期','需求部门编号','详情','操作','状态'],
-        tableBody:['needid','needtitle','itemtype','itemid','neednum','needday','neederid','comment','opetation1','opetation2']
-      },
       dialogData: {
         dialogType: '',
         dataTableList: [
@@ -611,7 +661,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style scoped>
 .right-body {
   padding: 20px;
   height: 85.9vh;
@@ -619,11 +669,13 @@ export default {
 }
 .bodyheart {
   padding: 20px;
+
   display: flex;
   /*实现垂直居中*/
   align-items: center;
   /*实现水平居中*/
   justify-content: center;
+
   flex-direction: column;
 }
 .body-top {
@@ -636,17 +688,17 @@ export default {
   margin: 7px 0;
   height: 28px;
   width: 100%;
-  img {
-    vertical-align: middle;
-    height: 26px;
-    margin: 0 10px;
-  }
-  span {
-    font-size: 16px;
-    line-height: 28px;
-    height: 28px;
-    vertical-align: middle;
-  }
+}
+.bodytop-heart img {
+  vertical-align: middle;
+  height: 26px;
+  margin: 0 10px;
+}
+.bodytop-heart span {
+  font-size: 16px;
+  line-height: 28px;
+  height: 28px;
+  vertical-align: middle;
 }
 .rightbody-topmid {
   height: 25px;
@@ -664,27 +716,57 @@ export default {
   float: right;
   margin-right: 15px;
   cursor: pointer;
-  &:hover {
-    background-color: #f0f7ff;
-    color: #8ebaed;
-    border: 1px solid #8ebaed;
-  }
-  &:active {
-    border: 1px solid #144379;
-  }
 }
-#modify {
-  color: #8c959c;
-  background-color: white;
-  cursor: pointer;
-  &:hover {
-    background-color: #f0f7ff;
-    color: #8ebaed;
-    border: 1px solid #8ebaed;
-  }
-  &:active {
-    border: 1px solid #144379;
-  }
+.bodyadd:hover,
+#modify:hover,
+.approval:hover {
+  background-color: #f0f7ff;
+  color: #8ebaed;
+  border: 1px solid #8ebaed;
+}
+.bodyadd:active,
+#modify:active,
+.approval:active {
+  border: 1px solid #144379;
+}
+#delete:hover {
+  background-color: #df808f;
+}
+#delete:active {
+  background: red;
+}
+.tablebody {
+  margin-top: 25px;
+  border: 0.5px solid #dadce0;
+  border-radius: 4px;
+  position: flex;
+  align-content: space-between;
+  justify-content: center;
+}
+
+.cell {
+  height: 23px;
+  width: 100%;
+}
+
+.cell1 {
+  height: 23px;
+  width: 300px;
+  overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap; /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
+}
+
+.cell button {
+  outline: none;
+  border: 0.5px solid #8c959c;
+  text-align: center;
+  font-size: 8px;
+  line-height: 26px;
+  height: 26px;
+  margin: 0 3px;
+  width: 41px;
+  border-radius: 4px;
 }
 .approval {
   outline: none;
@@ -699,122 +781,62 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   background-color: white;
-  &:hover {
-    background-color: #f0f7ff;
-    color: #8ebaed;
-    border: 1px solid #8ebaed;
-  }
-  &:active {
-    border: 1px solid #144379;
-  }
+}
+#modify {
+  color: #8c959c;
+  background-color: white;
+  cursor: pointer;
 }
 #delete {
   color: #fff;
   background-color: red;
   cursor: pointer;
-  &:hover {
-    background-color: #df808f;
-  }
-  &:active {
-    background: red;
-  }
 }
-.tablebody {
-  margin-top: 25px;
-  border: 0.5px solid #dadce0;
-  border-radius: 4px;
-  position: flex;
+.table-top thead tr,
+.tbody tr {
+  display: flex;
+  flex-direction: row;
+}
+.table-top thead tr th,
+tbody tr td {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 120px;
+  height: 35px;
+  border: 1px solid #dadce0;
+  padding-top: 10px;
+  text-align: center;
+}
+.table-top thead tr .htop-th2 {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 350px;
+}
+.table-top thead tr .htop-th7 {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 140px;
+}
+tbody tr {
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: row;
   align-content: space-between;
   justify-content: center;
 }
-.cell {
-  height: 23px;
-  width: 100%;
-  button {
-    outline: none;
-    border: 0.5px solid #8c959c;
-    text-align: center;
-    font-size: 8px;
-    line-height: 26px;
-    height: 26px;
-    margin: 0 3px;
-    width: 41px;
-    border-radius: 4px;
-  }
+
+tbody tr .body-td2 {
+  width: 350px;
 }
-.cell1 {
-  height: 23px;
-  width: 300px;
-  overflow: hidden;
-  /*顾名思义超出限定的宽度就隐藏内容*/
-  white-space: nowrap;
-  /*设置文字在一行显示不能换行*/
-  text-overflow: ellipsis;
-  /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
+tbody tr .body-td3 {
+  width: 140px;
 }
-.table-top {
-  thead {
-    tr {
-      display: flex;
-      flex-direction: row;
-      th {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 120px;
-        height: 35px;
-        border: 1px solid #dadce0;
-        padding-top: 10px;
-        text-align: center;
-      }
-      .htop-th2 {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 350px;
-      }
-      .htop-th7 {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 140px;
-      }
-    }
-  }
-}
-.tbody {
-  tr {
-    display: flex;
-    flex-direction: row;
-  }
-}
-tbody {
-  tr {
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: row;
-    align-content: space-between;
-    justify-content: center;
-    td {
-      display: flex;
-      align-content: space-between;
-      justify-content: center;
-      width: 120px;
-      height: 35px;
-      border: 1px solid #dadce0;
-      padding-top: 10px;
-      text-align: center;
-    }
-    .body-td2 {
-      width: 350px;
-    }
-    .body-td3 {
-      width: 140px;
-    }
-    &:hover {
-      background-color: #f5f7fa;
-    }
-  }
+
+tbody tr:hover {
+  background-color: #f5f7fa;
 }
 .uppdate {
   background: #eee;
@@ -841,79 +863,64 @@ tbody {
   width: 100%;
   height: 30px;
   display: flex;
-  input {
-    border: none;
-    outline: none;
-    width: 61.5%;
-    height: 30px;
-    padding-left: 105px;
-    border: 2px solid #dadce0;
-    border-right: 0;
-    border-radius: 4px 2px 2px 4px;
-    color: black;
-    font-size: 16px;
-  }
-  button {
-    border: none;
-    outline: none;
-    height: 30px;
-    width: 45px;
-    cursor: pointer;
-    position: absolute;
-    top: 1.6px;
-    right: 26.5px;
-    background: #dadce0;
-    border-radius: 0 2px 2px 0;
-    &:hover {
-      background-color: #c8c8c8;
-      box-shadow: 0 0 3px#c8c8c8;
-    }
-    &:active {
-      padding-left: 1px;
-      padding-top: 1px;
-      background: #dadce0;
-    }
-    &:before {
-      content: "\f002";
-      font-family: FontAwesome;
-      font-size: 16px;
-      color: #f9f0da;
-    }
-  }
 }
 form {
   position: relative;
   width: 350px;
 }
-input {
-  &::-webkit-input-placeholder {
-    color: #c7c8c9;
-  }
+.search input {
+  border: none;
+  outline: none;
+  width: 61.5%;
+  height: 30px;
+  padding-left: 105px;
+  border: 2px solid #dadce0;
+  border-right: 0;
+  border-radius: 4px 2px 2px 4px;
+  color: black;
+  font-size: 16px;
+}
+.search button {
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 45px;
+  cursor: pointer;
+  position: absolute;
+  top: 1.6px;
+  right: 26.5px;
+  background: #dadce0;
+  border-radius: 0 2px 2px 0;
+}
+.search button:hover {
+  background-color: #c8c8c8;
+  box-shadow: 0 0 3px#C8C8C8;
+}
+.search button:active {
+  padding-left: 1px;
+  padding-top: 1px;
+  background: #dadce0;
+}
+.search button:before {
+  content: "\f002";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color: #f9f0da;
+}
+input::-webkit-input-placeholder {
+  color: #c7c8c9;
 }
 </style>
-<style lang="less">
-.selectAvro {
-  div {
-    .el-input__inner {
-      text-align: center;
-      padding: 0 24px 0 5px;
-      border-radius: 4px 0 0 4px;
-      &:focus {
-        border-color: #dadce0;
-      }
-    }
-  }
+<style>
+.selectAvro div .el-input__inner {
+  text-align: center;
+  padding: 0 24px 0 5px;
+  border-radius: 4px 0 0 4px;
 }
-.search {
-  .el-select {
-    .el-input {
-      &.is-focus {
-        .el-input__inner {
-          border-color: #dadce0;
-        }
-      }
-    }
-  }
+.search .el-select .el-input.is-focus .el-input__inner {
+  border-color: #dadce0;
 }
-
+.selectAvro div .el-input__inner:focus {
+  border-color: #dadce0;
+}
 </style>

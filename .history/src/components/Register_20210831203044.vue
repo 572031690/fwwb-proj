@@ -110,7 +110,7 @@ export default {
     // 控制获取验证码按钮是否可点击
     getCodeBtnDisable: {
       get () {
-        if (this.waitTime === 61) {
+        if (this.waitTime == 61) {
           if (this.form.tel && this.phoneNumberStyle) {
             return false
           }

@@ -41,14 +41,23 @@
           <thead>
             <!-- 表头 -->
             <tr>
-               <th v-for="(item,index) in tableText.tableTitle" 
-              :key="index" 
-              colspan="1" 
-              rowspan="1" 
-              :class="
-              item === '描述'?'htop-th2'
-              :'htop-th1'">
-                <div class="cell">{{item}}</div>
+              <th colspan="1" rowspan="1" class="htop-th4">
+                <div class="cell">类型ID</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th3">
+                <div class="cell">类型</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th2">
+                <div class="cell">描述</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th5">
+                <div class="cell">数量</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th1">
+                <div class="cell">单位</div>
+              </th>
+              <th colspan="1" rowspan="1" class="htop-th8">
+                <div class="cell">操作</div>
               </th>
             </tr>
           </thead>
@@ -57,22 +66,39 @@
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
           <tr v-for="(item, key) in list" :key="key">
-
-             <td v-for="(data,index) in tableText.tableBody" 
-            :key="index" 
-            :class="data==='comment'? 'body-td2'
-            :'body-td1'" >
-
-              <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
-                {{ item[data] }}
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemid }}
               </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.itemtype }}
+              </div>
+            </td>
+            <td class="body-td2">
+              <div class="cell1">
+                {{ item.comment }}
+              </div>
+            </td>
+            <td class="body-td1">
+              <div class="cell">
+                {{ item.neednum }}
+              </div>
+            </td>
 
-              <div class="cell" v-if="data==='opetation'">
+            <td class="body-td1">
+              <div class="cell1">
+                {{ item.needtitle }}
+              </div>
+            </td>
+
+            <td class="body-td1">
+              <div class="cell">
                 <button id="modify" @click="seeData(item)">编辑</button>
                 <button id="delete" @click="deletedata(item)">删除</button>
               </div>
             </td>
-
           </tr>
         </tbody>
 
@@ -104,10 +130,6 @@ export default {
   },
   data () {
     return {
-       tableText:{
-        tableTitle:['类型ID','类型','描述','数量','单位','操作'],
-        tableBody:['itemid','itemtype','comment','neednum','needtitle','opetation']
-      },
       dialogData: {
         dialogType: '',
         dataTableList: [
@@ -244,21 +266,18 @@ export default {
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
       const url = '/webneed/findAllNeed'
-      await this.$ajax.get(url, {
+      // const url = '/web/listUser';
+      const { data: res } = await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname // 传递搜索参数
         }
-      }).then((res) => {
-        console.log(res)
-        const { data } = res
-        this.list = data // 获取里面的data数据
-        this.params.total = data.count // 获取后台传过来的总数据条数
-        this.params.page = data.page // 将后端的当前页反传回来
-      }).catch(() => {
-        this.$message.error('网络异常')
       })
+      console.log(res)
+      this.list = res // 获取里面的data数据
+      this.params.total = res.count // 获取后台传过来的总数据条数
+      this.params.page = res.page // 将后端的当前页反传回来
     },
     // 页码
     handleSizeChange (val) {
@@ -283,7 +302,7 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style scoped>
 .right-body {
   padding: 20px;
   height: 85.9vh;
@@ -291,11 +310,13 @@ export default {
 }
 .bodyheart {
   padding: 20px;
+
   display: flex;
   /*实现垂直居中*/
   align-items: center;
   /*实现水平居中*/
   justify-content: center;
+
   flex-direction: column;
 }
 .body-top {
@@ -308,17 +329,17 @@ export default {
   margin: 7px 0;
   height: 28px;
   width: 100%;
-  img {
-    vertical-align: middle;
-    height: 26px;
-    margin: 0 10px;
-  }
-  span {
-    font-size: 16px;
-    line-height: 28px;
-    height: 28px;
-    vertical-align: middle;
-  }
+}
+.bodytop-heart img {
+  vertical-align: middle;
+  height: 26px;
+  margin: 0 10px;
+}
+.bodytop-heart span {
+  font-size: 16px;
+  line-height: 28px;
+  height: 28px;
+  vertical-align: middle;
 }
 .rightbody-topmid {
   height: 25px;
@@ -336,141 +357,120 @@ export default {
   float: right;
   margin-right: 15px;
   cursor: pointer;
-  &:hover {
-    background-color: #f0f7ff;
-    color: #8ebaed;
-    border: 1px solid #8ebaed;
-  }
-  &:active {
-    border: 1px solid #144379;
-  }
 }
-#modify {
-  color: #8c959c;
-  background-color: white;
-  cursor: pointer;
-  &:hover {
-    background-color: #f0f7ff;
-    color: #8ebaed;
-    border: 1px solid #8ebaed;
-  }
-  &:active {
-    border: 1px solid #144379;
-  }
+.bodyadd:hover,
+#modify:hover {
+  background-color: #f0f7ff;
+  color: #8ebaed;
+  border: 1px solid #8ebaed;
 }
-#delete {
-  color: #fff;
-  background-color: red;
-  cursor: pointer;
-  &:hover {
-    background-color: #df808f;
-  }
-  &:active {
-    background: red;
-  }
+.bodyadd:active,
+#modify:active {
+  border: 1px solid #144379;
+}
+#delete:hover {
+  background-color: #df808f;
+}
+#delete:active {
+  background: red;
 }
 .tablebody {
   margin-top: 25px;
+
   border: 1px solid #dadce0;
   border-radius: 4px;
   position: flex;
   align-content: space-between;
   justify-content: center;
 }
+
 .cell {
   height: 23px;
   width: 99px;
-  button {
-    outline: none;
-    border: 0.5px solid #8c959c;
-    text-align: center;
-    font-size: 8px;
-    line-height: 26px;
-    color: white;
-    height: 26px;
-    margin: 0 3px;
-    width: 41px;
-    border-radius: 4px;
-  }
 }
+
 .cell1 {
   height: 23px;
   width: 450px;
-  overflow: hidden;
-  /*顾名思义超出限定的宽度就隐藏内容*/
-  white-space: nowrap;
-  /*设置文字在一行显示不能换行*/
-  text-overflow: ellipsis;
-  /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
+  overflow: hidden; /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap; /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis; /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
 }
-.table-top {
-  thead {
-    tr {
-      display: flex;
-      flex-direction: row;
-      th {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 135.5px;
-        height: 35px;
-        border: 1px solid #dadce0;
-        padding-top: 10px;
-        text-align: center;
-      }
-      .htop-th2 {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 500px;
-      }
-      .htop-th7 {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 150px;
-      }
-    }
-  }
+
+.cell button {
+  outline: none;
+  border: 0.5px solid #8c959c;
+  text-align: center;
+  font-size: 8px;
+  line-height: 26px;
+  color: white;
+  height: 26px;
+  margin: 0 3px;
+  width: 41px;
+
+  border-radius: 4px;
 }
-.tbody {
-  tr {
-    display: flex;
-    flex-direction: row;
-  }
+#modify {
+  color: #8c959c;
+  background-color: white;
+  cursor: pointer;
 }
-tbody {
-  tr {
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: row;
-    align-content: space-between;
-    justify-content: center;
-    td {
-      display: flex;
-      align-content: space-between;
-      justify-content: center;
-      width: 135.5px;
-      height: 35px;
-      border: 1px solid #dadce0;
-      padding-top: 10px;
-      text-align: center;
-    }
-    .body-td2 {
-      width: 500px;
-    }
-    .body-td3 {
-      width: 150px;
-    }
-    &:hover {
-      background-color: #f5f7fa;
-    }
-  }
+#delete {
+  color: #fff;
+  background-color: red;
+  cursor: pointer;
+}
+.table-top thead tr,
+.tbody tr {
+  display: flex;
+  flex-direction: row;
+}
+.table-top thead tr th,
+tbody tr td {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 135.5px;
+  height: 35px;
+  border: 1px solid #dadce0;
+  padding-top: 10px;
+  text-align: center;
+}
+.table-top thead tr .htop-th2 {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 500px;
+}
+.table-top thead tr .htop-th7 {
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  width: 150px;
+}
+tbody tr {
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  justify-content: center;
+}
+
+tbody tr .body-td2 {
+  width: 500px;
+}
+tbody tr .body-td3 {
+  width: 150px;
+}
+
+tbody tr:hover {
+  background-color: #f5f7fa;
 }
 .table-bottom {
   margin-top: 15px;
   margin-left: 50%;
 }
+
 .searchfa {
   margin-left: 35px;
 }
@@ -481,53 +481,53 @@ form {
 .search {
   margin-left: 5px;
   float: left;
+
   height: 30px;
-  input {
-    float: left;
-    border: none;
-    outline: none;
-    width: 95.5%;
-    height: 30px;
-    padding-left: 13px;
-    border: 2px solid #dadce0;
-    border-right: 0;
-    border-radius: 5px;
-    color: black;
-    font-size: 16px;
-  }
-  button {
-    float: left;
-    border: none;
-    outline: none;
-    height: 30px;
-    width: 45px;
-    cursor: pointer;
-    position: absolute;
-    top: 1.6px;
-    right: 0;
-    background: #dadce0;
-    border-radius: 0 5px 5px 0;
-    &:hover {
-      background-color: #c8c8c8;
-      box-shadow: 0 0 3px#c8c8c8;
-    }
-    &:active {
-      padding-left: 1px;
-      padding-top: 1px;
-      background: #dadce0;
-    }
-    &:before {
-      content: "\f002";
-      font-family: FontAwesome;
-      font-size: 16px;
-      color: #f9f0da;
-    }
-  }
-}
-input {
-  &::-webkit-input-placeholder {
-    color: #c7c8c9;
-  }
 }
 
+.search input {
+  float: left;
+  border: none;
+  outline: none;
+  width: 95.5%;
+  height: 30px;
+  padding-left: 13px;
+  border: 2px solid #dadce0;
+  border-right: 0;
+  border-radius: 5px;
+  color: black;
+  font-size: 16px;
+}
+
+.search button {
+  float: left;
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 45px;
+  cursor: pointer;
+  position: absolute;
+  top: 1.6px;
+  right: 0;
+  background: #dadce0;
+  border-radius: 0 5px 5px 0;
+}
+.search button:hover {
+  background-color: #c8c8c8;
+  box-shadow: 0 0 3px#C8C8C8;
+}
+.search button:active {
+  padding-left: 1px;
+  padding-top: 1px;
+  background: #dadce0;
+}
+.search button:before {
+  content: "\f002";
+  font-family: FontAwesome;
+  font-size: 16px;
+  color: #f9f0da;
+}
+input::-webkit-input-placeholder {
+  color: #c7c8c9;
+}
 </style>
