@@ -49,23 +49,23 @@ const router = new VueRouter({
   routes
 });
 
-// router.beforeEach((to, from, next) => {
-//   // 路由守卫，类似java服务器端编写过滤器
-//   // if (to.path === '/login') return next() // 正常放行
-//   const store = window.sessionStorage.getItem("storeData"); // 获取浏览器缓存值
-//   // if (!store) return next('/login') // 判断如果里面的值为空则跳回登陆界面
-//   // next() // 正常放行
-//   if (to.path === "/login") {
-//     console.log("1");
-//     next();
-//   } else if (!store) {
-//     console.log("2");
-//     next('/login')
-//     next();
-//   } else {
-//     console.log("3");
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  // 路由守卫，类似java服务器端编写过滤器
+  // if (to.path === '/login') return next() // 正常放行
+  const store = window.sessionStorage.getItem("storeData"); // 获取浏览器缓存值
+  // if (!store) return next('/login') // 判断如果里面的值为空则跳回登陆界面
+  // next() // 正常放行
+  if (to.path === "/login") {
+    console.log("1");
+    next();
+  } else if (!store) {
+    console.log("2");
+    next('/login')
+    next();
+  } else {
+    console.log("3");
+    next();
+  }
+});
 
 export default router;
