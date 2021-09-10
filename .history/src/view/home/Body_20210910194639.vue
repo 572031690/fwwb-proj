@@ -122,6 +122,109 @@
           </tr>
         </tbody>
 
+        <!-- 修改表单/ 提交表单 -->
+        <el-dialog
+          :title="form.showtype == 0 ? '修改数据' : '提交送审'"
+          :visible.sync="dialogFormVisible"
+          :modal-append-to-body="false"
+          :close-on-click-modal="false"
+          :show-close="false"
+          center
+          width="35%"
+        >
+          <el-form
+            :model="form"
+            :rules="rules"
+            ref="form"
+            label-width="120px"
+            class="demo-ruleForm"
+          >
+            <el-form-item label="编号ID" prop="needid">
+              <el-input
+                type="age"
+                v-model.number="form.needid"
+                auto-complete="off"
+                style="width: 400px"
+                disabled
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="需求单名" prop="needtitle">
+              <el-input
+                v-model="form.needtitle"
+                style="width: 400px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类型" prop="itemtype">
+              <el-select v-model="form.itemtype" placeholder="请选择类型">
+                <el-option label="10000" value="10000"></el-option>
+                <el-option label="996" value="996"></el-option>
+                <el-option label="007" value="007"></el-option>
+                <el-option label="123" value="123"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="类型ID" prop="itemid">
+              <el-select v-model="form.itemid" placeholder="请选择ID">
+                <el-option label="10000" value="10000"></el-option>
+                <el-option label="996" value="996"></el-option>
+                <el-option label="007" value="007"></el-option>
+                <el-option label="123" value="123"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="数量" prop="neednum">
+              <el-input-number
+                v-model="form.neednum"
+                :step="50"
+                :min="50"
+                :max="999999999"
+                label="描述文字"
+              ></el-input-number>
+            </el-form-item>
+            <el-form-item label="需求日期" prop="needday">
+              <el-col :span="11">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="form.needday"
+                  style="width: 150px"
+                ></el-date-picker>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+            </el-form-item>
+            <el-form-item label="负责人部门编号" prop="neederid">
+              <el-input
+                type="age"
+                v-model="form.neederid"
+                auto-complete="off"
+                style="width: 400px"
+                disabled
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="详情" prop="comment">
+              <el-input
+                type="textarea"
+                v-model.number="form.comment"
+                auto-complete="off"
+                style="width: 400px"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="submitForm('form')"
+              v-show="!form.showtype"
+              >保 存</el-button
+            >
+            <el-button
+              type="primary"
+              @click="updateForm('form')"
+              v-show="form.showtype"
+              >提交</el-button
+            >
+          </div>
+        </el-dialog>
+
         <!-- </el-table> -->
       </div>
       <div class="table-bottom">
@@ -273,7 +376,7 @@ export default {
           neednum: '3',
           needday: '5',
           neederid: '的撒大',
-          comment: 'dsadsadasdsadasdsadsadas',
+          comment: 'dsadsadasdsadsadasdsadsadasdsadsadasdsadsadasdsadsadasdsadsadasdsadsadasdsadsadas',
           uptype: 1
         },
         {
@@ -308,6 +411,7 @@ export default {
         dname: '', // 查询数据
         selectValue: '' // 查询状态
       },
+      dialogFormVisible: false, // 不让修改窗口打开
       form: {
         needid: '',
         needtitle: '',
@@ -319,7 +423,37 @@ export default {
         comment: '',
         showtype: ''
       },
-      dialogFormVisibleadd: false // 不让添加窗口打开
+      dialogFormVisibleadd: false, // 不让添加窗口打开
+      // 定义表单验证规则
+      rules: {
+        needid: [
+          { required: true, message: 'ID不能为空', trigger: 'blur' },
+          { type: 'number', message: 'ID必须为数字值' }
+        ],
+        needtitle: [
+          { required: true, message: '请输入需求单名', trigger: 'blur' },
+          {
+            min: 2,
+            max: 10,
+            message: '长度在 2 到 10 个字符',
+            trigger: 'blur'
+          }
+        ],
+        itemtype: [
+          { required: true, message: '请选择需求类型', trigger: 'change' }
+        ],
+        itemid: [
+          { required: true, message: '请选择需求编号', trigger: 'change' }
+        ],
+        neednum: [
+          { required: true, message: '需求数量不能为空', trigger: 'blur' },
+          { type: 'number', message: '需求数量必须为数字值' }
+        ],
+        needday: [
+          { required: true, message: '需求日期不能为空', trigger: 'blur' }
+        ],
+        comment: [{ required: true, message: '请填写详情', trigger: 'blur' }]
+      }
     }
   },
   methods: {
@@ -328,14 +462,8 @@ export default {
     },
     // 添加方法打开界面
     gethomeAdd () {
-      this.dialogData.dialogType = 'add'
-      this.dialogData.url = '/web/saveUser'
-      // this.dialogFormVisibleadd = true;
-      if (this.dialogData.dataTableList[0].label === '编号ID') this.dialogData.dataTableList.splice(0, 1)
-      for (const i in this.dialogData.formList) {
-        this.dialogData.formList[i] = ''
-      }
       this.dialogData.formList.neederid = parseInt(this.list[0].neederid)
+      this.dialogData.url = '/web/saveUser'
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // 删除方法
@@ -370,7 +498,6 @@ export default {
           })
         })
     },
-    // 打卡抽屉
     seeApproval (e) {
       this.currentIndex = e
       this.drawershow = true
@@ -378,33 +505,27 @@ export default {
       this.$refs.Draw.showDraw()
       // this.$store.commit('ChangeDraw')
     },
-    // 提交送审表单
     upData (e) {
-      this.dialogData.dialogType = 'approval'
-      this.dialogData.url = '/webbuy/updateBuy'
+      this.form.showtype = 1
       this.seeData(e)
     },
-    // 修改表单
     edData (e) {
-      this.dialogData.dialogType = 'edit'
-      this.dialogData.url = '/webbuy/updateBuy'
+      this.form.showtype = 0
       this.seeData(e)
     },
     // 打开修改蒙版表单
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
-      for (const i in this.dialogData.formList) {
-        if (i === 'needid' || i === 'neednum' || i === 'neederid') this.dialogData.formList[i] = parseInt(e[i])
-        else this.dialogData.formList[i] = e[i]
-      }
-      if (this.dialogData.dataTableList[0].label === '需求单名') {
-        this.dialogData.dataTableList.splice(0, 0, {
-          label: '编号ID',
-          putType: 'disput',
-          dataName: 'needid'
-        })
-      }
-      this.$refs.addDialog.dialogFormVisibleadd = true
+      this.form.needid = e.needid
+      this.form.needtitle = e.needtitle.toString()
+      this.form.itemtype = e.itemtype
+      this.form.itemid = e.itemid
+      this.form.neednum = parseInt(e.neednum) // 转换成int
+      // this.form.neednum=e.neednum.toString();  //data内如何直接拿pass过来会显示not string所以要转化成string类型防止后面rule一直被触发
+      this.form.needday = e.needday
+      this.form.neederid = parseInt(e.neederid) // 转换成int
+      this.form.comment = e.comment.toString()
+      this.dialogFormVisible = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
@@ -435,6 +556,87 @@ export default {
       console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
+    },
+
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    // 提交送审
+    updateForm (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$confirm('是否确定提交送审?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.editdata()
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // 编辑表单的验证数据
+    submitForm (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$confirm('是否确定保存编辑此条数据?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.editdata()
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // 编辑表单请求
+    editdata () {
+      // $ajax请求
+
+      const url = '/webneed/updateNeed'
+      console.log(this.form)
+      this.$ajax
+        .post(
+          url,
+          {
+            needid: this.form.needid,
+            needtitle: this.form.needtitle,
+            itemtype: this.form.itemtype,
+            itemid: this.form.itemid,
+            neednum: this.form.neednum,
+            needday: this.form.needday,
+            neederid: this.form.neederid,
+            comment: this.form.comment
+          },
+          {
+            Headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            }
+          }
+        )
+        .then(res => {
+          console.log(res)
+          if (res.data.code === 101) {
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
+            })
+            this.dialogFormVisible = false
+            this.search() // 从新调用页面获取表单数据
+          } else {
+            this.$message.error('错了哦，修改失败1')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.error('错了哦，修改失败')
+        })
     }
   },
   mounted () {

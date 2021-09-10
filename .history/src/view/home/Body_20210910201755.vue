@@ -12,6 +12,23 @@
               <div class="searchfa">
                 <!-- 搜索框 -->
                 <div class="search">
+                  <el-select
+                    v-model="params.selectValue"
+                    @change="search"
+                    placeholder="选择状态"
+                    clearable
+                    size="small"
+                    class="selectAvro"
+                  >
+                    <el-option
+                      style="padding:0 18px 0 10px;"
+                      v-for="item in select"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
                   <form v-on:submit.prevent="search">
                     <input
                       type="text"
@@ -40,46 +57,70 @@
         <div class="table-top">
           <thead>
             <!-- 表头 -->
-
             <tr >
               <th v-for="(item,index) in tableText.tableTitle"
               :key="index"
               colspan="1"
               rowspan="1"
               :class="
-              item === '操作'?'htop-th1'
-              :'htop-th2'">
+              item === '需求单名'?'htop-th7'
+              :item === '详情'?'htop-th2'
+              :'htop-th1'">
                 <div class="cell">{{item}}</div>
               </th>
             </tr>
-
           </thead>
         </div>
         <!-- 数据列表 -->
         <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
         <tbody>
-
-           <tr v-for="(item, key) in list" :key="key">
+          <tr
+            v-for="(item, key) in list"
+            :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
+            :key="key"
+          >
 
             <td v-for="(data,index) in tableText.tableBody"
             :key="index"
-            :class="data==='opetation'? 'body-td1'
-            :'body-td2'"
-            @click="getDetail(item)">
+            :class="data==='needtitle'? 'body-td3'
+            :data==='comment'?'body-td2'
+            :'body-td1'" >
 
-              <div class="cell1" v-if="data!=='opetation'">
+              <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
                 {{ item[data] }}
               </div>
+               <div class="bodyButton" v-if="data==='opetation1'">
+                <div class="cell" v-if="item.uptype == 0 || item.uptype == 2">
+                  <button id="modify" @click="edData(item)">
+                    编辑
+                  </button>
+                  <button id="delete" @click="deletedata(item)">
+                    删除
+                  </button>
+                </div>
+                <div v-if="item.uptype == 1 || item.uptype == 3">
+                  <button class="approval" @click="seeApproval(key)">
+                    查看审批
+                  </button>
+                </div>
+              </div>
 
-              <div class="cell" v-if="data==='opetation'">
-                <button id="modify" @click.stop="seeData(item)">编辑</button>
-                <button id="delete" @click.stop="deletedata(item)">删除</button>
+               <div class="bodyButton" v-if="data==='opetation2'">
+                <div class="cell" v-if="!item.uptype">
+                  <button id="modify" @click="upData(item)">提交</button>
+                </div>
+                <div class="cell" v-if="item.uptype == 1">审批中....</div>
+                <div v-if="item.uptype == 2">
+                  <button class="approval" @click="seeApproval(key)">
+                    驳回结果
+                  </button>
+                </div>
+                <div class="cell" v-if="item.uptype == 3">审批通过</div>
               </div>
             </td>
+
           </tr>
         </tbody>
-
-      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
 
         <!-- </el-table> -->
       </div>
@@ -96,69 +137,206 @@
         >
         </el-pagination>
       </div>
-      <detail ref="detail"/>
+
+      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
+      <Drawer
+        :listIn="list[currentIndex]"
+        :drawerText="drawerText"
+        @close="drawerClose"
+        ref="Draw"
+      ></Drawer>
     </div>
   </div>
 </template>
 <script>
+import Drawer from '../../components/Drawer.vue'
 import addDialog from '../../components/addDataDialog.vue'
-import detail from '../../components/DepartDetail.vue'
 export default {
   components: {
-    addDialog,
-    detail
+    Drawer,
+    addDialog
   },
   data () {
     return {
       tableText: {
-        tableTitle: ['部门名称', '部门编号', '操作'],
-        tableBody: ['departmentname', 'departmentid', 'opetation']
+        tableTitle: ['编号', '需求单名', '类型', '类型ID', '数量', '日期', '需求部门编号', '详情', '操作', '状态'],
+        tableBody: ['needid', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'comment', 'opetation1', 'opetation2']
       },
+      drawerText: [
+        {
+          label: '编号',
+          model: 'needid'
+        },
+        {
+          label: '需求单名',
+          model: 'needtitle'
+        },
+        {
+          label: '类型',
+          model: 'itemtype'
+        },
+        {
+          label: '类型ID',
+          model: 'itemid'
+        },
+        {
+          label: '数量',
+          model: 'neednum'
+        },
+        {
+          label: '日期',
+          model: 'needday'
+        },
+        {
+          label: '需求部门编号',
+          model: 'neederid'
+        },
+        {
+          label: '详情',
+          model: 'comment'
+        }
+      ],
       dialogData: {
         dialogType: '',
         dataTableList: [
           {
-            label: '部门姓名',
+            label: '需求单名',
             putType: 'input',
-            dataName: 'departmentname'
+            dataName: 'needtitle'
           },
           {
-            label: '部门编号',
-            putType: 'numput',
-            dataName: 'departmentid'
-          }
+            label: '类型',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemtype'
+          },
+          {
+            label: '类型ID',
+            putType: 'select',
+            selectData: ['10000', '996', '007', '123'],
+            dataName: 'itemid'
+          },
+          { label: '数量', putType: 'num', dataName: 'neednum' },
+          { label: '需求日期', putType: 'date', dataName: 'needday' },
+          { label: '负责人部门号', putType: 'disput', dataName: 'neederid' },
+          { label: '详情', putType: 'textarea', dataName: 'comment' }
         ],
         formList: {
-          departmentname: '',
-          departmentid: ''
+          needid: '',
+          needtitle: '',
+          itemtype: '',
+          itemid: '',
+          neednum: '',
+          needday: '',
+          neederid: '',
+          comment: '',
+          uptype: 0
         },
         url: ''
       },
-      // 表内静态数据列表
+      select: [ // 搜索框筛选数据
+        {
+          value: '0',
+          label: '未送审'
+        },
+        {
+          value: '1',
+          label: '审核中'
+        },
+        {
+          value: '2',
+          label: '驳回'
+        },
+        {
+          value: '3',
+          label: '通过'
+        }
+      ],
+      currentIndex: 1, // 查看审批数据
       list: [
         {
-          departmentname: 'sadasd',
-          departmentid: '马佳辉'
+          needid: 1,
+          needtitle: '马佳辉1',
+          itemtype: 5454165,
+          itemid: 1373201546,
+          neednum: '3',
+          needday: '5',
+          neederid: '14',
+          comment: 'dsadsadas',
+          uptype: 0
+        },
+        {
+          needid: 1,
+          needtitle: '马佳辉2',
+          itemtype: 5454165,
+          itemid: 1373201546,
+          neednum: '3',
+          needday: '5',
+          neederid: '的撒大',
+          comment: 'dsadsadasdsadasdsadsadas',
+          uptype: 1
+        },
+        {
+          needid: 1,
+          needtitle: '马佳辉3',
+          itemtype: 5454165,
+          itemid: 1373201546,
+          neednum: '3',
+          needday: '5',
+          neederid: '的撒大',
+          comment: 'dsadsadas',
+          uptype: 2
+        },
+        {
+          needid: 1,
+          needtitle: '马佳辉4',
+          itemtype: 5454165,
+          itemid: 1373201546,
+          neednum: '3',
+          needday: '5',
+          neederid: '的撒大',
+          comment: 'dsadsadas',
+          uptype: 3
         }
       ],
       loading2: true,
+      drawershow: false,
       params: {
         limit: 5, // 每页显示5条记录
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
-        dname: '' // 查询数据
-      }
+        dname: '', // 查询数据
+        selectValue: '' // 查询状态
+      },
+      dialogFormVisible: false, // 不让修改窗口打开
+      form: {
+        needid: '',
+        needtitle: '',
+        itemtype: '',
+        itemid: '',
+        neednum: '',
+        needday: '',
+        neederid: '',
+        comment: '',
+        showtype: ''
+      },
+      dialogFormVisibleadd: false // 不让添加窗口打开
     }
   },
   methods: {
-    // 添加方法跳转添加界面
+    drawerClose (val) {
+      console.log(val, '=------------')
+    },
+    // 添加方法打开界面
     gethomeAdd () {
-      // this.dialogFormVisibleadd = true;
       this.dialogData.dialogType = 'add'
-      this.dialogData.url = '/webbuy/addBuy'
+      this.dialogData.url = '/web/saveUser'
+      // this.dialogFormVisibleadd = true;
+      if (this.dialogData.dataTableList[0].label === '编号ID') this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
+      this.dialogData.formList.neederid = parseInt(this.list[0].neederid)
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // 删除方法
@@ -169,10 +347,10 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          const url = '/webDepartment/deleteDepartment'
+          const url = '/webneed/deleteNeed'
           const { data: res } = await this.$ajax.get(url, {
             params: {
-              departmentid: e.departmentid
+              needid: e.needid
             }
           })
           if (res) {
@@ -193,21 +371,45 @@ export default {
           })
         })
     },
+    // 打卡抽屉
+    seeApproval (e) {
+      this.currentIndex = e
+      this.drawershow = true
+      // this.$refs.Draw.getFatherData()
+      this.$refs.Draw.showDraw()
+      // this.$store.commit('ChangeDraw')
+    },
+    // 提交送审表单
+    upData (e) {
+      this.dialogData.dialogType = 'approval'
+      this.dialogData.url = '/webbuy/updateBuy'
+      this.seeData(e)
+    },
+    // 修改表单
+    edData (e) {
+      this.dialogData.dialogType = 'edit'
+      this.dialogData.url = '/webbuy/updateBuy'
+      this.seeData(e)
+    },
     // 打开修改蒙版表单
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
-      // this.form.departmentname = e.departmentname.toString();
-      this.dialogData.dialogType = 'edit'
       for (const i in this.dialogData.formList) {
-        if (i === 'departmentid') this.dialogData.formList[i] = parseInt(e[i])
+        if (i === 'needid' || i === 'neednum' || i === 'neederid') this.dialogData.formList[i] = parseInt(e[i])
         else this.dialogData.formList[i] = e[i]
       }
-      this.dialogData.url = '/webbuy/updateBuy'
+      if (this.dialogData.dataTableList[0].label === '需求单名') {
+        this.dialogData.dataTableList.splice(0, 0, {
+          label: '编号ID',
+          putType: 'disput',
+          dataName: 'needid'
+        })
+      }
       this.$refs.addDialog.dialogFormVisibleadd = true
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
-      const url = '/webDepartment/findAllDepartment'
+      const url = '/webneed/findAllNeed'
       await this.$ajax.get(url, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
@@ -238,23 +440,9 @@ export default {
 
     resetForm (formName) {
       this.$refs[formName].resetFields()
-    },
-    // 打卡部门详情页面
-    getDetail (item) {
-      console.log(item)
-      const form = {
-        name: '采购部',
-        employenum: 25,
-        departmentid: 10020,
-        detail: '此部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息'
-      }
-      this.$refs.detail.form = form
-      this.$refs.detail.dialogFormVisible = true
     }
   },
   mounted () {
-    // var ps=String.split(this.form.pass);
-    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
     }, 400)
@@ -280,7 +468,7 @@ export default {
 }
 .body-top {
   height: 45px;
-  width: 1210px;
+  width: 1460px;
   border: 1px solid #dadce0;
   border-radius: 4px;
 }
@@ -338,6 +526,28 @@ export default {
     border: 1px solid #144379;
   }
 }
+.approval {
+  outline: none;
+  border: 0.5px solid #8c959c;
+  text-align: center;
+  font-size: 8px;
+  line-height: 26px;
+  color: #8c959c;
+  height: 26px;
+  margin: 0 3px;
+  width: 55px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+  &:hover {
+    background-color: #f0f7ff;
+    color: #8ebaed;
+    border: 1px solid #8ebaed;
+  }
+  &:active {
+    border: 1px solid #144379;
+  }
+}
 #delete {
   color: #fff;
   background-color: red;
@@ -351,22 +561,24 @@ export default {
 }
 .tablebody {
   margin-top: 25px;
-  border: 1px solid #dadce0;
+  border: 0.5px solid #dadce0;
   border-radius: 4px;
   position: flex;
   align-content: space-between;
   justify-content: center;
 }
 .cell {
-  height: 23px;
-  width: 99px;
+  height: 28px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   button {
     outline: none;
     border: 0.5px solid #8c959c;
     text-align: center;
     font-size: 8px;
     line-height: 26px;
-    color: white;
     height: 26px;
     margin: 0 3px;
     width: 41px;
@@ -375,7 +587,7 @@ export default {
 }
 .cell1 {
   height: 23px;
-  width: 450px;
+  width: 300px;
   overflow: hidden;
   /*顾名思义超出限定的宽度就隐藏内容*/
   white-space: nowrap;
@@ -392,7 +604,7 @@ export default {
         display: flex;
         align-content: space-between;
         justify-content: center;
-        width: 135.5px;
+        width: 120px;
         height: 35px;
         border: 1px solid #dadce0;
         padding-top: 10px;
@@ -402,13 +614,13 @@ export default {
         display: flex;
         align-content: space-between;
         justify-content: center;
-        width: 500px;
+        width: 350px;
       }
       .htop-th7 {
         display: flex;
         align-content: space-between;
         justify-content: center;
-        width: 150px;
+        width: 140px;
       }
     }
   }
@@ -430,53 +642,61 @@ tbody {
       display: flex;
       align-content: space-between;
       justify-content: center;
-      width: 135.5px;
+      width: 120px;
       height: 35px;
       border: 1px solid #dadce0;
       padding-top: 10px;
       text-align: center;
     }
     .body-td2 {
-      width: 500px;
+      width: 350px;
     }
     .body-td3 {
-      width: 150px;
+      width: 140px;
     }
     &:hover {
       background-color: #f5f7fa;
     }
   }
 }
+.uppdate {
+  background: #eee;
+  cursor: not-allowed;
+}
+.upbutton {
+  cursor: not-allowed !important;
+}
 .table-bottom {
   margin-top: 15px;
   margin-left: 50%;
 }
-.searchfa {
-  margin-left: 35px;
+.selectAvro {
+  width: 89px;
+  position: absolute;
+  margin-top: 1px;
+  z-index: 10;
 }
-form {
-  position: relative;
-  width: 350px;
+.searchfa {
 }
 .search {
-  margin-left: 5px;
+  position: relative;
   float: left;
+  width: 100%;
   height: 30px;
+  display: flex;
   input {
-    float: left;
     border: none;
     outline: none;
-    width: 95.5%;
+    width: 61.5%;
     height: 30px;
-    padding-left: 13px;
+    padding-left: 105px;
     border: 2px solid #dadce0;
     border-right: 0;
-    border-radius: 5px;
+    border-radius: 4px 2px 2px 4px;
     color: black;
     font-size: 16px;
   }
   button {
-    float: left;
     border: none;
     outline: none;
     height: 30px;
@@ -484,9 +704,9 @@ form {
     cursor: pointer;
     position: absolute;
     top: 1.6px;
-    right: 0;
+    right: 26.5px;
     background: #dadce0;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 2px 2px 0;
     &:hover {
       background-color: #c8c8c8;
       box-shadow: 0 0 3px#c8c8c8;
@@ -504,9 +724,38 @@ form {
     }
   }
 }
+form {
+  position: relative;
+  width: 350px;
+}
 input {
   &::-webkit-input-placeholder {
     color: #c7c8c9;
+  }
+}
+</style>
+<style lang="less">
+.selectAvro {
+  div {
+    .el-input__inner {
+      text-align: center;
+      padding: 0 24px 0 5px;
+      border-radius: 4px 0 0 4px;
+      &:focus {
+        border-color: #dadce0;
+      }
+    }
+  }
+}
+.search {
+  .el-select {
+    .el-input {
+      &.is-focus {
+        .el-input__inner {
+          border-color: #dadce0;
+        }
+      }
+    }
   }
 }
 

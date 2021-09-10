@@ -87,7 +87,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">{{dialogData.dialogType==='add'?'添 加':dialogData.dialogType==='edit'?'修 改':'提交送审'}}</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{dialogData.dialogType==='add'?'添 加':'修 改'}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -114,9 +114,7 @@ export default {
 
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$confirm(this.dialogData.dialogType === 'add' ? '是否确定保存并添加此条数据?'
-            : this.dialogData.dialogType === 'edit' ? '是否确定保存并修改此条数据'
-              : '是否确定保存并提交此条数据', '提示', {
+          this.$confirm('是否确定保存并添加此条数据?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

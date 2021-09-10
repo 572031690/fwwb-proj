@@ -17,6 +17,7 @@
       </template>
       <el-form
         :model="form"
+        :rules="rules"
         ref="form"
         label-width="120px"
         class="demo-ruleForm"
@@ -50,10 +51,41 @@ export default {
       // 注册界面输入的数据
       form: {
         // userId:'',
-        name: '',
-        employenum: '',
-        departmentid: '',
-        detail: ''
+        name: '采购部',
+        employenum: 25,
+        departmentid: 10020,
+        detail: '此部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息'
+      },
+      phone: {
+        num: '',
+        code: ''
+      },
+      // 定义注册表单验证规则
+      rules: {
+        name: [
+          { required: true, message: '请输入姓名名称', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        detail: [
+          { required: true, message: '请输入部门描述', trigger: 'blur' }
+        ],
+        pass: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
+        ],
+        tel: [
+          { required: true, message: '请输入电话号码', trigger: 'blur' },
+          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' } // 手机号码验证设置电话格式！！！！
+          // { type: 'number', message: '电话为数字值',trigger: 'blur'},
+        ],
+        rescode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+        employeeid: [
+          { required: true, message: '请输入员工编号', trigger: 'change' },
+          { type: 'number', message: '编号为数字值', trigger: 'blur' }
+        ],
+        departmentid: [
+          { required: true, message: '请选择部门编号', trigger: 'change' }
+        ]
       }
     }
   },

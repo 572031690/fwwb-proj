@@ -203,6 +203,7 @@ export default {
   width: 270px;
   margin-top: 6px;
   min-height: 50px;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   word-break: break-all;

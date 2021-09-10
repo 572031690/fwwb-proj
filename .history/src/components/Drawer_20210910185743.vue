@@ -10,7 +10,7 @@
       size="30%"
     >
       <div class="drawerStyle">
-        <el-form :model="listIn" label-width="120px">
+        <el-form :model="form" label-width="120px">
           <div class="topstatus">
             <el-steps
               :space="200"
@@ -22,11 +22,81 @@
               <el-step title="通过"></el-step>
             </el-steps>
           </div>
-          <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText" :key="index">
-            <span v-if="item.model!=='comment'" >{{listIn[item.model]}}</span>
-            <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
+          <el-form-item label="编号ID：" >
+            <span>{{form.needid}}</span>
+            <!-- <el-input
+              type="age"
+              v-model.number="form.needid"
+              auto-complete="off"
+              style="width: 300px"
+              disabled
+            ></el-input> -->
           </el-form-item>
+          <el-form-item label="需求单名：" prop="needtitle">
+             <span>{{form.needtitle}}</span>
+            <!-- <el-input
+              v-model="form.needtitle"
+              style="width: 300px"
+              disabled
+            ></el-input> -->
+          </el-form-item>
+          <el-form-item label="类型：" prop="itemtype">
+             <span>{{form.itemtype}}</span>
 
+            <!-- <el-input
+              v-model="form.needtitle"
+              style="width: 200px"
+              disabled
+            ></el-input> -->
+          </el-form-item>
+          <el-form-item label="类型ID：" prop="itemid">
+             <span>{{form.itemid}}</span>
+
+            <!-- <el-input
+              v-model="form.needtitle"
+              style="width: 200px"
+              disabled
+            ></el-input> -->
+          </el-form-item>
+          <el-form-item label="数量：">
+             <span>{{form.neednum}}</span>
+            <!-- <el-input-number
+              v-model="form.neednum"
+              label="描述文字"
+              disabled
+            ></el-input-number> -->
+          </el-form-item>
+          <el-form-item label="需求日期" prop="needday">
+             <span>{{form.needday}}</span>
+
+            <!-- <el-col :span="11">
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="form.needday"
+                style="width: 150px"
+                disabled
+              ></el-date-picker>
+            </el-col> -->
+          </el-form-item>
+          <el-form-item label="负责人部门编号" prop="neederid">
+            <el-input
+              type="age"
+              v-model="form.neederid"
+              auto-complete="off"
+              style="width: 300px"
+              disabled
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="详情" prop="comment">
+            <el-input
+              type="textarea"
+              v-model.number="form.comment"
+              auto-complete="off"
+              style="width: 300px"
+              disabled
+            ></el-input>
+          </el-form-item>
         </el-form>
 
         <div style="width:400px;margin-left:40px;">
@@ -75,10 +145,10 @@
 
 <script>
 export default {
-  props: ['listIn', 'drawerText'],
+  props: ['listIn'],
   mounted () {
     this.msg()
-    // this.$parent.drawerClose(1)
+    this.$parent.drawerClose(1)
   },
   computed: {},
   components: {},
@@ -183,9 +253,9 @@ export default {
     msg () {
       console.log(this.listIn, 'draw输出')
     },
-    // getFatherData () {
-    //   setTimeout(() => { this.form = this.listIn }, 0) // props得到数据会有延迟所以得这样设置
-    // },
+    getFatherData () {
+      setTimeout(() => { this.form = this.listIn }, 0) // props得到数据会有延迟所以得这样设置
+    },
     showDraw () {
       this.dialog = !this.dialog
     }
@@ -194,21 +264,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.drawerText {
-  border: 1px solid rgba(99, 94, 94,0.3);
-  border-radius: 5px;
-  font-size: 16px;
-  line-height: 18px;
-  padding: 5px;
-  width: 270px;
-  margin-top: 6px;
-  min-height: 50px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-
-}
-
 .drawerStyle {
   padding: 10px 25px;
   overflow: auto;

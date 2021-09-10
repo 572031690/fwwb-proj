@@ -202,7 +202,9 @@ export default {
   padding: 5px;
   width: 270px;
   margin-top: 6px;
-  min-height: 50px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   word-break: break-all;

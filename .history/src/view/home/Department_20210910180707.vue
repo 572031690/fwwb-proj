@@ -111,7 +111,7 @@ export default {
   data () {
     return {
       tableText: {
-        tableTitle: ['部门名称', '部门编号', '操作'],
+        tableTitle: ['部门姓名', '部门编号', '操作'],
         tableBody: ['departmentname', 'departmentid', 'opetation']
       },
       dialogData: {

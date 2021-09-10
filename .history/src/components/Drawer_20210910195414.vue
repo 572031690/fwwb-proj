@@ -199,13 +199,16 @@ export default {
   border-radius: 5px;
   font-size: 16px;
   line-height: 18px;
-  padding: 5px;
+  padding: 4px;
   width: 270px;
   margin-top: 6px;
-  min-height: 50px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
+  white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 
 }
 

@@ -22,9 +22,15 @@
               <el-step title="通过"></el-step>
             </el-steps>
           </div>
-          <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText" :key="index">
-            <span v-if="item.model!=='comment'" >{{listIn[item.model]}}</span>
-            <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
+          <el-form-item :label="tableText.tableTitle[index]" v-for="(item,index) in tableText.tableBody" :key="index">
+            <span>{{listIn[item]}}</span>
+            <!-- <el-input
+              type="age"
+              v-model.number="form.needid"
+              auto-complete="off"
+              style="width: 300px"
+              disabled
+            ></el-input> -->
           </el-form-item>
 
         </el-form>
@@ -75,7 +81,7 @@
 
 <script>
 export default {
-  props: ['listIn', 'drawerText'],
+  props: ['listIn', 'tableText'],
   mounted () {
     this.msg()
     // this.$parent.drawerClose(1)
@@ -194,21 +200,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.drawerText {
-  border: 1px solid rgba(99, 94, 94,0.3);
-  border-radius: 5px;
-  font-size: 16px;
-  line-height: 18px;
-  padding: 5px;
-  width: 270px;
-  margin-top: 6px;
-  min-height: 50px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-
-}
-
 .drawerStyle {
   padding: 10px 25px;
   overflow: auto;

@@ -114,9 +114,7 @@ export default {
 
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$confirm(this.dialogData.dialogType === 'add' ? '是否确定保存并添加此条数据?'
-            : this.dialogData.dialogType === 'edit' ? '是否确定保存并修改此条数据'
-              : '是否确定保存并提交此条数据', '提示', {
+          this.$confirm(this.dialogData.dialogType === 'add' ? '是否确定保存并添加此条数据?' : this.dialogData.dialogType === 'edit' ? '是否确定保存并修改此条数据' : '是否确定保存并提交此条数据', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

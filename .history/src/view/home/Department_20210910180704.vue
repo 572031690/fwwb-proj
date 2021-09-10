@@ -111,7 +111,7 @@ export default {
   data () {
     return {
       tableText: {
-        tableTitle: ['部门名称', '部门编号', '操作'],
+        tableTitle: ['部门姓名', '部门编号', '操作'],
         tableBody: ['departmentname', 'departmentid', 'opetation']
       },
       dialogData: {
@@ -248,8 +248,8 @@ export default {
         departmentid: 10020,
         detail: '此部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息'
       }
-      this.$refs.detail.form = form
       this.$refs.detail.dialogFormVisible = true
+      this.$refs.detail.form = form
     }
   },
   mounted () {

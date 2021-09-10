@@ -197,15 +197,19 @@ export default {
 .drawerText {
   border: 1px solid rgba(99, 94, 94,0.3);
   border-radius: 5px;
+  height: 68px;
   font-size: 16px;
   line-height: 18px;
-  padding: 5px;
+  padding: 6px;
   width: 270px;
   margin-top: 6px;
-  min-height: 50px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
+  white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
 
 }
 
