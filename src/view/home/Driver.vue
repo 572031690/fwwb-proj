@@ -56,11 +56,11 @@
   </div>
 </template>
 <script>
-import mapChina from '@/components/home-wel/MapChina.vue'
-import piechart from '@/components/home-wel/leftchart/piechart.vue'
-import rankchart from '@/components/home-wel/leftchart/rankchart.vue'
-import linechart from '@/components/home-wel/rightchart/linechart.vue'
-import totalchart from '@/components/home-wel/rightchart/totalchart.vue'
+import mapChina from '@/components/driver/MapChina.vue'
+import piechart from '@/components/driver/leftchart/piechart.vue'
+import rankchart from '@/components/driver/leftchart/rankchart.vue'
+import linechart from '@/components/driver/rightchart/linechart.vue'
+import totalchart from '@/components/driver/rightchart/totalchart.vue'
 import elementResizeDetectorMaker from 'element-resize-detector'
 import '../../assets/图标字体/DS-DIGIT.TTF'
 export default {

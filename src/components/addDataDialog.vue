@@ -2,8 +2,8 @@
   <div>
     <!-- 添加模板 -->
     <el-dialog
-      :title="dialogData.dialogType==='add'?'添加数据':dialogData.dialogType==='edit'?'修改数据':'提交送审'"
-      :visible.sync="dialogFormVisibleadd"
+      :title="openType==='add'?'添加数据':openType==='edit'?'修改数据':'提交送审'"
+      :visible.sync="dialogFormShow"
       :modal-append-to-body="false"
       :close-on-click-modal="false"
       :show-close="false"
@@ -86,8 +86,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleadd = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">{{dialogData.dialogType==='add'?'添 加':dialogData.dialogType==='edit'?'修 改':'提交送审'}}</el-button>
+        <el-button @click="close">取 消</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{openType==='add'?'添 加':openType==='edit'?'修 改':'提交送审'}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -98,24 +98,58 @@
 类型 putType： textarea disput numput num select date input
 */
 import { rulesData } from '../assets/data/rules'
+import { addEditList } from '../assets/data/addEditList'
 export default {
   props: {
-    dialogData: Object
+    // dialogData: Object,
+    dialogFormShow:Boolean,
+    IntList:Array,
+    openType:String,
+    name:String,
+    currentList:Object
+  },
+  watch:{
+    dialogFormShow: {
+      handler: function(val){
+        this.getType()
+      }
+    }
   },
   data () {
     return {
       rulesData,
-      dialogFormVisibleadd: false
+      addEditList,
+      dialogData:{
+        dialogType: '',
+        formList: '',
+        dataTableList: ''
+      }
     }
   },
+  created() {
+    this.getList()
+  },
   methods: {
+    getList() {
+      this.dialogData = this.addEditList[this.name]
+    },
+    getType() {
+      if(this.openType === "add") {
+        for (const i in this.dialogData.formList) {
+          this.dialogData.formList[i] = ''
+        }
+      }else if (this.openType === "edit") {
+        for (const i in this.dialogData.formList) {
+          if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
+          else this.dialogData.formList[i] = this.currentList[i]
+        }
+      }
+    },
     submitForm (formName) {
-      this.flag = true
-
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$confirm(this.dialogData.dialogType === 'add' ? '是否确定保存并添加此条数据?'
-            : this.dialogData.dialogType === 'edit' ? '是否确定保存并修改此条数据'
+          this.$confirm(this.openType === 'add' ? '是否确定保存并添加此条数据?'
+            : this.openType === 'edit' ? '是否确定保存并修改此条数据'
               : '是否确定保存并提交此条数据', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -136,18 +170,19 @@ export default {
       }
       console.log(data, 'datadatadata')
       // $ajax请求
-      const url = this.dialogData.url
+      const url = this.dialogData.url[this.name]
       await this.$ajax.post(url, data, {}).then(res => {
         const { data } = res
         if (data.code === '101') {
           this.$message({
             type: 'success',
-            message: this.dialogData.dialogType === 'add' ? '添加成功!' : this.dialogData.dialogType === 'edit' ? '修改成功' : '送审成功'
+            message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
           })
           this.$emit('updata')
-          this.dialogFormVisibleadd = false
+          this.close()
+          // this.dialogFormShow = false
         } else {
-          this.$message.error(this.dialogData.dialogType === 'add' ? '错了哦，添加失败' : this.dialogData.dialogType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
+          this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }
       }).catch(() => {
         this.$message({
@@ -155,6 +190,9 @@ export default {
           message: '网络异常'
         })
       })
+    },
+    close () {
+      this.$emit('closeaddDialog')
     }
   }
 }

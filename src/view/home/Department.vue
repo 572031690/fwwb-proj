@@ -79,7 +79,16 @@
           </tr>
         </tbody>
 
-      <addDialog ref="addDialog" :dialogData="dialogData" @updata="search"></addDialog>
+      <addDialog ref="addDialog" 
+      :dialogFormShow="dialogFormShow" 
+      @updata="search"
+      @closeaddDialog="closeaddDialog"
+      :IntList="IntList"
+      :currentList="currentList"
+      :openType="openType"
+      name="department"
+      >
+      </addDialog>
 
         <!-- </el-table> -->
       </div>
@@ -110,35 +119,16 @@ export default {
   },
   data () {
     return {
-      tableText: {
-        tableTitle: ['部门名称', '部门编号', '操作'],
-        tableBody: ['departmentname', 'departmentid', 'opetation']
-      },
-      dialogData: {
-        dialogType: '',
-        dataTableList: [
-          {
-            label: '部门姓名',
-            putType: 'input',
-            dataName: 'departmentname'
-          },
-          {
-            label: '部门编号',
-            putType: 'numput',
-            dataName: 'departmentid'
-          }
-        ],
-        formList: {
-          departmentname: '',
-          departmentid: ''
-        },
-        url: ''
-      },
+      tableText: this.$tables.departmentList,
+      IntList:['departmentid'],
+      openType:'edit',
+      dialogFormShow: false,
+      currentList:{},
       // 表内静态数据列表
       list: [
         {
           departmentname: 'sadasd',
-          departmentid: '马佳辉'
+          departmentid: '12'
         }
       ],
       loading2: true,
@@ -154,12 +144,12 @@ export default {
     // 添加方法跳转添加界面
     gethomeAdd () {
       // this.dialogFormVisibleadd = true;
-      this.dialogData.dialogType = 'add'
-      this.dialogData.url = '/webbuy/addBuy'
-      for (const i in this.dialogData.formList) {
-        this.dialogData.formList[i] = ''
-      }
-      this.$refs.addDialog.dialogFormVisibleadd = true
+      this.openType = 'add'
+      // this.dialogData.url = '/webbuy/addBuy'
+      // for (const i in this.dialogData.formList) {
+      //   this.dialogData.formList[i] = ''
+      // }
+      this.dialogFormShow = true
     },
     // 删除方法
     deletedata (e) {
@@ -197,13 +187,18 @@ export default {
     seeData (e) {
       // 编辑按钮 点击后显示编辑对话框
       // this.form.departmentname = e.departmentname.toString();
-      this.dialogData.dialogType = 'edit'
-      for (const i in this.dialogData.formList) {
-        if (i === 'departmentid') this.dialogData.formList[i] = parseInt(e[i])
-        else this.dialogData.formList[i] = e[i]
-      }
-      this.dialogData.url = '/webbuy/updateBuy'
-      this.$refs.addDialog.dialogFormVisibleadd = true
+      this.openType = 'edit'
+      this.currentList = e
+      // for (const i in this.dialogData.formList) {
+      //   if (i === 'departmentid') this.dialogData.formList[i] = parseInt(e[i])
+      //   else this.dialogData.formList[i] = e[i]
+      // }
+      // this.dialogData.url = '/webbuy/updateBuy'
+      this.dialogFormShow = true
+    },
+    // 关闭蒙版
+    closeaddDialog() {
+      this.dialogFormShow = false
     },
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {

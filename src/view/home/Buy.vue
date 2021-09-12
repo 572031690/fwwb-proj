@@ -102,63 +102,8 @@ export default {
   },
   data () {
     return {
-      tableText: {
-        tableTitle: ['编号', '购买单名', '日期', '类型', '类型ID', '数量', '购买编号', '提交者编号', '操作'],
-        tableBody: ['buyid', 'buytitle', 'btime', 'itemtype', 'itemid', 'num', 'buyerid', 'neederid', 'opetation']
-      },
-      dialogData: {
-        dialogType: '',
-        dataTableList: [
-          {
-            label: '购买单名',
-            putType: 'input',
-            dataName: 'buytitle'
-          },
-          {
-            label: '日期',
-            putType: 'date',
-            dataName: 'btime'
-          },
-          {
-            label: '类型',
-            putType: 'select',
-            selectData: ['10000', '996', '007', '123'],
-            dataName: 'itemtype'
-          },
-          {
-            label: '类型ID',
-            putType: 'select',
-            selectData: ['10000', '996', '007', '123'],
-            dataName: 'itemid'
-          },
-          {
-            label: '数量',
-            putType: 'num',
-            dataName: 'num'
-          },
-          {
-            label: '购买编号',
-            putType: 'numput',
-            dataName: 'buyerid'
-          },
-          {
-            label: '负责人编号',
-            putType: 'disput',
-            dataName: 'neederid'
-          }
-        ],
-        formList: {
-          buyid: '',
-          buytitle: '',
-          btime: '',
-          itemtype: '',
-          itemid: '',
-          num: '',
-          buyerid: '',
-          neederid: 15
-        },
-        url: ''
-      },
+      tableText: this.$tables.buyList,
+      dialogData: this.$datas.buyList,
       // 表内静态数据列表
       list: [
         {

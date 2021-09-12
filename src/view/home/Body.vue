@@ -151,6 +151,7 @@
 <script>
 import Drawer from '../../components/Drawer.vue'
 import addDialog from '../../components/addDataDialog.vue'
+
 export default {
   components: {
     Drawer,
@@ -158,10 +159,7 @@ export default {
   },
   data () {
     return {
-      tableText: {
-        tableTitle: ['编号', '需求单名', '类型', '类型ID', '数量', '日期', '需求部门编号', '详情', '操作', '状态'],
-        tableBody: ['needid', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'comment', 'opetation1', 'opetation2']
-      },
+      tableText: this.$tables.needList,
       drawerText: [
         {
           label: '编号',
@@ -196,44 +194,7 @@ export default {
           model: 'comment'
         }
       ],
-      dialogData: {
-        dialogType: '',
-        dataTableList: [
-          {
-            label: '需求单名',
-            putType: 'input',
-            dataName: 'needtitle'
-          },
-          {
-            label: '类型',
-            putType: 'select',
-            selectData: ['10000', '996', '007', '123'],
-            dataName: 'itemtype'
-          },
-          {
-            label: '类型ID',
-            putType: 'select',
-            selectData: ['10000', '996', '007', '123'],
-            dataName: 'itemid'
-          },
-          { label: '数量', putType: 'num', dataName: 'neednum' },
-          { label: '需求日期', putType: 'date', dataName: 'needday' },
-          { label: '负责人部门号', putType: 'disput', dataName: 'neederid' },
-          { label: '详情', putType: 'textarea', dataName: 'comment' }
-        ],
-        formList: {
-          needid: '',
-          needtitle: '',
-          itemtype: '',
-          itemid: '',
-          neednum: '',
-          needday: '',
-          neederid: '',
-          comment: '',
-          uptype: 0
-        },
-        url: ''
-      },
+      dialogData: this.$datas.needList,
       select: [ // 搜索框筛选数据
         {
           value: '0',
@@ -307,17 +268,6 @@ export default {
         total: 0, // 总共几条记录去分页
         dname: '', // 查询数据
         selectValue: '' // 查询状态
-      },
-      form: {
-        needid: '',
-        needtitle: '',
-        itemtype: '',
-        itemid: '',
-        neednum: '',
-        needday: '',
-        neederid: '',
-        comment: '',
-        showtype: ''
       },
       dialogFormVisibleadd: false // 不让添加窗口打开
     }

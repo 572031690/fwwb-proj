@@ -47,6 +47,7 @@
               rowspan="1" 
               :class="
               item === '描述'?'htop-th2'
+              :item === '需求单名'?'htop-th7'
               :'htop-th1'">
                 <div class="cell">{{item}}</div>
               </th>
@@ -61,6 +62,7 @@
              <td v-for="(data,index) in tableText.tableBody" 
             :key="index" 
             :class="data==='comment'? 'body-td2'
+            :data==='needtitle'?'body-td3'
             :'body-td1'" >
 
               <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
@@ -104,10 +106,7 @@ export default {
   },
   data () {
     return {
-       tableText:{
-        tableTitle:['类型ID','类型','描述','数量','单位','操作'],
-        tableBody:['itemid','itemtype','comment','neednum','needtitle','opetation']
-      },
+      tableText: this.$tables.itemList,
       dialogData: {
         dialogType: '',
         dataTableList: [
@@ -225,11 +224,18 @@ export default {
     },
     // 打开修改蒙版表单
     seeData (e) {
+      console.log(e,'dasdas');
       // 编辑按钮 点击后显示编辑对话框
       this.dialogData.dialogType = 'edit'
       for (const i in this.dialogData.formList) {
-        if (i === 'neednum' || i === 'neederid') this.dialogData.formList[i] = parseInt(e[i])
-        else this.dialogData.formList[i] = e[i].toString()
+        if (i === 'neednum' || i === 'neederid') 
+        this.dialogData.formList[i] = parseInt(e[i])
+
+
+        else{
+        console.log(e[i],'dadada');
+          
+          this.dialogData.formList[i] = e[i].toString()}
       }
       this.dialogData.url = '/webneed/updateNeed'
       if (this.dialogData.dataTableList[0].label === '需求单名') {
@@ -378,8 +384,14 @@ export default {
   justify-content: center;
 }
 .cell {
-  height: 23px;
-  width: 99px;
+  height: 28px;
+  width: 99%;
+  overflow: hidden;
+  /*顾名思义超出限定的宽度就隐藏内容*/
+  white-space: nowrap;
+  /*设置文字在一行显示不能换行*/
+  text-overflow: ellipsis;
+  /*规定当文本溢出时显示省略符号来代表被修剪的文本*/
   button {
     outline: none;
     border: 0.5px solid #8c959c;
@@ -395,7 +407,7 @@ export default {
 }
 .cell1 {
   height: 23px;
-  width: 450px;
+  width: 98%;
   overflow: hidden;
   /*顾名思义超出限定的宽度就隐藏内容*/
   white-space: nowrap;

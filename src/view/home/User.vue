@@ -120,10 +120,7 @@ export default {
   },
   data () {
     return {
-      tableText: {
-        tableTitle: ['编号', '用户名', '密码', '电话号码', '职工号', '部门号', '操作'],
-        tableBody: ['userid', 'username', 'password', 'telNum', 'employeeid', 'departmentid', 'opetation']
-      },
+      tableText: this.$tables.userList,
       dialogData: {
         dialogType: '',
         dataTableList: [
