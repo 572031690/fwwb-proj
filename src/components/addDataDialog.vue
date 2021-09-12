@@ -170,7 +170,7 @@ export default {
       }
       console.log(data, 'datadatadata')
       // $ajax请求
-      const url = this.dialogData.url[this.name]
+      const url = this.dialogData.url[this.openType]
       await this.$ajax.post(url, data, {}).then(res => {
         const { data } = res
         if (data.code === '101') {
