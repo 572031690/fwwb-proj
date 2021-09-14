@@ -150,7 +150,7 @@ export default {
       }
       this.dialogData.dataTableList.forEach(item => {
         if (item.putType === 'disput') {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('sData'))
+          this.dialogData.formList[item.dataName] = paraseInt(window.sessionStorage.getItem('sData'))
         }
       })
     },
@@ -159,7 +159,7 @@ export default {
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
         if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
-        else this.dialogData.formList[i] = this.currentList[i].toString()
+        else this.dialogData.formList[i] = this.currentList[i]
       }
     },
     approval () {

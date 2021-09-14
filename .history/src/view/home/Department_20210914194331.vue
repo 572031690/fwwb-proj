@@ -74,7 +74,7 @@
 
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click.stop="seeData(item)">编辑</button>
-                  <button class="delete" @click.stop="deletedata(item,'/webDepartment/deleteDepartment')">删除</button>
+                  <button class="delete" @click.stop="deletedata(item)">删除</button>
                 </div>
               </td>
             </tr>
@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = '/webDepartment/findAllDepartment'
+      this.searchUrl = '/webbuy/findAllBuy'
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

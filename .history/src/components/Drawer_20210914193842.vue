@@ -308,7 +308,7 @@ export default {
   display: flex;
 }
 .drawerApprovalBox {
-  // width:400px;
+  width:400px;
   margin-left:40px;
 }
 .drawerApprovalBoxRight {

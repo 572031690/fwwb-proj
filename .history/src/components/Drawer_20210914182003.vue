@@ -10,7 +10,7 @@
       :size="openType === 'see'? '576':'90%'"
     >
       <div class="drawercenter">
-        <div class="drawerStyle" :style="{'width': openType === 'write'? '760px':'520px'}">
+        <div class="drawerStyle" :style="{'width': openType === 'write'? '720px':'520px'}">
           <div class="drawertopstatus"  v-if="openType === 'see'">
             <el-steps
               :space="200"
@@ -70,21 +70,21 @@
               <el-timeline>
                 <el-timeline-item
                   v-for="(item, key) in list"
-                  :icon="typeList[parseInt(item.id)-1].icon"
-                  :color="typeList[parseInt(item.id)-1].color"
+                  :icon="item.icon"
+                  :color="item.color"
                   size="large"
                   :key="key"
                   :timestamp="item.time"
                   placement="top"
                 >
-                   <el-card>
-                      <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
-                      ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
-                      <br />
-                      <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
-                      <p v-show="item.text">审批意见：{{ item.text }}</p>
-                      <!-- <el-button type="danger" @click="deletedata(key)"
-                        >删除</el-button -->
+                  <el-card>
+                    <span style="font-weight:bold;">{{ item.top }}</span
+                    ><span v-show="item.auther"> 审批人：{{ item.auther }}</span>
+                    <br />
+                    <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
+                    <p v-show="item.text">审批意见：{{ item.text }}</p>
+                    <!-- <el-button type="danger" @click="deletedata(key)"
+                      >删除</el-button -->
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
@@ -308,12 +308,13 @@ export default {
   display: flex;
 }
 .drawerApprovalBox {
-  // width:400px;
+  width:400px;
   margin-left:40px;
 }
 .drawerApprovalBoxRight {
+  width:440px;
   margin-left:20px;
-  padding: 0 40px;
+  padding: 0 20px;
   height: 540px;
   overflow: auto;
   border-left: 2px dashed #eee;

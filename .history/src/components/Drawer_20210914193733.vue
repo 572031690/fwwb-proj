@@ -10,7 +10,7 @@
       :size="openType === 'see'? '576':'90%'"
     >
       <div class="drawercenter">
-        <div class="drawerStyle" :style="{'width': openType === 'write'? '760px':'520px'}">
+        <div class="drawerStyle" :style="{'width': openType === 'write'? '750px':'520px'}">
           <div class="drawertopstatus"  v-if="openType === 'see'">
             <el-steps
               :space="200"
@@ -308,10 +308,11 @@ export default {
   display: flex;
 }
 .drawerApprovalBox {
-  // width:400px;
+  width:400px;
   margin-left:40px;
 }
 .drawerApprovalBoxRight {
+  width:440px;
   margin-left:20px;
   padding: 0 40px;
   height: 540px;
