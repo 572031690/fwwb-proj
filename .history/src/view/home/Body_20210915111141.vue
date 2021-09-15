@@ -44,7 +44,7 @@
                       </div>
                     </div>
                   </el-col>
-                  <el-col :span="8" v-if="$store.state.departmentId==='10010' || $store.state.departmentId==='10020'">
+                  <el-col :span="8" v-if="this.$store.state.departmentId==='10010' || this.$store.state.departmentId==='10020'">
                     <button class="bodyadd" @click="gethomeAdd()">
                       <i class="el-icon-plus"></i>添加
                     </button>
@@ -99,7 +99,7 @@
                     {{ item[data] }}
                   </div>
                   <div class="bodyButton" v-if="data==='opetation1'">
-                    <div class="cell" v-if="$store.state.departmentId==='10010' || $store.state.departmentId==='10020'">
+                    <div class="cell" v-if="this.$store.state.departmentId==='10010' || this.$store.state.departmentId==='10020'">
                       <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 2">
                         编辑
                       </button>
@@ -114,7 +114,7 @@
                         驳回结果
                       </button>
                     </div>
-                    <div class="cell"  v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'">
+                    <div class="cell"  v-if="this.$store.state.departmentId==='10000' || this.$store.state.departmentId==='10001'">
                       <button class="writeApproval" @click="writeApproval(key)">
                         审批
                       </button>
