@@ -216,7 +216,7 @@ export const addEditList = {
     },
     url: {
       add: 'home/table/AddUser',
-      edit: 'home/table/editUser',
+      edit: '/web/updateUser',
       approval: ''
     }
   }

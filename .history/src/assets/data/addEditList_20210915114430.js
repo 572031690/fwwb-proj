@@ -215,8 +215,8 @@ export const addEditList = {
       employeeid: ''
     },
     url: {
-      add: 'home/table/AddUser',
-      edit: 'home/table/editUser',
+      add: 'home/tableService/AddUser',
+      edit: '/web/updateUser',
       approval: ''
     }
   }

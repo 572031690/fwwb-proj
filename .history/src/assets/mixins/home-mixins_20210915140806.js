@@ -17,7 +17,7 @@ export default {
     // ajax请求后台数据 获得list数据 并用于分页
     async search () {
       // const url = '/webneed/findAllNeed'
-      await this.$api(this.searchUrl, {
+      await this.$ajax.get(this.searchUrl, {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
@@ -29,8 +29,8 @@ export default {
         this.list = data // 获取里面的data数据
         this.params.total = data.count // 获取后台传过来的总数据条数
         this.params.page = data.page // 将后端的当前页反传回来
-      }).catch(err => {
-        this.$message.error(err.toString())
+      }).catch(() => {
+        this.$message.error('网络异常')
       })
     },
     // 删除方法
@@ -57,15 +57,13 @@ export default {
             }
           })
         })
-        .catch(err => {
-          if (err === 'cancel') {
-            this.$message('取消删除')
-          } else {
-            this.$message({
-              type: 'error',
-              message: err
-            })
-          }
+        .catch((err, message) => {
+          console.log(message, '我的message')
+          console.log('错误信息：', err)
+          this.$message({
+            type: 'error',
+            message: message
+          })
         })
     },
 

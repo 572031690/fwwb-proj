@@ -29,8 +29,8 @@ export default {
         this.list = data // 获取里面的data数据
         this.params.total = data.count // 获取后台传过来的总数据条数
         this.params.page = data.page // 将后端的当前页反传回来
-      }).catch(err => {
-        this.$message.error(err.toString())
+      }).catch(() => {
+        this.$message.error('dsad')
       })
     },
     // 删除方法

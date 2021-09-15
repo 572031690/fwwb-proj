@@ -88,7 +88,7 @@
 
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({userid: item.userid},'home/table/deleteUser')">删除</button>
+                  <button class="delete" @click="deletedata({userid: item.userid},'home/tableService/deleteUser')">删除</button>
                 </div>
               </td>
             </tr>
@@ -189,7 +189,7 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = 'home/table/getUser'
+      this.searchUrl = 'web/listUser'
     }
   }
 }
