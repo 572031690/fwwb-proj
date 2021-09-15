@@ -151,7 +151,7 @@ export const addEditList = {
         label: '单位',
         putType: 'select',
         selectData: ['KG', 'T', 'g'],
-        dataName: 'unit'
+        dataName: 'needtitle'
       },
       {
         label: '详情',
@@ -161,10 +161,12 @@ export const addEditList = {
     ],
     formList: {
       itemid: '',
+      needtitle: '',
+      needday: '',
       itemtype: '',
       neednum: '',
-      comment: '',
-      unit: ''
+      neederid: '',
+      comment: ''
     },
     url: {
       add: '/webneed/addNeed',

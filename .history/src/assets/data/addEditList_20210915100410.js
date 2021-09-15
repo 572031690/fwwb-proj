@@ -161,10 +161,12 @@ export const addEditList = {
     ],
     formList: {
       itemid: '',
+      needtitle: '',
+      needday: '',
       itemtype: '',
       neednum: '',
-      comment: '',
-      unit: ''
+      neederid: '',
+      comment: ''
     },
     url: {
       add: '/webneed/addNeed',

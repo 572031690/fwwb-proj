@@ -1,7 +1,8 @@
 <template>
   <div class="right-body" id="body">
     <div class="overbox">
-      <div class="bodyheart">
+
+    <div class="bodyheart">
         <div class="body-top">
           <div class="bodytop-heart">
             <el-row>
@@ -16,7 +17,7 @@
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入材料名称"
+                        placeholder="请输入需求名单"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -41,69 +42,67 @@
           <div class="table-top">
             <thead>
               <!-- 表头 -->
-              <tr>
+              <tr >
                 <th v-for="(item,index) in tableText.tableTitle"
                 :key="index"
                 colspan="1"
                 rowspan="1"
                 :class="
-                item === '描述'?'htop-th3'
-                :item === '需求单名'?'htop-th7'
+                item === '购买单名'?'htop-th2'
                 :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </th>
               </tr>
+
             </thead>
           </div>
           <!-- 数据列表 -->
-          <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
           <tbody>
             <tr v-for="(item, key) in list" :key="key">
 
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
-              :class="{'body-td4': data==='comment'}" >
+              :class="data==='buytitle'? 'body-td2'
+              :'body-td1'" >
 
-                <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
+                <div class="cell" v-if="data!=='opetation'">
                   {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({itemid: item.itemid},'/webneed/deleteNeed')">删除</button>
+                  <button class="delete" @click="deletedata({buyid: item.buyid},'/webbuy/deleteBuy')">删除</button>
                 </div>
               </td>
-
             </tr>
           </tbody>
 
-          <addDialog ref="addDialog"
-            :dialogFormShow="dialogFormShow"
-            @updata="search"
-            @closeaddDialog="closeaddDialog"
-            :IntList="IntList"
-            :topChange="topChange"
-            :currentList="currentList"
-            :openType="openType"
-            name="itemList"
-        >
-        </addDialog>
-
-        </div>
-        <div class="table-bottom">
-          <!-- 底部页码功能 -->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="params.page"
-            :page-sizes="[5, 10, 15, 20]"
-            :page-size="params.limit"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="params.total"
-          >
-          </el-pagination>
         </div>
       </div>
+      <div class="table-bottom">
+        <!-- 底部页码功能 -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="params.page"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="params.limit"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="params.total"
+        >
+        </el-pagination>
+      </div>
+      <addDialog ref="addDialog"
+        :dialogFormShow="dialogFormShow"
+        @updata="search"
+        @closeaddDialog="closeaddDialog"
+        :IntList="IntList"
+        :topChange="topChange"
+        :currentList="currentList"
+        :openType="openType"
+        name="buyList"
+      >
+      </addDialog>
     </div>
   </div>
 </template>
@@ -118,17 +117,21 @@ export default {
   },
   data () {
     return {
-      tableText: this.$tables.itemList,
+      tableText: this.$tables.buyList,
       dialogFormShow: false,
-      IntList: ['neednum', 'itemid'],
-      topChange: 'itemid',
+      IntList: ['buyid', 'itemid', 'num', 'buyerid', 'neederid'],
+      topChange: 'buyid',
+      // 表内静态数据列表
       list: [
         {
-          itemid: 1,
-          itemtype: '马佳辉',
-          comment: 5454165,
-          neednum: '3',
-          unit: '5'
+          buyid: 1,
+          buytitle: '马佳辉',
+          btime: 1373201546,
+          itemtype: '3',
+          itemid: '5',
+          num: '50',
+          buyerid: '15',
+          neederid: 15
         }
       ],
       loading2: true
@@ -146,20 +149,13 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = '/webneed/findAllNeed'
+      this.searchUrl = '/webbuy/findAllBuy'
     }
   }
 }
 </script>
 <style lang="less" scoped>
-@import url("../../assets/less/right-table.less");
-
-.body-top {
-  height: 45px;
-  width: 1210px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-}
+  @import url("../../assets/less/right-table.less");
 
 .searchfa {
   margin-left: 35px;

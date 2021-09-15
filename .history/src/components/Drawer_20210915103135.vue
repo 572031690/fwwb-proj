@@ -40,7 +40,7 @@
                       type="textarea"
                       :rows="4"
                       placeholder="请输入意见"
-                      v-model="opinion">
+                      v-model="textarea">
                     </el-input>
                 </div>
               </div>
@@ -151,7 +151,6 @@ export default {
       loading: false,
       timer: null,
       drawerText,
-      opinion: '',
       typeList: [
         {
           title: '提交申请',

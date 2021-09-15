@@ -132,9 +132,19 @@ export const addEditList = {
   itemList: {
     dataTableList: [
       {
-        label: '类型ID',
+        label: '编号ID',
         putType: 'disput',
         dataName: 'itemid'
+      },
+      {
+        label: '需求单名',
+        putType: 'input',
+        dataName: 'needtitle'
+      },
+      {
+        label: '需求日期',
+        putType: 'date',
+        dataName: 'needday'
       },
       {
         label: '类型',
@@ -143,15 +153,20 @@ export const addEditList = {
         dataName: 'itemtype'
       },
       {
+        label: '类型ID',
+        putType: 'select',
+        selectData: ['10000', '996', '007', '123'],
+        dataName: 'itemid'
+      },
+      {
         label: '数量',
         putType: 'num',
         dataName: 'neednum'
       },
       {
-        label: '单位',
-        putType: 'select',
-        selectData: ['KG', 'T', 'g'],
-        dataName: 'unit'
+        label: '负责人部门号',
+        putType: 'disput',
+        dataName: 'neederid'
       },
       {
         label: '详情',
@@ -161,10 +176,12 @@ export const addEditList = {
     ],
     formList: {
       itemid: '',
+      needtitle: '',
+      needday: '',
       itemtype: '',
       neednum: '',
-      comment: '',
-      unit: ''
+      neederid: '',
+      comment: ''
     },
     url: {
       add: '/webneed/addNeed',

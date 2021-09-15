@@ -34,7 +34,7 @@ export default {
       })
     },
     // 删除方法
-    deletedata (data, url) {
+    deletedata (e, url) {
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -43,7 +43,9 @@ export default {
         .then(async () => {
           // const url = '/web/deleteUser'
           await this.$ajax.get(url, {
-            params: data
+            params: {
+              userid: e.userid
+            }
           }).then(res => {
             if (res) {
               this.$message({
@@ -51,7 +53,7 @@ export default {
                 message: '删除成功!'
               })
               this.search()
-              // this.list.splice(e, 1)
+              this.list.splice(e, 1)
             } else {
               this.$message.error('错了哦，删除失败')
             }
@@ -59,8 +61,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: 'error',
-            message: '网络异常'
+            type: 'info',
+            message: '已取消删除'
           })
         })
     },

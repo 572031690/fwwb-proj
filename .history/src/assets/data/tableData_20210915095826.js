@@ -13,7 +13,7 @@ export const tableList = {
   },
   itemList: {
     tableTitle: ['类型ID', '类型', '描述', '数量', '单位', '操作'],
-    tableBody: ['itemid', 'itemtype', 'comment', 'neednum', 'unit', 'opetation']
+    tableBody: ['itemid', 'itemtype', 'comment', 'neednum', 'needtitle', 'opetation']
   },
   userList: {
     tableTitle: ['编号', '用户名', '密码', '电话号码', '职工号', '部门号', '操作'],

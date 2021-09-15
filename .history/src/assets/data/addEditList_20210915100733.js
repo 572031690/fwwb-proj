@@ -163,8 +163,8 @@ export const addEditList = {
       itemid: '',
       itemtype: '',
       neednum: '',
-      comment: '',
-      unit: ''
+      neederid: '',
+      comment: ''
     },
     url: {
       add: '/webneed/addNeed',

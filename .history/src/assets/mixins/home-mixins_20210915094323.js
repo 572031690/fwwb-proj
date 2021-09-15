@@ -51,7 +51,7 @@ export default {
                 message: '删除成功!'
               })
               this.search()
-              // this.list.splice(e, 1)
+              this.list.splice(e, 1)
             } else {
               this.$message.error('错了哦，删除失败')
             }
@@ -59,8 +59,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: 'error',
-            message: '网络异常'
+            type: 'info',
+            message: '已取消删除'
           })
         })
     },

@@ -247,6 +247,7 @@ export default {
   created () {
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
+    this.$store.commit('getDepartment', this.departmentID)
     this.getAdminType()
   },
   mounted () {

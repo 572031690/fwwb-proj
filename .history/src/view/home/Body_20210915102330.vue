@@ -192,7 +192,7 @@ export default {
     Drawer,
     addDialog
   },
-  // inject: ['departId'],
+  inject: ['departId'],
   data () {
     return {
       statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(23, 165, 23)'],
@@ -281,7 +281,7 @@ export default {
   methods: {
     // 获取登录账号信息
     getTyp () {
-      if (this.$store.state.departmentId === '10000' || this.$store.state.departmentId === '10001') this.drawOpenType = 'write'
+      if (this.departId() === '10000' || this.departId() === '10001') this.drawOpenType = 'write'
       else this.drawOpenType = 'see'
     },
     getSearchUrl () {

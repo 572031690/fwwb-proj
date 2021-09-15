@@ -28,7 +28,7 @@ export const rulesData = {
     { type: 'number', message: 'ID必须为数字值' }
   ],
   needtitle: [
-    { required: true, message: '请输入需求名单', trigger: 'blur' },
+    { required: true, message: '请输入需求单名', trigger: 'blur' },
     {
       min: 3,
       max: 10,

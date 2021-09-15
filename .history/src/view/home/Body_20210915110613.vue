@@ -192,7 +192,7 @@ export default {
     Drawer,
     addDialog
   },
-  // inject: ['departId'],
+  inject: ['departId'],
   data () {
     return {
       statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(23, 165, 23)'],

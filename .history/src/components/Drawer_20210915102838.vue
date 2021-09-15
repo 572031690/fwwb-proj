@@ -35,62 +35,16 @@
                 <h3>审批意见</h3>
                 <hr />
                 <br />
-                <div class="inputBox">
-                    <el-input
-                      type="textarea"
-                      :rows="4"
-                      placeholder="请输入意见"
-                      v-model="opinion">
-                    </el-input>
-                </div>
+              <div class="inputBox">
+                  <el-input
+                    type="textarea"
+                    :rows="4"
+                    placeholder="请输入意见"
+                    v-model="textarea">
+                  </el-input>
               </div>
-              <div  class="drawerApprovalBox" v-if="openType === 'see'">
-                <h3>审批详情</h3>
-                <hr />
-                <br />
-                <div class="block">
-                  <el-timeline>
-                    <el-timeline-item
-                      v-for="(item, key) in list"
-                      :icon="typeList[parseInt(item.id)-1].icon"
-                      :color="typeList[parseInt(item.id)-1].color"
-                      size="large"
-                      :key="key"
-                      :timestamp="item.time"
-                      placement="top"
-                    >
-                      <el-card>
-                          <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
-                          ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
-                          <br />
-                          <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
-                          <p v-show="item.text">审批意见：{{ item.text }}</p>
-                          <!-- <el-button type="danger" @click="deletedata(key)"
-                            >删除</el-button -->
-                      </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
-                  <!-- <el-button type="danger" @click="add()">添加</el-button> -->
-                </div>
               </div>
 
-              <div class="demo-drawer__footer">
-                <div v-if="openType === 'see'">
-                  <el-button @click="cancelForm">关 闭</el-button>
-                  <el-button
-                    v-show="form.uptype==2"
-                    type="primary"
-                    @click="upData()"
-                    :loading="loading"
-                    >{{ loading ? "提交中 ..." : "再次提交" }}</el-button
-                  >
-                </div>
-                <div v-else>
-                  <el-button @click="cancelForm">关 闭</el-button>
-                  <el-button @click="witeApproval('reject')" type="danger">驳 回</el-button>
-                  <el-button @click="witeApproval('pass')"  type="success">通 过</el-button>
-                </div>
-              </div>
             </div>
             <div  class="drawerApprovalBoxRight" v-if="openType === 'write'">
               <h3>审批详情</h3>
@@ -123,6 +77,53 @@
             </div>
           </div>
 
+          <div  class="drawerApprovalBox" v-if="openType === 'see'">
+            <h3>审批详情</h3>
+            <hr />
+            <br />
+            <div class="block">
+              <el-timeline>
+                <el-timeline-item
+                  v-for="(item, key) in list"
+                  :icon="typeList[parseInt(item.id)-1].icon"
+                  :color="typeList[parseInt(item.id)-1].color"
+                  size="large"
+                  :key="key"
+                  :timestamp="item.time"
+                  placement="top"
+                >
+                   <el-card>
+                      <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
+                      ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
+                      <br />
+                      <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
+                      <p v-show="item.text">审批意见：{{ item.text }}</p>
+                      <!-- <el-button type="danger" @click="deletedata(key)"
+                        >删除</el-button -->
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+              <!-- <el-button type="danger" @click="add()">添加</el-button> -->
+            </div>
+          </div>
+
+          <div class="demo-drawer__footer">
+            <div v-if="openType === 'see'">
+              <el-button @click="cancelForm">关 闭</el-button>
+              <el-button
+                v-show="form.uptype==2"
+                type="primary"
+                @click="upData()"
+                :loading="loading"
+                >{{ loading ? "提交中 ..." : "再次提交" }}</el-button
+              >
+            </div>
+            <div v-else>
+              <el-button @click="cancelForm">关 闭</el-button>
+              <el-button @click="witeApproval('reject')" type="danger">驳 回</el-button>
+              <el-button @click="witeApproval('pass')"  type="success">通 过</el-button>
+            </div>
+          </div>
         </div>
       </div>
     </el-drawer>
@@ -151,7 +152,6 @@ export default {
       loading: false,
       timer: null,
       drawerText,
-      opinion: '',
       typeList: [
         {
           title: '提交申请',
@@ -317,7 +317,7 @@ export default {
 .drawerApprovalBoxRight {
   margin-left:20px;
   padding: 0 40px;
-  height: 720px;
+  height: 540px;
   overflow: auto;
   border-left: 2px dashed #eee;
   // padding: 15px 25px;

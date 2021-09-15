@@ -8,7 +8,8 @@ const store = new Vuex.Store({
   state: {
     count: 1,
     flagwel: 'block',
-    dialogDraw: false // 显示抽屉
+    dialogDraw: false, // 显示抽屉
+    departmentId: ''
   },
   // 2.mutations里面放的是方法,方法主要用于改变state里面的数据
   mutations: {
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
     ChangeDraw (state) {
       console.log(state)
       state.dialogDraw = !state.dialogDraw
+    },
+    getDepartment (state, id) {
+      state.departmentId = id
     }
   },
   actions: {

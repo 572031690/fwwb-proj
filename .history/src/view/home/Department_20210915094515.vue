@@ -13,23 +13,6 @@
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div class="search">
-                    <el-select
-                      v-model="params.selectValue"
-                      @change="search"
-                      placeholder="选择状态"
-                      clearable
-                      size="small"
-                      class="selectAvro"
-                    >
-                      <el-option
-                        style="padding:0 18px 0 10px;"
-                        v-for="item in select"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
@@ -57,43 +40,58 @@
         >
           <div class="table-top">
             <thead>
+              <!-- 表头 -->
+
               <tr >
                 <th v-for="(item,index) in tableText.tableTitle"
                 :key="index"
                 colspan="1"
                 rowspan="1"
                 :class="
-                item === '用户名'?'htop-th2'
-                :item === '密码'?'htop-th2'
-                :'htop-th1'">
+                item === '操作'?'htop-th1'
+                :'htop-th3'">
                   <div class="cell">{{item}}</div>
                 </th>
               </tr>
+
             </thead>
           </div>
           <!-- 数据列表 -->
           <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
           <tbody>
+
             <tr v-for="(item, key) in list" :key="key">
 
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
-              :class="data==='username'? 'body-td2'
-              :data==='password'?'body-td2'
-              :'body-td1'" >
+              :class="data==='opetation'? 'body-td1'
+              :'body-td4'"
+              @click="getDetail(item)">
 
-                <div class="cell" v-if="data!=='opetation'">
+                <div class="cell1" v-if="data!=='opetation'">
                   {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
-                  <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({userid: item.userid},'/web/deleteUser')">删除</button>
+                  <button class="modify" @click.stop="seeData(item)">编辑</button>
+                  <button class="delete" @click.stop="deletedata({departmentid: item.departmentid},'/webDepartment/deleteDepartment')">删除</button>
                 </div>
               </td>
             </tr>
           </tbody>
 
+        <addDialog ref="addDialog"
+        :dialogFormShow="dialogFormShow"
+        @updata="search"
+        @closeaddDialog="closeaddDialog"
+        :IntList="IntList"
+        :currentList="currentList"
+        :openType="openType"
+        name="department"
+        >
+        </addDialog>
+
+          <!-- </el-table> -->
         </div>
         <div class="table-bottom">
           <!-- 底部页码功能 -->
@@ -108,78 +106,40 @@
           >
           </el-pagination>
         </div>
-
-        <addDialog ref="addDialog"
-          :dialogFormShow="dialogFormShow"
-          @updata="search"
-          @closeaddDialog="closeaddDialog"
-          :IntList="IntList"
-          :topChange="topChange"
-          :currentList="currentList"
-          :openType="openType"
-          name="userList"
-        >
-        </addDialog>
+        <detail ref="detail"/>
       </div>
     </div>
   </div>
 </template>
 <script>
 import addDialog from '../../components/addDataDialog.vue'
+import detail from '../../components/DepartDetail.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
   components: {
-    addDialog
+    addDialog,
+    detail
   },
   data () {
     return {
-      tableText: this.$tables.userList,
+      tableText: this.$tables.departmentList,
+      IntList: ['departmentid'],
       dialogFormShow: false,
-      IntList: ['departmentid', 'employeeid', 'userid'],
-      topChange: 'userid',
+      // 表内静态数据列表
       list: [
         {
-          userid: 1,
-          username: '马佳辉',
-          password: 5454165,
-          telNum: 1373201546,
-          employeeid: '3',
-          departmentid: '5'
-        },
-        {
-          userid: 2,
-          username: '夏航宇',
-          password: 15615,
-          telNum: 15865645646,
-          employeeid: '1',
-          departmentid: '5'
+          departmentname: 'sadasd',
+          departmentid: '12'
         }
       ],
-      loading2: true,
-      select: [
-        {
-          value: '10000',
-          label: '管理部'
-        },
-        {
-          value: '10001',
-          label: '审批部'
-        },
-        {
-          value: '10010',
-          label: '需求部'
-        },
-        {
-          value: '10020',
-          label: '采购部'
-        }
-      ],
-      dialogFormVisible: false // 不让修改窗口打开
+      loading2: true
     }
   },
   mounted () {
+    // var ps=String.split(this.form.pass);
+    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
     }, 400)
@@ -189,7 +149,22 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = 'web/listUser'
+      this.searchUrl = '/webDepartment/findAllDepartment'
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    // 打开部门详情页面
+    getDetail (item) {
+      console.log(item)
+      const form = {
+        name: '采购部',
+        employenum: 25,
+        departmentid: 10020,
+        detail: '此部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息部门用于处理公司的采购订单等信息'
+      }
+      this.$refs.detail.form = form
+      this.$refs.detail.dialogFormVisible = true
     }
   }
 }
@@ -198,6 +173,56 @@ export default {
 @import url("../../assets/less/right-table.less");
 
 .body-top {
-  width: 1340px;
+  width: 1210px;
+}
+
+.searchfa {
+  margin-left: 35px;
+}
+.search {
+  margin-left: 5px;
+  float: left;
+  height: 30px;
+  input {
+    float: left;
+    border: none;
+    outline: none;
+    width: 95.5%;
+    height: 30px;
+    padding-left: 13px;
+    border: 2px solid #dadce0;
+    border-right: 0;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+  }
+  button {
+    float: left;
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 45px;
+    cursor: pointer;
+    position: absolute;
+    top: 1.6px;
+    right: 0;
+    background: #dadce0;
+    border-radius: 0 5px 5px 0;
+    &:hover {
+      background-color: #c8c8c8;
+      box-shadow: 0 0 3px#c8c8c8;
+    }
+    &:active {
+      padding-left: 1px;
+      padding-top: 1px;
+      background: #dadce0;
+    }
+    &:before {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 16px;
+      color: #f9f0da;
+    }
+  }
 }
 </style>

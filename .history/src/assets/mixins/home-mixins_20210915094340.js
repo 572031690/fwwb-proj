@@ -59,8 +59,8 @@ export default {
         })
         .catch(() => {
           this.$message({
-            type: 'error',
-            message: '网络异常'
+            type: 'info',
+            message: '已取消删除'
           })
         })
     },
