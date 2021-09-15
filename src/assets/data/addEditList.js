@@ -197,7 +197,7 @@ export const addEditList = {
       {
         label: '部门编号',
         putType: 'select',
-        selectData: ['10000', '996', '007', '123'],
+        selectData: ['10000', '10001', '10010', '10020'],
         dataName: 'departmentid'
       },
       {

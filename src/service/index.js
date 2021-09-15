@@ -31,22 +31,22 @@ axios.interceptors.request.use(
 
 // http response 拦截器  全局相应拦截
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
-axios.interceptors.response.use(
-  response => {
-    switch (response.data.error) {
-      case 401:
-        response.data.msg = '未授权，请登录'
-        break
-      default:
-        break
-    }
-    return response
-  },
-  error => {
-    console.log(error)
-    return Promise.reject(error)
-  }
-)
+// axios.interceptors.response.use(
+//   response => {
+//     switch (response.data.error) {
+//       case 401:
+//         response.data.msg = '未授权，请登录'
+//         break
+//       default:
+//         break
+//     }
+//     return response
+//   },
+//   error => {
+//     console.log(error)
+//     return Promise.reject(error)
+//   }
+// )
 
 export default axios // 这句千万不能漏下！！！
 
@@ -58,7 +58,7 @@ export default axios // 这句千万不能漏下！！！
  */
 export function post (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(url, qs.stringify(data)).then(
+    axios.post(url, data).then(
       response => {
         resolve(response.data)
       },

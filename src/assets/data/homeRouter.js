@@ -28,7 +28,7 @@ export const routerList = [
         label: '需求表',
         ref: 'spans7',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/body.png')
       },
       {
@@ -37,7 +37,7 @@ export const routerList = [
         label: '购买订单',
         ref: 'spans5',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/buy.png')
       },
       {

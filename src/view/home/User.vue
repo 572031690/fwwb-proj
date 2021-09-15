@@ -182,6 +182,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.loading2 = false
+      console.log(this.list,'list');
     }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据

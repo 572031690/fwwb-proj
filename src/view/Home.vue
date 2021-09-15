@@ -163,6 +163,7 @@ export default {
         type: 'warning'
       }).then(() => {
         sessionStorage.clear() // 删除所有数据
+        this.$store.commit('getDepartment', '')
         this.$router.push({ name: 'login' }) // 直接跳转
         this.$message({
           type: 'success',
@@ -218,20 +219,21 @@ export default {
       clearInterval(this.thistime)
     },
     getAdminType () {
+        this.initType(false)
       if (this.departmentID === '10000' || this.departmentID === '10001') { // 最大管理管 // 审批管理员
-        this.routerList[2].showtab = true
-        // this.routerList[1].showtab = true
-        this.routerList[3].showtab = true
-        this.routerList[4].showtab = true
-        this.routerList[5].showtab = true
+        this.initType(true)
       } else if (this.departmentID === '10010') { // 需求部门
-        this.routerList[1].showtab = true
         this.routerList[1].childrenList[1].showtab = false
         this.routerList[1].childrenList[0].showtab = true
       } else if (this.departmentID === '10020') { // 购买部门
-        this.routerList[1].showtab = true
         this.routerList[1].childrenList[1].showtab = true
         this.routerList[1].childrenList[0].showtab = false
+      }
+    },
+    initType(bool) {
+      for(let i=1;i<=5;i++){
+        this.routerList[i].showtab = bool
+        if(i===1)  this.routerList[i].showtab = !bool
       }
     },
     judgeType (val) {
@@ -249,6 +251,7 @@ export default {
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
     this.getAdminType()
+    console.log(this.$store.state,'dddddddd');
   },
   mounted () {
     this.changehomeimgCreate()
@@ -451,7 +454,7 @@ export default {
 }
 .rightNavigation {
   display: inline-block;
-  width: 90%;
+  width: 100%;
   height: 100vh;
   /*占满一个屏幕的高度 */
   box-sizing: border-box;

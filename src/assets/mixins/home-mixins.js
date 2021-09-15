@@ -24,12 +24,15 @@ export default {
           username: this.params.dname // 传递搜索参数
         }
       }).then((res) => {
+        // debugger;
         console.log(res)
-        const { data } = res
-        this.list = data // 获取里面的data数据
-        this.params.total = data.count // 获取后台传过来的总数据条数
-        this.params.page = data.page // 将后端的当前页反传回来
+        // const { data } = res
+        this.list = res.list // 获取里面的data数据
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        this.params.page = res.page // 将后端的当前页反传回来
       }).catch(err => {
+        debugger;
+
         this.$message.error(err.toString())
       })
     },

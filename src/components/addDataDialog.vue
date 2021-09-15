@@ -196,8 +196,8 @@ export default {
       // $ajax请求
       const url = this.dialogData.url[this.openType]
       await this.$api(url, data).then(res => {
-        const { data } = res
-        if (data.code === '101') {
+        const { code } = res
+        if (parseInt(code) === 101) {
           this.$message({
             type: 'success',
             message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'

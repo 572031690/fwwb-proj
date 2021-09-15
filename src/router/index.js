@@ -41,7 +41,7 @@ const routes = [
   // {path:'/department',component:Department,name:'department'} //js跳转
   // {path:'/content/:aid',component:Content}, //动态路由
   // {path:'/pcontent',component:Pcontent}, //get方法传值配置
-  // {path:'*',redirect:'/home'}  //默认跳转路由
+  ,{path:'',redirect:'/login'}  //默认跳转路由
 ]
 
 const router = new VueRouter({
@@ -55,13 +55,16 @@ router.beforeEach((to, from, next) => {
   const store = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
   // if (!store) return next('/login') // 判断如果里面的值为空则跳回登陆界面
   // next() // 正常放行
-  if (to.path === '/login') {
+  if (to.path === '/login' && !store) {
     console.log('1')
     next()
-  } else if (!store) {
+  } else if(to.path === '/login' && store) {
+    alert('请先退出登陆')
+    next('/home')
+  }else if (!store) {
     console.log('2')
-    // next('/login')
-    next()
+    next('/login')
+    // next()
   } else {
     console.log('3')
     next()
