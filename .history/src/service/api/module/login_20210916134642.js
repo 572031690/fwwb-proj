@@ -22,14 +22,5 @@ export default [
       employeeid: '',
       departmentid: ''
     }
-  },
-  {
-    name: 'getCode',
-    method: 'POST',
-    desc: '发生注册手机验证码',
-    path: '/getCode',
-    params: {
-      phone: ''
-    }
   }
 ]

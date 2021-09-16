@@ -190,7 +190,7 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = 'home/user/getUser'
+      this.searchUrl = 'home/table/getUser'
     }
   }
 }

@@ -40,9 +40,9 @@ export const addEditList = {
       uptype: 0
     },
     url: {
-      add: 'home/need/addNeed',
-      edit: 'home/need/editNeed',
-      approval: 'home/need/approvalNeed'
+      add: '/web/saveUser',
+      edit: '/webbuy/updateBuy',
+      approval: '/webbuy/updateBuy'
     }
   },
   buyList: {
@@ -101,9 +101,9 @@ export const addEditList = {
       neederid: 15
     },
     url: {
-      add: 'home/buy/addBuy',
-      edit: 'home/buy/updateBuy',
-      approval: 'home/buy/approvalBuy'
+      add: '/webbuy/addBuy',
+      edit: '/webbuy/updateBuy',
+      approval: ''
     }
   },
   department: {
@@ -124,8 +124,9 @@ export const addEditList = {
       departmentid: ''
     },
     url: {
-      add: 'home/department/addDepart',
-      edit: 'home/department/editDepart'
+      add: 'home/item/additem',
+      edit: 'home/item/editItem',
+      approval: ''
     }
   },
   itemList: {
@@ -166,8 +167,8 @@ export const addEditList = {
       unit: ''
     },
     url: {
-      add: 'home/item/additem',
-      edit: 'home/item/editItem',
+      add: '/webneed/addNeed',
+      edit: '/webneed/updateNeed',
       approval: ''
     }
   },
@@ -219,4 +220,5 @@ export const addEditList = {
       approval: ''
     }
   }
+
 }

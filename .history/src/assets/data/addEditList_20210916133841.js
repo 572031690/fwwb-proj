@@ -103,7 +103,7 @@ export const addEditList = {
     url: {
       add: 'home/buy/addBuy',
       edit: 'home/buy/updateBuy',
-      approval: 'home/buy/approvalBuy'
+      approval: ''
     }
   },
   department: {

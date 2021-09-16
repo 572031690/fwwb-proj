@@ -101,9 +101,9 @@ export const addEditList = {
       neederid: 15
     },
     url: {
-      add: 'home/buy/addBuy',
-      edit: 'home/buy/updateBuy',
-      approval: 'home/buy/approvalBuy'
+      add: '/webbuy/addBuy',
+      edit: '/webbuy/updateBuy',
+      approval: ''
     }
   },
   department: {
@@ -124,8 +124,9 @@ export const addEditList = {
       departmentid: ''
     },
     url: {
-      add: 'home/department/addDepart',
-      edit: 'home/department/editDepart'
+      add: 'home/department/additem',
+      edit: 'home/department/editItem',
+      approval: ''
     }
   },
   itemList: {

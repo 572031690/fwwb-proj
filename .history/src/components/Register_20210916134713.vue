@@ -254,7 +254,8 @@ export default {
       // params.telNum = this.form.tel;
       // console.log(params);
       // 调用获取短信验证码接口
-      this.$api('login/getCode', { params: { phone: this.form.tel } })
+      this.$ajax
+        .get('/getCode', { params: { phone: this.form.tel } })
         .then(res => {
           res = res.data
           console.log(res)
