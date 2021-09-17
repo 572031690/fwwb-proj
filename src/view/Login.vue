@@ -178,28 +178,25 @@ export default {
         this.tips1 = ''
         this.inputVal = ''
 
-        const url = '/web/login'
-        this.$ajax
-          .get(url, {
+        const url = 'login/login'
+        this.$api(url, {
             params: {
               username: this.logindata.uname,
               password: this.logindata.pass
             }
           })
           .then(res => {
-            // if(res.data==0){
-            // this.$message.error('用户名输入不正确');  //判断后端项目传回值的结果
-            // }
+            const {code, user} = res
             console.log(res)
-            if (res.data.code == 100) {
+            if (parseInt(code) === 100) {
               // console.log(res);
               window.sessionStorage.setItem(
                 'storeData',
-                res.data.user.username
+                user.username
               ) // 将数据存储到浏览器内嵌的数据库内
               window.sessionStorage.setItem(
                 'sData',
-                res.data.user.departmentid
+                user.departmentid
               ) // 将数据存储到浏览器内嵌的数据库内
               this.logindata.uname = ''
               this.logindata.pass = ''
