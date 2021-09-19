@@ -47,14 +47,15 @@ export default [
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
-      username: '' // 传递搜索参数
+      needtitle: '', // 传递搜索参数
+	   uptype: '' // 传递搜索参数
     }
   },
   {
     name: 'approvalNeed',
     method: 'POST',
     desc: '需求表提交审批',
-    path: '/web/listUser',
+    path: 'web/listUser',
     data: {
       needid: '',
       uptype: 0

@@ -127,14 +127,18 @@ export default {
 
 <style lang="less" scoped>
 .wel-body {
-  height: 100%;
+  height: 90%;
+  padding-bottom: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   &-overbox {
     overflow: auto;
+    height: 100%;
+
   }
   .top-box {
+    padding-top: 40px;
     display: flex;
     justify-content:center;
   }

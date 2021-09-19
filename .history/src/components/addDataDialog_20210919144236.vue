@@ -109,7 +109,7 @@ export default {
     topChange: {
       type: String,
       default: () => {
-        return false
+        return ''
       }
     }
   },
@@ -144,7 +144,8 @@ export default {
       this[this.openType]()
     },
     add () {
-      if (this.dialogData.dataTableList[0].dataName === this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 1)
+      debugger
+      // if (this.dialogData.dataTableList[0].dataName === this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
@@ -204,6 +205,7 @@ export default {
           })
           this.$emit('updata')
           this.close()
+          // this.dialogFormShow = false
         } else {
           this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }

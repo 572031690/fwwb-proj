@@ -69,6 +69,9 @@ export const rulesData = {
     { required: true, message: '请输入需求单名', trigger: 'blur' },
     { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
   ],
-  detail: [{ required: true, message: '部门描述不能为空', trigger: 'blur' }],
+  // departmentid: [
+  //   { required: true, message: 'ID不能为空', trigger: 'blur' },
+  //   { type: 'number', message: 'ID必须为数字值' }
+  // ],
   unit: [{ required: true, message: '单位不能为空', trigger: 'blur' }]
 }

@@ -3,7 +3,7 @@ export default [
     name: 'addBuy',
     method: 'POST',
     desc: '增加购买订单数据',
-    path: '/webbuy/addBuy',
+    path: '/web/saveUser',
     data: {
       buytitle: '',
       btime: '',
@@ -18,7 +18,7 @@ export default [
     name: 'deleteBuy',
     method: 'GET',
     desc: '删除购买订单数据',
-    path: '/webbuy/deleteBuy',
+    path: '/web/deleteUser',
     params: {
       buyid: ''
     }
@@ -27,7 +27,7 @@ export default [
     name: 'editBuy',
     method: 'POST',
     desc: '修改购买订单数据',
-    path: '/webbuy/updateBuy',
+    path: '/web/updateUser',
     data: {
       buyid: '',
       buytitle: '',
@@ -43,7 +43,7 @@ export default [
     name: 'getBuy',
     method: 'GET',
     desc: '获取购买订单数据列表',
-    path: '/webbuy/findAllBuy',
+    path: 'web/listUser',
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
@@ -55,7 +55,7 @@ export default [
     name: 'approvalBuy',
     method: 'POST',
     desc: '提交购买订单送审批',
-    path: '/web/listUser',
+    path: 'web/listUser',
     data: {
       buyid: '',
       uptype: ''

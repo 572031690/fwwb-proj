@@ -18,7 +18,7 @@ export default [
     name: 'deleteBuy',
     method: 'GET',
     desc: '删除购买订单数据',
-    path: '/webbuy/deleteBuy',
+    path: 'webbuy/deleteBuy',
     params: {
       buyid: ''
     }
@@ -47,15 +47,15 @@ export default [
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
-      username: '', // 传递搜索参数
-      uptype: '' // 查看需求审批状态 ##没加
+      buytitle: '', // 传递搜索参数
+	  uptype: ''// 查看需求审批状态
     }
   },
   {
     name: 'approvalBuy',
     method: 'POST',
     desc: '提交购买订单送审批',
-    path: '/web/listUser',
+    path: 'web/listUser',
     data: {
       buyid: '',
       uptype: ''

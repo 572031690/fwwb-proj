@@ -204,6 +204,7 @@ export default {
           })
           this.$emit('updata')
           this.close()
+          // this.dialogFormShow = false
         } else {
           this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }

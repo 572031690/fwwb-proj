@@ -133,8 +133,11 @@ export default {
   justify-content: center;
   &-overbox {
     overflow: auto;
+    // height: 100%;
+
   }
   .top-box {
+    padding-top: 40px;
     display: flex;
     justify-content:center;
   }

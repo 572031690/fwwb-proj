@@ -3,7 +3,7 @@ export default [
     name: 'AddUser',
     method: 'POST',
     desc: '用户增加数据',
-    path: '/web/addUser',
+    path: '/web/saveUser',
     data: {
       username: '',
       password: '',
@@ -39,7 +39,7 @@ export default [
     name: 'getUser',
     method: 'GET',
     desc: '用户请求数据',
-    path: '/web/listUser',
+    path: 'web/listUser',
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数

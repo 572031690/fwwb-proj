@@ -5,7 +5,7 @@ export default [
     desc: '增加材料数据',
     path: '/webitem/addItem',
     data: {
-      itemid: '', // 因为材料的编号是一串字符 ##还没改
+		itemid:'', //因为材料的编号是一串字符
       itemtype: '',
       neednum: '',
       comment: '',

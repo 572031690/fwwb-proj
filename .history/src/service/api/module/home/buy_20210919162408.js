@@ -55,7 +55,7 @@ export default [
     name: 'approvalBuy',
     method: 'POST',
     desc: '提交购买订单送审批',
-    path: '/web/listUser',
+    path: 'web/listUser',
     data: {
       buyid: '',
       uptype: ''

@@ -3,9 +3,9 @@ export default [
     name: 'additem',
     method: 'POST',
     desc: '增加材料数据',
-    path: '/webitem/addItem',
+    path: '/webneed/addNeed',
     data: {
-      itemid: '', // 因为材料的编号是一串字符 ##还没改
+      itemid: '', // 因为材料的编号是一串字符
       itemtype: '',
       neednum: '',
       comment: '',
@@ -16,7 +16,7 @@ export default [
     name: 'deleteItem',
     method: 'GET',
     desc: '删除材料',
-    path: '/webitem/deleteItem',
+    path: '/webneed/deleteNeed',
     params: {
       itemid: ''
     }
@@ -25,7 +25,7 @@ export default [
     name: 'editItem',
     method: 'POST',
     desc: '修改材料数据',
-    path: '/webitem/updateItem',
+    path: '/webneed/updateNeed',
     data: {
       itemid: '',
       itemtype: '',
@@ -38,7 +38,7 @@ export default [
     name: 'getItem',
     method: 'GET',
     desc: '材料请求数据',
-    path: '/webitem/findAllitem',
+    path: '/webneed/findAllNeed',
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数

@@ -454,7 +454,7 @@ export default {
 }
 .rightNavigation {
   display: inline-block;
-  width: 90%;
+  width: 100%;
   height: 100vh;
   /*占满一个屏幕的高度 */
   box-sizing: border-box;

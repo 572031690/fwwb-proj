@@ -23,7 +23,7 @@ export default [
     name: 'editDepart',
     method: 'POST',
     desc: '修改部门',
-    path: '/webDepartment/updateDepartment',
+    path: '/webDepartment/deleteDepartment',
     data: {
       departmentname: '',
       departmentid: '',

@@ -37,7 +37,7 @@ export const addEditList = {
       needday: '',
       neederid: '',
       comment: '',
-      uptype: ''
+      uptype: 0
     },
     url: {
       add: 'home/need/addNeed',
@@ -98,8 +98,7 @@ export const addEditList = {
       itemid: '',
       num: '',
       buyerid: '',
-      neederid: 15,
-      uptype: ''
+      neederid: 15
     },
     url: {
       add: 'home/buy/addBuy',
@@ -118,17 +117,11 @@ export const addEditList = {
         label: '部门编号',
         putType: 'numput',
         dataName: 'departmentid'
-      },
-      {
-        label: '部门描述',
-        putType: 'textarea',
-        dataName: 'detail'
       }
     ],
     formList: {
       departmentname: '',
-      departmentid: '',
-      detail: ''
+      departmentid: ''
     },
     url: {
       add: 'home/department/addDepart',

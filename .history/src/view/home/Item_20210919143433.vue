@@ -82,6 +82,7 @@
             @updata="search"
             @closeaddDialog="closeaddDialog"
             :IntList="IntList"
+            :topChange="topChange"
             :currentList="currentList"
             :openType="openType"
             name="itemList"

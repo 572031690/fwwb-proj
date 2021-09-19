@@ -139,6 +139,7 @@ export default {
     justify-content:center;
   }
   .box-card-right {
+    margin-top: -20px;
     width: 940px;
     height: 230px;
     float: left;

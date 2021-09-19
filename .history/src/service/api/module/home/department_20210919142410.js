@@ -3,7 +3,7 @@ export default [
     name: 'addDepart',
     method: 'POST',
     desc: '增加部门',
-    path: '/webDepartment/addDepartment',
+    path: '/web/saveUser',
     data: {
       departmentname: '',
       departmentid: '',
@@ -14,7 +14,7 @@ export default [
     name: 'deleteDepart',
     method: 'GET',
     desc: '删除部门',
-    path: '/webDepartment/deleteDepartment',
+    path: '/web/deleteUser',
     params: {
       departmentid: ''
     }
@@ -23,7 +23,7 @@ export default [
     name: 'editDepart',
     method: 'POST',
     desc: '修改部门',
-    path: '/webDepartment/updateDepartment',
+    path: '/web/updateUser',
     data: {
       departmentname: '',
       departmentid: '',
@@ -35,7 +35,7 @@ export default [
     name: 'getDepart',
     method: 'GET',
     desc: '获取部门列表',
-    path: '/webDepartment/findAllDepartment',
+    path: 'web/listUser',
     params: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
