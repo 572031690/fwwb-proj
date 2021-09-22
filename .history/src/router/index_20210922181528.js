@@ -57,19 +57,22 @@ router.beforeEach((to, from, next) => {
   // if (!store) return next('/login') // 判断如果里面的值为空则跳回登陆界面
   // next() // 正常放行
   if (to.path === '/login' && !store) {
-    return next()
+    console.log('1')
+    next()
   } else if (to.path === '/login' && store) {
     Message({
       type: 'error',
       showClose: true,
       message: '请先退出登陆'
     })
-    return next('/home')
+    next('/home')
   } else if (!store) {
+    console.log('2')
     // next('/login')
-    return next()
+    next()
   } else {
-    return next()
+    console.log('3')
+    next()
   }
 })
 
