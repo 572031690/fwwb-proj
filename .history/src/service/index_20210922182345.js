@@ -80,13 +80,9 @@ export function post (url, data = {}, headers) {
       response => {
         resolve(response.data)
       },
-      () => {
-        Message({
-          type: 'error',
-          showClose: true,
-          message: '网络异常'
-        })
-        // reject(new Error('网络异常'))
+      err => {
+        console.log('错误信息：', err)
+        reject(new Error('网络异常'))
       }
     )
   })
@@ -104,13 +100,14 @@ export function get (url, data = {}, headers) {
       response => {
         resolve(response.data)
       },
-      () => {
+      err => {
+        console.log('错误信息：', err)
         Message({
           type: 'error',
           showClose: true,
-          message: '网络异常'
+          message: err
         })
-        // reject(new Error('网络异常'))
+        reject(err)
       }
     )
   })
