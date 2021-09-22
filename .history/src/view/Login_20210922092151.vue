@@ -207,7 +207,7 @@ export default {
                 message: '欢迎管理员！',
                 type: 'success'
               })
-            } else if (parseInt(code) === 102) {
+            } else if (parseInt(code) == 102) {
               this.$message.error('账号或密码错误') // element失败提示框上部
               this.tips2 = '账号或密码错误'
               // 验证码提示框

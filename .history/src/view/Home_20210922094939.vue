@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div :class="{ rightNavigation: navshow, rightNavigations: !navshow }">
+    <div class="rightNavigation">
       <div class="rightnav-top">
         <div class="rightnav-topimg">
           <img
@@ -462,12 +462,12 @@ export default {
   animation: rightNavlong 0.7s;
 }
  .rightNavigations {
-  display: inline-block;
-  width: 97.4%;
-  height: 100vh; // 占满一个屏幕的高度
-  box-sizing: border-box;
-  // margin-left: 50px;
-  animation: rightNavshort 0.7s;
+ display: inline-block;
+ width: 100%;
+ height: 100vh; // 占满一个屏幕的高度
+ box-sizing: border-box;
+ margin-left: 50px;
+ animation: rightNavshort 0.7s;
  }
  @keyframes rightNavlong {
   0% {

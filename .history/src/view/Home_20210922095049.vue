@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div :class="{ rightNavigation: navshow, rightNavigations: !navshow }">
+    <div class="rightNavigation">
       <div class="rightnav-top">
         <div class="rightnav-topimg">
           <img
