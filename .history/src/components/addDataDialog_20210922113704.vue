@@ -160,6 +160,7 @@ export default {
       for (const i in this.dialogData.formList) {
         if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
         else {
+          debugger
           this.dialogData.formList[i] = this.currentList[i].toString()
         }
       }

@@ -3,8 +3,6 @@ import axios from 'axios'
 // import { response } from 'express'
 import qs from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
 import APIUrl from './api.url'
-import router from '../router' // 引入路由
-import { Loading, Message } from 'element-ui'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 5000 // 超时默认值
@@ -93,11 +91,7 @@ export function get (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
-        Message({
-          type: 'error',
-          showClose: true,
-          message: err
-        })
+        console.log('错误信息：', err)
         reject(new Error('网络异常'))
       }
     )

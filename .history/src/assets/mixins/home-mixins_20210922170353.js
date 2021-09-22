@@ -22,7 +22,7 @@ export default {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           username: this.params.dname, // 传递搜索参数
-          uptype: this.params.selectValue // 筛选参数
+          selectValue: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
         // debugger;

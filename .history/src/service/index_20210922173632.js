@@ -93,6 +93,7 @@ export function get (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
+        // console.log('错误信息：', err)
         Message({
           type: 'error',
           showClose: true,

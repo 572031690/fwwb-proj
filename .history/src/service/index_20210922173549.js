@@ -93,10 +93,11 @@ export function get (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
+        // console.log('错误信息：', err)
         Message({
           type: 'error',
           showClose: true,
-          message: err
+          message: '网络异常，请检查网络连接是否正常！'
         })
         reject(new Error('网络异常'))
       }

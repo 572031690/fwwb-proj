@@ -31,7 +31,7 @@ function getApplyData (axiosData, strName) {
 /*
   @desc: 判断请求类型发送请求
 */
-function getMethod (ajaxData, data, headers, sendType) {
+function getMethod (ajaxData, data, sendType) {
   if (!ajaxData[sendType]) {
     return Promise.reject(new Error('参数头错误'))
   }
@@ -39,17 +39,17 @@ function getMethod (ajaxData, data, headers, sendType) {
     for (const i in ajaxData[sendType]) {
       ajaxData[sendType][i] = data[sendType][i]
     }
-    return get(ajaxData.path, ajaxData[sendType], headers)
+    return get(ajaxData.path, ajaxData[sendType])
   }
   if (sendType === 'data') {
     for (const i in ajaxData[sendType]) {
       ajaxData[sendType][i] = data[i]
     }
-    return post(ajaxData.path, ajaxData[sendType], headers)
+    return post(ajaxData.path, ajaxData[sendType])
   }
 }
 
-var sendAxios = function (url, data) {
+var sendAxios = function (url, data, headers) {
   // const start = url.lastIndexOf('/') + 1 // 获得最后一次出现‘/’的位置
   // const strName = url.slice(start) // 取得从该位置到结束的名字也就是方法name
   // const filepath = url.slice(0, start - 1)// 取得路径名
@@ -69,7 +69,6 @@ var sendAxios = function (url, data) {
   var ajaxData = getPathData(url)
   if (!ajaxData) return Promise.reject(new Error('api地址错误')) // 判断是否为请求地址错误
 
-  const headers = ajaxData.headers
   if (ajaxData.method === 'GET') {
     // if (!ajaxData.params) {
     //   alert('参数头错误')
@@ -79,7 +78,7 @@ var sendAxios = function (url, data) {
     //   ajaxData.params[i] = data.params[i]
     // }
     // return get(ajaxData.path, ajaxData.params)
-    const sendData = getMethod(ajaxData, data, headers, 'params')
+    const sendData = getMethod(ajaxData, data, 'params')
     return sendData
   } else if (ajaxData.method === 'POST') {
     // if (!ajaxData.data) {
@@ -90,7 +89,7 @@ var sendAxios = function (url, data) {
     //   ajaxData.data[i] = data[i]
     // }
     // return post(ajaxData.path, ajaxData.data)
-    const sendData = getMethod(ajaxData, data, headers, 'data')
+    const sendData = getMethod(ajaxData, data, 'data')
     return sendData
   } else {
     // alert('请求类型错误!!!')

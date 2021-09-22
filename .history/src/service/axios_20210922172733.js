@@ -49,7 +49,7 @@ function getMethod (ajaxData, data, headers, sendType) {
   }
 }
 
-var sendAxios = function (url, data) {
+var sendAxios = function (url, data, headers) {
   // const start = url.lastIndexOf('/') + 1 // 获得最后一次出现‘/’的位置
   // const strName = url.slice(start) // 取得从该位置到结束的名字也就是方法name
   // const filepath = url.slice(0, start - 1)// 取得路径名
@@ -69,7 +69,6 @@ var sendAxios = function (url, data) {
   var ajaxData = getPathData(url)
   if (!ajaxData) return Promise.reject(new Error('api地址错误')) // 判断是否为请求地址错误
 
-  const headers = ajaxData.headers
   if (ajaxData.method === 'GET') {
     // if (!ajaxData.params) {
     //   alert('参数头错误')
