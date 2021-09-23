@@ -256,7 +256,7 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.departmentId === '10000') {
+    if (this.$store.state.departmentId.includes('10000')) {
       this.tableText = this.$tables.userListedit
     } else {
       this.tableText = this.$tables.userListsee

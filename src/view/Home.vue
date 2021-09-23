@@ -267,13 +267,19 @@ export default {
         this.routerList[1].childrenList[1].showtab = true
         // this.routerList[1].childrenList[0].showtab = false
       }
+      this.routerList.forEach(item => {
+        if (item.type === 'tips' && item.showtab) {
+          this.arrowData.push(item.arrowRef)
+        }
+      })
+
     },
     initType (bool) {
       // debugger
-      for (let i = 1; i <= 5; i++) {
+      this.arrowData=[]
+      for (let i = 1; i <= 6; i++) {
         this.routerList[i].showtab = bool
         if (this.routerList[i].type === 'tips') {
-          this.arrowData.push(this.routerList[i].arrowRef)
           this.routerList[i].navSonShow = true
         }
         if (!this.routerList[i].childrenList.length) {
@@ -313,7 +319,6 @@ export default {
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
     this.getAdminType()
-    console.log(this.$store.state.departmentId.includes('10000'), 'dddddddd')
   },
   mounted () {
     this.changehomeimgCreate()
