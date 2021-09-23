@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation'">
-                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
+                  {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
@@ -158,12 +158,7 @@ export default {
         }
       ],
       departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
+        10000: '管理员'
       },
       loading2: true,
       select: [

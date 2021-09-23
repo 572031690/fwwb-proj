@@ -2,12 +2,13 @@
   <div id="Home" ref="gobacklogin">
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
       <div v-for="(item,index) in routerList" v-show="item.showtab" :key="index">
-        <div @click="judgeType(item)" class="navhome">
+        <div @click="judgeType(item)" :class="{
+          'navhome':true,
+          'checkBox':item.index === checkIndex
+        }">
           <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
           <img :src="item.imgSrc" class="navhome-img" />
-          <span :class="{
-            'spans1' : true,
-            'checkBox' :item.index === checkIndex}" :ref="item.ref">{{ item.label }}</span>
+          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
           <img
             v-if="item.type === 'tips' && item.showtab"
             :src="item.imgtips"
@@ -24,6 +25,7 @@
         >
           <transition :name="$store.state.departmentId === '10001' ? 'navhom' : 'navhomshort'">
             <div class="navhome-son" v-show="navSonShow">
+              <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
               <div
                 @click="!item.disabled && goToRouter(item)"
                 v-for="(item, index) in item.childrenList"
@@ -31,9 +33,8 @@
                 v-show="item.showtab"
               >
                 <div :class="!item.disabled?'namehome-son1':'disabledClick'">
-                  <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
                   <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref" :class="{'checkBox' :item.index === checkIndex}">{{ item.label }}</span>
+                  <span :ref="item.ref">{{ item.label }}</span>
                 </div>
               </div>
             </div>
@@ -483,7 +484,7 @@ export default {
   background-color: rgb(35, 101, 201);
 }
 .checkBox {
-  color:rgb(72, 117, 216) !important;
+  background-color: rgb(38, 52, 69);
 }
 .checkLineDiv {
   position:absolute;

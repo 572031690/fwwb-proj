@@ -12,19 +12,11 @@ export const tableList = {
     tableBody: ['departmentname', 'departmentid', 'opetation']
   },
   itemListsee: {
-    tableTitle: ['类型ID', '类型', '描述', '库存', '单位'],
-    tableBody: ['itemid', 'itemtype', 'comment', 'stock', 'unit']
-  },
-  itemListedit: {
     tableTitle: ['类型ID', '类型', '描述', '库存', '单位', '操作'],
     tableBody: ['itemid', 'itemtype', 'comment', 'stock', 'unit', 'opetation']
   },
-  userListedit: {
-    tableTitle: ['编号', '用户名', '电话号码', '职工号', '职位', '操作'],
-    tableBody: ['userid', 'username', 'telNum', 'employeeid', 'departmentid', 'opetation']
-  },
-  userListsee: {
-    tableTitle: ['编号', '用户名', '电话号码', '职工号', '职位'],
-    tableBody: ['userid', 'username', 'telNum', 'employeeid', 'departmentid']
+  userList: {
+    tableTitle: ['编号', '用户名', '密码', '电话号码', '职工号', '部门号', '操作'],
+    tableBody: ['userid', 'username', 'password', 'telNum', 'employeeid', 'departmentid', 'opetation']
   }
 }

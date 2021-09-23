@@ -33,7 +33,7 @@
                 <div :class="!item.disabled?'namehome-son1':'disabledClick'">
                   <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
                   <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref" :class="{'checkBox' :item.index === checkIndex}">{{ item.label }}</span>
+                  <span :ref="item.ref">{{ item.label }}</span>
                 </div>
               </div>
             </div>
@@ -483,7 +483,7 @@ export default {
   background-color: rgb(35, 101, 201);
 }
 .checkBox {
-  color:rgb(72, 117, 216) !important;
+  background-color: rgb(38, 52, 69);
 }
 .checkLineDiv {
   position:absolute;

@@ -33,7 +33,8 @@
                 <div :class="!item.disabled?'namehome-son1':'disabledClick'">
                   <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
                   <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref" :class="{'checkBox' :item.index === checkIndex}">{{ item.label }}</span>
+                  <span :ref="item.ref" :class="{
+            'checkBox' :item.index === checkIndex}>{{ item.label }}</span>
                 </div>
               </div>
             </div>

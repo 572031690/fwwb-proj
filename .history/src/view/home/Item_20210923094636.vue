@@ -7,7 +7,7 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>材料列表</span></el-col
+                <span>用户列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
@@ -117,7 +117,7 @@ export default {
   },
   data () {
     return {
-      tableText: '',
+      tableText: this.$tables.itemList,
       dialogFormShow: false,
       IntList: ['neednum'],
       list: [
@@ -125,18 +125,11 @@ export default {
           itemid: 'JPSC001',
           itemtype: '钢材',
           comment: '用于钢材的使用',
-          stock: 30165,
+          num: '3',
           unit: 'kg'
         }
       ],
       loading2: true
-    }
-  },
-  created () {
-    if (this.$store.state.departmentId === '10000') {
-      this.tableText = this.$tables.itemListedit
-    } else {
-      this.tableText = this.$tables.itemListsee
     }
   },
   mounted () {

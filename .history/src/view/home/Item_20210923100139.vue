@@ -13,27 +13,10 @@
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div class="search">
-                    <el-select
-                      v-model="params.selectValue"
-                      @change="search"
-                      placeholder="筛选部门"
-                      clearable
-                      size="small"
-                      class="selectAvro"
-                    >
-                      <el-option
-                        style="padding:0 18px 0 10px;"
-                        v-for="item in select"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入用户姓名"
+                        placeholder="请输入材料名称"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -42,7 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="this.$store.state.departmentId === '10000'">
+              <el-col :span="8">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -57,12 +40,16 @@
         >
           <div class="table-top">
             <thead>
-              <tr >
+              <!-- 表头 -->
+              <tr>
                 <th v-for="(item,index) in tableText.tableTitle"
                 :key="index"
                 colspan="1"
                 rowspan="1"
-                :class="{'htop-th2':  item === '用户名','htop-ope1':item === '操作'}">
+                :class="
+                item === '描述'?'htop-th3'
+                :item === '需求单名'?'htop-th7'
+                :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </th>
               </tr>
@@ -75,24 +62,31 @@
 
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
-              :class="{
-                  ['body-td2']:data==='username',
-                  ['body-ope1']:data==='opetation'
-                }"
-              >
+              :class="{'body-td4': data==='comment'}" >
 
-                <div class="cell" v-if="data!=='opetation'">
-                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
+                <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
+                  {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({userid: item.userid},'home/user/deleteUser')">删除</button>
-                  <button class="approval" @click="resetPass(item)">重置密码</button>
+                  <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
                 </div>
               </td>
+
             </tr>
           </tbody>
+
+          <addDialog ref="addDialog"
+            :dialogFormShow="dialogFormShow"
+            @updata="search"
+            @closeaddDialog="closeaddDialog"
+            :IntList="IntList"
+            :currentList="currentList"
+            :openType="openType"
+            name="itemList"
+        >
+        </addDialog>
 
         </div>
         <div class="table-bottom">
@@ -108,18 +102,6 @@
           >
           </el-pagination>
         </div>
-
-        <addDialog ref="addDialog"
-          :dialogFormShow="dialogFormShow"
-          @updata="search"
-          @closeaddDialog="closeaddDialog"
-          :IntList="IntList"
-          :topChange="topChange"
-          :currentList="currentList"
-          :openType="openType"
-          name="userList"
-        >
-        </addDialog>
       </div>
     </div>
   </div>
@@ -137,76 +119,31 @@ export default {
     return {
       tableText: '',
       dialogFormShow: false,
-      IntList: ['departmentid', 'employeeid', 'userid'],
-      topChange: 'userid',
+      IntList: ['neednum'],
       list: [
         {
-          userid: 1,
-          username: '马佳辉',
-          password: 5454165,
-          telNum: 17816536995,
-          employeeid: '3',
-          departmentid: '10001'
-        },
-        {
-          userid: 2,
-          username: '夏航宇',
-          password: 15615,
-          telNum: 15865645646,
-          employeeid: '1',
-          departmentid: '10021'
+          itemid: 'JPSC001',
+          itemtype: '钢材',
+          comment: '用于钢材的使用',
+          stock: 30165,
+          unit: 'kg'
         }
       ],
-      departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
-      },
-      loading2: true,
-      select: [
-        {
-          value: '10011',
-          label: '需求专员'
-        },
-        {
-          value: '10010',
-          label: '需求经理'
-        },
-        {
-          value: '10021',
-          label: '采购专员'
-        },
-        {
-          value: '10020',
-          label: '采购经理'
-        },
-        {
-          value: '10001',
-          label: '总经理'
-        },
-        {
-          value: '10000',
-          label: '管理员'
-        }
-
-      ],
-      dialogFormVisible: false // 不让修改窗口打开
+      loading2: true
     }
   },
   created () {
     if (this.$store.state.departmentId === '10000') {
-      this.tableText = this.$tables.userListedit
+      this.tableText = this.$tables.itemListedit
     } else {
-      this.tableText = this.$tables.userListsee
+      this.tableText = this.$tables.itemListsee
     }
   },
   mounted () {
+    // var ps=String.split(this.form.pass);
+    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
-      console.log(this.list, 'list')
     }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
@@ -214,10 +151,7 @@ export default {
   },
   methods: {
     getSearchUrl () {
-      this.searchUrl = 'home/user/getUser'
-    },
-    resetPass (item) {
-
+      this.searchUrl = 'home/item/getItem'
     }
   }
 }
@@ -226,6 +160,59 @@ export default {
 @import url("../../assets/less/right-table.less");
 
 .body-top {
-  width: 1040px;
+  height: 45px;
+  width: 1210px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+}
+
+.searchfa {
+  margin-left: 35px;
+}
+.search {
+  margin-left: 5px;
+  float: left;
+  height: 30px;
+  input {
+    float: left;
+    border: none;
+    outline: none;
+    width: 95.5%;
+    height: 30px;
+    padding-left: 13px;
+    border: 2px solid #dadce0;
+    border-right: 0;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
+  }
+  button {
+    float: left;
+    border: none;
+    outline: none;
+    height: 30px;
+    width: 45px;
+    cursor: pointer;
+    position: absolute;
+    top: 1.6px;
+    right: 0;
+    background: #dadce0;
+    border-radius: 0 5px 5px 0;
+    &:hover {
+      background-color: #c8c8c8;
+      box-shadow: 0 0 3px#c8c8c8;
+    }
+    &:active {
+      padding-left: 1px;
+      padding-top: 1px;
+      background: #dadce0;
+    }
+    &:before {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 16px;
+      color: #f9f0da;
+    }
+  }
 }
 </style>

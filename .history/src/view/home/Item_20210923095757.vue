@@ -7,7 +7,7 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>材料列表</span></el-col
+                <span>用户列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
@@ -130,13 +130,6 @@ export default {
         }
       ],
       loading2: true
-    }
-  },
-  created () {
-    if (this.$store.state.departmentId === '10000') {
-      this.tableText = this.$tables.itemListedit
-    } else {
-      this.tableText = this.$tables.itemListsee
     }
   },
   mounted () {

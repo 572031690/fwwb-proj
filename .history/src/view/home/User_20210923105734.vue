@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation'">
-                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
+                  {{ data==='departmentid' ?departmentData[parseInt(item[data])] :item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">

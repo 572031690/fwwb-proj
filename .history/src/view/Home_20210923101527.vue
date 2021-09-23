@@ -3,11 +3,8 @@
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
       <div v-for="(item,index) in routerList" v-show="item.showtab" :key="index">
         <div @click="judgeType(item)" class="navhome">
-          <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
           <img :src="item.imgSrc" class="navhome-img" />
-          <span :class="{
-            'spans1' : true,
-            'checkBox' :item.index === checkIndex}" :ref="item.ref">{{ item.label }}</span>
+          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
           <img
             v-if="item.type === 'tips' && item.showtab"
             :src="item.imgtips"
@@ -15,14 +12,13 @@
             ref="arrow"
           />
         </div>
-        <div class="lineTips" v-if="index === 0"></div>
         <!-- 子列表 -->
         <div
           class="navhome-box"
           ref="navhomebox"
           v-if="item.childrenList.length"
         >
-          <transition :name="$store.state.departmentId === '10001' ? 'navhom' : 'navhomshort'">
+          <transition :name="item.transition">
             <div class="navhome-son" v-show="navSonShow">
               <div
                 @click="!item.disabled && goToRouter(item)"
@@ -31,9 +27,8 @@
                 v-show="item.showtab"
               >
                 <div :class="!item.disabled?'namehome-son1':'disabledClick'">
-                  <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
                   <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref" :class="{'checkBox' :item.index === checkIndex}">{{ item.label }}</span>
+                  <span :ref="item.ref">{{ item.label }}</span>
                 </div>
               </div>
             </div>
@@ -107,7 +102,6 @@ export default {
       lastTime: 0, // 默认上一次点击时间为0
       admin: true,
       routerChioce: 1,
-      checkIndex: 1,
       routerList
     }
   },
@@ -225,29 +219,17 @@ export default {
       clearInterval(this.thistime)
     },
     getAdminType () {
-      this.initType(false)
+      // this.initType(false)
       if (this.departmentID === '10000') { // 管理管10000
-        this.routerList[4].showtab = true
-        this.routerList[5].showtab = true
-        this.routerList[6].showtab = true
+        // this.initType(true)
       } else if (this.departmentID === '10001') { // 总经理10001
         this.routerList[2].showtab = true
+        this.routerList[4].showtab = true
         this.routerList[5].showtab = true
-        this.routerList[6].showtab = true
-      } else if (this.departmentID === '10010') { // 需求部门经理10010
-        this.routerList[2].showtab = true
-        this.routerList[2].childrenList[1].showtab = false
-        this.routerList[2].childrenList[0].showtab = true
-      } else if (this.departmentID === '10011') { // 需求专员10011
-        this.routerList[1].showtab = true
+      } else if (this.departmentID === '10011') { // 需求部门经理10010  需求专员10011
         this.routerList[1].childrenList[1].showtab = false
         this.routerList[1].childrenList[0].showtab = true
-      } else if (this.departmentID === '10020') { // 购买部门经理10020
-        this.routerList[2].showtab = true
-        this.routerList[2].childrenList[1].showtab = true
-        this.routerList[2].childrenList[0].showtab = false
-      } else if (this.departmentID === '10021') { //   购买专员10021
-        this.routerList[1].showtab = true
+      } else if (this.departmentID === '10021') { // 购买部门经理10020  购买专员10021
         this.routerList[1].childrenList[1].showtab = true
         this.routerList[1].childrenList[0].showtab = false
       }
@@ -255,16 +237,14 @@ export default {
     initType (bool) {
       for (let i = 1; i <= 5; i++) {
         this.routerList[i].showtab = bool
+        if (i === 1) this.routerList[i].showtab = !bool
       }
     },
     judgeType (val) {
       if (val.type === 'tips') this.changearrow()
-      if (val.type === 'router') {
-        this.goToRouter(val)
-      }
+      if (val.type === 'router') this.goToRouter(val)
     },
     goToRouter (val) {
-      this.checkIndex = val.index
       if (!val.disabled) {
         this.$router.push({ path: val.path })
       } // 页面跳转
@@ -373,7 +353,6 @@ export default {
 }
 
 .navhome {
-  position:relative;
   display: flex;
   flex-direction: row;
   /*水平排布*/
@@ -433,7 +412,6 @@ export default {
 }
 
 .navhome-son {
-  position: relative;
   cursor: pointer;
   background-color: #1f2d3d;
   overflow: hidden;
@@ -477,20 +455,6 @@ export default {
   width: 1.3vw;
   margin-left: 25%;
   color: #409eff;
-}
-.lineTips{
-  height: 2px;
-  background-color: rgb(35, 101, 201);
-}
-.checkBox {
-  color:rgb(72, 117, 216) !important;
-}
-.checkLineDiv {
-  position:absolute;
-  height: 30px;
-  width: 5px;
-  left:0;
-  background-color: rgb(30, 149, 212);
 }
 .rightNavigation {
   display: inline-block;

@@ -62,7 +62,10 @@
                 :key="index"
                 colspan="1"
                 rowspan="1"
-                :class="{'htop-th2':  item === '用户名','htop-ope1':item === '操作'}">
+                :class="
+                item === '用户名'?'htop-th2'
+                :item === '密码'?'htop-th2'
+                :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </th>
               </tr>
@@ -75,20 +78,18 @@
 
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
-              :class="{
-                  ['body-td2']:data==='username',
-                  ['body-ope1']:data==='opetation'
-                }"
-              >
+              :class="data==='username'? 'body-td2'
+              :data==='password'?'body-td2'
+              :'body-td1'" >
 
                 <div class="cell" v-if="data!=='opetation'">
-                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
+                  {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click="seeData(item)">编辑</button>
+                  <button class="bodyadd" @click="resetPass(item)">重置密码</button>
                   <button class="delete" @click="deletedata({userid: item.userid},'home/user/deleteUser')">删除</button>
-                  <button class="approval" @click="resetPass(item)">重置密码</button>
                 </div>
               </td>
             </tr>
@@ -144,9 +145,9 @@ export default {
           userid: 1,
           username: '马佳辉',
           password: 5454165,
-          telNum: 17816536995,
+          telNum: 1373201546,
           employeeid: '3',
-          departmentid: '10001'
+          departmentid: '5'
         },
         {
           userid: 2,
@@ -154,17 +155,9 @@ export default {
           password: 15615,
           telNum: 15865645646,
           employeeid: '1',
-          departmentid: '10021'
+          departmentid: '5'
         }
       ],
-      departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
-      },
       loading2: true,
       select: [
         {
@@ -215,9 +208,6 @@ export default {
   methods: {
     getSearchUrl () {
       this.searchUrl = 'home/user/getUser'
-    },
-    resetPass (item) {
-
     }
   }
 }

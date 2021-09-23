@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation'">
-                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
+                  {{ item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
@@ -146,7 +146,7 @@ export default {
           password: 5454165,
           telNum: 17816536995,
           employeeid: '3',
-          departmentid: '10001'
+          departmentid: '5'
         },
         {
           userid: 2,
@@ -154,17 +154,9 @@ export default {
           password: 15615,
           telNum: 15865645646,
           employeeid: '1',
-          departmentid: '10021'
+          departmentid: '5'
         }
       ],
-      departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
-      },
       loading2: true,
       select: [
         {

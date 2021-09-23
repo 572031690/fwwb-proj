@@ -3,11 +3,8 @@
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
       <div v-for="(item,index) in routerList" v-show="item.showtab" :key="index">
         <div @click="judgeType(item)" class="navhome">
-          <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
           <img :src="item.imgSrc" class="navhome-img" />
-          <span :class="{
-            'spans1' : true,
-            'checkBox' :item.index === checkIndex}" :ref="item.ref">{{ item.label }}</span>
+          <span class="spans1" :ref="item.ref">{{ item.label }}</span>
           <img
             v-if="item.type === 'tips' && item.showtab"
             :src="item.imgtips"
@@ -15,7 +12,7 @@
             ref="arrow"
           />
         </div>
-        <div class="lineTips" v-if="index === 0"></div>
+        <div class="lineTips"></div>
         <!-- 子列表 -->
         <div
           class="navhome-box"
@@ -31,9 +28,8 @@
                 v-show="item.showtab"
               >
                 <div :class="!item.disabled?'namehome-son1':'disabledClick'">
-                  <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
                   <img :src="item.imgSrc" class="navson-img" />
-                  <span :ref="item.ref" :class="{'checkBox' :item.index === checkIndex}">{{ item.label }}</span>
+                  <span :ref="item.ref">{{ item.label }}</span>
                 </div>
               </div>
             </div>
@@ -107,7 +103,6 @@ export default {
       lastTime: 0, // 默认上一次点击时间为0
       admin: true,
       routerChioce: 1,
-      checkIndex: 1,
       routerList
     }
   },
@@ -259,12 +254,9 @@ export default {
     },
     judgeType (val) {
       if (val.type === 'tips') this.changearrow()
-      if (val.type === 'router') {
-        this.goToRouter(val)
-      }
+      if (val.type === 'router') this.goToRouter(val)
     },
     goToRouter (val) {
-      this.checkIndex = val.index
       if (!val.disabled) {
         this.$router.push({ path: val.path })
       } // 页面跳转
@@ -373,7 +365,6 @@ export default {
 }
 
 .navhome {
-  position:relative;
   display: flex;
   flex-direction: row;
   /*水平排布*/
@@ -433,7 +424,6 @@ export default {
 }
 
 .navhome-son {
-  position: relative;
   cursor: pointer;
   background-color: #1f2d3d;
   overflow: hidden;
@@ -480,17 +470,7 @@ export default {
 }
 .lineTips{
   height: 2px;
-  background-color: rgb(35, 101, 201);
-}
-.checkBox {
-  color:rgb(72, 117, 216) !important;
-}
-.checkLineDiv {
-  position:absolute;
-  height: 30px;
-  width: 5px;
-  left:0;
-  background-color: rgb(30, 149, 212);
+  background-color: rgb(36, 108, 218);
 }
 .rightNavigation {
   display: inline-block;
