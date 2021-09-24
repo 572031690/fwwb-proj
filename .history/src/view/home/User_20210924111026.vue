@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                  {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
+                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
@@ -220,7 +220,7 @@ export default {
           roleDescribe: '管理整个系统'
         }
       ],
-      rolaSelect: [
+      select: [
         {
           value: '10011',
           label: '需求专员'
@@ -270,16 +270,6 @@ export default {
     this.search()
   },
   methods: {
-    /**
-     * @desc 显示角色内容
-     */
-    showRoleData (val) {
-      const rolaArr = []
-      this.rolaSelect.forEach(item => {
-        if (val.includes(item.value)) rolaArr.push(item.label)
-      })
-      return rolaArr.join(',')
-    },
     /**
      * @desc 分配角色请求
      */

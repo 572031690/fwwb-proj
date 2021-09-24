@@ -270,15 +270,11 @@ export default {
     this.search()
   },
   methods: {
-    /**
-     * @desc 显示角色内容
-     */
     showRoleData (val) {
       const rolaArr = []
       this.rolaSelect.forEach(item => {
-        if (val.includes(item.value)) rolaArr.push(item.label)
+        if (rolaArr.includes(item.value)) rolaArr.push(item.label)
       })
-      return rolaArr.join(',')
     },
     /**
      * @desc 分配角色请求

@@ -270,9 +270,6 @@ export default {
     this.search()
   },
   methods: {
-    /**
-     * @desc 显示角色内容
-     */
     showRoleData (val) {
       const rolaArr = []
       this.rolaSelect.forEach(item => {

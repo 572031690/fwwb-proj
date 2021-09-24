@@ -74,12 +74,5 @@ export default [
     params: {
       userid: ''
     }
-  },
-  {
-    name: 'getRolaList',
-    method: 'GET',
-    desc: '更改角色状态',
-    path: '/web/listUser',
-    params: {}
   }
 ]

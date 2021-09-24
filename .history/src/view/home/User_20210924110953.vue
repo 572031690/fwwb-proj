@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                  {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
+                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
@@ -220,7 +220,7 @@ export default {
           roleDescribe: '管理整个系统'
         }
       ],
-      rolaSelect: [
+      select: [
         {
           value: '10011',
           label: '需求专员'
@@ -249,8 +249,8 @@ export default {
       ],
       dialogFormVisible: false, // 不让修改窗口打开
       dialogVisibleRole: false, // 角色分配窗口
-      currentRola: [], // 当前选中的角色列表
-      currentId: '' // 当前选中的用户id (分配角色使用)
+      currentRola: [],
+      currentId: ''
     }
   },
   created () {
@@ -270,16 +270,6 @@ export default {
     this.search()
   },
   methods: {
-    /**
-     * @desc 显示角色内容
-     */
-    showRoleData (val) {
-      const rolaArr = []
-      this.rolaSelect.forEach(item => {
-        if (val.includes(item.value)) rolaArr.push(item.label)
-      })
-      return rolaArr.join(',')
-    },
     /**
      * @desc 分配角色请求
      */

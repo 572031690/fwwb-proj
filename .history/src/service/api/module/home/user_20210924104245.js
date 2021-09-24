@@ -65,21 +65,5 @@ export default [
       userid: '',
       departmentid: []
     }
-  },
-  {
-    name: 'changeStatus',
-    method: 'GET',
-    desc: '更改角色状态',
-    path: '/web/listUser',
-    params: {
-      userid: ''
-    }
-  },
-  {
-    name: 'getRolaList',
-    method: 'GET',
-    desc: '更改角色状态',
-    path: '/web/listUser',
-    params: {}
   }
 ]

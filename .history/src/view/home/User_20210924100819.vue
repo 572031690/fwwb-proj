@@ -82,7 +82,7 @@
               >
 
                 <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                  {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
+                  {{ data==='departmentid' ? departmentData[parseInt(item[data])] :item[data] }}
                 </div>
 
                 <div class="cell" v-if="data==='opetation'">
@@ -99,7 +99,7 @@
                       active-color="#13ce66"
                       inactive-color="#ff4949"
                       active-value=1
-                      @change="setStatus(item.userid)"
+                      @change="setStatus(item.id)"
                       inactive-value=0>
                     </el-switch>
                     {{item.disabledRole? '正常': '禁用'}}
@@ -140,23 +140,26 @@
           title="分配角色"
           :visible.sync="dialogVisibleRole"
           width="30%">
+          <!-- <el-table :data="rolaData">
+            <el-table-column property="" label="选择" width="80"><el-radio v-model="currentRola"></el-radio></el-table-column>
+            <el-table-column property="roleName" label="角色名称" width="150"></el-table-column>
+            <el-table-column property="roleDescribe" label="描述" width="200"></el-table-column>
+          </el-table> -->
           <div class="tableRole">
             <div class="tableRoleTop">
               <div class="btnRole">选择</div>
               <div class="textRole">角色名称</div>
               <div class="textRole">描述</div>
             </div>
-            <el-checkbox-group v-model="currentRola">
-              <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
-                <div class="btnRole"><el-checkbox :label="item.rolaID">{{''}}</el-checkbox></div>
-                <div class="textRole">{{item.roleName}}</div>
-                <div class="textRole">{{item.roleDescribe}}</div>
-              </div>
-            </el-checkbox-group>
+            <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
+              <div class="btnRole"><el-radio v-model="currentRola" :label="item.rolaID">{{''}}</el-radio></div>
+              <div class="textRole">{{item.roleName}}</div>
+              <div class="textRole">{{item.roleDescribe}}</div>
+            </div>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisibleRole = false">取 消</el-button>
-            <el-button type="primary" @click="checkRoleList">确 定</el-button>
+            <el-button type="primary" @click="dialogVisibleRole = false">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -220,7 +223,7 @@ export default {
           roleDescribe: '管理整个系统'
         }
       ],
-      rolaSelect: [
+      select: [
         {
           value: '10011',
           label: '需求专员'
@@ -249,8 +252,7 @@ export default {
       ],
       dialogFormVisible: false, // 不让修改窗口打开
       dialogVisibleRole: false, // 角色分配窗口
-      currentRola: [], // 当前选中的角色列表
-      currentId: '' // 当前选中的用户id (分配角色使用)
+      currentRola: ''
     }
   },
   created () {
@@ -270,132 +272,17 @@ export default {
     this.search()
   },
   methods: {
-    /**
-     * @desc 显示角色内容
-     */
-    showRoleData (val) {
-      const rolaArr = []
-      this.rolaSelect.forEach(item => {
-        if (val.includes(item.value)) rolaArr.push(item.label)
-      })
-      return rolaArr.join(',')
-    },
-    /**
-     * @desc 分配角色请求
-     */
-    checkRoleList () {
-      console.log(this.currentRola)
-      this.$confirm('确定是否分配此用户该权限角色?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const url = 'home/user/checkRola'
-        const params = {
-          departmentid: this.currentRola.join(','),
-          userid: this.currentId
-        }
-        await this.$api(url, {
-          params
-        }).then(res => {
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '分配权限成功!'
-            })
-            this.search()
-            this.dialogVisibleRole = false
-          } else {
-            this.$message.error('错了哦，分配失败')
-          }
-        })
-      })
-        .catch(err => {
-          if (err === 'cancel') {
-            this.$message('取消删除')
-          } else {
-            this.$message({
-              type: 'error',
-              message: err
-            })
-          }
-        })
-    },
-    /**
-     * @desc 配置请求列表数据url
-     */
     getSearchUrl () {
       this.searchUrl = 'home/user/getUser'
     },
-    /**
-     * @desc 重置密码
-     */
     resetPass (item) {
-      this.$confirm('确定是否重置此用户密码为6个8?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const url = 'home/user/resetPass'
-        const params = {
-          userid: item.userid
-        }
-        await this.$api(url, {
-          params
-        }).then(res => {
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '重置成功!'
-            })
-            this.search()
-            this.dialogVisibleRole = false
-          } else {
-            this.$message.error('错了哦，重置密码失败')
-          }
-        })
-      })
-        .catch(err => {
-          if (err === 'cancel') {
-            this.$message('取消重置')
-          } else {
-            this.$message({
-              type: 'error',
-              message: err
-            })
-          }
-        })
+
     },
-    /**
-     * @desc 打开分配角色表
-     */
-    getRole (item) {
-      this.currentId = item.userid
-      this.getRolaList()
+    getRole () {
+      this.dialogVisibleRole = true
     },
-    /**
-     * @desc 获取角色列表
-     */
-    async getRolaList () {
-      const url = 'home/user/getRolaList'
-      await this.$api(url).then((res) => {
-        console.log(res)
-        this.dialogVisibleRole = true
-      })
-    },
-    /**
-     * @desc 更改用户状态
-     */
-    async setStatus (id) {
-      const url = 'home/user/changeStatus'
-      await this.$api(url, {
-        params: {
-          userid: id
-        }
-      }).then((res) => {
-        console.log(res)
-        this.search()
-      })
+    setStatus (id) {
+
     }
   }
 }
