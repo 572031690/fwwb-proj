@@ -59,87 +59,90 @@
             v-loading="loading2"
             element-loading-text="拼命加载中"
           >
-            <div class="table-top">
-              <thead>
-                <!-- 表头 -->
-                <tr >
-                  <th v-for="(item,index) in tableText.tableTitle"
+            <div class="mytable">
+              <div class="table-top">
+                <thead>
+                  <!-- 表头 -->
+                  <tr >
+                    <th v-for="(item,index) in tableText.tableTitle"
+                    :key="index"
+                    colspan="1"
+                    rowspan="1"
+                    :class="{
+                      'htop-th7':item === '需求单名',
+                      'htop-th2':item === '详情',
+                      'htop-ope1':item === '操作'
+                    }"
+                    >
+                      <div class="cell">{{item}}</div>
+                    </th>
+                  </tr>
+                </thead>
+              </div>
+              <!-- 数据列表 -->
+              <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
+              <tbody>
+                <tr
+                  v-for="(item, key) in list"
+                  :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
+                  :key="key"
+                >
+
+                  <td v-for="(data,index) in tableText.tableBody"
                   :key="index"
-                  colspan="1"
-                  rowspan="1"
                   :class="{
-                    'htop-th7':item === '需求单名',
-                    'htop-th2':item === '详情',
-                    'htop-ope1':item === '操作'
+                    ['body-td3']:data==='needtitle',
+                    ['body-td2']:data==='comment',
+                    ['body-ope1']:data==='opetation1'
                   }"
                   >
-                    <div class="cell">{{item}}</div>
-                  </th>
+                    <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
+                      {{ data==='neednum'? item[data] + (item.itemunit  || '') :item[data]}}
+                    </div>
+                    <div class="bodyButton" v-if="data==='opetation1'">
+                      <div class="cell" v-if="currentRouter==='see' ">
+                        <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 2">
+                          编辑
+                        </button>
+                        <button class="delete" @click="deletedata({needid: item.needid},'home/need/deleteNeed')"  v-if="item.uptype == 0 || item.uptype == 2">
+                          删除
+                        </button>
+                        <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
+                        <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 3">
+                          查看审批
+                        </button>
+                        <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 2">
+                          驳回结果
+                        </button>
+                      </div>
+                      <div class="cell"  v-if="currentRouter==='approval'">
+                        <button class="writeApproval" @click="writeApproval(key)">
+                          审批
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="bodyButton" v-if="data==='opetation2'">
+                      <div class="cell"  style="backgournd-color:red;">
+                        <span class="tipsspan" :style="{
+                          'background-color': statusColorList[item.uptype],
+                          'color': item.uptype == 0?'black':'white'
+                          }">
+                          {{
+                            item.uptype == 0 ? '未送审'
+                            :item.uptype == 1? '待审批'
+                            :item.uptype == 2? '审批驳回'
+                            :item.uptype == 3? '审批通过':''
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+
                 </tr>
-              </thead>
+              </tbody>
             </div>
-            <!-- 数据列表 -->
-            <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
-            <tbody>
-              <tr
-                v-for="(item, key) in list"
-                :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
-                :key="key"
-              >
-
-                <td v-for="(data,index) in tableText.tableBody"
-                :key="index"
-                :class="{
-                  ['body-td3']:data==='needtitle',
-                  ['body-td2']:data==='comment',
-                  ['body-ope1']:data==='opetation1'
-                }"
-                >
-                  <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
-                    {{ data==='neednum'? item[data] + (item.itemunit  || '') :item[data]}}
-                  </div>
-                  <div class="bodyButton" v-if="data==='opetation1'">
-                    <div class="cell" v-if="currentRouter==='see' ">
-                      <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 2">
-                        编辑
-                      </button>
-                      <button class="delete" @click="deletedata({needid: item.needid},'home/need/deleteNeed')"  v-if="item.uptype == 0 || item.uptype == 2">
-                        删除
-                      </button>
-                      <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
-                      <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 3">
-                        查看审批
-                      </button>
-                      <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 2">
-                        驳回结果
-                      </button>
-                    </div>
-                    <div class="cell"  v-if="currentRouter==='approval'">
-                      <button class="writeApproval" @click="writeApproval(key)">
-                        审批
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="bodyButton" v-if="data==='opetation2'">
-                    <div class="cell"  style="backgournd-color:red;">
-                      <span class="tipsspan" :style="{
-                        'background-color': statusColorList[item.uptype],
-                        'color': item.uptype == 0?'black':'white'
-                        }">
-                        {{
-                          item.uptype == 0 ? '未送审'
-                          :item.uptype == 1? '待审批'
-                          :item.uptype == 2? '审批驳回'
-                          :item.uptype == 3? '审批通过':''
-                        }}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-
-              </tr>
-            </tbody>
+            
 
             <!-- </el-table> -->
           </div>
@@ -289,11 +292,20 @@ export default {
   methods: {
     getCurrentType () {
       this.currentRouter = sessionStorage.getItem('currentRouter')
+      // console.log(this.currentRouter);
+      this.getTyp()
+      this.search()
     },
     // 获取登录账号信息
     getTyp () {
-      if (this.currentRouter === 'approval') this.drawOpenType = 'write'
-      else this.drawOpenType = 'see'
+      console.log(this.currentRouter);
+      if (this.currentRouter === 'approval') {
+        this.drawOpenType = 'write'
+      }
+      else {
+        this.drawOpenType = 'see'
+      }
+      console.log(this.drawOpenType);
     },
     getSearchUrl () {
       this.searchUrl = 'home/need/getNeed'
@@ -304,6 +316,7 @@ export default {
     },
     // 打卡抽屉
     seeApproval (e) {
+      console.log(this.drawOpenType);
       this.currentIndex = e
       this.$refs.Draw.showDraw()
     },

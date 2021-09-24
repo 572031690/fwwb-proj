@@ -50,7 +50,7 @@
             style="width:400px"
           ></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="rescode">
+        <!-- <el-form-item label="验证码" prop="rescode">
           <el-input
             type="age"
             v-model.number="form.rescode"
@@ -68,7 +68,7 @@
             style="width:100px; margin-left:12px;height:30px;text-align: center;"
             >{{ codenum }}</el-button
           >
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="员工号" prop="employeeid">
           <el-input
             type="age"
@@ -77,17 +77,17 @@
             style="width:400px"
           ></el-input>
         </el-form-item>
-        <el-form-item label="部门编号" prop="departmentid">
+        <!-- <el-form-item label="部门编号" prop="departmentid">
           <el-select v-model="form.departmentid" placeholder="请选择编号">
             <el-option label="10000" value="10000"></el-option>
             <el-option label="996" value="996"></el-option>
             <el-option label="007" value="007"></el-option>
             <el-option label="123" value="123"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="地址" prop="address" >
-                                        <el-input type="textarea" v-model="form.address" style="width:400px"></el-input>
-                                    </el-form-item> -->
+                     <el-input type="textarea" v-model="form.address" style="width:400px"></el-input>
+          </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeres()">取 消</el-button>
@@ -190,15 +190,16 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            if (
-              this.form.tel === this.phone.num &&
-              this.form.rescode === this.phone.code
-            ) {
-              this.register()
-            } else {
-              this.$message.error('验证码错误!')
-              this.form.rescode = ''
-            }
+            // if (
+            //   this.form.tel === this.phone.num &&
+            //   this.form.rescode === this.phone.code
+            // ) {
+            //   this.register()
+            // } else {
+            //   this.$message.error('验证码错误!')
+            //   this.form.rescode = ''
+            // }
+            this.register()
           })
         } else {
           console.log('error submit!!')
@@ -211,18 +212,15 @@ export default {
       // $ajax请求
       const url = 'login/rigister'
       // const {data:res}=await
-      this.$api(
-        url,
-        {
-          // params:{
-          userid: this.form.userId,
+      const data = {
           username: this.form.name,
           password: this.form.pass,
           telNum: this.form.tel,
-          employeeid: this.form.employeeid,
-          departmentid: this.form.departmentid
-        },
-        {}
+          employeeid: this.form.employeeid
+      }
+      this.$api(
+        url,
+        data
       )
         .then(res => {
           console.log(res)

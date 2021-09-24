@@ -33,7 +33,7 @@ export const routerList = [
         imgSrc: require('@/assets/img/body.png')
       },
       {
-        index: 23,
+        index: 22,
         path: '/home/buy',
         label: '购买订单',
         ref: 'spans5',
@@ -42,19 +42,19 @@ export const routerList = [
         imgSrc: require('@/assets/img/buy.png')
       },
       {
-        index: 22,
+        index: 23,
         path: '/home/item',
         label: '材料',
         ref: 'spans6',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/material.png')
       }
     ]
   },
   {
     type: 'tips',
-    index: 6,
+    index: 3,
     path: '',
     label: 'OA审批',
     ref: 'spans10',
@@ -66,37 +66,37 @@ export const routerList = [
     showtab: false,
     childrenList: [
       {
-        index: 61,
+        index: 31,
         path: '/home/body',
         label: '审批需求',
         ref: 'spans11',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/body.png')
       },
       {
-        index: 62,
+        index: 32,
         path: '/home/buy',
         label: '审批订单',
         ref: 'spans12',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/buy.png')
       },
       {
-        index: 63,
+        index: 33,
         path: '/home/item',
         label: '物料',
         ref: 'spans13',
         disabled: false,
-        showtab: true,
+        showtab: false,
         imgSrc: require('@/assets/img/material.png')
       }
     ]
   },
   {
     type: 'router',
-    index: 3,
+    index: 4,
     path: '/home/department',
     label: '部门管理',
     ref: 'spans3',
@@ -107,7 +107,7 @@ export const routerList = [
   },
   {
     type: 'router',
-    index: 7,
+    index: 5,
     path: '/home/item',
     label: '物料',
     ref: 'spans14',
@@ -118,7 +118,7 @@ export const routerList = [
   },
   {
     type: 'router',
-    index: 4,
+    index: 6,
     path: '/home/user',
     label: '用户信息',
     ref: 'spans8',
@@ -129,7 +129,7 @@ export const routerList = [
   },
   {
     type: 'router',
-    index: 5,
+    index: 7,
     path: '/home/driver',
     label: '驾驶舱',
     ref: 'spans9',

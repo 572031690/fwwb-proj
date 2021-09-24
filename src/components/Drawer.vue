@@ -2,12 +2,13 @@
   <div>
     <el-drawer
       title="审批信息"
+      :destroy-on-close="true"
       :before-close="handleClose"
       :visible.sync="dialog"
       direction="rtl"
       custom-class="demo-drawer"
       ref="drawer"
-      :size="openType === 'see'? '576':'90%'"
+      :size="openType === 'write'? '90%':585"
     >
       <div class="drawercenter">
         <div class="drawerStyle" :style="{'width': openType === 'write'? '760px':'520px'}">
@@ -232,7 +233,7 @@ export default {
             }, 300)
           }, 300)
         })
-        .catch(_ => {})
+        .catch(() => {})
     },
     handleClose (done) {
       // if (this.loading) {

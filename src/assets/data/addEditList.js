@@ -150,14 +150,13 @@ export const addEditList = {
         dataName: 'itemtype'
       },
       {
-        label: '数量',
+        label: '库存',
         putType: 'num',
-        dataName: 'neednum'
+        dataName: 'stock'
       },
       {
         label: '单位',
-        putType: 'select',
-        selectData: ['KG', 'T', 'g'],
+        putType: 'input',
         dataName: 'unit'
       },
       {
@@ -169,7 +168,7 @@ export const addEditList = {
     formList: {
       itemid: '',
       itemtype: '',
-      neednum: '',
+      stock: '',
       comment: '',
       unit: ''
     },

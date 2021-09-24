@@ -22,6 +22,8 @@ axios.defaults.baseURL = APIUrl.baseURL // 默认baseURL
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用凭证
 axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers.get['Content-Type'] = 'application/json'
+
 
 // http request 拦截器 全局请求拦截
 // 在ajax发送之前拦截 比如对所有请求统一添加header token

@@ -196,7 +196,7 @@ export default {
               ) // 将数据存储到浏览器内嵌的数据库内
               window.sessionStorage.setItem(
                 'sData',
-                user.departmentid
+                user.roleId
               ) // 将数据存储到浏览器内嵌的数据库内
               this.logindata.uname = ''
               this.logindata.pass = ''

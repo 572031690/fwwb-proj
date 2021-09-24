@@ -15,12 +15,10 @@ export default [
     desc: '用户注册请求',
     path: '/web/logon',
     data: {
-      userid: '', // 这应该没什么用，我是自增的
       username: '',
       password: '',
       telNum: '',
-      employeeid: '',
-      departmentid: ''
+      employeeid: ''
     }
   },
   {

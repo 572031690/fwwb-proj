@@ -7,6 +7,7 @@
       :modal-append-to-body="false"
       :close-on-click-modal="false"
       :show-close="false"
+      :destroy-on-close="true"
       top="12vh"
       center
       width="672px"

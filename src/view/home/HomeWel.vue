@@ -30,7 +30,7 @@
         </el-card>
       </div>
       <div class="bottom-box" >
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10020'"  >
+        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeBuy"  >
           <div class="img">
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
@@ -39,7 +39,7 @@
           </div>
           <div class="text1">需求通过数量</div>
         </el-card>
-        <el-card class="box-card" style="background-color:#f56c6c;" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10020'">
+        <el-card class="box-card" style="background-color:#f56c6c;" v-if="getdpartmentTypeBuy">
           <div class="img">
             <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
           </div>
@@ -49,7 +49,7 @@
           </div>
           <div class="text1">需求驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10020'">
+        <el-card class="box-card" style=" background-color: #409eff" v-if="getdpartmentTypeBuy">
           <div class="img">
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>
@@ -58,7 +58,7 @@
           </div>
           <div class="text1">需求总数</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10010'">
+        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeNeed">
           <div class="img">
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
@@ -67,7 +67,7 @@
           </div>
           <div class="text1">订单通过数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color:#f56c6c;" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10010'">
+        <el-card class="box-card" style=" background-color:#f56c6c;" v-if="getdpartmentTypeNeed">
           <div class="img">
             <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
           </div>
@@ -76,7 +76,7 @@
           </div>
           <div class="text1">订单驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff;" v-if="$store.state.departmentId==='10000' || $store.state.departmentId==='10001'|| $store.state.departmentId==='10010'">
+        <el-card class="box-card" style=" background-color: #409eff;" v-if="getdpartmentTypeNeed">
           <div class="img">
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>
@@ -94,6 +94,23 @@
 
 <script>
 export default {
+  computed: {
+    getdpartmentTypeNeed() {
+      const partIdList = ['10000','10001','10010','10011']
+      for(const i of partIdList){
+        if(this.$store.state.departmentId.includes(i)) return true
+      }
+      return false
+    },
+    getdpartmentTypeBuy() {
+      console.log(this.$store.state.departmentId,'阿斯顿');
+      const partIdList = ['10000','10001','10020','10021']
+      for(const i of partIdList){
+        if(this.$store.state.departmentId.includes(i)) return true
+      }
+      return false
+    }
+  },
   data () {
     return {
       tableData: [
@@ -127,6 +144,7 @@ export default {
 
 <style lang="less" scoped>
 .wel-body {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -139,7 +157,7 @@ export default {
     justify-content:center;
   }
   .box-card-right {
-    width: 940px;
+    width: 55%;
     height: 230px;
     float: left;
     margin-top: 30px;
@@ -151,7 +169,8 @@ export default {
     flex-wrap: wrap;
   }
   .box-card {
-    width: 450px;
+    width: 26%;
+    min-width: 315px;
     height: 200px;
     float: left;
     margin-top: 30px;

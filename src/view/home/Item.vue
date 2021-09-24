@@ -38,44 +38,47 @@
           v-loading="loading2"
           element-loading-text="拼命加载中"
         >
-          <div class="table-top">
-            <thead>
-              <!-- 表头 -->
-              <tr>
-                <th v-for="(item,index) in tableText.tableTitle"
+          <div class="mytable">
+            <div class="table-top">
+              <thead>
+                <!-- 表头 -->
+                <tr>
+                  <th v-for="(item,index) in tableText.tableTitle"
+                  :key="index"
+                  colspan="1"
+                  rowspan="1"
+                  :class="
+                  item === '描述'?'htop-th3'
+                  :item === '需求单名'?'htop-th7'
+                  :'htop-th1'">
+                    <div class="cell">{{item}}</div>
+                  </th>
+                </tr>
+              </thead>
+            </div>
+            <!-- 数据列表 -->
+            <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
+            <tbody>
+              <tr v-for="(item, key) in list" :key="key">
+
+                <td v-for="(data,index) in tableText.tableBody"
                 :key="index"
-                colspan="1"
-                rowspan="1"
-                :class="
-                item === '描述'?'htop-th3'
-                :item === '需求单名'?'htop-th7'
-                :'htop-th1'">
-                  <div class="cell">{{item}}</div>
-                </th>
+                :class="{'body-td4': data==='comment'}" >
+
+                  <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
+                    {{ item[data] }}
+                  </div>
+
+                  <div class="cell" v-if="data==='opetation'">
+                    <button class="modify" @click="seeData(item)">编辑</button>
+                    <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
+                  </div>
+                </td>
+
               </tr>
-            </thead>
+            </tbody>
           </div>
-          <!-- 数据列表 -->
-          <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
-          <tbody>
-            <tr v-for="(item, key) in list" :key="key">
-
-              <td v-for="(data,index) in tableText.tableBody"
-              :key="index"
-              :class="{'body-td4': data==='comment'}" >
-
-                <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
-                  {{ item[data] }}
-                </div>
-
-                <div class="cell" v-if="data==='opetation'">
-                  <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
-                </div>
-              </td>
-
-            </tr>
-          </tbody>
+          
 
           <addDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
@@ -119,7 +122,7 @@ export default {
     return {
       tableText: '',
       dialogFormShow: false,
-      IntList: ['neednum'],
+      IntList: ['stock'],
       list: [
         {
           itemid: 'JPSC001',

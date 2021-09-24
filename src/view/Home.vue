@@ -22,7 +22,7 @@
           ref="navhomebox"
           v-if="item.childrenList.length"
         >
-          <transition :name="getSonTransition(item.childrenList) ? 'navhom' : 'navhomshort'">
+          <transition :name="getSonTransition(item.childrenList) === 3 ? 'navhom' : getSonTransition(item.childrenList) === 2?'navhomshort':'navhommin'">
             <div class="navhome-son" v-show="item.navSonShow">
               <div
                 @click="!itemson.disabled && goToRouter(itemson)"
@@ -119,7 +119,7 @@ export default {
       list.forEach(item => {
         if (item.showtab) index++
       })
-      return index === 3
+      return index 
     },
     // 旋转子列箭头
     changearrow (index) {
@@ -241,33 +241,44 @@ export default {
         this.routerList[4].showtab = true
         this.routerList[5].showtab = true
         this.routerList[6].showtab = true
-        this.routerList[2].childrenList[2].showtab = false
-        this.routerList[1].childrenList[2].showtab = false
       }
       if (this.departmentID.includes('10001')) { // 总经理10001
         this.routerList[2].showtab = true
         this.routerList[5].showtab = true
         this.routerList[6].showtab = true
+        this.routerList[2].childrenList.forEach(item => {
+          item.showtab = true
+        })
       }
       if (this.departmentID.includes('10010')) { // 需求部门经理10010
         this.routerList[2].showtab = true
-        // this.routerList[2].childrenList[1].showtab = false
         this.routerList[2].childrenList[0].showtab = true
+        this.routerList[2].childrenList[2].showtab = true
       }
       if (this.departmentID.includes('10011')) { // 需求专员10011
         this.routerList[1].showtab = true
-        // this.routerList[1].childrenList[1].showtab = false
         this.routerList[1].childrenList[0].showtab = true
+        this.routerList[1].childrenList[2].showtab = true
       }
       if (this.departmentID.includes('10020')) { // 购买部门经理10020
         this.routerList[2].showtab = true
         this.routerList[2].childrenList[1].showtab = true
-        // this.routerList[2].childrenList[0].showtab = false
+        this.routerList[2].childrenList[2].showtab = true
       }
       if (this.departmentID.includes('10021')) { //   购买专员10021
         this.routerList[1].showtab = true
         this.routerList[1].childrenList[1].showtab = true
-        // this.routerList[1].childrenList[0].showtab = false
+        this.routerList[1].childrenList[2].showtab = true
+      }
+      if(this.routerList[4].showtab ===  this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
+        if( this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ) {
+          this.routerList[4].showtab = false
+          this.routerList[1].childrenList[2].showtab = false
+        }else {
+          this.routerList[4].showtab = false
+          this.routerList[2].childrenList[2].showtab = false
+        }
+      
       }
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
@@ -275,14 +286,10 @@ export default {
         }
       })
     },
+
     initType (bool) {
-      // debugger
-      this.arrowData = []
       for (let i = 1; i <= 6; i++) {
         this.routerList[i].showtab = bool
-        if (this.routerList[i].type === 'tips') {
-          this.routerList[i].navSonShow = true
-        }
         if (!this.routerList[i].childrenList.length) {
           this.routerList[i].childrenList.forEach(item => {
             item.showtab = bool
@@ -297,31 +304,32 @@ export default {
       }
     },
     goToRouter (val) {
-      if (this.checkIndex === val.index) {
-        console.log(this.$refs.viewBox, 'dsada')
-        this.$refs.viewBox.getCurrentType()
-      }
-      this.checkIndex = val.index
-      if (val.disabled) { return }
-      if (val.index === 21 || val.index === 23) {
+      if (this.checkIndex === val.index || val.disabled) return
+      
+      if (val.index === 21 || val.index === 22) {
         window.sessionStorage.setItem('currentRouter', 'see')
       }
-      if (val.index === 61 || val.index === 62) {
+      if (val.index === 31 || val.index === 32) {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
+      if((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21))
+      this.$refs.viewBox.getCurrentType()
 
+      this.checkIndex = val.index
+      window.sessionStorage.setItem('currentIndex', this.checkIndex)
       this.$router.push({ path: val.path })
       // 页面跳转
     }
   },
   created () {
-    window.sessionStorage.setItem('sData', ['10010', '10000'])
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
     this.getAdminType()
   },
   mounted () {
+    // window.sessionStorage.setItem('sData', ['10010', '10000'])
+    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
     this.changehomeimgCreate()
     this.nowTimes()
     // 实现左边子栏的缓慢消失jQuery
@@ -362,7 +370,7 @@ export default {
   },
   beforeDestroy () {
     this.clearTime()
-    // sessionStorage.removeItem("key");   //删
+    // sessionStorage.removeItem("key");   //删sessionStorage
   }
 }
 </script>
@@ -388,7 +396,7 @@ export default {
 }
 .leftNavigationChange {
   /* position: fixed; */
-  width: 2.6%;
+  width: 2.8%;
   background-color: #304156;
   height: 100vh;
   /*占满一个屏幕的高度 */
@@ -396,7 +404,7 @@ export default {
 }
 @keyframes navlong {
   0% {
-    width: 2.6%;
+    width: 2.8%;
   }
   100% {
     width: 10%;
@@ -408,7 +416,7 @@ export default {
     width: 10%;
   }
   100% {
-    width: 2.6%;
+    width: 2.8%;
   }
 }
 .leftNavigation {
@@ -452,16 +460,16 @@ export default {
   transition: all 0.5s;
   transform: rotate(90deg);
 }
-.navhom-enter-active, .navhomshort-enter-active {
+.navhom-enter-active, .navhomshort-enter-active, .navhommin-enter-active {
   transition: all 0.5s;
 }
-.navhom-leave-active, .navhomshort-leave-active{
+.navhom-leave-active, .navhomshort-leave-active, .navhommin-leave-active{
   transition: all 0.5s;
 }
-.navhom-enter, .navhomshort-enter {
+.navhom-enter, .navhomshort-enter,.navhommin-enter {
   height: 0;
 }
-.navhom-leave-to, .navhomshort-leave-to {
+.navhom-leave-to, .navhomshort-leave-to,.navhommin-leave-to {
   height: 0;
 }
 .navhom-enter-to {
@@ -475,6 +483,12 @@ export default {
 }
 .navhomshort-leave {
   height: 105px;
+}
+.navhommin-enter-to {
+  height: 52.5px;
+}
+.navhommin-leave {
+  height: 52.5px;
 }
 
 .navhome-son {
@@ -533,7 +547,7 @@ export default {
 .checkLineDiv {
   position:absolute;
   height: 30px;
-  width: 5px;
+  width: 4px;
   left:0;
   background-color: rgb(30, 149, 212);
 }
@@ -548,7 +562,7 @@ export default {
 }
  .rightNavigations {
   display: inline-block;
-  width: 97.4%;
+  width: 97.2%;
   height: 100vh; // 占满一个屏幕的高度
   box-sizing: border-box;
   // margin-left: 50px;
@@ -556,7 +570,7 @@ export default {
  }
  @keyframes rightNavlong {
   0% {
-    width: 97.4%;
+    width: 97.2%;
   }
   100% {
     width: 90%;
@@ -567,7 +581,7 @@ export default {
     width: 90%;
   }
   100% {
-    width: 97.4%;
+    width: 97.2%;
   }
 }
 .rightnav-top {

@@ -43,7 +43,7 @@ const routes = [
   // {path:'/content/:aid',component:Content}, //动态路由
   // {path:'/pcontent',component:Pcontent}, //get方法传值配置
   { path: '', redirect: '/login' } // 默认跳转路由
-]
+] 
 
 const router = new VueRouter({
   mode: 'history',
@@ -64,6 +64,7 @@ router.beforeEach((to, from, next) => {
       showClose: true,
       message: '请先退出登陆'
     })
+    window.sessionStorage.setItem('currentIndex', 1)
     return next('/home')
   } else if (!store) {
     // next('/login')

@@ -23,7 +23,7 @@
                     >
                       <el-option
                         style="padding:0 18px 0 10px;"
-                        v-for="item in select"
+                        v-for="item in rolaSelect"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value"
@@ -55,59 +55,62 @@
           v-loading="loading2"
           element-loading-text="拼命加载中"
         >
-          <div class="table-top">
-            <thead>
-              <tr >
-                <th v-for="(item,index) in tableText.tableTitle"
+          <div class="mytable">
+            <div class="table-top">
+              <thead>
+                <tr >
+                  <th v-for="(item,index) in tableText.tableTitle"
+                  :key="index"
+                  colspan="1"
+                  rowspan="1"
+                  :class="{'htop-th2':  item === '用户名','htop-ope1':item === '操作'}">
+                    <div class="cell">{{item}}</div>
+                  </th>
+                </tr>
+              </thead>
+            </div>
+            <!-- 数据列表 -->
+            <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
+            <tbody>
+              <tr v-for="(item, key) in list" :key="key">
+
+                <td v-for="(data,index) in tableText.tableBody"
                 :key="index"
-                colspan="1"
-                rowspan="1"
-                :class="{'htop-th2':  item === '用户名','htop-ope1':item === '操作'}">
-                  <div class="cell">{{item}}</div>
-                </th>
+                :class="{
+                    ['body-td2']:data==='username',
+                    ['body-ope1']:data==='opetation'
+                  }"
+                >
+
+                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
+                    {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
+                  </div>
+
+                  <div class="cell" v-if="data==='opetation'">
+                    <button class="modify" @click="seeData(item)">编辑</button>
+                    <button class="delete" @click="deletedata({userid: item.userid},'home/user/deleteUser')">删除</button>
+                    <button class="approval" @click="resetPass(item)">重置密码</button>
+                  </div>
+                  <div class="cell" v-if="data==='opetationRole'">
+                    <button class="roleBtn" @click="getRole(item)">分配角色</button>
+                  </div>
+                  <div class="cell" v-if="data==='roleStatus'">
+                      <el-switch
+                        v-model="item.disabledRole"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-value=1
+                        @change="setStatus(item.userid)"
+                        inactive-value=0>
+                      </el-switch>
+                      {{item.disabledRole? '正常': '禁用'}}
+                  </div>
+
+                </td>
               </tr>
-            </thead>
+            </tbody>
           </div>
-          <!-- 数据列表 -->
-          <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
-          <tbody>
-            <tr v-for="(item, key) in list" :key="key">
-
-              <td v-for="(data,index) in tableText.tableBody"
-              :key="index"
-              :class="{
-                  ['body-td2']:data==='username',
-                  ['body-ope1']:data==='opetation'
-                }"
-              >
-
-                <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                  {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
-                </div>
-
-                <div class="cell" v-if="data==='opetation'">
-                  <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({userid: item.userid},'home/user/deleteUser')">删除</button>
-                  <button class="approval" @click="resetPass(item)">重置密码</button>
-                </div>
-                <div class="cell" v-if="data==='opetationRole'">
-                  <button class="roleBtn" @click="getRole(item)">分配角色</button>
-                </div>
-                <div class="cell" v-if="data==='roleStatus'">
-                    <el-switch
-                      v-model="item.disabledRole"
-                      active-color="#13ce66"
-                      inactive-color="#ff4949"
-                      active-value=1
-                      @change="setStatus(item.userid)"
-                      inactive-value=0>
-                    </el-switch>
-                    {{item.disabledRole? '正常': '禁用'}}
-                </div>
-
-              </td>
-            </tr>
-          </tbody>
+          
 
         </div>
         <div class="table-bottom">

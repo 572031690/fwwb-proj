@@ -39,6 +39,7 @@
           v-loading="loading2"
           element-loading-text="拼命加载中"
         >
+        <div class="mytable">
           <div class="table-top">
             <thead>
               <!-- 表头 -->
@@ -76,6 +77,8 @@
               </td>
             </tr>
           </tbody>
+        </div>
+          
 
         </div>
       </div>
