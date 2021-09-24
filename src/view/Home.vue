@@ -271,6 +271,7 @@ export default {
         this.routerList[1].childrenList[2].showtab = true
       }
       if(this.routerList[4].showtab ===  this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
+        debugger
         if( this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ) {
           this.routerList[4].showtab = false
           this.routerList[1].childrenList[2].showtab = false

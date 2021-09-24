@@ -63,7 +63,11 @@
                   :key="index"
                   colspan="1"
                   rowspan="1"
-                  :class="{'htop-th2':  item === '用户名','htop-ope1':item === '操作'}">
+                  :class="{
+                    'htop-th2':  item === '用户名',
+                    'htop-ope1':item === '操作',
+                    'htop-th7':item === '职位'
+                  }">
                     <div class="cell">{{item}}</div>
                   </th>
                 </tr>
@@ -78,6 +82,7 @@
                 :key="index"
                 :class="{
                     ['body-td2']:data==='username',
+                    ['body-td3']:data==='departmentid',
                     ['body-ope1']:data==='opetation'
                   }"
                 >
