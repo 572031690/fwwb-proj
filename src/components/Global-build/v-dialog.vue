@@ -115,8 +115,8 @@
 /* post请求
 类型 putType： textarea disput numput num select date input
 */
-import { rulesData } from '../assets/data/rules'
-import { addEditList } from '../assets/data/addEditList'
+import { rulesData } from '../../assets/data/rules'
+import { addEditList } from '../../assets/data/addEditList'
 export default {
   name:'vDialog',
   props: {

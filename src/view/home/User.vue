@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="this.$store.state.departmentId.includes('10000')">
+              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -82,13 +82,13 @@
                 :key="index"
                 :class="{
                     ['body-td2']:data==='username',
-                    ['body-td3']:data==='departmentid',
+                    ['body-td3']:data==='roleId',
                     ['body-ope1']:data==='opetation'
                   }"
                 >
 
                   <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                    {{ data==='departmentid' ? showRoleData(item[data]) :item[data] }}
+                    {{ data==='roleId' ? showRoleData(item[data]):data==='index'? key+1 :item[data] }}
                   </div>
 
                   <div class="cell" v-if="data==='opetation'">
@@ -132,7 +132,7 @@
           </el-pagination>
         </div>
 
-        <addDialog ref="addDialog"
+        <vDialog ref="addDialog"
           :dialogFormShow="dialogFormShow"
           @updata="search"
           @closeaddDialog="closeaddDialog"
@@ -142,7 +142,7 @@
           :openType="openType"
           name="userList"
         >
-        </addDialog>
+        </vDialog>
 
         <el-dialog
           title="分配角色"
@@ -172,17 +172,14 @@
   </div>
 </template>
 <script>
-import addDialog from '../../components/addDataDialog.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
-  components: {
-    addDialog
-  },
   data () {
     return {
       tableText: '',
+      constIndex:0,
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',
@@ -282,9 +279,12 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
+      if(!val) return
+      console.log(val);
       const rolaArr = []
       this.rolaSelect.forEach(item => {
-        if (val.includes(item.value)) rolaArr.push(item.label)
+        console.log(val);
+        if (val.toString().includes(item.value)) rolaArr.push(item.label)
       })
       return rolaArr.join(',')
     },
@@ -385,6 +385,7 @@ export default {
      * @desc 获取角色列表
      */
     async getRolaList () {
+      this.dialogVisibleRole = true
       const url = 'home/user/getRolaList'
       await this.$api(url).then((res) => {
         console.log(res)

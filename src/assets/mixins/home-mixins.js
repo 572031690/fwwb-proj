@@ -18,6 +18,7 @@ export default {
     async search () {
       // const url = '/webneed/findAllNeed'
       await this.$api(this.searchUrl, {
+      // await this.$ajax.get('/web/listUser', {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
@@ -28,7 +29,8 @@ export default {
         // debugger;
         console.log(res)
         // const { data } = res
-        this.list = res.list // 获取里面的data数据
+        this.list = res.list||[] // 获取里面的data数据
+        console.log(this.list,'this.listthis.list');
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
       })

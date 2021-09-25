@@ -21,8 +21,8 @@ axios.defaults.baseURL = APIUrl.baseURL // 默认baseURL
 // 请求的时候，我们需要加上一个请求头，所以可以在这里进行一个默认的设置
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8'
 axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用凭证
-axios.defaults.headers.post['Content-Type'] = 'application/json'
-axios.defaults.headers.get['Content-Type'] = 'application/json'
+// axios.defaults.headers.post['Content-Type'] = 'application/json'
+// axios.defaults.headers.get['Content-Type'] = 'application/json'
 
 
 // http request 拦截器 全局请求拦截

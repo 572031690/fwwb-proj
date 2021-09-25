@@ -224,13 +224,13 @@ export default {
       )
         .then(res => {
           console.log(res)
-          if (res.data.code === 100) {
+          if (res.code === '101') {
             this.$message({
               type: 'success',
               message: '注册成功!'
             })
             this.dialogFormVisible = false
-          } else if (res.data.code === 99) {
+          } else if (res.code === '99') {
             this.$message.error('用户名重复!')
           }
         })

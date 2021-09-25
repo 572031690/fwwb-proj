@@ -137,5 +137,16 @@ export const routerList = [
     imgSrc: require('@/assets/img/driver.png'),
     showtab: false,
     childrenList: []
+  },
+  {
+    type: 'router',
+    index: 8,
+    path: '/home/driver',
+    label: '个人中心',
+    ref: 'spans15',
+    disabled: false,
+    imgSrc: require('@/assets/img/personal.png'),
+    showtab: true,
+    childrenList: []
   }
 ]

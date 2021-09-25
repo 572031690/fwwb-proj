@@ -4,7 +4,8 @@ import router from './router'
 import store from './store/index'
 // 引入echarts
 import * as echarts from 'echarts'
-
+ import globalComponent from './components/Global-build/index.js'//引用全局组件index
+Vue.use(globalComponent)
 import { tableList } from './assets/data/tableData'
 import sendAxios from './service/axios'
 import axios from 'axios' // http://192.168.2.2 // 引入axios

@@ -56,6 +56,7 @@
                 </tr>
               </thead>
             </div>
+            <vNone v-if="!list.length" />
             <!-- 数据列表 -->
             <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
             <tbody>

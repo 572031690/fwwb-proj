@@ -31,7 +31,6 @@ export default [
       username: '',
       password: '',
       telNum: '',
-      departmentid: '',
       employeeid: ''
     }
   },
@@ -63,7 +62,7 @@ export default [
     path: '/web/listUser',
     params: {
       userid: '',
-      departmentid: []
+      departmentid: ''
     }
   },
   {
@@ -78,7 +77,7 @@ export default [
   {
     name: 'getRolaList',
     method: 'GET',
-    desc: '更改角色状态',
+    desc: '获取角色列表',
     path: '/web/listUser',
     params: {}
   }
