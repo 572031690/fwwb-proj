@@ -144,9 +144,8 @@ export const addEditList = {
         dataName: 'itemid'
       },
       {
-        label: '类型',
-        putType: 'select',
-        selectData: ['10000', '996', '007', '123'],
+        label: '种类',
+        putType: 'input',
         dataName: 'itemtype'
       },
       {

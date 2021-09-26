@@ -7,7 +7,7 @@ export default [
     data: {
       itemid: '', // 因为材料的编号是一串字符 ##还没改
       itemtype: '',
-      neednum: '',
+      stock: '',
       comment: '',
       unit: ''
     }
@@ -29,7 +29,7 @@ export default [
     data: {
       itemid: '',
       itemtype: '',
-      neednum: '',
+      stock: '',
       comment: '',
       unit: ''
     }

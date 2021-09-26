@@ -7,7 +7,6 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
 export default {
   props: {
     titleFontSize: [Number]
@@ -212,6 +211,10 @@ export default {
     },
     // 获取服务器的数据
     async getData () {
+      const url = 'home/driver/monthSales'
+       await this.$api(url).then((res) => {
+        console.log(res)
+      })
       // const {data: ret} = await this.$http.get('rank')
       // this.allData = ret
       // this.allData.sort((a, b) => {

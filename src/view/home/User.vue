@@ -73,6 +73,7 @@
                 </tr>
               </thead>
             </div>
+            <vNone v-if="!list.length" />
             <!-- 数据列表 -->
             <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
             <tbody>
@@ -100,15 +101,15 @@
                     <button class="roleBtn" @click="getRole(item)">分配角色</button>
                   </div>
                   <div class="cell" v-if="data==='roleStatus'">
-                      <el-switch
-                        v-model="item.disabledRole"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        active-value=1
-                        @change="setStatus(item.userid)"
-                        inactive-value=0>
-                      </el-switch>
-                      {{item.disabledRole? '正常': '禁用'}}
+                        <el-switch
+                          :name="item.userid.toString()"
+                          v-model="item.isDisabled"
+                          active-color="#ff4949"
+                          inactive-color="#13ce66"
+                          @change="setStatus(item.userid,key)"
+                        >
+                        </el-switch>
+                        {{item.isDisabled?  '禁用':'正常'}}
                   </div>
 
                 </td>
@@ -124,7 +125,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="params.page"
-            :page-sizes="[5, 10, 15, 20]"
+            :page-sizes="[5, 10]"
             :page-size="params.limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="params.total"
@@ -156,9 +157,9 @@
             </div>
             <el-checkbox-group v-model="currentRola">
               <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
-                <div class="btnRole"><el-checkbox :label="item.rolaID">{{''}}</el-checkbox></div>
-                <div class="textRole">{{item.roleName}}</div>
-                <div class="textRole">{{item.roleDescribe}}</div>
+                <div class="btnRole"><el-checkbox :label="item.roleId">{{''}}</el-checkbox></div>
+                <div class="textRole">{{item.rolename}}</div>
+                <div class="textRole">{{item.description}}</div>
               </div>
             </el-checkbox-group>
           </div>
@@ -176,6 +177,10 @@ import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
+  // computed:{
+  //  
+    
+  // },
   data () {
     return {
       tableText: '',
@@ -191,7 +196,7 @@ export default {
           telNum: 17816536995,
           employeeid: '3',
           departmentid: '10001',
-          disabledRole: 0
+          isDisabled: 0
         },
         {
           userid: 2,
@@ -200,7 +205,7 @@ export default {
           telNum: 15865645646,
           employeeid: '1',
           departmentid: '10021',
-          disabledRole: 0
+          isDisabled: 0
         }
       ],
       departmentData: {
@@ -212,15 +217,15 @@ export default {
         10021: '采购专员'
       },
       loading2: true,
-      rolaID: 0,
+      roleId: 0,
       rolaData: [
         {
-          rolaID: 10000,
+          roleId: 10000,
           roleName: '管理员',
           roleDescribe: '管理整个系统'
         },
         {
-          rolaID: 10001,
+          roleId: 10001,
           roleName: '总经理',
           roleDescribe: '管理整个系统'
         }
@@ -268,22 +273,49 @@ export default {
   mounted () {
     setTimeout(() => {
       this.loading2 = false
-      console.log(this.list, 'list')
     }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
   },
   methods: {
+    async search () {
+      await this.$api(this.searchUrl, {
+        params: {
+          page: this.params.page, // 传递当前是第几页参数
+          limit: this.params.limit, // 传递每页显示多少条记录参数
+          username: this.params.dname, // 传递搜索参数
+          uptype: this.params.selectValue // 筛选参数
+        }
+      }).then((res) => {
+        // debugger;
+        console.log(res)
+        // const { data } = res
+        this.list = res.list||[] // 获取里面的data数据
+        this.getEmitData()
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        this.params.page = res.page // 将后端的当前页反传回来
+      })
+    },
+    rolaCheck(item) {
+      return item.isDisabled? false:true
+    },
+    getEmitData () {
+      this.list.forEach(item => {
+        if(item.isDisabled) {
+          item.isDisabled = true
+        }else{
+          item.isDisabled = false
+        }
+      })
+    },
     /**
      * @desc 显示角色内容
      */
     showRoleData (val) {
       if(!val) return
-      console.log(val);
       const rolaArr = []
       this.rolaSelect.forEach(item => {
-        console.log(val);
         if (val.toString().includes(item.value)) rolaArr.push(item.label)
       })
       return rolaArr.join(',')
@@ -292,20 +324,17 @@ export default {
      * @desc 分配角色请求
      */
     checkRoleList () {
-      console.log(this.currentRola)
       this.$confirm('确定是否分配此用户该权限角色?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
         const url = 'home/user/checkRola'
-        const params = {
-          departmentid: this.currentRola.join(','),
+        const data = {
+          roleId: this.currentRola,
           userid: this.currentId
         }
-        await this.$api(url, {
-          params
-        }).then(res => {
+        await this.$api(url, data).then(res => {
           if (res) {
             this.$message({
               type: 'success',
@@ -339,7 +368,7 @@ export default {
      * @desc 重置密码
      */
     resetPass (item) {
-      this.$confirm('确定是否重置此用户密码为6个8?', '提示', {
+      this.$confirm('确定是否重置此用户密码为8个8?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -378,6 +407,8 @@ export default {
      * @desc 打开分配角色表
      */
     getRole (item) {
+      this.currentRola = []
+      if(item.roleId[0]!==0) this.currentRola = item.roleId||[]
       this.currentId = item.userid
       this.getRolaList()
     },
@@ -388,22 +419,23 @@ export default {
       this.dialogVisibleRole = true
       const url = 'home/user/getRolaList'
       await this.$api(url).then((res) => {
-        console.log(res)
+        this.rolaData = res.roleList
         this.dialogVisibleRole = true
       })
     },
     /**
      * @desc 更改用户状态
      */
-    async setStatus (id) {
+    async setStatus (id,key) {
       const url = 'home/user/changeStatus'
       await this.$api(url, {
         params: {
           userid: id
         }
       }).then((res) => {
-        console.log(res)
-        this.search()
+        this.$message.success('更改状态成功')
+        // this.list[key].isDisabled=!this.list[key].isDisabled
+        // this.search()
       })
     }
   }

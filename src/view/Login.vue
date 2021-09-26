@@ -169,8 +169,8 @@ export default {
       } else if (!this.$refs.passwordeye.value) {
         this.tips2 = '密码不能为空'
         this.tips1 = ''
-      } else if (this.$refs.passwordeye.value.length < 6) {
-        this.tips2 = '密码长度不能少于6位'
+      } else if (this.$refs.passwordeye.value.length < 5) {
+        this.tips2 = '密码长度不能少于5位'
         this.tips1 = ''
         // 验证验证码是否正确，如果正确就往下一个界面跳
       } else if (this.inputVal.toUpperCase() === this.checkCode) {

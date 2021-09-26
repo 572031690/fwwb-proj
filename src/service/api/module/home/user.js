@@ -50,26 +50,26 @@ export default [
     name: 'resetPass',
     method: 'GET',
     desc: '重置密码',
-    path: '/web/listUser',
+    path: '/web/invertPassword',
     params: {
       userid: ''
     }
   },
   {
     name: 'checkRola',
-    method: 'GET',
+    method: 'POST',
     desc: '分配角色',
-    path: '/web/listUser',
-    params: {
+    path: '/web/addUserRole',
+    data: {
       userid: '',
-      departmentid: ''
+      roleId: ''
     }
   },
   {
     name: 'changeStatus',
     method: 'GET',
     desc: '更改角色状态',
-    path: '/web/listUser',
+    path: '/web/updateStatus',
     params: {
       userid: ''
     }
@@ -78,7 +78,7 @@ export default [
     name: 'getRolaList',
     method: 'GET',
     desc: '获取角色列表',
-    path: '/web/listUser',
+    path: '/web/getUserRole',
     params: {}
   }
 ]

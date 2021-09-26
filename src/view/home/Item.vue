@@ -81,16 +81,17 @@
           </div>
           
 
-          <addDialog ref="addDialog"
+          <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
+            :editDisabled="editDisabled"
             @closeaddDialog="closeaddDialog"
             :IntList="IntList"
             :currentList="currentList"
             :openType="openType"
             name="itemList"
         >
-        </addDialog>
+        </vDialog>
 
         </div>
         <div class="table-bottom">
@@ -99,7 +100,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="params.page"
-            :page-sizes="[5, 10, 15, 20]"
+            :page-sizes="[5, 10]"
             :page-size="params.limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="params.total"
@@ -111,16 +112,13 @@
   </div>
 </template>
 <script>
-import addDialog from '../../components/addDataDialog.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
-  components: {
-    addDialog
-  },
   data () {
     return {
+      editDisabled:'itemid',
       tableText: '',
       dialogFormShow: false,
       IntList: ['stock'],

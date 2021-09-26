@@ -271,7 +271,6 @@ export default {
         this.routerList[1].childrenList[2].showtab = true
       }
       if(this.routerList[4].showtab ===  this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
-        debugger
         if( this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ) {
           this.routerList[4].showtab = false
           this.routerList[1].childrenList[2].showtab = false
@@ -329,7 +328,8 @@ export default {
     this.getAdminType()
   },
   mounted () {
-    // window.sessionStorage.setItem('sData', ['10010', '10000'])
+    console.log(document.cookie,'document.cookiedocument.cookie');
+    window.sessionStorage.setItem('sData', ['10010', '10000','10011','10020'])
     this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
     this.changehomeimgCreate()
     this.nowTimes()
@@ -392,6 +392,7 @@ export default {
   width: 10%;
   background-color: #304156;
   height: 100%;
+  min-height: 815px;
   /*占满一个屏幕的高度 */
   animation: navlong 0.7s;
 }

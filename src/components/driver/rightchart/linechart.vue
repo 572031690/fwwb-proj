@@ -228,11 +228,10 @@ export default {
     },
     // 获取服务器的数据
     async getData() {
-      // const {data: ret} = await this.$http.get('line')
-      // this.allData = ret
-      // this.allData.sort((a, b) => {
-      //   return b.value - a.value;
-      // });
+      const url = 'home/driver/monthIncrement'
+       await this.$api(url).then((res) => {
+        console.log(res)
+      })
       this.updateChart();
     },
     // 更新图表

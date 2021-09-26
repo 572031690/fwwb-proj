@@ -56,8 +56,7 @@ export default {
         { name: '海南', value: 54, count: 35 },
         { name: '台湾', value: 88, count: 35 },
         { name: '香港', value: 66, count: 35 },
-        { name: '澳门', value: 77, count: 35 },
-        { name: '南海诸岛', value: 0, count: 35 }
+        { name: '澳门', value: 77, count: 35 }
       ],
       labelFormatter: [
         { name: '杭州', matter: '公司总部：杭州钢材科技公司' },
@@ -98,9 +97,23 @@ export default {
     }
   },
   mounted () {
+    this.getCountryData()
+    this.getCompanyData()
     this.getMap()
   },
   methods: {
+    async getCountryData () {
+      const url = 'home/driver/countrySale'
+       await this.$api(url).then((res) => {
+        console.log(res)
+      })
+    },
+    async getCompanyData () {
+      const url = 'home/driver/findAllCompany'
+        await this.$api(url).then((res) => {
+        console.log(res)
+      })  
+    },
     async getMap () {
       // 基于准备好的dom，初始化echarts实例
       this.chartInstance = this.$echarts.init(this.$refs.map_ref, this.theme)
