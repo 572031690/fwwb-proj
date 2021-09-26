@@ -121,7 +121,7 @@ export default {
       // 对图表初始化配置的控制
       const initOption = {
         title: {
-          text: '| 材料月销量统计',
+          text: '| 三大支柱材料月销量统计',
           left: 20,
           top: 20,
           textStyle: {
