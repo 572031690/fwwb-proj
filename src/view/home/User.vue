@@ -280,8 +280,8 @@ export default {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
-          username: this.params.dname, // 传递搜索参数
-          uptype: this.params.selectValue // 筛选参数
+          searchName: this.params.dname, // 传递搜索参数
+          selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
         this.list = res.list||[] // 获取里面的data数据

@@ -48,7 +48,7 @@ export default [
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
       searchName: '', // 传递搜索参数
-      uptype: '' // 查询审批状态
+      selectName: '' // 查询审批状态
     }
   },
   {
