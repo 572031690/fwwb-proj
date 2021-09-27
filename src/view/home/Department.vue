@@ -139,7 +139,6 @@ export default {
   },
   mounted () {
     // var ps=String.split(this.form.pass);
-    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
     }, 400)
@@ -156,7 +155,6 @@ export default {
     },
     // 打开部门详情页面
     getDetail (item) {
-      console.log(item)
       const form = {
         name: '采购部',
         employenum: 25,

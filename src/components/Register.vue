@@ -223,7 +223,6 @@ export default {
         data
       )
         .then(res => {
-          console.log(res)
           if (res.code === '101') {
             this.$message({
               type: 'success',
@@ -255,7 +254,6 @@ export default {
       this.$api('login/getCode', { params: { phone: this.form.tel } })
         .then(res => {
           res = res.data
-          console.log(res)
           if (res.code) {
             this.phone.code = res.code
             this.phone.num = this.form.tel

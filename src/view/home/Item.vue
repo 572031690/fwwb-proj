@@ -143,7 +143,6 @@ export default {
   },
   mounted () {
     // var ps=String.split(this.form.pass);
-    // console.log(ps);
     setTimeout(() => {
       this.loading2 = false
     }, 400)

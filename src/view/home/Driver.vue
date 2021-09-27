@@ -10,7 +10,7 @@
         <div class="tabbodyafter"></div>
       </div>
       <div class="tabbody">
-        <piechart class="piechart" :titleFontSize="titleFontSize"></piechart>
+        <piechart class="piechart" :titleFontSize="titleFontSize" :pieData="pieData"></piechart>
         <div class="tabbodyafter"></div>
       </div>
     </div>
@@ -19,11 +19,11 @@
         <div class="tabmidtopTitle">2021年统计</div>
         <div  class="tabmidtopBody" >
           <div class="tabmidtopBodyLeft">
-            <span>15000 </span>
+            <span>{{totalCount}} </span>
             <span> 单</span>
           </div>
           <div class="tabmidtopBodyRight">
-            <span>25500 </span>
+            <span>{{totalValue}} </span>
             <span> 万元</span>
           </div>
         </div>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <mapChina></mapChina>
+      <mapChina @backMapData="backMapData"></mapChina>
     </div>
     <div class="bodyright">
       <div class="tabbody">
@@ -73,6 +73,9 @@ export default {
   },
   data () {
     return {
+      totalCount: 0,
+      totalValue: 0,
+      pieData: [],
       titleFontSize: 15
     }
   },
@@ -98,7 +101,11 @@ export default {
   methods: {
     screenAdapter () {
       this.titleFontSize = (this.$refs.body_ref.clientWidth / 100) * 0.8 // 15
-      console.log(this.titleFontSize, 'titleFontSize132')
+    },
+    backMapData(pieData,totalCount,totalValue) {
+      this.totalCount = totalCount
+      this.totalValue = Math.round(totalValue / 10000 *100) /100
+      this.pieData = pieData
     }
   }
 }

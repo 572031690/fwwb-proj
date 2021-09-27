@@ -159,7 +159,6 @@ export default {
         this.eyesflag = !this.eyesflag
         this.$refs.passwordeye.type = 'password'
       }
-      console.log(this.$refs.passeyes.src)
     },
     // 登陆按钮事件
     login () {
@@ -187,9 +186,7 @@ export default {
         })
           .then(res => {
             const { code, user } = res
-            console.log(res)
             if (parseInt(code) === 101) {
-              // console.log(res);
               window.sessionStorage.setItem(
                 'storeData',
                 user.username

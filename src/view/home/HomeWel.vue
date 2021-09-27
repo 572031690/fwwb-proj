@@ -103,7 +103,6 @@ export default {
       return false
     },
     getdpartmentTypeBuy() {
-      console.log(this.$store.state.departmentId,'阿斯顿');
       const partIdList = ['10000','10001','10020','10021']
       for(const i of partIdList){
         if(this.$store.state.departmentId.includes(i)) return true

@@ -261,7 +261,6 @@ export default {
       // this.$store.commit('ChangeDraw')
     },
     msg () {
-      console.log(this.listIn, 'draw输出')
     },
     getDrawerType () {
       // this.size

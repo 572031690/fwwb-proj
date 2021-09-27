@@ -98,7 +98,6 @@ export default {
   methods: {
     screenAdapter () {
       this.titleFontSize = (this.$refs.body_ref.clientWidth / 100) * 0.8 // 15
-      console.log(this.titleFontSize, 'titleFontSize132')
     }
   }
 }

@@ -315,7 +315,6 @@ export default {
   },
   mounted () {
     this.dynamicTags.splice(0, 0, this.ams)
-    console.log(this.ams)
   }
 }
 </script>

@@ -7,31 +7,44 @@
 <script>
 export default {
   props: {
-    titleFontSize: [Number]
+    titleFontSize: [Number],
+    pieData: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
   },
   watch: {
     titleFontSize: {
-      handler: function(val) {
+      handler: function (val) {
         // this.chartInstance.resize();
         this.screenAdapter(val);
       }
       // immediate: true
+    },
+    pieData: {
+      handler: function (val) {
+        if(val.length) {
+          this.getData()
+        }
+      }
     }
   },
   data() {
     return {
       chartInstance: null,
       legendName: [
-        "广东",
-        "北京",
-        "江苏",
-        "浙江",
-        "青海",
-        "澳门",
-        "黑龙江",
-        "山东",
-        "河北",
-        "江西"
+        // "广东",
+        // "北京",
+        // "江苏",
+        // "浙江",
+        // "青海",
+        // "澳门",
+        // "黑龙江",
+        // "山东",
+        // "河北",
+        // "江西"
       ],
       seriesData: [
         {
@@ -80,7 +93,7 @@ export default {
   mounted() {
     // setTimeout(() => {
     this.getinitChart();
-    this.getData();
+    // this.getData();
     // this.screenAdapter();
     // }, 600);
 
@@ -147,15 +160,27 @@ export default {
             labelLine: {
               show: true
             }
-            // }
           }
         ]
       };
       this.chartInstance.setOption(initOption);
     },
-    async getData() {
-      // const {data: ret} = await this.$http.get('rank')
-      // this.allData = ret
+    getData() {
+      let pieDataCopy = JSON.parse(JSON.stringify(this.pieData))
+      for(let i = 0;i< pieDataCopy.length;i++) {
+        for(let j = i + 1; j< pieDataCopy.length; j++) {
+          if(pieDataCopy[i].value < pieDataCopy[j].value){
+            const pie = pieDataCopy[i]
+            pieDataCopy[i] = pieDataCopy[j]
+            pieDataCopy[j] = pie
+          }
+        }
+      }
+      const TopData10 = pieDataCopy.slice(0,10)
+      TopData10.forEach(item => {
+        this.legendName.push(item.name)
+      })
+      this.seriesData = TopData10
       this.updateChart();
     },
     updateChart() {
@@ -178,10 +203,7 @@ export default {
       this.chartInstance.setOption(dataOption);
     },
     screenAdapter(val) {
-      console.log(
-        this.$refs.pie_chart.clientWidth,
-        "val达到 阿迪撒旦撒旦萨达斯"
-      );
+     
       // this.$refs.pie_chart.style.width = val * 30;
       // this.$ref.pie_chart.clientWidth =
       // this.titleFontSize = (this.$refs.pie_chart.offsetWidth / 100) * 3.6; // 15.3

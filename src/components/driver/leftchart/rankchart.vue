@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { monthData } from '../../../assets/data/month';
 export default {
   props: {
     titleFontSize: [Number]
@@ -22,83 +23,43 @@ export default {
   data () {
     return {
       chartInstance: null,
-      allData: [
-        {
-          name: '1月',
-          value: 230,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: '2月',
-          value: 214,
-          value2: 170,
-          value3: 180
-        },
-        {
-          name: '3月',
-          value: 203,
-          value2: 120,
-          value3: 110
-        },
-        {
-          name: '4月',
-          value: 310,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: '5月',
-          value: 289,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: '6月',
-          value: 207,
-          value2: 180,
-          value3: 212
-        },
-        {
-          name: '7月',
-          value: 189,
-          value2: 190,
-          value3: 212
-        },
-        {
-          name: '8月',
-          value: 195,
-          value2: 102,
-          value3: 320
-        },
-        {
-          name: '9月',
-          value: 160,
-          value2: 210,
-          value3: 110
-        },
-        {
-          name: '10月',
-          value: 140,
-          value2: 150,
-          value3: 150
-        },
-        {
-          name: '11月',
-          value: 170,
-          value2: 160,
-          value3: 140
-        },
-        {
-          name: '12月',
-          value: 106,
-          value2: 217,
-          value3: 112
-        }
-      ], // 服务器返回的数据
+      allData: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // 服务器返回的数据
+      series: [
+          {
+            name: '',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+              // 设置柱的颜色
+              color: ''
+            }
+          },
+          {
+            name: '',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+              // 设置柱的颜色
+              color: ''
+            }
+          },
+          {
+            name: '',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+              // 设置柱的颜色
+              color: ''
+            }
+          }
+        ],
+      
+      
+      
       endValue: 4,
       startValue: 0,
-      timeId: null
+      timeId: null,
+      colorArr : ['#578bf1', '#56d0a3', '#596d90']
     }
   },
   mounted () {
@@ -143,20 +104,6 @@ export default {
           // 坐标轴位置是否包含文字
           containLabel: true
         },
-        tooltip: {
-          show: true,
-          formatter: arg => {
-            return (
-              arg.seriesName +
-              '</br>' +
-              arg.marker +
-              arg.name +
-              '：' +
-              arg.value +
-              '万吨'
-            )
-          }
-        },
         xAxis: {
           type: 'category',
           // 把刻度标签里面的文字颜色设置为黑色
@@ -184,22 +131,9 @@ export default {
           // 把刻度标签里面的文字颜色设置为黑色
           axisLabel: {
             color: 'white'
-          }
-        },
-        series: [
-          {
-            name: '钢材',
-            type: 'bar'
           },
-          {
-            name: '木材',
-            type: 'bar'
-          },
-          {
-            name: '煤炭',
-            type: 'bar'
-          }
-        ]
+          serise:this.series
+        }
       }
       this.chartInstance.setOption(initOption)
       this.chartInstance.on('mouseover', () => {
@@ -212,38 +146,42 @@ export default {
     // 获取服务器的数据
     async getData () {
       const url = 'home/driver/monthSales'
-       await this.$api(url).then((res) => {
-        console.log(res)
+      await this.$api(url).then((res) => {
+        res.sort((a,b) => {
+          return b.totalData - a.totalData
+        })
+        this.series.forEach((item,index) => {
+          item.name = res[index].materiakName
+          item.itemStyle.color = this.colorArr[index]
+          this.allData.forEach(datas => {
+            item.data.push(res[index][monthData[datas]])
+          })
+        })
+        this.updateChart()
+        this.startInterval()
       })
-      // const {data: ret} = await this.$http.get('rank')
-      // this.allData = ret
-      // this.allData.sort((a, b) => {
-      //   return b.value - a.value;
-      // });
-      this.updateChart()
-      this.startInterval()
     },
     // 更新图表
     updateChart () {
-      const colorArr = ['#578bf1', '#56d0a3', '#596d90']
       // 处理数据
       // 省份数据
-      const provinceArr = this.allData.map(item => {
-        return item.name
-      })
-      // 销售金额数据
-      const valueArr = this.allData.map(item => {
-        return item.value
-      })
-      const valueArr2 = this.allData.map(item => {
-        return item.value2
-      })
-      const valueArr3 = this.allData.map(item => {
-        return item.value3
-      })
       const dataOption = {
+        tooltip: {
+          show: true,
+          formatter: arg => {
+            return (
+              arg.seriesName +
+              '</br>' +
+              arg.marker +
+              arg.name +
+              '：' +
+              arg.value +
+              '万吨'
+            )
+          }
+        },
         xAxis: {
-          data: provinceArr
+          data: this.allData
         },
         // 显示表格底部拖动显示条
         dataZoom: {
@@ -251,29 +189,7 @@ export default {
           startValue: this.startValue,
           endValue: this.endValue
         },
-        series: [
-          {
-            data: valueArr,
-            itemStyle: {
-              // 设置柱的颜色
-              color: colorArr[0]
-            }
-          },
-          {
-            data: valueArr2,
-            itemStyle: {
-              // 设置柱的颜色
-              color: colorArr[1]
-            }
-          },
-          {
-            data: valueArr3,
-            itemStyle: {
-              // 设置柱的颜色
-              color: colorArr[2]
-            }
-          }
-        ]
+        series: this.series
       }
       this.chartInstance.setOption(dataOption)
     },

@@ -30,7 +30,6 @@ axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用
 axios.interceptors.request.use(
   config => {
     const token = window.sessionStorage.getItem('token-access') // 拿到浏览器的token
-    console.log(config, 'config')
     // if (token) {
     config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
     // config.headers.token = '123456' // 和服务器约定好token叫什么名字  token Authorization
@@ -46,7 +45,6 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   response => {
-    console.log(response, 'responseresponse大苏打')
     switch (response.data.error) {
       case 404:
 
@@ -82,13 +80,13 @@ export function post (url, data = {}, headers) {
       response => {
         resolve(response.data)
       },
-      () => {
+      err => {
         Message({
           type: 'error',
           showClose: true,
           message: '网络异常'
         })
-        // reject(new Error('网络异常'))
+        reject(err)
       }
     )
   })
@@ -106,13 +104,13 @@ export function get (url, data = {}, headers) {
       response => {
         resolve(response.data)
       },
-      () => {
+      err => {
         Message({
           type: 'error',
           showClose: true,
           message: '网络异常'
         })
-        // reject(new Error('网络异常'))
+        reject(err)
       }
     )
   })

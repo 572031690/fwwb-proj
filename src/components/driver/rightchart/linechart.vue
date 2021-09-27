@@ -8,6 +8,8 @@
 
 <script>
 // import { mapState } from 'vuex'
+import { monthData } from '../../../assets/data/month';
+
 export default {
   props: {
     titleFontSize: [Number]
@@ -16,7 +18,6 @@ export default {
     titleFontSize: {
       handler: function(val) {
         // this.chartInstance.resize();
-
         this.screenAdapter(val);
       }
       // immediate: true
@@ -25,83 +26,12 @@ export default {
   data() {
     return {
       chartInstance: null,
-      allData: [
-        {
-          name: "1月",
-          value: 230,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: "2月",
-          value: 214,
-          value2: 170,
-          value3: 180
-        },
-        {
-          name: "3月",
-          value: 203,
-          value2: 120,
-          value3: 110
-        },
-        {
-          name: "4月",
-          value: 310,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: "5月",
-          value: 289,
-          value2: 150,
-          value3: 212
-        },
-        {
-          name: "6月",
-          value: 207,
-          value2: 180,
-          value3: 212
-        },
-        {
-          name: "7月",
-          value: 189,
-          value2: 190,
-          value3: 212
-        },
-        {
-          name: "8月",
-          value: 195,
-          value2: 102,
-          value3: 320
-        },
-        {
-          name: "9月",
-          value: 160,
-          value2: 210,
-          value3: 110
-        },
-        {
-          name: "10月",
-          value: 140,
-          value2: 150,
-          value3: 150
-        },
-        {
-          name: "11月",
-          value: 170,
-          value2: 160,
-          value3: 140
-        },
-        {
-          name: "12月",
-          value: 106,
-          value2: 217,
-          value3: 112
-        }
-      ], // 服务器返回的数据
+      allData: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // 服务器返回的数据 // 服务器返回的数据
       endValue: 4,
+      series: [],
       startValue: 0,
-      timeId: null
+      timeId: null,
+      colorArr:["#ed3f35", "#01e2e5", "#596d90","#f8b448"]
     };
   },
   mounted() {
@@ -199,28 +129,11 @@ export default {
         },
         series: [
           {
-            name: "钢材",
             type: "line",
             stack: "all", // 堆叠图的设置
             smooth: true, // 是否为平滑线
             symbol: "circle", // 折线节点为小圆点
             symbolSize: "5" // 折线点大小
-          },
-          {
-            name: "木材",
-            type: "line",
-            stack: "all", // 堆叠图的设置
-            smooth: true, // 是否为平滑线
-            symbol: "circle", // 折线节点为小圆点
-            symbolSize: 5 // 折线点大小
-          },
-          {
-            name: "煤炭",
-            type: "line",
-            stack: "all", // 堆叠图的设置
-            smooth: true, // 是否为平滑线
-            symbol: "circle", // 折线节点为小圆点
-            symbolSize: 5 // 折线点大小
           }
         ]
       };
@@ -229,73 +142,46 @@ export default {
     // 获取服务器的数据
     async getData() {
       const url = 'home/driver/monthIncrement'
-       await this.$api(url).then((res) => {
-        console.log(res)
+        await this.$api(url).then((res) => {
+          res.forEach((element, index) => {
+            const myInitSeriseData= {
+              name:'',
+              type: "line",
+              stack: "all", // 堆叠图的设置
+              smooth: true, // 是否为平滑线
+              symbol: "circle", // 折线节点为小圆点
+              symbolSize: "5", // 折线点大小
+              data: [],
+              lineStyle: {
+                // 设置柱的样式
+                color: ''
+              },
+              itemStyle: {
+                // 设置线拐点的样式
+                borderColor: '', // 折线点边框色
+                color: "white",
+                borderWidth: 1
+              }
+            }
+            myInitSeriseData.name = element.materiakName
+            myInitSeriseData.lineStyle.color = this.colorArr[index]
+            myInitSeriseData.itemStyle.borderColor = this.colorArr[index]
+            myInitSeriseData.data=[]
+            this.allData.forEach(item => {
+              myInitSeriseData.data.push(element[monthData[item]])
+            })
+            this.series.push({...myInitSeriseData})
+          });
+          this.updateChart();
       })
-      this.updateChart();
     },
     // 更新图表
     updateChart() {
-      const colorArr = ["#ed3f35", "#01e2e5", "#596d90"];
-      // 处理数据
-      // 省份数据
-      const provinceArr = this.allData.map(item => {
-        return item.name;
-      });
-      // 销售金额数据
-      const valueArr = this.allData.map(item => {
-        return item.value;
-      });
-      const valueArr2 = this.allData.map(item => {
-        return item.value2;
-      });
-      const valueArr3 = this.allData.map(item => {
-        return item.value3;
-      });
       const dataOption = {
         xAxis: {
-          data: provinceArr
+          data: this.allData
         },
-        series: [
-          {
-            data: valueArr,
-            lineStyle: {
-              // 设置柱的样式
-
-              color: colorArr[0]
-            },
-            itemStyle: {
-              // 设置线拐点的样式
-              borderColor: colorArr[0], // 折线点边框色
-              color: "white",
-              borderWidth: 1
-            }
-          },
-          {
-            data: valueArr2,
-            lineStyle: {
-              // 设置柱的样式
-              color: colorArr[1]
-            },
-            itemStyle: {
-              borderColor: colorArr[1], // 折线点边框色
-              color: "white",
-              borderWidth: 1
-            }
-          },
-          {
-            data: valueArr3,
-            lineStyle: {
-              // 设置柱的样式
-              color: colorArr[2]
-            },
-            itemStyle: {
-              borderColor: colorArr[2], // 折线点边框色
-              color: "white",
-              borderWidth: 1
-            }
-          }
-        ]
+        series:this.series
       };
       this.chartInstance.setOption(dataOption);
     },

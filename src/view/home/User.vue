@@ -177,10 +177,6 @@ import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
-  // computed:{
-  //  
-    
-  // },
   data () {
     return {
       tableText: '',
@@ -288,20 +284,17 @@ export default {
           uptype: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        // debugger;
-        console.log(res)
-        // const { data } = res
         this.list = res.list||[] // 获取里面的data数据
         this.getEmitData()
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
       })
     },
-    rolaCheck(item) {
-      return item.isDisabled? false:true
-    },
+    /**
+     * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
+     */
     getEmitData () {
-      this.list.forEach(item => {
+      this.list.forEach(function (item) {
         if(item.isDisabled) {
           item.isDisabled = true
         }else{
@@ -412,6 +405,7 @@ export default {
       this.currentId = item.userid
       this.getRolaList()
     },
+    
     /**
      * @desc 获取角色列表
      */
@@ -436,6 +430,10 @@ export default {
         this.$message.success('更改状态成功')
         // this.list[key].isDisabled=!this.list[key].isDisabled
         // this.search()
+      }).catch(() => {
+        setTimeout(() => {
+          this.list[key].isDisabled = !this.list[key].isDisabled
+        },400)
       })
     }
   }

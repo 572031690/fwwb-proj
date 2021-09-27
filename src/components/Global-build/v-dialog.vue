@@ -236,7 +236,6 @@ export default {
       for (const i in this.dialogData.formList) {
         data[i] = this.dialogData.formList[i]
       }
-      console.log(data, 'datadatadata')
       // $ajax请求
       const url = this.dialogData.url[this.openType]
       await this.$api(url, data).then(res => {

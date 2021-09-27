@@ -44,7 +44,6 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   response => {
-    console.log(response, 'responseresponse大苏打')
     switch (response.data.error) {
       case 404:
 

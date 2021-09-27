@@ -64,7 +64,6 @@ export default {
     drawText () {
       const canvas = this.$refs.canvas
       this.ctx = canvas.getContext('2d')
-      console.log(this.ctx, 'this.ctx')
 
       this.ctx.fillStyle = '#BFEFFF'
       this.ctx.fillRect(0, 0, 140, 40)

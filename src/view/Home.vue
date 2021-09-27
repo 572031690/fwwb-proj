@@ -224,7 +224,6 @@ export default {
         mm +
         ':' +
         ss
-      // console.log(this.nowTime)
     },
     nowTimes () {
       const that = this
@@ -328,7 +327,6 @@ export default {
     this.getAdminType()
   },
   mounted () {
-    console.log(document.cookie,'document.cookiedocument.cookie');
     window.sessionStorage.setItem('sData', ['10010', '10000','10011','10020'])
     this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
     this.changehomeimgCreate()

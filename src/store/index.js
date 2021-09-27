@@ -15,7 +15,6 @@ const store = new Vuex.Store({
   mutations: {
 
     ChangeDraw (state) {
-      console.log(state)
       state.dialogDraw = !state.dialogDraw
     },
     getDepartment (state, id) {

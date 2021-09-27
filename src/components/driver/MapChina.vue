@@ -15,83 +15,51 @@ export default {
   data () {
     return {
       mapData: {}, // 所获取的省份地图矢量数据缓存
+      totalCount: 0,
+      totalValue: 0,
+      topCityData: [],
       chartInstance: null,
       effectScatterData: [
-        [120.213042, 29.86119],
-        [91.1865, 30.1465],
-        [113.5107, 23.2196],
-        [109.1162, 34.2004]
+        // [120.213042, 29.86119],
+        // [91.1865, 30.1465],
+        // [113.5107, 23.2196],
+        // [109.1162, 34.2004]
       ],
-      airData: [
-        { name: '北京', value: 39.92, count: 35 },
-        { name: '天津', value: 39.13, count: 35 },
-        { name: '上海', value: 31.22, count: 35 },
-        { name: '重庆', value: 0, count: 35 },
-        { name: '河北', value: 147, count: 35 },
-        { name: '河南', value: 113, count: 35 },
-        { name: '云南', value: 25.04, count: 35 },
-        { name: '辽宁', value: 50, count: 35 },
-        { name: '黑龙江', value: 114, count: 35 },
-        { name: '湖南', value: 175, count: 35 },
-        { name: '安徽', value: 117, count: 35 },
-        { name: '山东', value: 92, count: 35 },
-        { name: '新疆', value: 84, count: 35 },
-        { name: '江苏', value: 0, count: 35 },
-        { name: '浙江', value: 0, count: 35 },
-        { name: '江西', value: 96, count: 35 },
-        { name: '湖北', value: 273, count: 35 },
-        { name: '广西', value: 0, count: 35 },
-        { name: '甘肃', value: 0, count: 35 },
-        { name: '山西', value: 39, count: 35 },
-        { name: '内蒙古', value: 0, count: 35 },
-        { name: '陕西', value: 61, count: 35 },
-        { name: '吉林', value: 51, count: 35 },
-        { name: '福建', value: 29, count: 35 },
-        { name: '贵州', value: 71, count: 35 },
-        { name: '广东', value: 38, count: 35 },
-        { name: '青海', value: 57, count: 35 },
-        { name: '西藏', value: 0, count: 35 },
-        { name: '四川', value: 58, count: 35 },
-        { name: '宁夏', value: 0, count: 35 },
-        { name: '海南', value: 54, count: 35 },
-        { name: '台湾', value: 88, count: 35 },
-        { name: '香港', value: 66, count: 35 },
-        { name: '澳门', value: 77, count: 35 }
-      ],
+      airData: [],// 地图销量和单价数据
       labelFormatter: [
-        { name: '杭州', matter: '公司总部：杭州钢材科技公司' },
-        { name: '拉萨', matter: '钢材公司1' },
-        { name: '广州', matter: '钢材公司2' },
-        { name: '西安', matter: '钢材公司3' }
+        // { name: '杭州', matter: '公司总部：杭州钢材科技公司' },
+        // { name: '拉萨', matter: '钢材公司1' },
+        // { name: '广州', matter: '钢材公司2' },
+        // { name: '西安', matter: '钢材公司3' }
       ],
       lineSc: [
-        {
-          coords: [
-            [91.1865, 30.1465],
-            [120.213042, 29.86119]
-          ],
-          fromName: '拉萨',
-          toName: '杭州',
-          value: 100
-        },
-        {
-          coords: [
-            [113.5107, 23.2196],
-            [120.213042, 29.86119]
-          ],
-          fromName: '广州',
-          toName: '杭州',
-          value: 100
-        },
-        {
-          coords: [
-            [109.1162, 34.2004],
-            [120.213042, 29.86119]
-          ],
-          fromName: '西安',
-          toName: '杭州',
-          value: 100
-        }
+        // {
+        //   coords: [
+        //     [91.1865, 30.1465],
+        //     [120.213042, 29.86119]
+        //   ],
+        //   fromName: '拉萨',
+        //   toName: '杭州',
+        //   value: 100
+        // },
+        // {
+        //   coords: [
+        //     [113.5107, 23.2196],
+        //     [120.213042, 29.86119]
+        //   ],
+        //   fromName: '广州',
+        //   toName: '杭州',
+        //   value: 100
+        // },
+        // {
+        //   coords: [
+        //     [109.1162, 34.2004],
+        //     [120.213042, 29.86119]
+        //   ],
+        //   fromName: '西安',
+        //   toName: '杭州',
+        //   value: 100
+        // }
       ],
       planePath
     }
@@ -99,19 +67,54 @@ export default {
   mounted () {
     this.getCountryData()
     this.getCompanyData()
-    this.getMap()
   },
   methods: {
     async getCountryData () {
       const url = 'home/driver/countrySale'
        await this.$api(url).then((res) => {
-        console.log(res)
+         this.airData = res
+         this.getMap()
+         this.airData.forEach(item => {
+           const lineData = {
+              name: "",
+              value: ''
+            }
+            lineData.name = item.name
+            const currentValue = item.value * item.count 
+            lineData.value = Math.round(currentValue/ 10000 * 10)/10
+            this.totalValue += currentValue
+            this.totalCount += item.count
+            this.topCityData.push(lineData)
+         })
+         this.$emit('backMapData',this.topCityData,this.totalCount,this.totalValue)
       })
     },
     async getCompanyData () {
       const url = 'home/driver/findAllCompany'
         await this.$api(url).then((res) => {
-        console.log(res)
+          const homeName = res[0].countyname
+          const homePort = res[0].port.split(',')
+          res.forEach((item, index) => {
+            this.effectScatterData.push(item.port.split(','))
+            this.labelFormatter.push({
+              name:item.countyname,
+              matter:item.matter
+            })
+            const lineData = {
+              coords: [],
+              fromName: '',
+              toName: '',
+              value: 100
+            }
+            if (index) {
+              lineData.fromName = item.countyname
+              lineData.toName = homeName
+              lineData.coords.push(item.port.split(','))
+              lineData.coords.push(homePort)
+              this.lineSc.push(lineData)
+            }
+          })
+          console.log(this.lineSc,'.this.lineSc');
       })  
     },
     async getMap () {
@@ -166,14 +169,13 @@ export default {
               // 利用formatter来自定义tooltip展示的数据
               formatter: function (params, ticket, callback) {
                 if (params.value) {
-                  console.log(params.value)
                   return (
                     params.name +
                     '<br/>成交量：' +
-                    params.value +
+                    that.airData[params.dataIndex].count+
                     '单<br/>' +
-                    '平均标签价格：' +
-                    that.airData[params.dataIndex].count +
+                    '平均每单价格：' +
+                     params.value+
                     '元<br/>'
                   )
                 } else {
@@ -225,7 +227,6 @@ export default {
             tooltip: {
               // 利用formatter来自定义tooltip展示的数据
               formatter: function (params, ticket, callback) {
-                console.log(params)
                 return (
                   params.data.fromName +
                   '采购：<br/> 木材：' +
@@ -270,24 +271,22 @@ export default {
           type: 'piecewise', // 分层
           min: 0,
           max: 300,
-          text: ['高', '低'], // 两端的文本，如 ['High', 'Low']
+          text: ['高(平均单价)', '低'], // 两端的文本，如 ['High', 'Low']
           showLabel: true, // 是否显示每项的文本标签
           orient: 'horizontal', // 图例排列方向 水平horizontal 垂直vertical
           left: 'center',
           bottom: '5%',
-
           textStyle: {
             // 设置文字颜色（Demo左下组件）
             color: 'white',
             fontSize: 12
           },
-
           pieces: [
             // 自定义『分段式视觉映射组件（visualMapPiecewise）』的每一段的范围，以及每一段的文字，以及每一段的特别的样式
-            { gt: 200, lte: 300, label: '200~300', color: '#0357C2' }, // (500, 900]
-            { gt: 100, lte: 200, label: '100~200', color: '#187EFF' }, // (310, 500]
-            { gt: 50, lte: 100, label: '50~100', color: '#9DC9FF' }, // (200, 300]
-            { gt: 0, lte: 50, label: '0~50人', color: '#B8E2FF' }, // (10, 200]
+            { gt: 20000, lte: 9999999, label: '2万以上', color: '#0357C2' }, // (500, 900]
+            { gt: 15000, lte: 20000, label: '1.5万~2万', color: '#187EFF' }, // (310, 500]
+            { gt: 10000, lte: 15000, label: '1万~1.5万', color: '#9DC9FF' }, // (200, 300]
+            { gt: 0, lte: 10000, label: '0~1万', color: '#B8E2FF' }, // (10, 200]
             { value: 0, label: '无数据', color: '#fff' } // [0]
           ]
         }

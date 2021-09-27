@@ -292,20 +292,17 @@ export default {
   methods: {
     getCurrentType () {
       this.currentRouter = sessionStorage.getItem('currentRouter')
-      // console.log(this.currentRouter);
       this.getTyp()
       this.search()
     },
     // 获取登录账号信息
     getTyp () {
-      console.log(this.currentRouter);
       if (this.currentRouter === 'approval') {
         this.drawOpenType = 'write'
       }
       else {
         this.drawOpenType = 'see'
       }
-      console.log(this.drawOpenType);
     },
     getSearchUrl () {
       this.searchUrl = 'home/need/getNeed'
@@ -316,7 +313,6 @@ export default {
     },
     // 打卡抽屉
     seeApproval (e) {
-      console.log(this.drawOpenType);
       this.currentIndex = e
       this.$refs.Draw.showDraw()
     },
