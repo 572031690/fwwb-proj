@@ -79,6 +79,7 @@
                   </tr>
                 </thead>
               </div>
+              <vNone v-if="!list.length" />
               <!-- 数据列表 -->
               <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
               <tbody>
@@ -162,7 +163,7 @@
           </el-pagination>
         </div>
 
-        <addDialog ref="addDialog"
+        <vDialog ref="addDialog"
           :dialogFormShow="dialogFormShow"
           @updata="search"
           @closeaddDialog="closeaddDialog"
@@ -172,7 +173,7 @@
           :openType="openType"
           name="needList"
         >
-        </addDialog>
+        </vDialog>
 
         <Drawer
           :listIn="list[currentIndex]"
@@ -186,14 +187,12 @@
 </template>
 <script>
 import Drawer from '../../components/Drawer.vue'
-import addDialog from '../../components/addDataDialog.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
   components: {
-    Drawer,
-    addDialog
+    Drawer
   },
   // inject: ['departId'],
   data () {

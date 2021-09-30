@@ -6,6 +6,7 @@ export default [
     path: '/web/addUser',
     data: {
       username: '',
+      realname:'',
       password: '',
       telNum: '',
       departmentid: '',
@@ -28,8 +29,8 @@ export default [
     path: '/web/updateUser',
     data: {
       userid: '',
+      realname: '',
       username: '',
-      password: '',
       telNum: '',
       employeeid: ''
     }

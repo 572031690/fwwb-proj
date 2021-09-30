@@ -57,6 +57,7 @@
 
             </thead>
           </div>
+          <vNone v-if="!list.length" />
           <!-- 数据列表 -->
           <tbody>
             <tr v-for="(item, key) in list" :key="key">
@@ -95,7 +96,7 @@
         >
         </el-pagination>
       </div>
-      <addDialog ref="addDialog"
+      <vDialog ref="addDialog"
         :dialogFormShow="dialogFormShow"
         @updata="search"
         @closeaddDialog="closeaddDialog"
@@ -105,18 +106,16 @@
         :openType="openType"
         name="buyList"
       >
-      </addDialog>
+      </vDialog>
     </div>
   </div>
 </template>
 <script>
-import addDialog from '../../components/addDataDialog.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
   components: {
-    addDialog
   },
   data () {
     return {

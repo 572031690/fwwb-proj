@@ -61,6 +61,7 @@
                       placement="top"
                     >
                       <el-card>
+                          <div>{{parseInt(item.id)===1?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
                           <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                           ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                           <br />
@@ -109,6 +110,7 @@
                     placement="top"
                   >
                     <el-card>
+                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
                       <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                       ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                       <br />
@@ -168,6 +170,11 @@ export default {
           title: '驳回',
           icon: 'el-icon-close',
           color: 'red'
+        },
+        {
+          title: '通过',
+          icon: 'el-icon-check',
+          color: '#0bbd87'
         }
       ],
       // 时间线
@@ -194,7 +201,7 @@ export default {
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
         }, {
-          id: '3',
+          id: '4',
           time: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
@@ -312,6 +319,11 @@ export default {
 .drawerApprovalBox {
   // width:400px;
   margin-left:40px;
+}
+.departmentId {
+  font-weight: 600;
+  font-size: 15px;
+  color: rgb(177, 7, 16);
 }
 .drawerApprovalBoxRight {
   margin-left:20px;

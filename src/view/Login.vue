@@ -213,8 +213,8 @@ export default {
               this.$message.error(res.error)
             }
           })
-          .catch(() => {
-            this.$message.error('网络异常')
+          .catch(err => {
+            console.log(err);
           })
       } else {
         this.result = '验证码输入错误'

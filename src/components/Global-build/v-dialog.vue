@@ -125,12 +125,14 @@ export default {
     openType: String,
     name: String,
     currentList: Object,
+    //在编辑模式下禁用的变量
     editDisabled: {
       type:[String],
       default:() => {
         return ''
       }
     },
+    //在添加和编辑时顶部第一个参数需要改变是否能禁用
     topChange: {
       type: [String, Boolean],
       default: () => {

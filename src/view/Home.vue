@@ -324,7 +324,7 @@ export default {
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
-    this.getAdminType()
+    if(this.departmentID)this.getAdminType()
   },
   mounted () {
     window.sessionStorage.setItem('sData', ['10010', '10000','10011','10020'])

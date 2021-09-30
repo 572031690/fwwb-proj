@@ -14,6 +14,7 @@ import Login from '../view/Login.vue'
 import Department from '../view/home/Department.vue'
 import addDataDialog from '../components/addDataDialog.vue'
 import Driver from '../view/home/Driver.vue'
+import Persion from '../view/home/personal.vue'
 Vue.use(VueRouter)
 // 2.配置路由
 const routes = [
@@ -27,6 +28,7 @@ const routes = [
         meta: { title: '用户信息', isTab: true }
       },
       { path: 'body', component: Body },
+      { path: 'personal', component: Persion },
       { path: 'item', component: Item },
       { path: 'buy', component: Buy },
       { path: 'homewel', component: HomeWel },

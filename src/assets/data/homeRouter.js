@@ -141,7 +141,7 @@ export const routerList = [
   {
     type: 'router',
     index: 8,
-    path: '/home/driver',
+    path: '/home/personal',
     label: '个人中心',
     ref: 'spans15',
     disabled: false,

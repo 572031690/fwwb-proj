@@ -26,7 +26,8 @@ export default {
       chartInstance: null,
       totalData: [702, 350, 610, 793, 664],
       surplusData: [70, 34, 60, 78, 69],
-      DataName: ["钢材", "木材", "煤炭", "塑料", "中国"]
+      DataName: ["钢材", "木材", "煤炭", "塑料", "中国"],
+      unitData:['kg','kg','kg','kg','kg']
       // 服务器返回的数据
     };
   },
@@ -62,21 +63,20 @@ export default {
             type: "shadow"
           },
           // 设置显示的文字内容
-          formatter: function(args) {
+          formatter: (args) => {
             return (
               args[0].name +
               "库存：" +
               " " +
-              (args[1].axisValue * args[0].value) / 100 +
-              "万吨"
+              (args[1].axisValue * args[0].value) / 100 + this.unitData[args[0].dataIndex]
             );
           }
         },
 
         grid: {
           left: "10%",
-          top: "30%",
-          bottom: "5%",
+          top: "20%",
+          bottom: "15%",
           containLabel: true
         },
         // 不显示x轴
@@ -119,7 +119,9 @@ export default {
                 color: "white",
                 fontSize: 12
               },
-              formatter: "{value} 万吨"
+              formatter: (arg,index) => {
+                return arg + this.unitData[index]
+              }
             }
           }
         ],
@@ -167,30 +169,30 @@ export default {
     },
     // 获取服务器的数据
     async getData() {
-      // const {data: ret} = await this.$http.get('line')
-      // this.allData = ret
-      // this.allData.sort((a, b) => {
-      //   return b.value - a.value;
-      // });
+       await this.$api('home/item/getItem', {
+        params: {
+          page: 1, // 传递当前是第几页参数
+          limit: 20, // 传递每页显示多少条记录参数
+          searchName: '', 
+          selectName: '' 
+        }
+      }).then((res) => {
+        console.log(res)
+        this.totalData = []
+        this.surplusData = []
+        this.DataName = []
+        this.unitData = []
+        res.list.slice(0,5).forEach(item => {
+          this.totalData.push(item.totalStock)
+          this.surplusData.push(parseInt(item.stock / item.totalStock * 100))
+          this.DataName.push(item.itemtype)
+          this.unitData.push(item.unit)
+        })
+      })
       this.updateChart();
     },
     // 更新图表
     updateChart() {
-      // 处理数据
-      // 省份数据
-      // const provinceArr = this.allData.map(item => {
-      //   return item.name;
-      // });
-      // // 销售金额数据
-      // const valueArr = this.allData.map(item => {
-      //   return item.value;
-      // });
-      // const valueArr2 = this.allData.map(item => {
-      //   return item.value2;
-      // });
-      // const valueArr3 = this.allData.map(item => {
-      //   return item.value3;
-      // });
       const that = this;
       const dataOption = {
         yAxis: [
@@ -228,17 +230,6 @@ export default {
       this.chartInstance.resize();
     }
   }
-  // computed: {
-  //   ...mapState(['theme'])
-  // },
-  // watch: {
-  //   theme() {
-  //     this.chartInstance.dispose() // 销毁当前的图表格
-  //     this.initChart() // 重新以最新的主题初始化图表对象
-  //     this.screenAdapter() // 完成屏幕适配
-  //     this.updateChart() // 更新图表的展示
-  //   }
-  // }
 };
 </script>
 

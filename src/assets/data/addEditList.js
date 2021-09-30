@@ -185,9 +185,14 @@ export const addEditList = {
         dataName: 'userid'
       },
       {
-        label: '姓名',
+        label: '账号',
         putType: 'input',
         dataName: 'username'
+      },
+      {
+        label: '姓名',
+        putType: 'input',
+        dataName: 'realname'
       },
       {
         label: '电话',
@@ -209,6 +214,7 @@ export const addEditList = {
     formList: {
       userid: '',
       username: '',
+      realname:'',
       telNum: '',
       departmentid: '',
       employeeid: ''

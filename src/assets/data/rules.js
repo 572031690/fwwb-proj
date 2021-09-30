@@ -4,6 +4,10 @@ export const rulesData = {
     { type: 'number', message: 'ID必须为数字值' }
   ],
   username: [
+    { required: true, message: '请输入账号', trigger: 'blur' },
+    { min: 5, max: 12, message: '长度在 5 到 12 个字符', trigger: 'blur' }
+  ],
+  realname: [
     { required: true, message: '请输入姓名', trigger: 'blur' },
     { min: 2, max: 6, message: '长度在 2 到 6 个字符', trigger: 'blur' }
   ],

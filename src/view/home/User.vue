@@ -16,7 +16,7 @@
                     <el-select
                       v-model="params.selectValue"
                       @change="search"
-                      placeholder="筛选部门"
+                      placeholder="筛选角色"
                       clearable
                       size="small"
                       class="selectAvro"
@@ -24,9 +24,9 @@
                       <el-option
                         style="padding:0 18px 0 10px;"
                         v-for="item in rolaSelect"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+                        :key="item.roleId"
+                        :label="item.rolename"
+                        :value="item.roleId"
                       >
                       </el-option>
                     </el-select>
@@ -64,7 +64,7 @@
                   colspan="1"
                   rowspan="1"
                   :class="{
-                    'htop-th2':  item === '用户名',
+                    'htop-th2':  item === '账号',
                     'htop-ope1':item === '操作',
                     'htop-th7':item === '职位'
                   }">
@@ -74,8 +74,6 @@
               </thead>
             </div>
             <vNone v-if="!list.length" />
-            <!-- 数据列表 -->
-            <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
             <tbody>
               <tr v-for="(item, key) in list" :key="key">
 
@@ -136,6 +134,7 @@
         <vDialog ref="addDialog"
           :dialogFormShow="dialogFormShow"
           @updata="search"
+          :editDisabled="editDisabled"
           @closeaddDialog="closeaddDialog"
           :IntList="IntList"
           :topChange="topChange"
@@ -181,6 +180,7 @@ export default {
     return {
       tableText: '',
       constIndex:0,
+      editDisabled:'username',
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',
@@ -273,6 +273,7 @@ export default {
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
+    this.getRolaList()
   },
   methods: {
     async search () {
@@ -306,10 +307,10 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
-      if(!val) return
+      if(!val && !val[0]) return
       const rolaArr = []
       this.rolaSelect.forEach(item => {
-        if (val.toString().includes(item.value)) rolaArr.push(item.label)
+        if (val.includes(item.roleId)) rolaArr.push(item.rolename)
       })
       return rolaArr.join(',')
     },
@@ -403,18 +404,17 @@ export default {
       this.currentRola = []
       if(item.roleId[0]!==0) this.currentRola = item.roleId||[]
       this.currentId = item.userid
-      this.getRolaList()
+      this.dialogVisibleRole = true
     },
     
     /**
      * @desc 获取角色列表
      */
     async getRolaList () {
-      this.dialogVisibleRole = true
       const url = 'home/user/getRolaList'
       await this.$api(url).then((res) => {
         this.rolaData = res.roleList
-        this.dialogVisibleRole = true
+        this.rolaSelect = res.roleList
       })
     },
     /**
