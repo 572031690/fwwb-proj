@@ -189,8 +189,13 @@ export default {
             if (parseInt(code) === 101) {
               window.sessionStorage.setItem(
                 'storeData',
-                user.username
+                user.realname
               ) // 将数据存储到浏览器内嵌的数据库内
+              window.sessionStorage.setItem(
+                'userData',
+                JSON.stringify(user)
+              ) // 将数据存储到浏览器内嵌的数据库内
+              JSON.stringify
               window.sessionStorage.setItem(
                 'sData',
                 user.roleId

@@ -11,8 +11,13 @@ export default {
 
     }
   },
+  mounted() {
+    this.getUserData
+  },
   methods: {
-
+    getUserData() {
+      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
+    }
   }
 }
 </script>
