@@ -61,6 +61,7 @@
                       placement="top"
                     >
                       <el-card>
+                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
                           <div>{{parseInt(item.id)===1?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
                           <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                           ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>

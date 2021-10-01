@@ -195,20 +195,15 @@ export default {
                 'userData',
                 JSON.stringify(user)
               ) // 将数据存储到浏览器内嵌的数据库内
-              JSON.stringify
               window.sessionStorage.setItem(
                 'sData',
                 user.roleId
               ) // 将数据存储到浏览器内嵌的数据库内
               this.logindata.uname = ''
               this.logindata.pass = ''
-              me.$router.push({ path: 'home' }) // 页面跳转
-              this.$notify({
-                // element登陆成功提示框右上边
-                title: '登陆成功',
-                message: '欢迎管理员！',
-                type: 'success'
-              })
+              this.getCookie()
+              this.$router.push({ path: 'home' }) // 页面跳转
+             
             } else if (parseInt(code) === 102) {
               this.$message.error('账号或密码错误') // element失败提示框上部
               this.tips2 = '账号或密码错误'
@@ -229,6 +224,17 @@ export default {
         this.tips1 = ''
         this.$refs.ref_validateCode.draw()
       }
+    },
+    getCookie() {
+      this.$api('login/getCookie').then(() => {
+        this.$router.push({ path: 'home' }) // 页面跳转
+          this.$notify({
+          // element登陆成功提示框右上边
+            title: '登陆成功',
+            message: '欢迎管理员！',
+            type: 'success'
+          })
+      })
     }
   }
 }

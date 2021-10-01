@@ -29,5 +29,12 @@ export default [
     params: {
       phone: ''
     }
+  },
+  {
+    name: 'getCookie',
+    method: 'GET',
+    desc: '获取cookie凭证',
+    path: '/web/getCookie',
+    params: {}
   }
 ]
