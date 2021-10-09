@@ -59,7 +59,7 @@
         <div class="topright">
           <span class="top-time">{{ nowTime }}</span>
           <!-- 苹果图标 -->
-          <img src="../assets/img/timg.jpg" class="timg" />
+          <img src="../assets/img/titleImportant.png" class="timg" />
           <!-- 退出下拉框 -->
           <el-dropdown @command="gobacklogin" class="elsign-out">
             <span class="el-dropdown-link">
@@ -114,6 +114,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * @desc 判断左侧导航收缩栏高度
+     */
     getSonTransition (list) {
       let index = 0
       list.forEach(item => {
@@ -121,7 +124,9 @@ export default {
       })
       return index 
     },
-    // 旋转子列箭头
+    /**
+     * @desc 旋转子列箭头
+     */
     changearrow (index) {
       this.routerList[index].navSonShow = !this.routerList[index].navSonShow
       if (!this.routerList[index].navSonShow) {
@@ -132,7 +137,9 @@ export default {
         this.arrowflag = !this.arrowflag
       }
     },
-    // 右边栏三条杠点击事件
+    /**
+      * @desc 右边栏三条杠点击事件
+    */
     changehomeimg () {
       // 动画class绑定
       this.navshow = !this.navshow
@@ -166,13 +173,16 @@ export default {
         })
       }, times)
     },
-    // 开始动画文字出现延迟
+    /**
+     * @desc 开始动画文字出现延迟
+     */
     changehomeimgCreate () {
       this.changehomeimg()
       this.changehomeimg()
     },
-
-    // 退出登陆方法
+    /**
+     * @desc 退出登陆方法
+     */
     gobacklogin (command) {
       this.$confirm('是否退出登陆', '提示', {
         confirmButtonText: '确定',
@@ -188,7 +198,9 @@ export default {
         })
       })
     },
-    // 显示当前时间（年月日时分秒）
+    /**
+     * @desc 显示当前时间（年月日时分秒）
+     */
     timeFormate (timeStamp) {
       const year = new Date(timeStamp).getFullYear()
       const month =
@@ -225,15 +237,24 @@ export default {
         ':' +
         ss
     },
+    /**
+     * @desc 开启监听器
+     */
     nowTimes () {
       const that = this
       this.thistime = setInterval(function () {
         that.timeFormate(new Date())
       }, 1000)
     },
+    /**
+     * @desc 关闭监听器
+     */
     clearTime () {
       clearInterval(this.thistime)
     },
+    /**
+     * @desc 根据角色判断显示
+     */
     getAdminType () {
       this.initType(false)
       if (this.departmentID.includes('10000')) { // 管理管10000
@@ -277,7 +298,6 @@ export default {
           this.routerList[4].showtab = false
           this.routerList[2].childrenList[2].showtab = false
         }
-      
       }
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
@@ -285,7 +305,9 @@ export default {
         }
       })
     },
-
+    /**
+     * @desc 初始化左侧导航显示
+     */
     initType (bool) {
       for (let i = 1; i <= 6; i++) {
         this.routerList[i].showtab = bool
@@ -296,12 +318,18 @@ export default {
         }
       }
     },
+    /**
+     * @desc 判断点击左侧导航栏类型
+     */
     judgeType (val, index) {
       if (val.type === 'tips') this.changearrow(index)
       if (val.type === 'router') {
         this.goToRouter(val)
       }
     },
+    /**
+     * @desc 路由跳转
+     */
     goToRouter (val) {
       if (this.checkIndex === val.index || val.disabled) return
       
@@ -616,11 +644,13 @@ export default {
   right: 1%;
   position: absolute;
   display: flex;
+  align-items: center;
 }
 .timg {
-  height: 48px;
+  margin: 12px 6px 0;
+  height: 30px;
   cursor: pointer;
-  border-radius: 10px;
+  // border-radius: 10px;
 }
 .weltop {
   font-size: 14px;

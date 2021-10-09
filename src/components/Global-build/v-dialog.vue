@@ -57,16 +57,17 @@
                 v-model.number="dialogData.formList[item.dataName]"
                 placeholder="请选择材料"
                 @change="getUnit"
+                @visible-change="getItemList"
               >
                 <el-option
-                  :label="dat"
-                  :value="dat"
-                  v-for="(dat, key) in item.selectData"
+                  :label="dat.itemtype"
+                  :value="dat.itemtype"
+                  v-for="(dat, key) in itemList"
                   :key="key"
                 ></el-option>
               </el-select>
 
-               单位：{{dialogData.formList.itemunit}}
+               单位：{{dialogData.formList.unit}}
             </div>
 
           <el-input-number
@@ -156,15 +157,24 @@ export default {
         formList: '',
         dataTableList: ''
       },
-      topData: {}
-    }
+      topData: {},
+      itemList: []
+    } 
   },
   created () {
     this.getList()
+    // this.getItemList()
   },
   methods: {
-    getUnit () {
-      console.log('单位改变了' + this.dialogData.formList.itemunit)
+    getUnit (data) {
+      const currentItem =  this.itemList.filter(function(e) {
+        return e.itemtype===data
+      })
+      this.dialogData.formList.itemid = currentItem[0].itemid
+      this.dialogData.formList.unit = currentItem[0].unit
+      console.log(this.dialogData.formList);
+
+      console.log(currentItem,'dsd')
     },
     getList () {
       this.dialogData = this.addEditList[this.name]
@@ -197,9 +207,9 @@ export default {
       }
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
-        if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
+        if (this.IntList.includes(i)) this.dialogData.formList[i] = this.currentList[i] ? parseInt(this.currentList[i]) : ''
         else {
-          this.dialogData.formList[i] = this.currentList[i].toString()
+          this.dialogData.formList[i] = this.currentList[i] ? this.currentList[i].toString() : ''
         }
       }
     },
@@ -240,7 +250,7 @@ export default {
       }
       // $ajax请求
       const url = this.dialogData.url[this.openType]
-      await this.$api(url, data).then(res => {
+      await this.$api(url, this.openType === 'approval'? { params:{ ...data } }: data).then(res => {
         const { code } = res
         if (parseInt(code) === 101) {
           this.$message({
@@ -260,8 +270,26 @@ export default {
       })
     },
     close () {
+      for (const i in this.dialogData.formList) {
+        this.dialogData.formList[i] = ''
+      }
       this.$emit('closeaddDialog')
+    },
+    getItemList() {
+      if(this.itemList.length) return
+      const params = {
+        page: 1, // 传递当前是第几页参数
+        limit: 20, // 传递每页显示多少条记录参数
+        searchName: '', // 传递搜索参数
+        selectName: '' // 筛选参数
+      }
+      this.$api('home/item/getItem',{params}).then(res => {
+        this.itemList  = res.list
+      }).catch(err => {
+        console.log(err);
+      })
     }
+    
   }
 }
 </script>

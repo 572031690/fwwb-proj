@@ -86,9 +86,14 @@
                   }"
                 >
 
-                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                    {{ data==='roleId' ? showRoleData(item[data]):data==='index'? key+1 :item[data] }}
+                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus' && data!=='roleId'">
+                    {{ data==='index'? key+1 :item[data] }}
                   </div>
+                  <el-tooltip class="item" effect="dark" :content="showRoleData(item[data])" placement="top" v-if="data==='roleId'">
+                    <div class="cell">
+                      {{showRoleData(item[data])}}
+                    </div>
+                  </el-tooltip>
 
                   <div class="cell" v-if="data==='opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
@@ -204,14 +209,6 @@ export default {
           isDisabled: 0
         }
       ],
-      departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
-      },
       loading2: true,
       roleId: 0,
       rolaData: [
@@ -226,33 +223,7 @@ export default {
           roleDescribe: '管理整个系统'
         }
       ],
-      rolaSelect: [
-        {
-          value: '10011',
-          label: '需求专员'
-        },
-        {
-          value: '10010',
-          label: '需求经理'
-        },
-        {
-          value: '10021',
-          label: '采购专员'
-        },
-        {
-          value: '10020',
-          label: '采购经理'
-        },
-        {
-          value: '10001',
-          label: '总经理'
-        },
-        {
-          value: '10000',
-          label: '管理员'
-        }
-
-      ],
+      rolaSelect: [],
       dialogFormVisible: false, // 不让修改窗口打开
       dialogVisibleRole: false, // 角色分配窗口
       currentRola: [], // 当前选中的角色列表
@@ -276,6 +247,9 @@ export default {
     this.getRolaList()
   },
   methods: {
+    /**
+     * @desc 请求用户数据
+     */
     async search () {
       await this.$api(this.searchUrl, {
         params: {
@@ -307,7 +281,7 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
-      if(!val && !val[0]) return
+      if(!val) return
       const rolaArr = []
       this.rolaSelect.forEach(item => {
         if (val.includes(item.roleId)) rolaArr.push(item.rolename)
@@ -362,7 +336,7 @@ export default {
      * @desc 重置密码
      */
     resetPass (item) {
-      this.$confirm('确定是否重置此用户密码为8个8?', '提示', {
+      this.$confirm('确定是否重置此用户密码为6个8?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -401,6 +375,7 @@ export default {
      * @desc 打开分配角色表
      */
     getRole (item) {
+      console.log(item.roleId);
       this.currentRola = []
       if(item.roleId[0]!==0) this.currentRola = item.roleId||[]
       this.currentId = item.userid

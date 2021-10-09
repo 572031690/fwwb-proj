@@ -35,7 +35,7 @@ export const addEditList = {
       itemid: '',
       neednum: '',
       needday: '',
-      itemunit: '',
+      unit: '',
       neederid: '',
       comment: '',
       uptype: ''

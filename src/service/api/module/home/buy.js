@@ -11,7 +11,8 @@ export default [
       itemid: '',
       num: '',
       buyerid: '',
-      neederid: ''
+      neederid: '',
+      unit: ''
     }
   },
   {
@@ -35,6 +36,7 @@ export default [
       itemtype: '',
       itemid: '',
       num: '',
+      unit: '',
       buyerid: '',
       neederid: ''
     }

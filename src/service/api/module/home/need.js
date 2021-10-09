@@ -10,6 +10,7 @@ export default [
       itemid: '',
       neednum: '',
       needday: '',
+      unit: '',
       neederid: '',
       comment: ''
     }
@@ -33,6 +34,7 @@ export default [
       needtitle: '',
       itemtype: '',
       itemid: '',
+      unit: '',
       neednum: '',
       needday: '',
       neederid: '',
@@ -53,12 +55,30 @@ export default [
   },
   {
     name: 'approvalNeed',
-    method: 'POST',
-    desc: '需求表提交审批',
-    path: '/web/listUser',
-    data: {
-      needid: '',
-      uptype: 0
+    method: 'GET',
+    desc: '需求表启动审批',
+    path: '/activiti/startNeedAct',
+    params: {
+      needid: ''
     }
-  }
+  },
+  {
+    name: 'completeprocess',
+    method: 'GET',
+    desc: '需求表提交审批',
+    path: '/activiti/completeprocess',
+    params: {
+      taskId: ''
+    }
+  },
+  {
+    name: 'queryNeedActTask',
+    method: 'GET',
+    desc: '部门经理查看任务',
+    path: ' /activiti/queryNeedActTask',
+    params: {
+      page: '',
+      limit: ''
+    }
+  },
 ]

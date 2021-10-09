@@ -99,9 +99,15 @@ export default {
     // window.removeEventListener("resize", this.screenAdapter);
   },
   methods: {
+    /**
+     * @desc 屏幕适配算法
+     */
     screenAdapter () {
       this.titleFontSize = (this.$refs.body_ref.clientWidth / 100) * 0.8 // 15
     },
+    /**
+     * @desc 地图传递饼状图全国销量统计数据
+     */
     backMapData(pieData,totalCount,totalValue) {
       this.totalCount = totalCount
       this.totalValue = Math.round(totalValue / 10000 *100) /100

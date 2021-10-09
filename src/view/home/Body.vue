@@ -97,7 +97,7 @@
                   }"
                   >
                     <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
-                      {{ data==='neednum'? item[data] + (item.itemunit  || '') :item[data]}}
+                      {{ data==='neednum'? item[data] + (item.unit  || '') :item[data]}}
                     </div>
                     <div class="bodyButton" v-if="data==='opetation1'">
                       <div class="cell" v-if="currentRouter==='see' ">
@@ -235,7 +235,7 @@ export default {
           itemid: 1373201546,
           neednum: '3',
           needday: '5',
-          itemunit: 'kg',
+          unit: 'kg',
           neederid: '14',
           comment: 'dsadsadas',
           uptype: 0
@@ -247,7 +247,7 @@ export default {
           itemid: 1373201546,
           neednum: '3',
           needday: '5',
-          itemunit: 'kg',
+          unit: 'kg',
           neederid: '18',
           comment: 'dsadsadasdsadasdsadsadas',
           uptype: 1
@@ -259,7 +259,7 @@ export default {
           itemid: 1373201546,
           neednum: '3',
           needday: '5',
-          itemunit: 'kg',
+          unit: 'kg',
           neederid: '15',
           comment: 'dsadsadas',
           uptype: 2
@@ -270,7 +270,7 @@ export default {
           itemtype: 5454165,
           itemid: 1373201546,
           neednum: '3',
-          itemunit: 'kg',
+          unit: 'kg',
           needday: '5',
           neederid: '16',
           comment: 'dsadsadas',
@@ -293,12 +293,17 @@ export default {
     this.search()
   },
   methods: {
+    /**
+     * @desc 获取是管理员打开还是专员打开
+     */
     getCurrentType () {
       this.currentRouter = sessionStorage.getItem('currentRouter')
       this.getTyp()
       this.search()
     },
-    // 获取登录账号信息
+    /**
+     * @desc 获取登录账号信息
+     */
     getTyp () {
       if (this.currentRouter === 'approval') {
         this.drawOpenType = 'write'
@@ -307,19 +312,28 @@ export default {
         this.drawOpenType = 'see'
       }
     },
+    /**
+     * @desc 设置请求数据地址
+     */
     getSearchUrl () {
       this.searchUrl = 'home/need/getNeed'
     },
-    // 抽屉关闭事件
+    /**
+     * @desc 抽屉关闭事件
+     */
     drawerClose (val) {
       console.log(val, '=------------')
     },
-    // 打卡抽屉
+    /**
+     * @desc 打开查看抽屉
+     */
     seeApproval (e) {
       this.currentIndex = e
       this.$refs.Draw.showDraw()
     },
-    // 打开书写抽屉
+    /**
+     * @desc 打开书写抽屉
+     */
     writeApproval (e) {
       this.currentIndex = e
       this.$refs.Draw.showDraw()

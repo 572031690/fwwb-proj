@@ -14,10 +14,27 @@
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div class="search">
+                    <el-select
+                      v-model="params.selectValue"
+                      @change="search"
+                      placeholder="选择状态"
+                      clearable
+                      size="small"
+                      class="selectAvro"
+                    >
+                      <el-option
+                        style="padding:0 18px 0 10px;"
+                        v-for="item in select"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入订单名称"
+                        placeholder="请输入需求名称"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -119,10 +136,36 @@ export default {
   },
   data () {
     return {
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)','rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
+      drawOpenType: 'see',
+      currentRouter: '',
       IntList: ['buyid', 'itemid', 'num', 'buyerid', 'neederid'],
       topChange: 'buyid',
+      currentIndex: 1, // 查看审批数据
+      select: [ // 搜索框筛选数据
+        {
+          value: '0',
+          label: '未送审'
+        },
+        {
+          value: '1',
+          label: '审核中'
+        },
+        {
+          value: '2',
+          label: '驳回'
+        },
+        {
+          value: '3',
+          label: '部门通过'
+        },
+        {
+          value: '4',
+          label: '经理通过'
+        }
+      ],
       // 表内静态数据列表
       list: [
         {
@@ -132,7 +175,7 @@ export default {
           itemtype: '3',
           itemid: '5',
           num: '50',
-          buyerid: '15',
+          buyerid: '',
           neederid: 15
         }
       ],
@@ -140,7 +183,6 @@ export default {
     }
   },
   mounted () {
-    // var ps=String.split(this.form.pass);
     setTimeout(() => {
       this.loading2 = false
     }, 400)
@@ -149,6 +191,9 @@ export default {
     this.search()
   },
   methods: {
+    /**
+     * @desc 设置请求数据地址
+     */
     getSearchUrl () {
       this.searchUrl = 'home/buy/getBuy'
     }
@@ -158,52 +203,33 @@ export default {
 <style lang="less" scoped>
   @import url("../../assets/less/right-table.less");
 
-.searchfa {
-  margin-left: 35px;
+.tipsspan {
+    display: block;
+    border-radius:3px;
+    width: 75px;
+    height: 27px;
+    line-height: 27px;
+}
+.selectAvro {
+  div {
+    .el-input__inner {
+      text-align: center;
+      padding: 0 24px 0 5px;
+      border-radius: 4px 0 0 4px;
+      &:focus {
+        border-color: #dadce0;
+      }
+    }
+  }
 }
 .search {
-  margin-left: 5px;
-  float: left;
-  height: 30px;
-  input {
-    float: left;
-    border: none;
-    outline: none;
-    width: 95.5%;
-    height: 30px;
-    padding-left: 13px;
-    border: 2px solid #dadce0;
-    border-right: 0;
-    border-radius: 5px;
-    color: black;
-    font-size: 16px;
-  }
-  button {
-    float: left;
-    border: none;
-    outline: none;
-    height: 30px;
-    width: 45px;
-    cursor: pointer;
-    position: absolute;
-    top: 1.6px;
-    right: 0;
-    background: #dadce0;
-    border-radius: 0 5px 5px 0;
-    &:hover {
-      background-color: #c8c8c8;
-      box-shadow: 0 0 3px#c8c8c8;
-    }
-    &:active {
-      padding-left: 1px;
-      padding-top: 1px;
-      background: #dadce0;
-    }
-    &:before {
-      content: "\f002";
-      font-family: FontAwesome;
-      font-size: 16px;
-      color: #f9f0da;
+  .el-select {
+    .el-input {
+      &.is-focus {
+        .el-input__inner {
+          border-color: #dadce0;
+        }
+      }
     }
   }
 }

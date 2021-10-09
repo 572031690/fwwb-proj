@@ -1,10 +1,10 @@
 export default [
   {
     name: 'login',
-    method: 'GET',
+    method: 'POST',
     desc: '用户登陆接口',
     path: '/web/shirologin',
-    params: {
+    data: {
       username: '', // 李三
       password: '' // 123456  这是目前能用的
     }

@@ -14,7 +14,9 @@ export default {
     }
   },
   methods: {
-    // ajax请求后台数据 获得list数据 并用于分页
+    /**
+     * @desc ajax请求后台数据 获得list数据 并用于分页
+     */
     async search () {
       // const url = '/webneed/findAllNeed'
       await this.$api(this.searchUrl, {
@@ -35,7 +37,9 @@ export default {
         this.params.page = res.page // 将后端的当前页反传回来
       })
     },
-    // 删除方法
+    /**
+     * @desc 删除方法
+     */
     deletedata (data, url) {
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -70,8 +74,9 @@ export default {
           }
         })
     },
-
-    // 页码
+    /**
+     * @desc 页码
+     */
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
       this.params.limit = val // 设置每页多少条记录
@@ -82,24 +87,32 @@ export default {
       this.params.page = val
       this.search()
     },
-    // 添加方法打开界面
+    /**
+     * @desc 添加方法打开界面
+     */
     gethomeAdd () {
       this.openType = 'add'
       this.dialogFormShow = true
     },
-    // 提交送审表单
+    /**
+     * @desc 提交送审表单
+     */
     upData (e) {
       this.openType = 'approval'
       this.currentList = e
       this.dialogFormShow = true
     },
-    // 修改表单
+    /**
+     * @desc 修改表单
+     */
     seeData (e) {
       this.openType = 'edit'
       this.currentList = e
       this.dialogFormShow = true
     },
-    // 关闭蒙版
+    /**
+     * @desc 关闭蒙版
+     */
     closeaddDialog () {
       this.dialogFormShow = false
     }
