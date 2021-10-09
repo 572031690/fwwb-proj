@@ -85,7 +85,6 @@
               <tbody>
                 <tr
                   v-for="(item, key) in list"
-                  :class="{ uppdate: item.uptype == 1 || item.uptype == 3 }"
                   :key="key"
                 >
 
@@ -131,9 +130,10 @@
                           }">
                           {{
                             item.uptype == 0 ? '未送审'
-                            :item.uptype == 1? '待审批'
+                            :item.uptype == 1 ? '审批中'
                             :item.uptype == 2? '审批驳回'
-                            :item.uptype == 3? '审批通过':''
+                            :item.uptype == 3? '部门通过'
+                            :item.uptype == 4? '审批通过':''
                           }}
                         </span>
                       </div>
@@ -197,7 +197,7 @@ export default {
   // inject: ['departId'],
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(23, 165, 23)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)','rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
       tableText: this.$tables.needList,
       dialogFormShow: false,
       drawOpenType: 'see',
@@ -219,7 +219,11 @@ export default {
         },
         {
           value: '3',
-          label: '通过'
+          label: '部门通过'
+        },
+        {
+          value: '4',
+          label: '经理通过'
         }
       ],
       currentIndex: 1, // 查看审批数据
