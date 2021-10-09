@@ -1,8 +1,8 @@
 <template>
   <div class="personal">
     <div class="personal-table">
-      <el-descriptions direction="vertical" :column="3" border>
-        <el-descriptions-item label="用户名">{{
+      <el-descriptions direction="vertical" :column="3" border class="style">
+        <el-descriptions-item label="用户名" >{{
           username
         }}</el-descriptions-item>
         <el-descriptions-item label="所属部门">{{
@@ -14,7 +14,9 @@
         }}</el-descriptions-item>
         <el-descriptions-item label="用户角色">{{ role }}</el-descriptions-item>
         <el-descriptions-item label="密码">
-          <el-button type="primary" size="small" @click="changepassword()">修改密码</el-button>
+          <el-button type="primary" size="small" @click="changepassword()"
+            >修改密码</el-button
+          >
         </el-descriptions-item>
       </el-descriptions>
     </div>
@@ -47,7 +49,11 @@
           class="demo-ruleForm"
         >
           <el-form-item label="原密码" prop="originalpass">
-            <el-input v-model="form.originalpass" style="width: 400px" type="password"></el-input>
+            <el-input
+              v-model="form.originalpass"
+              style="width: 400px"
+              type="password"
+            ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input
@@ -71,7 +77,6 @@
           >
         </div>
       </el-dialog>
-       
     </div>
   </div>
 </template>
@@ -80,82 +85,82 @@
 export default {
   data() {
     var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
       } else if (value !== this.form.pass) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error("两次输入密码不一致!"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
-        dialogFormVisible: false,
-        username: 'mek',
-        realname:'mek',
-        password: 5454165,
-        telNum: 17816536995,
-        employeeid: '3',
-        department: '10001',
-        role:'管理员',
-        form: {
+      dialogFormVisible: false,
+      username: "mek",
+      realname: "mek",
+      password: 5454165,
+      telNum: 17816536995,
+      employeeid: "3",
+      department: "10001",
+      role: "管理员",
+      form: {
         // userId:'',
-        originalpass: '',
-        pass: '',
-        repass: '', 
-        },
-        rules:{
-        originalpass:[
-          { required: true, message: '请输入原密码', trigger: 'blur' },
-          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
+        originalpass: "",
+        pass: "",
+        repass: "",
+      },
+      rules: {
+        originalpass: [
+          { required: true, message: "请输入原密码", trigger: "blur" },
+          { min: 6, max: 24, message: "长度不能小于六位", trigger: "blur" },
         ],
         pass: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 24, message: "长度不能小于六位", trigger: "blur" },
         ],
-        repass: [{ required: true, validator: validatePass2, trigger: 'blur' }],
-        }  
-    }
+        repass: [{ required: true, validator: validatePass2, trigger: "blur" }],
+      },
+    };
   },
   mounted() {
-    this.getUserData
+    this.getUserData;
   },
   methods: {
     getUserData() {
-      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
+      const userList = JSON.parse(window.sessionStorage.getItem("userData"));
     },
     changepassword() {
-      this.dialogFormVisible = true
+      this.dialogFormVisible = true;
     },
-    submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           // 提示框
-          this.$confirm('是否确定修改密码?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
+          this.$confirm("是否确定修改密码?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
           }).then(() => {
-            this.edit()
-          })
+            this.edit();
+          });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log("error submit!!");
+          return false;
         }
-      })
+      });
     },
-     closeres () {
-      this.dialogFormVisible = false
+    closeres() {
+      this.dialogFormVisible = false;
       for (const i in this.form) {
-        this.form[i] = ''
+        this.form[i] = "";
       }
     },
     // edit () {
     //   // $ajax请求
     //   const url = ''
-     
+
     //   const data = {
     //       originalpass: this.form.originalpass,
-    //       password: this.form.pass,   
+    //       password: this.form.pass,
     //   }
     //   this.$api(
     //     url,
@@ -176,11 +181,11 @@ export default {
     //       this.$message.error('网络异常') // element失败提示框上部
     //     })
     // },
-  }
-}
+  },
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 .personal {
   height: 95%;
   width: 40%;
@@ -193,4 +198,20 @@ export default {
     width: 90%;
   }
 }
+.el-descriptions {
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #303133;
+  
+}
+.style{
+.el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: 400;
+    line-height: 3;
+ }
+}
+
+
 </style>
