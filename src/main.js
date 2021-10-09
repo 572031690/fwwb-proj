@@ -12,6 +12,7 @@ import axios from 'axios' // http://192.168.2.2 // 引入axios
 import './assets/CSS/basic.css'
 import './plugins/element.js'
 import 'font-awesome/css/font-awesome.css'
+import 'element-ui/lib/theme-chalk/index.css'
 Vue.prototype.$echarts = echarts
 
 Vue.prototype.$tables = tableList
