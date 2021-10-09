@@ -122,7 +122,7 @@ export default {
       list.forEach(item => {
         if (item.showtab) index++
       })
-      return index 
+      return index
     },
     /**
      * @desc 旋转子列箭头
@@ -290,11 +290,11 @@ export default {
         this.routerList[1].childrenList[1].showtab = true
         this.routerList[1].childrenList[2].showtab = true
       }
-      if(this.routerList[4].showtab ===  this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
-        if( this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ) {
+      if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
+        if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab) {
           this.routerList[4].showtab = false
           this.routerList[1].childrenList[2].showtab = false
-        }else {
+        } else {
           this.routerList[4].showtab = false
           this.routerList[2].childrenList[2].showtab = false
         }
@@ -332,15 +332,14 @@ export default {
      */
     goToRouter (val) {
       if (this.checkIndex === val.index || val.disabled) return
-      
+
       if (val.index === 21 || val.index === 22) {
         window.sessionStorage.setItem('currentRouter', 'see')
       }
       if (val.index === 31 || val.index === 32) {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
-      if((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21))
-      this.$refs.viewBox.getCurrentType()
+      if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21)) { this.$refs.viewBox.getCurrentType() }
 
       this.checkIndex = val.index
       window.sessionStorage.setItem('currentIndex', this.checkIndex)
@@ -352,10 +351,10 @@ export default {
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
-    if(this.departmentID)this.getAdminType()
+    if (this.departmentID) this.getAdminType()
   },
   mounted () {
-    window.sessionStorage.setItem('sData', ['10010', '10000','10011','10020'])
+    window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
     this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
     this.changehomeimgCreate()
     this.nowTimes()

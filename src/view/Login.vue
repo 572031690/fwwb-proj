@@ -127,7 +127,7 @@ export default {
     }, 100)
   },
   methods: {
-     /**
+    /**
      * @desc 获得验证码组件内的验证码答案
      */
     changeCode (value) {
@@ -140,7 +140,7 @@ export default {
       // 注册按钮 点击后显示编辑对话框
       this.$refs.registertable.dialogFormVisible = true
     },
-     /**
+    /**
      * @desc 密码眼睛切换
      */
     eyeschange () {
@@ -158,7 +158,6 @@ export default {
      * @desc 登陆按钮事件
      */
     login () {
-      const me = this
       if (!this.$refs.logintext.value) {
         this.tips1 = '账号不能为空'
       } else if (!this.$refs.passwordeye.value) {
@@ -172,8 +171,7 @@ export default {
         this.tips2 = ''
         this.tips1 = ''
         this.inputVal = ''
-        this.login()
-        
+        this.goLogin()
       } else {
         this.result = '验证码输入错误'
         // 验证码input内的值
@@ -186,64 +184,64 @@ export default {
     /**
      * @desc 登陆
      */
-    async login() {
+    async goLogin () {
       const url = 'login/login'
       const data = {
         username: this.logindata.uname,
         password: this.logindata.pass
       }
       await this.$api(url, data)
-      .then(res => {
-        const { code, user } = res
-        if (parseInt(code) === 101) {
-          window.sessionStorage.setItem(
-            'storeData',
-            user.realname
-          ) // 将数据存储到浏览器内嵌的数据库内
-          window.sessionStorage.setItem(
-            'userData',
-            JSON.stringify(user)
-          ) // 将数据存储到浏览器内嵌的数据库内
-          window.sessionStorage.setItem(
-            'sData',
-            user.roleId
-          ) // 将数据存储到浏览器内嵌的数据库内
-          window.sessionStorage.setItem(
-            'employeeid',
-            user.employeeid
-          ) 
-          this.logindata.uname = ''
-          this.logindata.pass = ''
-          this.getCookie()
-          this.$router.push({ path: 'home' }) // 页面跳转
-          this.$notify({
+        .then(res => {
+          const { code, user } = res
+          if (parseInt(code) === 101) {
+            window.sessionStorage.setItem(
+              'storeData',
+              user.realname
+            ) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem(
+              'userData',
+              JSON.stringify(user)
+            ) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem(
+              'sData',
+              user.roleId
+            ) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem(
+              'employeeid',
+              user.employeeid
+            )
+            this.logindata.uname = ''
+            this.logindata.pass = ''
+            this.getCookie()
+            this.$router.push({ path: 'home' }) // 页面跳转
+            this.$notify({
             // element登陆成功提示框右上边
-            title: '登陆成功',
-            message: '欢迎管理员！',
-            type: 'success'
-          })
-        } else if (parseInt(code) === 102) {
-          this.$message.error('账号或密码错误') // element失败提示框上部
-          this.tips2 = '账号或密码错误'
-          // 验证码提示框
-          this.result = ''
-        } else {
-          this.$message.error(res.error)
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
+              title: '登陆成功',
+              message: '欢迎管理员！',
+              type: 'success'
+            })
+          } else if (parseInt(code) === 102) {
+            this.$message.error('账号或密码错误') // element失败提示框上部
+            this.tips2 = '账号或密码错误'
+            // 验证码提示框
+            this.result = ''
+          } else {
+            this.$message.error(res.error)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    getCookie() {
+    getCookie () {
       this.$api('login/getCookie').then(() => {
         this.$router.push({ path: 'home' }) // 页面跳转
-          this.$notify({
+        this.$notify({
           // element登陆成功提示框右上边
-            title: '登陆成功',
-            message: '欢迎管理员！',
-            type: 'success'
-          })
+          title: '登陆成功',
+          message: '欢迎管理员！',
+          type: 'success'
+        })
       })
     }
   }

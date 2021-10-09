@@ -119,7 +119,6 @@
               </tr>
             </tbody>
           </div>
-          
 
         </div>
         <div class="table-bottom">
@@ -184,8 +183,8 @@ export default {
   data () {
     return {
       tableText: '',
-      constIndex:0,
-      editDisabled:'username',
+      constIndex: 0,
+      editDisabled: 'username',
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',
@@ -259,7 +258,7 @@ export default {
           selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        this.list = res.list||[] // 获取里面的data数据
+        this.list = res.list || [] // 获取里面的data数据
         this.getEmitData()
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
@@ -270,9 +269,9 @@ export default {
      */
     getEmitData () {
       this.list.forEach(function (item) {
-        if(item.isDisabled) {
+        if (item.isDisabled) {
           item.isDisabled = true
-        }else{
+        } else {
           item.isDisabled = false
         }
       })
@@ -281,7 +280,7 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
-      if(!val) return
+      if (!val) return
       const rolaArr = []
       this.rolaSelect.forEach(item => {
         if (val.includes(item.roleId)) rolaArr.push(item.rolename)
@@ -375,13 +374,13 @@ export default {
      * @desc 打开分配角色表
      */
     getRole (item) {
-      console.log(item.roleId);
+      console.log(item.roleId)
       this.currentRola = []
-      if(item.roleId[0]!==0) this.currentRola = item.roleId||[]
+      if (item.roleId[0] !== 0) this.currentRola = item.roleId || []
       this.currentId = item.userid
       this.dialogVisibleRole = true
     },
-    
+
     /**
      * @desc 获取角色列表
      */
@@ -395,7 +394,7 @@ export default {
     /**
      * @desc 更改用户状态
      */
-    async setStatus (id,key) {
+    async setStatus (id, key) {
       const url = 'home/user/changeStatus'
       await this.$api(url, {
         params: {
@@ -408,7 +407,7 @@ export default {
       }).catch(() => {
         setTimeout(() => {
           this.list[key].isDisabled = !this.list[key].isDisabled
-        },400)
+        }, 400)
       })
     }
   }

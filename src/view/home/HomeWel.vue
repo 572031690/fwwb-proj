@@ -95,17 +95,17 @@
 <script>
 export default {
   computed: {
-    getdpartmentTypeNeed() {
-      const partIdList = ['10000','10001','10010','10011']
-      for(const i of partIdList){
-        if(this.$store.state.departmentId.includes(i)) return true
+    getdpartmentTypeNeed () {
+      const partIdList = ['10000', '10001', '10010', '10011']
+      for (const i of partIdList) {
+        if (this.$store.state.departmentId.includes(i)) return true
       }
       return false
     },
-    getdpartmentTypeBuy() {
-      const partIdList = ['10000','10001','10020','10021']
-      for(const i of partIdList){
-        if(this.$store.state.departmentId.includes(i)) return true
+    getdpartmentTypeBuy () {
+      const partIdList = ['10000', '10001', '10020', '10021']
+      for (const i of partIdList) {
+        if (this.$store.state.departmentId.includes(i)) return true
       }
       return false
     }
@@ -167,7 +167,7 @@ export default {
       datalist: []
     }
   },
-  mounted() {
+  mounted () {
     this.getUserData()
     this.getItemData()
     this.getAprovalCount()
@@ -176,7 +176,7 @@ export default {
     /**
      * @desc 获取用户信息
      */
-    getUserData() {
+    getUserData () {
       const userList = JSON.parse(window.sessionStorage.getItem('userData'))
       this.tableData[0] = userList
       this.tableData[0].role = this.showRoleData(this.tableData[0].roleId)
@@ -186,7 +186,7 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
-      if(!val) return
+      if (!val) return
       const rolaArr = []
       this.rolaSelect.forEach(item => {
         if (val.includes(parseInt(item.value))) rolaArr.push(item.label)
@@ -196,18 +196,18 @@ export default {
     /**
      * @desc 显示部门内容
      */
-    showDepartData(val) {
-      if(!val) return
+    showDepartData (val) {
+      if (!val) return
       let depart
       this.rolaSelect.forEach(item => {
-        if (val.includes(parseInt(item.value)))  depart = item.depart
+        if (val.includes(parseInt(item.value))) depart = item.depart
       })
       return depart
     },
     /**
      * @desc 获取审批数据
      */
-    getAprovalCount() {
+    getAprovalCount () {
       this.$api('home/welcome/getNeedCount').then(res => {
         this.needCount = res
       })
@@ -218,22 +218,22 @@ export default {
     /**
      * @desc 请求库存数据
      */
-    async getItemData() {
+    async getItemData () {
       await this.$api('home/item/getItem', {
         params: {
           page: 1, // 传递当前是第几页参数
           limit: 20, // 传递每页显示多少条记录参数
-          searchName: '', 
-          selectName: '' 
+          searchName: '',
+          selectName: ''
         }
       }).then((res) => {
         const itemData = res.list
-        this.datalist=[]
-        for(let i = 0;i<4;i++){
+        this.datalist = []
+        for (let i = 0; i < 4; i++) {
           this.datalist.push({
             name: itemData[i].itemtype,
             num: itemData[i].stock,
-            unit:itemData[i].unit
+            unit: itemData[i].unit
           })
         }
       })

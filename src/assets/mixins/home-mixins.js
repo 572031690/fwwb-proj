@@ -31,8 +31,8 @@ export default {
         // debugger;
         console.log(res)
         // const { data } = res
-        this.list = res.list||[] // 获取里面的data数据
-        console.log(this.list,'this.listthis.list');
+        this.list = res.list || [] // 获取里面的data数据
+        console.log(this.list, 'this.listthis.list')
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
       })

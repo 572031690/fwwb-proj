@@ -96,7 +96,6 @@
             </tr>
           </tbody>
         </div>
-          
 
         </div>
       </div>
@@ -136,7 +135,7 @@ export default {
   },
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)','rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
       drawOpenType: 'see',

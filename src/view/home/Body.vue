@@ -143,7 +143,6 @@
                 </tr>
               </tbody>
             </div>
-            
 
             <!-- </el-table> -->
           </div>
@@ -197,7 +196,7 @@ export default {
   // inject: ['departId'],
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)','rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
       tableText: this.$tables.needList,
       dialogFormShow: false,
       drawOpenType: 'see',
@@ -307,8 +306,7 @@ export default {
     getTyp () {
       if (this.currentRouter === 'approval') {
         this.drawOpenType = 'write'
-      }
-      else {
+      } else {
         this.drawOpenType = 'see'
       }
     },

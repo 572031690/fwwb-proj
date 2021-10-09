@@ -108,9 +108,9 @@ export default {
     /**
      * @desc 地图传递饼状图全国销量统计数据
      */
-    backMapData(pieData,totalCount,totalValue) {
+    backMapData (pieData, totalCount, totalValue) {
       this.totalCount = totalCount
-      this.totalValue = Math.round(totalValue / 10000 *100) /100
+      this.totalValue = Math.round(totalValue / 10000 * 100) / 100
       this.pieData = pieData
     }
   }
