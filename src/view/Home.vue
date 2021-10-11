@@ -50,7 +50,7 @@
             src="../assets/img/heng.png"
             class="rightnav-topimghome"
             ref="rightnavtopimghome"
-            @click="changehomeimg()"
+            @click="changeHomeImg()"
           />
         </div>
 
@@ -85,6 +85,7 @@
 // 引入搜索框
 // import EditData from '../unusercom/EditData.vue'
 import { routerList } from '../assets/data/homeRouter'
+import { debounce } from '../assets/utils/index'
 export default {
 
   provide () {
@@ -110,7 +111,8 @@ export default {
       routerChioce: 1,
       checkIndex: 1,
       routerList,
-      arrowData: []
+      arrowData: [],
+      timer: null
     }
   },
   methods: {
@@ -138,9 +140,25 @@ export default {
       }
     },
     /**
-      * @desc 右边栏三条杠点击事件
+      * @desc 三条杠防抖点击
     */
-    changehomeimg () {
+    changeHomeImg: debounce(function () {
+      this.changeNav()
+    }, 1000, true),
+    debounce (func, wait) {
+      const that = this
+      if (this.timer) {
+        return
+      }
+      func.apply(this)
+      this.timer = setTimeout(function () {
+        that.timer = undefined
+      }, wait)
+    },
+    /**
+      * @desc 右边栏三条杠动画事件
+    */
+    changeNav () {
       // 动画class绑定
       this.navshow = !this.navshow
       let status = 'none'
@@ -176,9 +194,9 @@ export default {
     /**
      * @desc 开始动画文字出现延迟
      */
-    changehomeimgCreate () {
-      this.changehomeimg()
-      this.changehomeimg()
+    changeHomeImgCreate () {
+      this.changeNav()
+      this.changeNav()
     },
     /**
      * @desc 退出登陆方法
@@ -339,7 +357,9 @@ export default {
       if (val.index === 31 || val.index === 32) {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
-      if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21)) { this.$refs.viewBox.getCurrentType() }
+      if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21) || (val.index === 22 && this.checkIndex === 32) || (val.index === 32 && this.checkIndex === 22)) {
+        this.$refs.viewBox.getCurrentType()
+      }
 
       this.checkIndex = val.index
       window.sessionStorage.setItem('currentIndex', this.checkIndex)
@@ -354,9 +374,9 @@ export default {
     if (this.departmentID) this.getAdminType()
   },
   mounted () {
-    window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
+    // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
     this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
-    this.changehomeimgCreate()
+    this.changeHomeImgCreate()
     this.nowTimes()
     // 实现左边子栏的缓慢消失jQuery
     // $(document).ready(function(){

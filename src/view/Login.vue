@@ -192,11 +192,15 @@ export default {
       }
       await this.$api(url, data)
         .then(res => {
-          const { code, user } = res
+          const { code, user, sessionId } = res
           if (parseInt(code) === 101) {
             window.sessionStorage.setItem(
               'storeData',
               user.realname
+            ) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem(
+              'sessionId',
+              sessionId
             ) // 将数据存储到浏览器内嵌的数据库内
             window.sessionStorage.setItem(
               'userData',
@@ -212,7 +216,6 @@ export default {
             )
             this.logindata.uname = ''
             this.logindata.pass = ''
-            this.getCookie()
             this.$router.push({ path: 'home' }) // 页面跳转
             this.$notify({
             // element登陆成功提示框右上边
@@ -232,17 +235,6 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    },
-    getCookie () {
-      this.$api('login/getCookie').then(() => {
-        this.$router.push({ path: 'home' }) // 页面跳转
-        this.$notify({
-          // element登陆成功提示框右上边
-          title: '登陆成功',
-          message: '欢迎管理员！',
-          type: 'success'
-        })
-      })
     }
   }
 }

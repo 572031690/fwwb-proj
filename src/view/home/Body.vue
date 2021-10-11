@@ -44,8 +44,12 @@
                       </div>
                     </div>
                   </el-col>
-                  <el-col :span="8" v-if="$store.state.departmentId.includes('10011') ">
-                    <button class="bodyadd" @click="gethomeAdd()">
+                  <el-col :span="8" class="topRightBox">
+                    <div class="approvalBtn" v-if="!showAdd">
+                      <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人代办</div>
+                      <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史代办</div>
+                    </div>
+                    <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                       <i class="el-icon-plus"></i>添加
                     </button>
                   </el-col>
@@ -80,14 +84,11 @@
                 </thead>
               </div>
               <vNone v-if="!list.length" />
-              <!-- 数据列表 -->
-              <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
               <tbody>
                 <tr
                   v-for="(item, key) in list"
                   :key="key"
                 >
-
                   <td v-for="(data,index) in tableText.tableBody"
                   :key="index"
                   :class="{
@@ -101,14 +102,14 @@
                     </div>
                     <div class="bodyButton" v-if="data==='opetation1'">
                       <div class="cell" v-if="currentRouter==='see' ">
-                        <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 2">
+                        <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 4">
                           编辑
                         </button>
-                        <button class="delete" @click="deletedata({needid: item.needid},'home/need/deleteNeed')"  v-if="item.uptype == 0 || item.uptype == 2">
+                        <button class="delete" @click="deletedata({needid: item.needid},'home/need/deleteNeed')"  v-if="item.uptype == 0 || item.uptype == 4">
                           删除
                         </button>
                         <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
-                        <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 3">
+                        <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 4">
                           查看审批
                         </button>
                         <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 2">
@@ -131,9 +132,9 @@
                           {{
                             item.uptype == 0 ? '未送审'
                             :item.uptype == 1 ? '审批中'
-                            :item.uptype == 2? '审批驳回'
-                            :item.uptype == 3? '部门通过'
-                            :item.uptype == 4? '审批通过':''
+                            :item.uptype == 2? '部门通过'
+                            :item.uptype == 3? '审批通过'
+                            :item.uptype == 4? '审批驳回':''
                           }}
                         </span>
                       </div>
@@ -176,6 +177,7 @@
 
         <Drawer
           :listIn="list[currentIndex]"
+          :urlList="drawerUrlList"
           typeName="need"
           :openType="drawOpenType"
           @close="drawerClose"
@@ -196,41 +198,28 @@ export default {
   // inject: ['departId'],
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)'],
       tableText: this.$tables.needList,
       dialogFormShow: false,
+      drawerUrlList: {
+        ressetApproval: 'home/need/startNeedActAgain',
+        getApprovalList: 'home/need/findHistoty',
+        passRequest: 'home/need/completeprocess',
+        rejectRequest: 'home/need/deleteprocess'
+      },
+      currentApprovalType: true,
       drawOpenType: 'see',
       IntList: ['needid', 'neednum', 'neederid'],
       topChange: 'needid',
       currentRouter: '',
-      select: [ // 搜索框筛选数据
-        {
-          value: '0',
-          label: '未送审'
-        },
-        {
-          value: '1',
-          label: '审核中'
-        },
-        {
-          value: '2',
-          label: '驳回'
-        },
-        {
-          value: '3',
-          label: '部门通过'
-        },
-        {
-          value: '4',
-          label: '经理通过'
-        }
-      ],
+      select: [], // 搜索框筛选数据
       currentIndex: 1, // 查看审批数据
+      showAdd: false,
       list: [
         {
           needid: 1,
           needtitle: '马佳辉1',
-          itemtype: 5454165,
+          itemtype: '',
           itemid: 1373201546,
           neednum: '3',
           needday: '5',
@@ -283,13 +272,7 @@ export default {
     this.currentRouter = sessionStorage.getItem('currentRouter')
   },
   mounted () {
-    setTimeout(() => {
-      this.loading2 = false
-    }, 400)
     this.getTyp()
-    this.getSearchUrl()
-    // 调用方法获取后端数据
-    this.search()
   },
   methods: {
     /**
@@ -298,29 +281,36 @@ export default {
     getCurrentType () {
       this.currentRouter = sessionStorage.getItem('currentRouter')
       this.getTyp()
-      this.search()
     },
     /**
      * @desc 获取登录账号信息
      */
     getTyp () {
       if (this.currentRouter === 'approval') {
+        this.searchUrl = 'home/need/queryNeedActTask'
+        // this.searchUrl = 'home/need/getNeed'
         this.drawOpenType = 'write'
+        this.showAdd = false
       } else {
+        this.searchUrl = 'home/need/getNeed'
         this.drawOpenType = 'see'
+        this.showAdd = true
       }
+      this.search()
     },
     /**
-     * @desc 设置请求数据地址
+     * @desc 切换代办任务（审批）
      */
-    getSearchUrl () {
-      this.searchUrl = 'home/need/getNeed'
+    getApprovalType (type) {
+      this.currentApprovalType = type
+      this.searchUrl = type ? 'home/need/queryNeedActTask' : 'home/need/getNeed'
+      this.search()
     },
     /**
      * @desc 抽屉关闭事件
      */
     drawerClose (val) {
-      console.log(val, '=------------')
+      this.search()
     },
     /**
      * @desc 打开查看抽屉

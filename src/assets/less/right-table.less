@@ -10,11 +10,11 @@
   padding: 10px 0;
 }
 .bodyheart {
-  display: flex;
+  // display: flex;
   width: 100%;
   // align-items: center; /*由于flex-direction: column，因此align-items代表的是水平方向*/
-  justify-content: center; /*由于flex-direction: column，因此justify-content代表的是垂直方向*/
-  flex-direction: column;
+  // justify-content: center; /*由于flex-direction: column，因此justify-content代表的是垂直方向*/
+  // flex-direction: column;
   overflow: auto;
 
 }
@@ -41,11 +41,14 @@
       vertical-align: middle;
     }
   }
-
+  .topRightBox {
+    display: flex;
+  }
   .bodyadd {
     height: 28px;
     width: 48px;
-    margin-top: 2px;
+    margin: 2px 15px 0 0;
+    margin-left: auto;
     vertical-align: middle;
     background-color: #fff;
     border-radius: 4px;
@@ -53,7 +56,6 @@
     border: 1px solid #dadce0;
     font-size: 11px;
     float: right;
-    margin-right: 15px;
     cursor: pointer;
     &:hover {
       background-color: #f0f7ff;
@@ -63,6 +65,35 @@
     &:active {
       border: 1px solid #144379;
     }
+  }
+}
+.approvalBtn {
+  margin-left: auto;
+  display: flex;
+  margin-right: 15px;
+  vertical-align: middle;
+  width: 150px;
+  color: #8c959c;
+  cursor: pointer;
+  >div {
+    flex: 1;
+    text-align: center;
+    padding: 3px 0;
+    border: 0.5px solid #c9d3da;
+  }
+  >div:hover {
+    color: #8ebaed;
+  }
+  div:first-child {
+    border-right: 0px;
+    border-radius: 5px 0 0 5px;
+  }
+  div:last-child {
+    border-radius: 0 5px 5px 0;
+  }
+  .currentBtn {
+    background-color: #f0f7ff;
+    color: #8ebaed;
   }
 }
 .search {
@@ -118,6 +149,7 @@
   }
 }
 .mytable {
+  margin: 0 auto;
   margin-top: 10px;
   width: fit-content;
   border: 1px solid #dadce0;

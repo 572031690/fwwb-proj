@@ -28,14 +28,36 @@ export default {
           selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        // debugger;
         console.log(res)
         // const { data } = res
         this.list = res.list || [] // 获取里面的data数据
-        console.log(this.list, 'this.listthis.list')
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+        this.getApprovalCurrentData()
+      }).catch(() => {
+        this.loading2 = false
       })
+    },
+    /**
+     * @desc 判断当是需求或购买审批时过滤历史代办数据
+     */
+    getApprovalCurrentData () {
+      const currentRouter = window.sessionStorage.getItem('currentIndex')
+      if (!['32', '31'].includes(currentRouter)) return
+      if (this.currentApprovalType) return
+      const roleList = window.sessionStorage.getItem('sData')
+      if (roleList.includes('10011') || roleList.includes('10021')) {
+        this.list = this.list.filter(item => {
+          console.log(item, 'dsaitem')
+          return item.uptype !== 1 && item.uptype !== 0
+        })
+      }
+      if (roleList.includes('10001')) {
+        this.list = this.list.filter(item => {
+          return item.uptype !== 1 && item.uptype !== 0 && item.uptype !== 2
+        })
+      }
     },
     /**
      * @desc 删除方法

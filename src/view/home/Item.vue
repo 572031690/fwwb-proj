@@ -79,7 +79,6 @@
               </tr>
             </tbody>
           </div>
-          
 
           <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
@@ -118,7 +117,7 @@ export default {
   mixins: [homeMix],
   data () {
     return {
-      editDisabled:'itemid',
+      editDisabled: ['itemid'],
       tableText: '',
       dialogFormShow: false,
       IntList: ['stock'],

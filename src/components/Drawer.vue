@@ -15,11 +15,12 @@
           <div class="drawertopstatus"  v-if="openType === 'see'">
             <el-steps
               :space="200"
-              :active="form.uptype"
+              align-center
+              :active="listIn.uptype===4 ? 0 : listIn.uptype"
               finish-status="success"
             >
-              <el-step title="已提交"></el-step>
-              <el-step title="审核"></el-step>
+              <el-step title="待审核"></el-step>
+              <el-step title="部门通过"></el-step>
               <el-step title="通过"></el-step>
             </el-steps>
           </div>
@@ -27,7 +28,7 @@
             <div class="formBody">
               <el-form :model="listIn" label-width="120px">
                 <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText[typeName]" :key="index">
-                  <span v-if="item.model!=='comment'" >{{listIn[item.model]}}</span>
+                  <span v-if="item.model!=='comment'" >{{(item.model!=='neednum' && item.model!=='num') ?listIn[item.model]:listIn[item.model]+listIn.unit}}</span>
                   <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
                 </el-form-item>
               </el-form>
@@ -57,12 +58,12 @@
                       :color="typeList[parseInt(item.id)-1].color"
                       size="large"
                       :key="key"
-                      :timestamp="item.time"
+                      :timestamp="item.endTime"
                       placement="top"
                     >
                       <el-card>
-                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
-                          <div>{{parseInt(item.id)===1?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
+                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
+                          <!-- <div>{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div> -->
                           <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                           ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                           <br />
@@ -81,7 +82,7 @@
                 <div v-if="openType === 'see'">
                   <el-button @click="cancelForm">关 闭</el-button>
                   <el-button
-                    v-show="form.uptype==2"
+                    v-show="listIn.uptype===4"
                     type="primary"
                     @click="upData()"
                     :loading="loading"
@@ -107,11 +108,11 @@
                     :color="typeList[parseInt(item.id)-1].color"
                     size="large"
                     :key="key"
-                    :timestamp="item.time"
+                    :timestamp="item.endTime"
                     placement="top"
                   >
                     <el-card>
-                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
+                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
                       <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                       ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                       <br />
@@ -136,7 +137,32 @@
 <script>
 import { drawerText } from '../assets/data/drawerData'
 export default {
-  props: ['listIn', 'typeName', 'openType'],
+  props: {
+    listIn: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    typeName: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    openType: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    urlList: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   watch: {
     openType: {
       handler: function (val) {
@@ -166,30 +192,29 @@ export default {
           title: '通过',
           icon: 'el-icon-check',
           color: '#0bbd87'
+        }, {
+          title: '通过',
+          icon: 'el-icon-check',
+          color: '#0bbd87'
         },
         {
           title: '驳回',
           icon: 'el-icon-close',
           color: 'red'
-        },
-        {
-          title: '通过',
-          icon: 'el-icon-check',
-          color: '#0bbd87'
         }
       ],
       // 时间线
       list: [
         {
           id: '1',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           upname: '莫恩康',
           text: ''
 
         },
         {
           id: '2',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text:
@@ -197,13 +222,13 @@ export default {
         },
         {
           id: '3',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
         }, {
           id: '4',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
@@ -232,16 +257,37 @@ export default {
       this.$confirm('确定要提交表单吗？')
         .then(_ => {
           this.loading = true
-          this.timer = setTimeout(() => {
-            // this.$store.commit('ChangeDraw')
-            this.dialog = !this.dialog
-            // 动画关闭需要一定的时间
-            setTimeout(() => {
-              this.loading = false
-            }, 300)
-          }, 300)
+          this.resetApproval()
         })
         .catch(() => {})
+    },
+    async resetApproval () {
+      const url = this.urlList.ressetApproval
+      const params = {
+        buyid: this.listIn.buyid
+      }
+      this.$api(url, { params }).then(res => {
+        if (res.code === '101') {
+          this.$message.success('提交审批成功')
+          this.loading = false
+          this.dialog = !this.dialog
+          this.$emit('close')
+        }
+      })
+    },
+    async startApproval () {
+      const url = this.urlList.ressetApproval
+      const data = {
+        needid: this.listIn.needid
+      }
+      await this.$api(url, data).then(res => {
+        if (res.code === '101') {
+          this.$message.success('提交审批成功')
+          this.loading = false
+          this.dialog = !this.dialog
+          this.$emit('close')
+        }
+      })
     },
     handleClose (done) {
       // if (this.loading) {
@@ -264,6 +310,7 @@ export default {
     },
     cancelForm () {
       this.loading = false
+      this.list = []
       this.dialog = !this.dialog
       clearTimeout(this.timer)
       // this.$store.commit('ChangeDraw')
@@ -271,11 +318,22 @@ export default {
     msg () {
     },
     getDrawerType () {
-      // this.size
+    },
+    async searchApprovalList () {
+      const url = this.urlList.getApprovalList
+      const params = {
+        needid: this.listIn.needid,
+        buyid: this.listIn.buyid
+      }
+      await this.$api(url, { params }).then((res) => {
+        this.list = res.list
+      })
     },
     showDraw () {
       this.dialog = !this.dialog
-      console.log(this.openType)
+      this.$nextTick(() => {
+        this.searchApprovalList()
+      })
     },
     witeApproval (type) {
       this.$confirm(type === 'reject' ? '是否确定驳回此申请' : '是否确定通过此申请', '提示', {
@@ -284,10 +342,23 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.loading = false
-          this.dialog = !this.dialog
-          clearTimeout(this.timer)
+          this.approvalAct(type)
         })
+    },
+    approvalAct (type) {
+      console.log(this.listIn, 'this.listIn.taskId')
+      const url = type === 'pass' ? this.urlList.passRequest : this.urlList.rejectRequest
+      const params = {
+        text: this.opinion,
+        taskId: this.listIn.taskId
+      }
+      this.$api(url, { params }).then(res => {
+        this.loading = false
+        this.dialog = !this.dialog
+        this.$$message.success('审批成功')
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -311,7 +382,7 @@ export default {
 }
 
 .drawertopstatus {
-  margin-left: 100px;
+  // margin-left: 80px;
   margin-bottom: 30px;
 }
 .drawerFormBox {

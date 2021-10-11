@@ -17,12 +17,6 @@ export const addEditList = {
         selectData: ['钢铁', '熟料', '橡胶', '泡沫'],
         dataName: 'itemtype'
       },
-      // {
-      //   label: '类型ID',
-      //   putType: 'select',
-      //   selectData: ['10000', '996', '007', '123'],
-      //   dataName: 'itemid'
-      // },
       { label: '数量', putType: 'num', dataName: 'neednum' },
       { label: '需求日期', putType: 'date', dataName: 'needday' },
       { label: '申请人编号', putType: 'disput', dataName: 'neederid' },
@@ -43,7 +37,9 @@ export const addEditList = {
     url: {
       add: 'home/need/addNeed',
       edit: 'home/need/editNeed',
-      approval: 'home/need/approvalNeed'
+      approval: 'home/need/editNeed',
+      startApproval: 'home/need/approvalNeed',
+      upApproval: 'home/need/completeprocess'
     }
   },
   buyList: {
@@ -65,15 +61,9 @@ export const addEditList = {
       },
       {
         label: '类型',
-        putType: 'select',
+        putType: 'selectItem',
         selectData: ['10000', '996', '007', '123'],
         dataName: 'itemtype'
-      },
-      {
-        label: '类型ID',
-        putType: 'select',
-        selectData: ['10000', '996', '007', '123'],
-        dataName: 'itemid'
       },
       {
         label: '数量',
@@ -81,14 +71,24 @@ export const addEditList = {
         dataName: 'num'
       },
       {
-        label: '购买编号',
-        putType: 'numput',
+        label: '购买专员编号',
+        putType: 'disput',
         dataName: 'buyerid'
       },
       {
-        label: '负责人编号',
-        putType: 'disput',
+        label: '需求专员编号',
+        putType: 'numput',
         dataName: 'neederid'
+      },
+      {
+        label: '订单码',
+        putType: 'numput',
+        dataName: 'auditid'
+      },
+      {
+        label: '详情',
+        putType: 'textarea',
+        dataName: 'comment'
       }
     ],
     formList: {
@@ -98,14 +98,18 @@ export const addEditList = {
       itemtype: '',
       itemid: '',
       num: '',
+      auditid: '',
       buyerid: '',
-      neederid: 15,
+      neederid: '',
+      comment: '',
       uptype: ''
     },
     url: {
       add: 'home/buy/addBuy',
       edit: 'home/buy/updateBuy',
-      approval: 'home/buy/approvalBuy'
+      approval: 'home/buy/updateBuy',
+      startApproval: 'home/buy/startBuyAct',
+      upApproval: 'home/buy/completeprocess'
     }
   },
   department: {
@@ -214,7 +218,7 @@ export const addEditList = {
     formList: {
       userid: '',
       username: '',
-      realname:'',
+      realname: '',
       telNum: '',
       departmentid: '',
       employeeid: ''

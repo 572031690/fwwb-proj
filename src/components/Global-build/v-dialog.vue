@@ -66,10 +66,8 @@
                   :key="key"
                 ></el-option>
               </el-select>
-
                单位：{{dialogData.formList.unit}}
             </div>
-
           <el-input-number
             v-model="dialogData.formList[item.dataName]"
             :step="50"
@@ -119,21 +117,21 @@
 import { rulesData } from '../../assets/data/rules'
 import { addEditList } from '../../assets/data/addEditList'
 export default {
-  name:'vDialog',
+  name: 'vDialog',
   props: {
     dialogFormShow: Boolean,
     IntList: Array,
     openType: String,
     name: String,
     currentList: Object,
-    //在编辑模式下禁用的变量
+    // 在编辑模式下禁用的变量
     editDisabled: {
-      type:[String],
-      default:() => {
-        return ''
+      type: [Array],
+      default: () => {
+        return []
       }
     },
-    //在添加和编辑时顶部第一个参数需要改变是否能禁用
+    // 在添加和编辑时顶部第一个参数需要改变是否能禁用
     topChange: {
       type: [String, Boolean],
       default: () => {
@@ -159,22 +157,18 @@ export default {
       },
       topData: {},
       itemList: []
-    } 
+    }
   },
   created () {
     this.getList()
-    // this.getItemList()
   },
   methods: {
     getUnit (data) {
-      const currentItem =  this.itemList.filter(function(e) {
-        return e.itemtype===data
+      const currentItem = this.itemList.filter(function (e) {
+        return e.itemtype === data
       })
       this.dialogData.formList.itemid = currentItem[0].itemid
       this.dialogData.formList.unit = currentItem[0].unit
-      console.log(this.dialogData.formList);
-
-      console.log(currentItem,'dsd')
     },
     getList () {
       this.dialogData = this.addEditList[this.name]
@@ -184,10 +178,10 @@ export default {
       this[this.openType]()
     },
     add () {
-      if(this.editDisabled) { 
+      if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'input'}
-        }) 
+          if (this.editDisabled.includes(item.dataName)) { item.putType = 'input' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName === this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
@@ -195,29 +189,30 @@ export default {
       }
       this.dialogData.dataTableList.forEach(item => {
         if (item.putType === 'disput') {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('sData'))
+          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('employeeid'))
         }
       })
     },
     edit () {
-      if(this.editDisabled) { 
+      if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'disput'}
-        }) 
+          if (this.editDisabled.includes(item.dataName)) { item.putType = 'disput' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
-        if (this.IntList.includes(i)) this.dialogData.formList[i] = this.currentList[i] ? parseInt(this.currentList[i]) : ''
-        else {
+        if (this.IntList.includes(i)) {
+          this.dialogData.formList[i] = this.currentList[i] ? parseInt(this.currentList[i]) : ''
+        } else {
           this.dialogData.formList[i] = this.currentList[i] ? this.currentList[i].toString() : ''
         }
       }
     },
     approval () {
-      if(this.editDisabled) { 
+      if (this.editDisabled) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'input'}
-        }) 
+          if (item.dataName === this.editDisabled) { item.putType = 'input' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
@@ -250,15 +245,19 @@ export default {
       }
       // $ajax请求
       const url = this.dialogData.url[this.openType]
-      await this.$api(url, this.openType === 'approval'? { params:{ ...data } }: data).then(res => {
+      await this.$api(url, data).then(res => {
         const { code } = res
         if (parseInt(code) === 101) {
-          this.$message({
-            type: 'success',
-            message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
-          })
-          this.$emit('updata')
-          this.close()
+          if (this.openType === 'approval') {
+            this.startApproval()
+          } else {
+            this.$message({
+              type: 'success',
+              message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
+            })
+            this.$emit('updata')
+            this.close()
+          }
         } else {
           this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }
@@ -275,21 +274,46 @@ export default {
       }
       this.$emit('closeaddDialog')
     },
-    getItemList() {
-      if(this.itemList.length) return
+    getItemList () {
+      if (this.itemList.length) return
       const params = {
         page: 1, // 传递当前是第几页参数
         limit: 20, // 传递每页显示多少条记录参数
         searchName: '', // 传递搜索参数
         selectName: '' // 筛选参数
       }
-      this.$api('home/item/getItem',{params}).then(res => {
-        this.itemList  = res.list
+      this.$api('home/item/getItem', { params }).then(res => {
+        this.itemList = res.list
       }).catch(err => {
-        console.log(err);
+        console.log(err)
+      })
+    },
+    async startApproval () {
+      const url = this.dialogData.url.startApproval
+      console.log(url, 'dsad')
+      const params = {
+        needid: this.dialogData.formList.needid,
+        buyid: this.dialogData.formList.buyid
+      }
+      await this.$api(url, { params }).then(res => {
+        this.upApproval(res.list[0].taskId)
+      })
+    },
+    async upApproval (taskId) {
+      const url = this.dialogData.url.upApproval
+      const params = {
+        taskId: taskId
+      }
+      await this.$api(url, { params }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '送审成功'
+        })
+        this.$emit('updata')
+        this.close()
       })
     }
-    
+
   }
 }
 </script>

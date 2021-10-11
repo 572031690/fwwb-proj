@@ -184,7 +184,7 @@ export default {
     return {
       tableText: '',
       constIndex: 0,
-      editDisabled: 'username',
+      editDisabled: ['username'],
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',

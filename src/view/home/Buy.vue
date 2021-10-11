@@ -43,11 +43,15 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8">
-                <button class="bodyadd" @click="gethomeAdd()">
+              <el-col :span="8" class="topRightBox">
+                <div class="approvalBtn" v-if="!showAdd">
+                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人代办</div>
+                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史代办</div>
+                </div>
+                <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                   <i class="el-icon-plus"></i>添加
-                </button></el-col
-              >
+                </button>
+              </el-col>
             </el-row>
           </div>
         </div>
@@ -67,6 +71,7 @@
                 rowspan="1"
                 :class="
                 item === '购买单名'?'htop-th2'
+                :item==='操作'?'htop-ope1'
                 :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </th>
@@ -78,19 +83,52 @@
           <!-- 数据列表 -->
           <tbody>
             <tr v-for="(item, key) in list" :key="key">
-
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
               :class="data==='buytitle'? 'body-td2'
+              :data==='opetation1'?'body-ope1'
               :'body-td1'" >
 
-                <div class="cell" v-if="data!=='opetation'">
-                  {{ item[data] }}
+                <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
+                  {{ data==='neednum'? item[data] + (item.unit  || '') :item[data]}}
                 </div>
-
-                <div class="cell" v-if="data==='opetation'">
-                  <button class="modify" @click="seeData(item)">编辑</button>
-                  <button class="delete" @click="deletedata({buyid: item.buyid},'home/buy/deleteBuy')">删除</button>
+                <div class="bodyButton" v-if="data==='opetation1'">
+                  <div class="cell" v-if="currentRouter==='see' ">
+                    <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 4">
+                      编辑
+                    </button>
+                    <button class="delete" @click="deletedata({needid: item.needid},'home/need/deleteNeed')"  v-if="item.uptype == 0 || item.uptype == 4">
+                      删除
+                    </button>
+                    <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
+                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 4">
+                      查看审批
+                    </button>
+                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 2">
+                      驳回结果
+                    </button>
+                  </div>
+                  <div class="cell"  v-if="currentRouter==='approval'">
+                    <button class="writeApproval" @click="writeApproval(key)">
+                      审批
+                    </button>
+                  </div>
+                </div>
+                <div class="bodyButton" v-if="data==='opetation2'">
+                  <div class="cell"  style="backgournd-color:red;">
+                    <span class="tipsspan" :style="{
+                      'background-color': statusColorList[item.uptype],
+                      'color': item.uptype == 0?'black':'white'
+                      }">
+                      {{
+                        item.uptype == 0 ? '未送审'
+                        :item.uptype == 1 ? '审批中'
+                        :item.uptype == 2? '部门通过'
+                        :item.uptype == 3? '审批通过'
+                        :item.uptype == 4? '审批驳回':''
+                      }}
+                    </span>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -123,48 +161,44 @@
         name="buyList"
       >
       </vDialog>
+      <Drawer
+        :listIn="list[currentIndex]"
+        :urlList="drawerUrlList"
+        typeName="buy"
+        :openType="drawOpenType"
+        @close="drawerClose"
+        ref="Draw"
+      ></Drawer>
     </div>
   </div>
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
-
+import Drawer from '../../components/Drawer.vue'
 export default {
   mixins: [homeMix],
   components: {
+    Drawer
   },
   data () {
     return {
       statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
+      drawerUrlList: {
+        ressetApproval: 'home/buy/startBuyActAgain',
+        getApprovalList: 'home/buy/findHistotyBuy',
+        passRequest: 'home/buy/completeprocess',
+        rejectRequest: 'home/buy/deleteprocess'
+      },
+      currentApprovalType: true,
       drawOpenType: 'see',
       currentRouter: '',
-      IntList: ['buyid', 'itemid', 'num', 'buyerid', 'neederid'],
+      IntList: ['buyid', 'num', 'buyerid', 'neederid', 'auditid'],
       topChange: 'buyid',
       currentIndex: 1, // 查看审批数据
-      select: [ // 搜索框筛选数据
-        {
-          value: '0',
-          label: '未送审'
-        },
-        {
-          value: '1',
-          label: '审核中'
-        },
-        {
-          value: '2',
-          label: '驳回'
-        },
-        {
-          value: '3',
-          label: '部门通过'
-        },
-        {
-          value: '4',
-          label: '经理通过'
-        }
-      ],
+      showAdd: false,
+      select: [], // 搜索框筛选数据
       // 表内静态数据列表
       list: [
         {
@@ -181,20 +215,63 @@ export default {
       loading2: true
     }
   },
+  created () {
+    this.currentRouter = sessionStorage.getItem('currentRouter')
+  },
   mounted () {
-    setTimeout(() => {
-      this.loading2 = false
-    }, 400)
-    this.getSearchUrl()
-    // 调用方法获取后端数据
-    this.search()
+    this.getTyp()
   },
   methods: {
     /**
-     * @desc 设置请求数据地址
+     * @desc 获取是管理员打开还是专员打开
      */
-    getSearchUrl () {
-      this.searchUrl = 'home/buy/getBuy'
+    getCurrentType () {
+      this.currentRouter = sessionStorage.getItem('currentRouter')
+      this.getTyp()
+    },
+    /**
+     * @desc 获取登录账号信息
+     */
+    getTyp () {
+      if (this.currentRouter === 'approval') {
+        this.searchUrl = 'home/buy/queryBuyActTask'
+        // this.searchUrl = 'home/need/getNeed'
+        this.drawOpenType = 'write'
+        this.showAdd = false
+      } else {
+        this.searchUrl = 'home/buy/getBuy'
+        this.drawOpenType = 'see'
+        this.showAdd = true
+      }
+      this.search()
+    },
+    /**
+     * @desc 切换代办任务（审批）
+     */
+    getApprovalType (type) {
+      this.currentApprovalType = type
+      this.searchUrl = type ? 'home/buy/queryBuyActTask' : 'home/buy/getBuy'
+      this.search()
+    },
+    /**
+     * @desc 抽屉关闭事件
+     */
+    drawerClose (val) {
+      this.search()
+    },
+    /**
+     * @desc 打开查看抽屉
+     */
+    seeApproval (e) {
+      this.currentIndex = e
+      this.$refs.Draw.showDraw()
+    },
+    /**
+     * @desc 打开书写抽屉
+     */
+    writeApproval (e) {
+      this.currentIndex = e
+      this.$refs.Draw.showDraw()
     }
   }
 }
