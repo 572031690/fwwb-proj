@@ -211,7 +211,28 @@ export default {
       IntList: ['needid', 'neednum', 'neederid'],
       topChange: 'needid',
       currentRouter: '',
-      select: [], // 搜索框筛选数据
+      select: [ // 搜索框筛选数据
+        {
+          value: '0',
+          label: '未送审'
+        },
+        {
+          value: '1',
+          label: '审核中'
+        },
+        {
+          value: '2',
+          label: '驳回'
+        },
+        {
+          value: '3',
+          label: '部门通过'
+        },
+        {
+          value: '4',
+          label: '经理通过'
+        }
+      ],
       currentIndex: 1, // 查看审批数据
       showAdd: false,
       list: [

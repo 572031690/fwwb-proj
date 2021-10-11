@@ -64,7 +64,7 @@
                   colspan="1"
                   rowspan="1"
                   :class="{
-                    'htop-th2':  item === '账号',
+                    'htop-th2':  item === '登陆账号',
                     'htop-ope1':item === '操作',
                     'htop-th7':item === '职位'
                   }">
