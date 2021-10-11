@@ -22,9 +22,6 @@
         label-width="120px"
         class="demo-ruleForm"
       >
-        <!-- <el-form-item label="员工ID" prop="userId" >
-                                        <el-input type="age" v-model.number="form.userId" auto-complete="off" style="width:400px" disabled></el-input>
-                                    </el-form-item> -->
         <el-form-item label="用户名" prop="name">
           <el-input v-model="form.name" style="width:400px"></el-input>
         </el-form-item>
@@ -50,25 +47,6 @@
             style="width:400px"
           ></el-input>
         </el-form-item>
-        <!-- <el-form-item label="验证码" prop="rescode">
-          <el-input
-            type="age"
-            v-model.number="form.rescode"
-            auto-complete="off"
-            style="width:200px"
-          ></el-input>
-
-          <el-button
-            type="primary"
-            plain
-            size="small"
-            @click="sendresCode()"
-            :class="{ 'disabled-style': getCodeBtnDisable }"
-            :disabled="getCodeBtnDisable"
-            style="width:100px; margin-left:12px;height:30px;text-align: center;"
-            >{{ codenum }}</el-button
-          >
-        </el-form-item> -->
         <el-form-item label="员工号" prop="employeeid">
           <el-input
             type="age"
@@ -77,17 +55,6 @@
             style="width:400px"
           ></el-input>
         </el-form-item>
-        <!-- <el-form-item label="部门编号" prop="departmentid">
-          <el-select v-model="form.departmentid" placeholder="请选择编号">
-            <el-option label="10000" value="10000"></el-option>
-            <el-option label="996" value="996"></el-option>
-            <el-option label="007" value="007"></el-option>
-            <el-option label="123" value="123"></el-option>
-          </el-select>
-        </el-form-item> -->
-        <!-- <el-form-item label="地址" prop="address" >
-                     <el-input type="textarea" v-model="form.address" style="width:400px"></el-input>
-          </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeres()">取 消</el-button>
@@ -139,7 +106,6 @@ export default {
       dialogFormVisible: false, // 不让注册修改窗口打开
       // 注册界面输入的数据
       form: {
-        // userId:'',
         name: '',
         pass: '',
         repass: '',
@@ -166,7 +132,6 @@ export default {
         tel: [
           { required: true, message: '请输入电话号码', trigger: 'blur' },
           { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' } // 手机号码验证设置电话格式！！！！
-          // { type: 'number', message: '电话为数字值',trigger: 'blur'},
         ],
         rescode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
         employeeid: [
@@ -180,7 +145,9 @@ export default {
     }
   },
   methods: {
-    // 编辑表 的验证数据
+    /**
+     * @desc 编辑表 的验证数据
+     */
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -190,15 +157,6 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            // if (
-            //   this.form.tel === this.phone.num &&
-            //   this.form.rescode === this.phone.code
-            // ) {
-            //   this.register()
-            // } else {
-            //   this.$message.error('验证码错误!')
-            //   this.form.rescode = ''
-            // }
             this.register()
           })
         } else {
@@ -207,49 +165,46 @@ export default {
         }
       })
     },
-    // 注册ajax请求
+    /**
+     * @desc 注册ajax请求
+     */
     register () {
       // $ajax请求
       const url = 'login/rigister'
-      // const {data:res}=await
       const data = {
-          username: this.form.name,
-          password: this.form.pass,
-          telNum: this.form.tel,
-          employeeid: this.form.employeeid
+        username: this.form.name,
+        password: this.form.pass,
+        telNum: this.form.tel,
+        employeeid: this.form.employeeid
       }
-      this.$api(
-        url,
-        data
-      )
-        .then(res => {
-          if (res.code === '101') {
-            this.$message({
-              type: 'success',
-              message: '注册成功!'
-            })
-            this.dialogFormVisible = false
-          } else if (res.code === '99') {
-            this.$message.error('用户名重复!')
-          }
-        })
+      this.$api(url, data).then(res => {
+        if (res.code === '101') {
+          this.$message({
+            type: 'success',
+            message: '注册成功!'
+          })
+          this.dialogFormVisible = false
+        } else if (res.code === '99') {
+          this.$message.error('用户名重复!')
+        }
+      })
         .catch(() => {
           this.$message.error('网络异常') // element失败提示框上部
         })
     },
-    // 关闭注册蒙版
+    /**
+     * @desc 关闭注册蒙版
+     */
     closeres () {
       this.dialogFormVisible = false
       for (const i in this.form) {
         this.form[i] = ''
       }
     },
-    // 发送验证码 变数字倒数
+    /**
+     * @desc 发送验证码 变数字倒数
+     */
     sendresCode () {
-      // if(this.phoneNumberStyle){
-      // let params = {}
-      // params.telNum = this.form.tel;
-      // console.log(params);
       // 调用获取短信验证码接口
       this.$api('login/getCode', { params: { phone: this.form.tel } })
         .then(res => {
@@ -284,7 +239,6 @@ export default {
           that.waitTime = 61
         }
       }, 1000)
-      // }
     }
   }
 }

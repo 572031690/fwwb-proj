@@ -7,7 +7,7 @@
           height="50px"
           style="vertical-align: middle;"
         />
-        <span>登陆界面</span>
+        <span>智能制造协同共享平台</span>
       </div>
       <div class="login-top">
         <img src="../assets/img/center-login.png" width="100%" />
@@ -110,7 +110,6 @@ export default {
       inputVal: '', // 获取input内输入的验证码
       checkCode: '', // 用于存放验证码答案
       result: '', // 显示验证码校验结果
-      // getCodeBtnDisable:false,// 是否禁用按钮
       // 获取睁闭眼图片  require默认是在根目录的不需要..来向后退
       studyDataPic: require('@/assets/img/closeeye.png'),
       eyesflag: true, // 判断眼睛图标是睁眼还是闭眼
@@ -194,26 +193,11 @@ export default {
         .then(res => {
           const { code, user, sessionId } = res
           if (parseInt(code) === 101) {
-            window.sessionStorage.setItem(
-              'storeData',
-              user.realname
-            ) // 将数据存储到浏览器内嵌的数据库内
-            window.sessionStorage.setItem(
-              'sessionId',
-              sessionId
-            ) // 将数据存储到浏览器内嵌的数据库内
-            window.sessionStorage.setItem(
-              'userData',
-              JSON.stringify(user)
-            ) // 将数据存储到浏览器内嵌的数据库内
-            window.sessionStorage.setItem(
-              'sData',
-              user.roleId
-            ) // 将数据存储到浏览器内嵌的数据库内
-            window.sessionStorage.setItem(
-              'employeeid',
-              user.employeeid
-            )
+            window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userid', user.userid)
             this.logindata.uname = ''
             this.logindata.pass = ''
             this.$router.push({ path: 'home' }) // 页面跳转

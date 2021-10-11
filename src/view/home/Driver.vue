@@ -51,8 +51,6 @@
         <div class="tabbodyafter"></div>
       </div>
     </div>
-
-    <!-- <div ref="map_ref" class="bodymap"></div> -->
   </div>
 </template>
 <script>
@@ -80,11 +78,6 @@ export default {
     }
   },
   mounted () {
-    // window.addEventListener("resize", this.screenAdapter);
-    // 在页面加载完成的时候, 主动进行屏幕的适配
-    // setTimeout(() => {
-    // this.screenAdapter();
-    // }, 600);
     const _this = this
     const erd = elementResizeDetectorMaker()
     erd.listenTo(document.getElementById('body'), element => {
@@ -93,10 +86,6 @@ export default {
         this.screenAdapter()
       })
     })
-  },
-  destroyed () {
-    // 在组件销毁的时候, 需要将监听器取消掉
-    // window.removeEventListener("resize", this.screenAdapter);
   },
   methods: {
     /**

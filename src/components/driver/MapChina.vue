@@ -3,7 +3,6 @@
     <div class="earthmap1"></div>
     <div class="earthmap2"></div>
     <div class="earthmap3"></div>
-    <!-- <img src="../../assets/img/map.png" alt="" class="earthmap" /> -->
     <div ref="map_ref" class="map"></div>
   </div>
 </template>
@@ -19,48 +18,10 @@ export default {
       totalValue: 0,
       topCityData: [],
       chartInstance: null,
-      effectScatterData: [
-        // [120.213042, 29.86119],
-        // [91.1865, 30.1465],
-        // [113.5107, 23.2196],
-        // [109.1162, 34.2004]
-      ],
-      airData: [],// 地图销量和单价数据
-      labelFormatter: [
-        // { name: '杭州', matter: '公司总部：杭州钢材科技公司' },
-        // { name: '拉萨', matter: '钢材公司1' },
-        // { name: '广州', matter: '钢材公司2' },
-        // { name: '西安', matter: '钢材公司3' }
-      ],
-      lineSc: [
-        // {
-        //   coords: [
-        //     [91.1865, 30.1465],
-        //     [120.213042, 29.86119]
-        //   ],
-        //   fromName: '拉萨',
-        //   toName: '杭州',
-        //   value: 100
-        // },
-        // {
-        //   coords: [
-        //     [113.5107, 23.2196],
-        //     [120.213042, 29.86119]
-        //   ],
-        //   fromName: '广州',
-        //   toName: '杭州',
-        //   value: 100
-        // },
-        // {
-        //   coords: [
-        //     [109.1162, 34.2004],
-        //     [120.213042, 29.86119]
-        //   ],
-        //   fromName: '西安',
-        //   toName: '杭州',
-        //   value: 100
-        // }
-      ],
+      effectScatterData: [],
+      airData: [], // 地图销量和单价数据
+      labelFormatter: [],
+      lineSc: [],
       planePath
     }
   },
@@ -69,54 +30,63 @@ export default {
     this.getCompanyData()
   },
   methods: {
+    /**
+     * @desc 获取地区销量统计数据
+     */
     async getCountryData () {
       const url = 'home/driver/countrySale'
-       await this.$api(url).then((res) => {
-         this.airData = res
-         this.getMap()
-         this.airData.forEach(item => {
-           const lineData = {
-              name: "",
-              value: ''
-            }
-            lineData.name = item.name
-            const currentValue = item.value * item.count 
-            lineData.value = Math.round(currentValue/ 10000 * 10)/10
-            this.totalValue += currentValue
-            this.totalCount += item.count
-            this.topCityData.push(lineData)
-         })
-         this.$emit('backMapData',this.topCityData,this.totalCount,this.totalValue)
+      await this.$api(url).then((res) => {
+        this.airData = res
+        this.getMap()
+        this.airData.forEach(item => {
+          const lineData = {
+            name: '',
+            value: ''
+          }
+          lineData.name = item.name
+          const currentValue = item.value * item.count
+          lineData.value = Math.round(currentValue / 10000 * 10) / 10
+          this.totalValue += currentValue
+          this.totalCount += item.count
+          this.topCityData.push(lineData)
+        })
+        this.$emit('backMapData', this.topCityData, this.totalCount, this.totalValue)
       })
     },
+    /**
+     * @desc 获取交易公司信息
+     */
     async getCompanyData () {
       const url = 'home/driver/findAllCompany'
-        await this.$api(url).then((res) => {
-          const homeName = res[0].countyname
-          const homePort = res[0].port.split(',')
-          res.forEach((item, index) => {
-            this.effectScatterData.push(item.port.split(','))
-            this.labelFormatter.push({
-              name:item.countyname,
-              matter:item.matter
-            })
-            const lineData = {
-              coords: [],
-              fromName: '',
-              toName: '',
-              value: 100
-            }
-            if (index) {
-              lineData.fromName = item.countyname
-              lineData.toName = homeName
-              lineData.coords.push(item.port.split(','))
-              lineData.coords.push(homePort)
-              this.lineSc.push(lineData)
-            }
+      await this.$api(url).then((res) => {
+        const homeName = res[0].countyname
+        const homePort = res[0].port.split(',')
+        res.forEach((item, index) => {
+          this.effectScatterData.push(item.port.split(','))
+          this.labelFormatter.push({
+            name: item.countyname,
+            matter: item.matter
           })
-          console.log(this.lineSc,'.this.lineSc');
-      })  
+          const lineData = {
+            coords: [],
+            fromName: '',
+            toName: '',
+            value: 100
+          }
+          if (index) {
+            lineData.fromName = item.countyname
+            lineData.toName = homeName
+            lineData.coords.push(item.port.split(','))
+            lineData.coords.push(homePort)
+            this.lineSc.push(lineData)
+          }
+        })
+        console.log(this.lineSc, '.this.lineSc')
+      })
     },
+    /**
+     * @desc 构建地图
+     */
     async getMap () {
       // 基于准备好的dom，初始化echarts实例
       this.chartInstance = this.$echarts.init(this.$refs.map_ref, this.theme)
@@ -172,10 +142,9 @@ export default {
                   return (
                     params.name +
                     '<br/>成交量：' +
-                    that.airData[params.dataIndex].count+
-                    '单<br/>' +
+                    that.airData[params.dataIndex].count + '单<br/>' +
                     '平均每单价格：' +
-                     params.value+
+                    params.value +
                     '元<br/>'
                   )
                 } else {
@@ -300,9 +269,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import url(../../assets/CSS/约束缩放.css); */
-</style>
-<style scoped>
 #mapchina {
   position: relative;
   width: 40vw;
@@ -318,7 +284,6 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%); /* 50%为自身尺寸的一半 */
-  /* z-index: 100; */
 }
 .earthmap1 {
   background: url(../../assets/img/map.png) no-repeat;
@@ -334,7 +299,6 @@ export default {
   width: 80%;
   height: 80%;
   animation: rotate 15s linear infinite; /* infinite代表无限循环 */
-  /* z-index: 100; */
 }
 .earthmap3 {
   background: url(../../assets/img/jt.png) no-repeat;

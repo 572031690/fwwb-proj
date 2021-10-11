@@ -195,7 +195,6 @@ export default {
   components: {
     Drawer
   },
-  // inject: ['departId'],
   data () {
     return {
       statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)'],

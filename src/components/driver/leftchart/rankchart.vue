@@ -7,76 +7,72 @@
 </template>
 
 <script>
-import { monthData } from '../../../assets/data/month';
+import { monthData } from '../../../assets/data/month'
 export default {
   props: {
     titleFontSize: [Number]
   },
   watch: {
+    /**
+     * @desc 界面适配比例大小值
+     */
     titleFontSize: {
       handler: function (val) {
         this.screenAdapter(val)
       }
-      // immediate: true
     }
   },
   data () {
     return {
       chartInstance: null,
-      allData: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'], // 服务器返回的数据
+      allData: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'], // 服务器返回的数据
       series: [
-          {
-            name: '',
-            type: 'bar',
-            data: [],
-            itemStyle: {
-              // 设置柱的颜色
-              color: ''
-            }
-          },
-          {
-            name: '',
-            type: 'bar',
-            data: [],
-            itemStyle: {
-              // 设置柱的颜色
-              color: ''
-            }
-          },
-          {
-            name: '',
-            type: 'bar',
-            data: [],
-            itemStyle: {
-              // 设置柱的颜色
-              color: ''
-            }
+        {
+          name: '',
+          type: 'bar',
+          data: [],
+          itemStyle: {
+            // 设置柱的颜色
+            color: ''
           }
-        ],
-      
-      
-      
+        },
+        {
+          name: '',
+          type: 'bar',
+          data: [],
+          itemStyle: {
+            // 设置柱的颜色
+            color: ''
+          }
+        },
+        {
+          name: '',
+          type: 'bar',
+          data: [],
+          itemStyle: {
+            // 设置柱的颜色
+            color: ''
+          }
+        }
+      ],
       endValue: 4,
       startValue: 0,
       timeId: null,
-      colorArr : ['#578bf1', '#56d0a3', '#596d90']
+      colorArr: ['#578bf1', '#56d0a3', '#596d90']
     }
   },
   mounted () {
     this.initChart()
     this.getData()
-    // this.screenAdapter();
-    // window.onresize = this.chartInstance.resize;
-    // window.addEventListener("resize", this.screenAdapter);
-    // 在页面加载完成的时候, 主动进行屏幕的适配
   },
   destroyed () {
     // 在组件销毁的时候, 需要将监听器取消掉
-    // window.removeEventListener("resize", this.screenAdapter);
     clearInterval(this.timeId)
   },
   methods: {
-    // 初始化echartInstance对象
+    /**
+     * @desc 初始化echarts对象
+     */
     initChart () {
       this.chartInstance = this.$echarts.init(this.$refs.rank_ref, this.theme)
       // 对图表初始化配置的控制
@@ -132,7 +128,7 @@ export default {
           axisLabel: {
             color: 'white'
           },
-          serise:this.series
+          serise: this.series
         }
       }
       this.chartInstance.setOption(initOption)
@@ -143,14 +139,16 @@ export default {
         this.startInterval()
       })
     },
-    // 获取服务器的数据
+    /**
+     * @desc 获取服务器的数据
+     */
     async getData () {
       const url = 'home/driver/monthSales'
       await this.$api(url).then((res) => {
-        res.sort((a,b) => {
+        res.sort((a, b) => {
           return b.totalData - a.totalData
         })
-        this.series.forEach((item,index) => {
+        this.series.forEach((item, index) => {
           item.name = res[index].materiakName
           item.itemStyle.color = this.colorArr[index]
           this.allData.forEach(datas => {
@@ -161,7 +159,9 @@ export default {
         this.startInterval()
       })
     },
-    // 更新图表
+    /**
+     * @desc 更新图表
+     */
     updateChart () {
       // 处理数据
       // 省份数据
@@ -193,10 +193,11 @@ export default {
       }
       this.chartInstance.setOption(dataOption)
     },
-    // 当浏览器的大小发生变化的时候, 会调用的方法, 来完成屏幕的适配
+    /**
+     * @desc 当浏览器的大小发生变化的时候, 会调用的方法, 来完成屏幕的适配
+     */
     screenAdapter (val) {
       // 和分辨率大小相关的配置项
-      // const titleFontSize = (this.$refs.rank_ref.offsetWidth / 100) * 3.6; // 16.38
       const adapterOption = {
         title: {
           textStyle: {
@@ -228,6 +229,9 @@ export default {
       // 手动的调用图表对象的resize 才能产生效果
       this.chartInstance.resize()
     },
+    /**
+     * @desc 设置柱形图动态左右滚动时间函数
+     */
     startInterval () {
       if (this.timeId) {
         clearInterval(this.timeId)
@@ -243,17 +247,6 @@ export default {
       }, 2000)
     }
   }
-  // computed: {
-  //   ...mapState(['theme'])
-  // },
-  // watch: {
-  //   theme() {
-  //     this.chartInstance.dispose() // 销毁当前的图表格
-  //     this.initChart() // 重新以最新的主题初始化图表对象
-  //     this.screenAdapter() // 完成屏幕适配
-  //     this.updateChart() // 更新图表的展示
-  //   }
-  // }
 }
 </script>
 

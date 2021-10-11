@@ -141,15 +141,14 @@ export default {
     }
   },
   mounted () {
-    // var ps=String.split(this.form.pass);
-    setTimeout(() => {
-      this.loading2 = false
-    }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
   },
   methods: {
+    /**
+     * @desc 请求列表数据
+     */
     getSearchUrl () {
       this.searchUrl = 'home/item/getItem'
     }

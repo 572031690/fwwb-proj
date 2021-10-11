@@ -188,26 +188,7 @@ export default {
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',
-      list: [
-        {
-          userid: 1,
-          username: '马佳辉',
-          password: 5454165,
-          telNum: 17816536995,
-          employeeid: '3',
-          departmentid: '10001',
-          isDisabled: 0
-        },
-        {
-          userid: 2,
-          username: '夏航宇',
-          password: 15615,
-          telNum: 15865645646,
-          employeeid: '1',
-          departmentid: '10021',
-          isDisabled: 0
-        }
-      ],
+      list: [],
       loading2: true,
       roleId: 0,
       rolaData: [
@@ -237,9 +218,6 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.loading2 = false
-    }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
@@ -262,6 +240,9 @@ export default {
         this.getEmitData()
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+      }).catch(() => {
+        this.loading2 = false
       })
     },
     /**
@@ -402,8 +383,6 @@ export default {
         }
       }).then((res) => {
         this.$message.success('更改状态成功')
-        // this.list[key].isDisabled=!this.list[key].isDisabled
-        // this.search()
       }).catch(() => {
         setTimeout(() => {
           this.list[key].isDisabled = !this.list[key].isDisabled

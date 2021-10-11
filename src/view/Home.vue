@@ -82,19 +82,16 @@
 <script>
 // 引入jquery
 // import $ from 'jquery'
-// 引入搜索框
-// import EditData from '../unusercom/EditData.vue'
 import { routerList } from '../assets/data/homeRouter'
 import { debounce } from '../assets/utils/index'
 export default {
-
-  provide () {
-    return {
-      departId: () => {
-        return this.departmentID
-      }
-    }
-  },
+  // provide () {
+  //   return {
+  //     departId: () => {
+  //       return this.departmentID
+  //     }
+  //   }
+  // },
   data () {
     return {
       nowTime: '',
@@ -114,6 +111,18 @@ export default {
       arrowData: [],
       timer: null
     }
+  },
+  created () {
+    this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
+    this.departmentID = window.sessionStorage.getItem('sData')
+    this.$store.commit('getDepartment', this.departmentID)
+    if (this.departmentID) this.getAdminType()
+  },
+  mounted () {
+    // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
+    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
+    this.changeHomeImgCreate()
+    this.nowTimes()
   },
   methods: {
     /**
@@ -350,7 +359,6 @@ export default {
      */
     goToRouter (val) {
       if (this.checkIndex === val.index || val.disabled) return
-
       if (val.index === 21 || val.index === 22) {
         window.sessionStorage.setItem('currentRouter', 'see')
       }
@@ -360,59 +368,10 @@ export default {
       if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21) || (val.index === 22 && this.checkIndex === 32) || (val.index === 32 && this.checkIndex === 22)) {
         this.$refs.viewBox.getCurrentType()
       }
-
       this.checkIndex = val.index
       window.sessionStorage.setItem('currentIndex', this.checkIndex)
-      this.$router.push({ path: val.path })
-      // 页面跳转
+      this.$router.push({ path: val.path })// 页面跳转
     }
-  },
-  created () {
-    this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
-    this.departmentID = window.sessionStorage.getItem('sData')
-    this.$store.commit('getDepartment', this.departmentID)
-    if (this.departmentID) this.getAdminType()
-  },
-  mounted () {
-    // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
-    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
-    this.changeHomeImgCreate()
-    this.nowTimes()
-    // 实现左边子栏的缓慢消失jQuery
-    // $(document).ready(function(){
-    // $("#listlep").click(function(){
-    //     $(".navhome-son").slideToggle(500);
-    //   });
-    // });
-
-    // //实现左边nav栏的缩小
-    // $(document).ready(function(){
-    // $('.rightnav-topimghome').click(function(){
-    //     if($('.right-navigation').css("margin-left")=="180px"){
-    //         $('.right-navigation').animate({
-    //         'margin-left':'50px'
-    //     },700);
-    // }else{
-    // $('.right-navigation').animate({
-    //     'margin-left':'180px'
-    //     },700);
-    // }
-    // });
-    // });
-
-    // $(document).ready(function(){
-    // $('.rightnav-topimghome').click(function(){
-    //     if($('.left-navigation').css("width")!="50px"){
-    //         $('.left-navigation').animate({
-    //         width:'50px'
-    //     },700);
-    // }else{
-    // $('.left-navigation').animate({
-    //     width:'180px'
-    //     },700);
-    // }
-    // });
-    // });
   },
   beforeDestroy () {
     this.clearTime()

@@ -119,19 +119,63 @@ import { addEditList } from '../../assets/data/addEditList'
 export default {
   name: 'vDialog',
   props: {
-    dialogFormShow: Boolean,
-    IntList: Array,
-    openType: String,
-    name: String,
-    currentList: Object,
-    // 在编辑模式下禁用的变量
-    editDisabled: {
-      type: [Array],
+    /**
+     * @desc 控制弹窗显示
+     */
+    dialogFormShow: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
+    /**
+     * @desc 需要转换为int类型的变量
+     */
+    IntList: {
+      type: Array,
       default: () => {
         return []
       }
     },
-    // 在添加和编辑时顶部第一个参数需要改变是否能禁用
+    /**
+     * @desc 打开方式 edit add approval
+     */
+    openType: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * @desc 用户获取静态数据addEditList内对应当前列表的输入框数据和表单数据
+     */
+    name: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * @desc 当前表格数据
+     */
+    currentList: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    /**
+     * @desc 在编辑模式下禁用的变量
+     */
+    editDisabled: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    /**
+     * @desc 在添加和编辑时顶部第一个参数需要改变是否能禁用 添加时无 编辑时有但是禁用
+     */
     topChange: {
       type: [String, Boolean],
       default: () => {
@@ -140,6 +184,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * @desc 监听窗口打开
+     */
     dialogFormShow: {
       handler: function (val) {
         if (val) this.getType()
@@ -148,21 +195,24 @@ export default {
   },
   data () {
     return {
-      rulesData,
-      addEditList,
+      rulesData, // 表单rules数据
+      addEditList, // 静态表单inpput类型和表单字段名称以及url地址
       dialogData: {
         dialogType: '',
         formList: '',
         dataTableList: ''
       },
-      topData: {},
-      itemList: []
+      topData: {}, // 表单顶部暂存数据
+      itemList: [] // 物料数据
     }
   },
   created () {
     this.getList()
   },
   methods: {
+    /**
+     * @desc 物料类输入框获取unit itemid itemtype
+     */
     getUnit (data) {
       const currentItem = this.itemList.filter(function (e) {
         return e.itemtype === data
@@ -170,13 +220,22 @@ export default {
       this.dialogData.formList.itemid = currentItem[0].itemid
       this.dialogData.formList.unit = currentItem[0].unit
     },
+    /**
+     * @desc 初始化静态输入框类型数据
+     */
     getList () {
       this.dialogData = this.addEditList[this.name]
       this.topData = this.dialogData.dataTableList[0]
     },
+    /**
+     * @desc 调用对应打开类型方法
+     */
     getType () {
       this[this.openType]()
     },
+    /**
+     * @desc 添加表单数据初始化
+     */
     add () {
       if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
@@ -189,10 +248,13 @@ export default {
       }
       this.dialogData.dataTableList.forEach(item => {
         if (item.putType === 'disput') {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('employeeid'))
+          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
     },
+    /**
+     * @desc 编辑表单数据初始化
+     */
     edit () {
       if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
@@ -208,6 +270,9 @@ export default {
         }
       }
     },
+    /**
+     * @desc 审批表单数据初始化
+     */
     approval () {
       if (this.editDisabled) {
         this.dialogData.dataTableList.forEach(item => {
@@ -220,6 +285,9 @@ export default {
         else this.dialogData.formList[i] = this.currentList[i]
       }
     },
+    /**
+     * @desc 点击提交添加编辑验证
+     */
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -238,12 +306,14 @@ export default {
         }
       })
     },
+    /**
+     * @desc 添加和修改请求
+     */
     async submitData () {
       var data = {}
       for (const i in this.dialogData.formList) {
         data[i] = this.dialogData.formList[i]
       }
-      // $ajax请求
       const url = this.dialogData.url[this.openType]
       await this.$api(url, data).then(res => {
         const { code } = res
@@ -268,12 +338,18 @@ export default {
         })
       })
     },
+    /**
+     * @desc 关闭窗口方法
+     */
     close () {
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
       this.$emit('closeaddDialog')
     },
+    /**
+     * @desc 审批接口在提交之前修改表单数据
+     */
     getItemList () {
       if (this.itemList.length) return
       const params = {
@@ -288,6 +364,9 @@ export default {
         console.log(err)
       })
     },
+    /**
+     * @desc 启动审批请求
+     */
     async startApproval () {
       const url = this.dialogData.url.startApproval
       console.log(url, 'dsad')
@@ -299,6 +378,9 @@ export default {
         this.upApproval(res.list[0].taskId)
       })
     },
+    /**
+     * @desc 提交审批请求
+     */
     async upApproval (taskId) {
       const url = this.dialogData.url.upApproval
       const params = {

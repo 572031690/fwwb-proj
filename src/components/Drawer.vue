@@ -63,18 +63,14 @@
                     >
                       <el-card>
                         <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
-                          <!-- <div>{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div> -->
                           <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                           ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                           <br />
                           <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
                           <p v-show="item.text">审批意见：{{ item.text }}</p>
-                          <!-- <el-button type="danger" @click="deletedata(key)"
-                            >删除</el-button -->
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  <!-- <el-button type="danger" @click="add()">添加</el-button> -->
                 </div>
               </div>
 
@@ -118,12 +114,9 @@
                       <br />
                       <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
                       <p v-show="item.text">审批意见：{{ item.text }}</p>
-                      <!-- <el-button type="danger" @click="deletedata(key)"
-                        >删除</el-button -->
                     </el-card>
                   </el-timeline-item>
                 </el-timeline>
-                <!-- <el-button type="danger" @click="add()">添加</el-button> -->
               </div>
             </div>
           </div>
@@ -135,44 +128,45 @@
 </template>
 
 <script>
-import { drawerText } from '../assets/data/drawerData'
+import { drawerText } from '../assets/data/drawerData' // 表单字段名称和label显示内容数据
 export default {
   props: {
+    /**
+     * @desc 表单数据
+     */
     listIn: {
       type: Object,
       default: () => {
         return {}
       }
     },
+    /**
+     * @desc 获取drawerText对应当前表的数据
+     */
     typeName: {
       type: String,
       default: () => {
         return ''
       }
     },
+    /**
+     * @desc 打开抽屉的类型 see write
+     */
     openType: {
       type: String,
       default: () => {
         return ''
       }
     },
+    /**
+     * @desc 请求地址数据
+     */
     urlList: {
       type: Object,
       default: () => {
         return {}
       }
     }
-  },
-  watch: {
-    openType: {
-      handler: function (val) {
-        this.getDrawerType()
-      }
-    }
-  },
-  mounted () {
-    this.msg()
-    // this.$parent.drawerClose(1)
   },
   data () {
     return {
@@ -250,10 +244,11 @@ export default {
     }
   },
   methods: {
+    /**
+     * @desc 提交审批
+     */
     upData () {
-      if (this.loading) {
-        return
-      }
+      if (this.loading) return
       this.$confirm('确定要提交表单吗？')
         .then(_ => {
           this.loading = true
@@ -261,6 +256,9 @@ export default {
         })
         .catch(() => {})
     },
+    /**
+     * @desc 驳回后重启审批请求
+     */
     async resetApproval () {
       const url = this.urlList.ressetApproval
       const params = {
@@ -275,50 +273,24 @@ export default {
         }
       })
     },
-    async startApproval () {
-      const url = this.urlList.ressetApproval
-      const data = {
-        needid: this.listIn.needid
-      }
-      await this.$api(url, data).then(res => {
-        if (res.code === '101') {
-          this.$message.success('提交审批成功')
-          this.loading = false
-          this.dialog = !this.dialog
-          this.$emit('close')
-        }
-      })
-    },
-    handleClose (done) {
-      // if (this.loading) {
-      //   return
-      // }
-      // this.$confirm('确定要提交表单吗？')
-      //   .then(_ => {
-      //     this.loading = true
-      //     this.timer = setTimeout(() => {
-      //       // this.$store.commit('ChangeDraw')
+    /**
+     * @desc 关闭抽屉之前回调
+     */
+    handleClose () {
       this.dialog = !this.dialog
-      //       // 动画关闭需要一定的时间
-      //       setTimeout(() => {
-      //         this.loading = false
-      //       }, 300)
-      //     }, 300)
-      //   })
-      //   .catch(_ => {})
-      // this.$emit('close', 1)
     },
+    /**
+     * @desc 关闭抽屉方法
+     */
     cancelForm () {
       this.loading = false
       this.list = []
       this.dialog = !this.dialog
       clearTimeout(this.timer)
-      // this.$store.commit('ChangeDraw')
     },
-    msg () {
-    },
-    getDrawerType () {
-    },
+    /**
+     * @desc 获取审批记录信息请求
+     */
     async searchApprovalList () {
       const url = this.urlList.getApprovalList
       const params = {
@@ -329,12 +301,18 @@ export default {
         this.list = res.list
       })
     },
+    /**
+     * @desc 打开抽屉方法
+     */
     showDraw () {
       this.dialog = !this.dialog
       this.$nextTick(() => {
         this.searchApprovalList()
       })
     },
+    /**
+     * @desc 审批（驳回/通过）
+     */
     witeApproval (type) {
       this.$confirm(type === 'reject' ? '是否确定驳回此申请' : '是否确定通过此申请', '提示', {
         confirmButtonText: '确定',
@@ -345,8 +323,10 @@ export default {
           this.approvalAct(type)
         })
     },
+    /**
+     * @desc 审批请求
+     */
     approvalAct (type) {
-      console.log(this.listIn, 'this.listIn.taskId')
       const url = type === 'pass' ? this.urlList.passRequest : this.urlList.rejectRequest
       const params = {
         text: this.opinion,

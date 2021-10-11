@@ -1,5 +1,5 @@
 /**
- * @desc 函数 防抖/节流
+ * @desc 函数 防抖 false/节流 true
   * @param fn 函数
   * @param wait 函数执行间隔时间毫秒数 默认1s Number
   * @param immediate 是否立即执行 Boolean

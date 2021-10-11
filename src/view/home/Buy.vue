@@ -200,18 +200,7 @@ export default {
       showAdd: false,
       select: [], // 搜索框筛选数据
       // 表内静态数据列表
-      list: [
-        {
-          buyid: 1,
-          buytitle: '马佳辉',
-          btime: 1373201546,
-          itemtype: '3',
-          itemid: '5',
-          num: '50',
-          buyerid: '',
-          neederid: 15
-        }
-      ],
+      list: [],
       loading2: true
     }
   },
