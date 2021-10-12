@@ -101,10 +101,10 @@
                       删除
                     </button>
                     <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
-                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 4">
+                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 2 || item.uptype == 3">
                       查看审批
                     </button>
-                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 2">
+                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 4">
                       驳回结果
                     </button>
                   </div>
