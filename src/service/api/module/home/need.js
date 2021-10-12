@@ -74,10 +74,10 @@ export default [
   },
   {
     name: 'startNeedActAgain',
-    method: 'POST',
-    desc: '修改并重启审批流程',
+    method: 'GET',
+    desc: '重启审批流程',
     path: '/activiti/startNeedActAgain',
-    data: {
+    params: {
       needid: '' // int
     }
   },
