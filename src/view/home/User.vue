@@ -64,7 +64,7 @@
                   colspan="1"
                   rowspan="1"
                   :class="{
-                    'htop-th2':  item === '账号',
+                    'htop-th2':  item === '登陆账号',
                     'htop-ope1':item === '操作',
                     'htop-th7':item === '职位'
                   }">
@@ -86,9 +86,14 @@
                   }"
                 >
 
-                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus'">
-                    {{ data==='roleId' ? showRoleData(item[data]):data==='index'? key+1 :item[data] }}
+                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus' && data!=='roleId'">
+                    {{ data==='index'? key+1 :item[data] }}
                   </div>
+                  <el-tooltip class="item" effect="dark" :content="showRoleData(item[data])" placement="top" v-if="data==='roleId'">
+                    <div class="cell">
+                      {{showRoleData(item[data])}}
+                    </div>
+                  </el-tooltip>
 
                   <div class="cell" v-if="data==='opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
@@ -114,7 +119,6 @@
               </tr>
             </tbody>
           </div>
-          
 
         </div>
         <div class="table-bottom">
@@ -179,39 +183,12 @@ export default {
   data () {
     return {
       tableText: '',
-      constIndex:0,
-      editDisabled:'username',
+      constIndex: 0,
+      editDisabled: ['username'],
       dialogFormShow: false,
       IntList: ['departmentid', 'employeeid', 'userid'],
       topChange: 'userid',
-      list: [
-        {
-          userid: 1,
-          username: '马佳辉',
-          password: 5454165,
-          telNum: 17816536995,
-          employeeid: '3',
-          departmentid: '10001',
-          isDisabled: 0
-        },
-        {
-          userid: 2,
-          username: '夏航宇',
-          password: 15615,
-          telNum: 15865645646,
-          employeeid: '1',
-          departmentid: '10021',
-          isDisabled: 0
-        }
-      ],
-      departmentData: {
-        10000: '管理员',
-        10001: '总经理',
-        10010: '需求经理',
-        10011: '需求专员',
-        10020: '采购经理',
-        10021: '采购专员'
-      },
+      list: [],
       loading2: true,
       roleId: 0,
       rolaData: [
@@ -226,33 +203,7 @@ export default {
           roleDescribe: '管理整个系统'
         }
       ],
-      rolaSelect: [
-        {
-          value: '10011',
-          label: '需求专员'
-        },
-        {
-          value: '10010',
-          label: '需求经理'
-        },
-        {
-          value: '10021',
-          label: '采购专员'
-        },
-        {
-          value: '10020',
-          label: '采购经理'
-        },
-        {
-          value: '10001',
-          label: '总经理'
-        },
-        {
-          value: '10000',
-          label: '管理员'
-        }
-
-      ],
+      rolaSelect: [],
       dialogFormVisible: false, // 不让修改窗口打开
       dialogVisibleRole: false, // 角色分配窗口
       currentRola: [], // 当前选中的角色列表
@@ -267,15 +218,15 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.loading2 = false
-    }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
     this.getRolaList()
   },
   methods: {
+    /**
+     * @desc 请求用户数据
+     */
     async search () {
       await this.$api(this.searchUrl, {
         params: {
@@ -285,10 +236,13 @@ export default {
           selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        this.list = res.list||[] // 获取里面的data数据
+        this.list = res.list || [] // 获取里面的data数据
         this.getEmitData()
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+      }).catch(() => {
+        this.loading2 = false
       })
     },
     /**
@@ -296,9 +250,9 @@ export default {
      */
     getEmitData () {
       this.list.forEach(function (item) {
-        if(item.isDisabled) {
+        if (item.isDisabled) {
           item.isDisabled = true
-        }else{
+        } else {
           item.isDisabled = false
         }
       })
@@ -307,7 +261,7 @@ export default {
      * @desc 显示角色内容
      */
     showRoleData (val) {
-      if(!val && !val[0]) return
+      if (!val) return
       const rolaArr = []
       this.rolaSelect.forEach(item => {
         if (val.includes(item.roleId)) rolaArr.push(item.rolename)
@@ -362,7 +316,7 @@ export default {
      * @desc 重置密码
      */
     resetPass (item) {
-      this.$confirm('确定是否重置此用户密码为8个8?', '提示', {
+      this.$confirm('确定是否重置此用户密码为6个8?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -401,12 +355,13 @@ export default {
      * @desc 打开分配角色表
      */
     getRole (item) {
+      console.log(item.roleId)
       this.currentRola = []
-      if(item.roleId[0]!==0) this.currentRola = item.roleId||[]
+      if (item.roleId[0] !== 0) this.currentRola = item.roleId || []
       this.currentId = item.userid
       this.dialogVisibleRole = true
     },
-    
+
     /**
      * @desc 获取角色列表
      */
@@ -420,7 +375,7 @@ export default {
     /**
      * @desc 更改用户状态
      */
-    async setStatus (id,key) {
+    async setStatus (id, key) {
       const url = 'home/user/changeStatus'
       await this.$api(url, {
         params: {
@@ -428,12 +383,10 @@ export default {
         }
       }).then((res) => {
         this.$message.success('更改状态成功')
-        // this.list[key].isDisabled=!this.list[key].isDisabled
-        // this.search()
       }).catch(() => {
         setTimeout(() => {
           this.list[key].isDisabled = !this.list[key].isDisabled
-        },400)
+        }, 400)
       })
     }
   }

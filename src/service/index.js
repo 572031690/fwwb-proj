@@ -1,10 +1,10 @@
 // import { reject, resolve } from 'any-promise'
 import axios from 'axios'
 // import { response } from 'express'
-import qs from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
+// import qs from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
 import APIUrl from './api.url'
-import router from '../router' // 引入路由
-import { Loading, Message } from 'element-ui'
+// import router from '../router' // 引入路由
+import { Message } from 'element-ui'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 5000 // 超时默认值
@@ -24,14 +24,14 @@ axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用
 // axios.defaults.headers.post['Content-Type'] = 'application/json'
 // axios.defaults.headers.get['Content-Type'] = 'application/json'
 
-
 // http request 拦截器 全局请求拦截
 // 在ajax发送之前拦截 比如对所有请求统一添加header token
 axios.interceptors.request.use(
   config => {
-    const token = window.sessionStorage.getItem('token-access') // 拿到浏览器的token
+    const token = window.sessionStorage.getItem('sessionId') // 拿到浏览器的token
     // if (token) {
-    config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
+    // config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
+    config.headers['x-token'] = token
     // config.headers.token = '123456' // 和服务器约定好token叫什么名字  token Authorization
     // }
     return config

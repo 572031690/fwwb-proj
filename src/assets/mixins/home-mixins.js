@@ -14,11 +14,11 @@ export default {
     }
   },
   methods: {
-    // ajax请求后台数据 获得list数据 并用于分页
+    /**
+     * @desc ajax请求后台数据 获得list数据 并用于分页
+     */
     async search () {
-      // const url = '/webneed/findAllNeed'
       await this.$api(this.searchUrl, {
-      // await this.$ajax.get('/web/listUser', {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
@@ -26,16 +26,38 @@ export default {
           selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        // debugger;
-        console.log(res)
-        // const { data } = res
-        this.list = res.list||[] // 获取里面的data数据
-        console.log(this.list,'this.listthis.list');
+        this.list = res.list || [] // 获取里面的data数据
+        console.log(this.list, 'dsad')
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+        this.getApprovalCurrentData()
+      }).catch(() => {
+        this.loading2 = false
       })
     },
-    // 删除方法
+    /**
+     * @desc 判断当是需求或购买审批时过滤历史代办数据
+     */
+    getApprovalCurrentData () {
+      const currentRouter = window.sessionStorage.getItem('currentIndex')
+      if (!['32', '31'].includes(currentRouter)) return
+      if (this.currentApprovalType) return
+      const roleList = window.sessionStorage.getItem('sData')
+      if (roleList.includes('10011') || roleList.includes('10021')) {
+        this.list = this.list.filter(item => {
+          return item.uptype !== 1 && item.uptype !== 0
+        })
+      }
+      if (roleList.includes('10001')) {
+        this.list = this.list.filter(item => {
+          return item.uptype !== 1 && item.uptype !== 0 && item.uptype !== 2
+        })
+      }
+    },
+    /**
+     * @desc 删除方法
+     */
     deletedata (data, url) {
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -70,8 +92,9 @@ export default {
           }
         })
     },
-
-    // 页码
+    /**
+     * @desc 页码
+     */
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
       this.params.limit = val // 设置每页多少条记录
@@ -82,24 +105,79 @@ export default {
       this.params.page = val
       this.search()
     },
-    // 添加方法打开界面
+    /**
+     * @desc 添加方法打开界面
+     */
     gethomeAdd () {
       this.openType = 'add'
       this.dialogFormShow = true
     },
-    // 提交送审表单
-    upData (e) {
-      this.openType = 'approval'
-      this.currentList = e
-      this.dialogFormShow = true
+    /**
+     * @desc 提交送审表单
+     */
+    upData (item) {
+      // this.openType = 'approval'
+      // this.currentList = e
+      // this.dialogFormShow = true
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          this.startApproval(item)
+        })
+        .catch(err => {
+          if (err === 'cancel') {
+            this.$message('取消删除')
+          } else {
+            this.$message({
+              type: 'error',
+              message: err
+            })
+          }
+        })
     },
-    // 修改表单
+    /**
+     * @desc 启动审批请求
+     */
+    async startApproval (item) {
+      const url = this.dialogUrl.startApproval
+      const params = {
+        needid: item.needid,
+        buyid: item.buyid
+      }
+      await this.$api(url, { params }).then(res => {
+        this.upApproval(res.list[0].taskId)
+      })
+    },
+    /**
+     * @desc 提交审批请求
+     */
+    async upApproval (taskId) {
+      const url = this.dialogUrl.upApproval
+      const params = {
+        taskId: taskId
+      }
+      await this.$api(url, { params }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '送审成功'
+        })
+        this.search()
+      })
+    },
+    /**
+     * @desc 修改表单
+     */
     seeData (e) {
       this.openType = 'edit'
       this.currentList = e
       this.dialogFormShow = true
     },
-    // 关闭蒙版
+    /**
+     * @desc 关闭蒙版
+     */
     closeaddDialog () {
       this.dialogFormShow = false
     }

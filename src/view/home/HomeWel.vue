@@ -8,9 +8,9 @@
           </div>
           <div>
             <el-table :data="tableData" borderstyle="width: 100%">
-              <el-table-column prop="userid" label="用户账户" width="180">
+              <el-table-column prop="username" label="用户账户" width="180">
               </el-table-column>
-              <el-table-column prop="name" label="姓名" width="180">
+              <el-table-column prop="realname" label="姓名" width="180">
               </el-table-column>
               <el-table-column prop="department" label="所属部门">
               </el-table-column>
@@ -23,7 +23,7 @@
             <i class="el-icon-s-marketing" style="font-size: 100px; color: white"></i>
           </div>
             <div v-for="(item,index) in datalist"  class="item" :key="index" style="font-size:20px;color:white;padding-left:30px" >
-          {{item.name+':'+item.num+'万吨'}}
+          {{item.name+'：'+item.num+item.unit}}
             </div>
 
           <div class="text1">材料库存</div>
@@ -35,7 +35,7 @@
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
           <div class="text item">
-            {{ needpass }}
+            {{ needCount.approve }}
           </div>
           <div class="text1">需求通过数量</div>
         </el-card>
@@ -45,7 +45,7 @@
           </div>
 
           <div class="text item">
-            {{ needreject }}
+            {{ needCount.reject }}
           </div>
           <div class="text1">需求驳回数量</div>
         </el-card>
@@ -54,7 +54,7 @@
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>
           <div class="text item">
-            {{ needtotal }}
+            {{ needCount.sum }}
           </div>
           <div class="text1">需求总数</div>
         </el-card>
@@ -63,7 +63,7 @@
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
           <div class="text item">
-            {{ orderpass }}
+            {{ buyCount.approve }}
           </div>
           <div class="text1">订单通过数量</div>
         </el-card>
@@ -72,7 +72,7 @@
             <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
           </div>
           <div class="text item">
-            {{ orderreject }}
+            {{ buyCount.reject }}
           </div>
           <div class="text1">订单驳回数量</div>
         </el-card>
@@ -81,7 +81,7 @@
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>
           <div class="text item">
-            {{ ordertotal }}
+            {{ buyCount.sum }}
           </div>
           <div class="text1">订单总数量</div>
         </el-card>
@@ -95,47 +95,149 @@
 <script>
 export default {
   computed: {
-    getdpartmentTypeNeed() {
-      const partIdList = ['10000','10001','10010','10011']
-      for(const i of partIdList){
-        if(this.$store.state.departmentId.includes(i)) return true
+    getdpartmentTypeNeed () {
+      const partIdList = ['10000', '10001', '10010', '10011']
+      for (const i of partIdList) {
+        if (this.$store.state.departmentId.includes(i)) return true
       }
       return false
     },
-    getdpartmentTypeBuy() {
-      const partIdList = ['10000','10001','10020','10021']
-      for(const i of partIdList){
-        if(this.$store.state.departmentId.includes(i)) return true
+    getdpartmentTypeBuy () {
+      const partIdList = ['10000', '10001', '10020', '10021']
+      for (const i of partIdList) {
+        if (this.$store.state.departmentId.includes(i)) return true
       }
       return false
     }
   },
   data () {
     return {
+      rolaSelect: [
+        {
+          value: '10011',
+          label: '需求专员',
+          depart: '需求部'
+        },
+        {
+          value: '10010',
+          label: '需求经理',
+          depart: '需求部'
+        },
+        {
+          value: '10021',
+          label: '采购专员',
+          depart: '采购部'
+        },
+        {
+          value: '10020',
+          label: '采购经理',
+          depart: '采购部'
+        },
+        {
+          value: '10001',
+          label: '总经理',
+          depart: '经理部'
+        },
+        {
+          value: '10000',
+          label: '管理员',
+          depart: '管理部'
+        }
+
+      ],
       tableData: [
         {
-          userid: 'admin',
-          name: '张三',
-          department: '管理员',
-          role: '超级管理员'
+          username: '',
+          realname: '',
+          department: '',
+          role: '',
+          roleId: ''
         }
       ],
-      needpass: 5,
-      needreject: 0,
-      needtotal: 0,
-      orderpass: 0,
-      orderreject: 0,
-      ordertotal: 0,
-      datalist: [
-        { name: '钢材', num: 1000 },
-        { name: '木材', num: 10001 },
-        { name: '煤炭', num: 10000 },
-        { name: '塑料', num: 10000 }
-      ]
+      needCount: {
+        approve: '',
+        reject: '',
+        sum: ''
+      },
+      buyCount: {
+        approve: '',
+        reject: '',
+        sum: ''
+      },
+      datalist: []
     }
   },
+  mounted () {
+    this.getUserData()
+    this.getItemData()
+    this.getAprovalCount()
+  },
   methods: {
-
+    /**
+     * @desc 获取用户信息
+     */
+    getUserData () {
+      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
+      this.tableData[0] = userList
+      this.tableData[0].role = this.showRoleData(this.tableData[0].roleId)
+      this.tableData[0].department = this.showDepartData(this.tableData[0].roleId)
+    },
+    /**
+     * @desc 显示角色内容
+     */
+    showRoleData (val) {
+      if (!val) return
+      const rolaArr = []
+      this.rolaSelect.forEach(item => {
+        if (val.includes(parseInt(item.value))) rolaArr.push(item.label)
+      })
+      return rolaArr.join(',')
+    },
+    /**
+     * @desc 显示部门内容
+     */
+    showDepartData (val) {
+      if (!val) return
+      let depart
+      this.rolaSelect.forEach(item => {
+        if (val.includes(parseInt(item.value))) depart = item.depart
+      })
+      return depart
+    },
+    /**
+     * @desc 获取审批数据
+     */
+    getAprovalCount () {
+      this.$api('home/welcome/getNeedCount').then(res => {
+        this.needCount = res
+      })
+      this.$api('home/welcome/getBuyCount').then(res => {
+        this.buyCount = res
+      })
+    },
+    /**
+     * @desc 请求库存数据
+     */
+    async getItemData () {
+      await this.$api('home/item/getItem', {
+        params: {
+          page: 1, // 传递当前是第几页参数
+          limit: 20, // 传递每页显示多少条记录参数
+          searchName: '',
+          selectName: ''
+        }
+      }).then((res) => {
+        const itemData = res.list
+        this.datalist = []
+        for (let i = 0; i < 4; i++) {
+          this.datalist.push({
+            name: itemData[i].itemtype,
+            num: itemData[i].stock,
+            unit: itemData[i].unit
+          })
+        }
+      })
+    }
   }
 
 }

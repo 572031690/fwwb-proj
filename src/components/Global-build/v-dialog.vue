@@ -29,6 +29,7 @@
             v-model="dialogData.formList[item.dataName]"
             style="width:400px"
             v-if="item.putType === 'input'"
+            :placeholder="item.placeholder"
           ></el-input>
 
           <el-date-picker
@@ -57,18 +58,17 @@
                 v-model.number="dialogData.formList[item.dataName]"
                 placeholder="请选择材料"
                 @change="getUnit"
+                @visible-change="getItemList"
               >
                 <el-option
-                  :label="dat"
-                  :value="dat"
-                  v-for="(dat, key) in item.selectData"
+                  :label="dat.itemtype"
+                  :value="dat.itemtype"
+                  v-for="(dat, key) in itemList"
                   :key="key"
                 ></el-option>
               </el-select>
-
-               单位：{{dialogData.formList.itemunit}}
+               单位：{{dialogData.formList.unit}}
             </div>
-
           <el-input-number
             v-model="dialogData.formList[item.dataName]"
             :step="50"
@@ -83,6 +83,7 @@
             v-model.number="dialogData.formList[item.dataName]"
             style="width:400px"
             v-if="item.putType === 'numput'"
+            :placeholder="item.placeholder"
           ></el-input>
 
           <el-input
@@ -100,6 +101,7 @@
             auto-complete="off"
             style="width: 400px"
             v-if="item.putType === 'textarea'"
+            :placeholder="item.placeholder"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -113,26 +115,70 @@
 
 <script>
 /* post请求
-类型 putType： textarea disput numput num select date input
+类型 putType： textarea disput numput num select date input selectItem
 */
 import { rulesData } from '../../assets/data/rules'
 import { addEditList } from '../../assets/data/addEditList'
 export default {
-  name:'vDialog',
+  name: 'vDialog',
   props: {
-    dialogFormShow: Boolean,
-    IntList: Array,
-    openType: String,
-    name: String,
-    currentList: Object,
-    //在编辑模式下禁用的变量
-    editDisabled: {
-      type:[String],
-      default:() => {
+    /**
+     * @desc 控制弹窗显示
+     */
+    dialogFormShow: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
+    /**
+     * @desc 需要转换为int类型的变量
+     */
+    IntList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    /**
+     * @desc 打开方式 edit add approval
+     */
+    openType: {
+      type: String,
+      default: () => {
         return ''
       }
     },
-    //在添加和编辑时顶部第一个参数需要改变是否能禁用
+    /**
+     * @desc 用户获取静态数据addEditList内对应当前列表的输入框数据和表单数据
+     */
+    name: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * @desc 当前表格数据
+     */
+    currentList: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    /**
+     * @desc 在编辑模式下禁用的变量
+     */
+    editDisabled: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    /**
+     * @desc 在添加和编辑时顶部第一个参数需要改变是否能禁用 添加时无 编辑时有但是禁用
+     */
     topChange: {
       type: [String, Boolean],
       default: () => {
@@ -141,6 +187,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * @desc 监听窗口打开
+     */
     dialogFormShow: {
       handler: function (val) {
         if (val) this.getType()
@@ -149,35 +198,52 @@ export default {
   },
   data () {
     return {
-      rulesData,
-      addEditList,
+      rulesData, // 表单rules数据
+      addEditList, // 静态表单inpput类型和表单字段名称以及url地址
       dialogData: {
         dialogType: '',
         formList: '',
         dataTableList: ''
       },
-      topData: {}
+      topData: {}, // 表单顶部暂存数据
+      itemList: [] // 物料数据
     }
   },
   created () {
     this.getList()
   },
   methods: {
-    getUnit () {
-      console.log('单位改变了' + this.dialogData.formList.itemunit)
+    /**
+     * @desc 物料类输入框获取unit itemid itemtype
+     */
+    getUnit (data) {
+      const currentItem = this.itemList.filter(function (e) {
+        return e.itemtype === data
+      })
+      this.dialogData.formList.itemid = currentItem[0].itemid
+      this.dialogData.formList.unit = currentItem[0].unit
     },
+    /**
+     * @desc 初始化静态输入框类型数据
+     */
     getList () {
       this.dialogData = this.addEditList[this.name]
       this.topData = this.dialogData.dataTableList[0]
     },
+    /**
+     * @desc 调用对应打开类型方法
+     */
     getType () {
       this[this.openType]()
     },
+    /**
+     * @desc 添加表单数据初始化
+     */
     add () {
-      if(this.editDisabled) { 
+      if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'input'}
-        }) 
+          if (this.editDisabled.includes(item.dataName)) { item.putType = 'input' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName === this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 1)
       for (const i in this.dialogData.formList) {
@@ -185,29 +251,36 @@ export default {
       }
       this.dialogData.dataTableList.forEach(item => {
         if (item.putType === 'disput') {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('sData'))
+          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
     },
+    /**
+     * @desc 编辑表单数据初始化
+     */
     edit () {
-      if(this.editDisabled) { 
+      if (this.editDisabled.length) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'disput'}
-        }) 
+          if (this.editDisabled.includes(item.dataName)) { item.putType = 'disput' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
-        if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
-        else {
-          this.dialogData.formList[i] = this.currentList[i].toString()
+        if (this.IntList.includes(i)) {
+          this.dialogData.formList[i] = this.currentList[i] ? parseInt(this.currentList[i]) : ''
+        } else {
+          this.dialogData.formList[i] = this.currentList[i] ? this.currentList[i].toString() : ''
         }
       }
     },
+    /**
+     * @desc 审批表单数据初始化
+     */
     approval () {
-      if(this.editDisabled) { 
+      if (this.editDisabled) {
         this.dialogData.dataTableList.forEach(item => {
-          if(item.dataName === this.editDisabled) {item.putType = 'input'}
-        }) 
+          if (item.dataName === this.editDisabled) { item.putType = 'input' }
+        })
       }
       if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
       for (const i in this.dialogData.formList) {
@@ -215,6 +288,9 @@ export default {
         else this.dialogData.formList[i] = this.currentList[i]
       }
     },
+    /**
+     * @desc 点击提交添加编辑验证
+     */
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -233,22 +309,28 @@ export default {
         }
       })
     },
+    /**
+     * @desc 添加和修改请求
+     */
     async submitData () {
       var data = {}
       for (const i in this.dialogData.formList) {
         data[i] = this.dialogData.formList[i]
       }
-      // $ajax请求
       const url = this.dialogData.url[this.openType]
       await this.$api(url, data).then(res => {
         const { code } = res
         if (parseInt(code) === 101) {
-          this.$message({
-            type: 'success',
-            message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
-          })
-          this.$emit('updata')
-          this.close()
+          if (this.openType === 'approval') {
+            this.startApproval()
+          } else {
+            this.$message({
+              type: 'success',
+              message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
+            })
+            this.$emit('updata')
+            this.close()
+          }
         } else {
           this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }
@@ -259,9 +341,64 @@ export default {
         })
       })
     },
+    /**
+     * @desc 关闭窗口方法
+     */
     close () {
+      for (const i in this.dialogData.formList) {
+        this.dialogData.formList[i] = ''
+      }
       this.$emit('closeaddDialog')
+    },
+    /**
+     * @desc 审批接口在提交之前修改表单数据
+     */
+    getItemList () {
+      if (this.itemList.length) return
+      const params = {
+        page: 1, // 传递当前是第几页参数
+        limit: 20, // 传递每页显示多少条记录参数
+        searchName: '', // 传递搜索参数
+        selectName: '' // 筛选参数
+      }
+      this.$api('home/item/getItem', { params }).then(res => {
+        this.itemList = res.list
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    /**
+     * @desc 启动审批请求
+     */
+    async startApproval () {
+      const url = this.dialogData.url.startApproval
+      console.log(url, 'dsad')
+      const params = {
+        needid: this.dialogData.formList.needid,
+        buyid: this.dialogData.formList.buyid
+      }
+      await this.$api(url, { params }).then(res => {
+        this.upApproval(res.list[0].taskId)
+      })
+    },
+    /**
+     * @desc 提交审批请求
+     */
+    async upApproval (taskId) {
+      const url = this.dialogData.url.upApproval
+      const params = {
+        taskId: taskId
+      }
+      await this.$api(url, { params }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '送审成功'
+        })
+        this.$emit('updata')
+        this.close()
+      })
     }
+
   }
 }
 </script>

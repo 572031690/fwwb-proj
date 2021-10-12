@@ -1,8 +1,5 @@
 <template>
   <div id="Login" ref="loginview">
-    <!-- <div class="topline" ></div> -->
-    <!-- <router-view class="homecss"></router-view>  -->
-
     <div ref="appref">
       <div class="top-backhome">
         <img
@@ -10,7 +7,7 @@
           height="50px"
           style="vertical-align: middle;"
         />
-        <span>登陆界面</span>
+        <span>智能制造协同共享平台</span>
       </div>
       <div class="login-top">
         <img src="../assets/img/center-login.png" width="100%" />
@@ -113,7 +110,6 @@ export default {
       inputVal: '', // 获取input内输入的验证码
       checkCode: '', // 用于存放验证码答案
       result: '', // 显示验证码校验结果
-      // getCodeBtnDisable:false,// 是否禁用按钮
       // 获取睁闭眼图片  require默认是在根目录的不需要..来向后退
       studyDataPic: require('@/assets/img/closeeye.png'),
       eyesflag: true, // 判断眼睛图标是睁眼还是闭眼
@@ -130,25 +126,22 @@ export default {
     }, 100)
   },
   methods: {
-    // 获得验证码组件内的验证码答案
+    /**
+     * @desc 获得验证码组件内的验证码答案
+     */
     changeCode (value) {
       this.checkCode = value
     },
-    // compare() {
-    // if (this.inputVal.toUpperCase() === this.checkCode) {
-    // this.result = "比对成功";
-    // } else {
-    // this.result = "比对失败,请重新输入";
-    // this.inputVal = "";
-    // this.$refs["ref_validateCode"].draw();
-    // }
-    // },
-    // 打开注册蒙版表单
+    /**
+     * @desc 打开注册蒙版表单
+     */
     seeData () {
       // 注册按钮 点击后显示编辑对话框
       this.$refs.registertable.dialogFormVisible = true
     },
-    // 密码眼睛切换
+    /**
+     * @desc 密码眼睛切换
+     */
     eyeschange () {
       if (this.eyesflag) {
         this.studyDataPic = require('@/assets/img/eye.png')
@@ -160,9 +153,10 @@ export default {
         this.$refs.passwordeye.type = 'password'
       }
     },
-    // 登陆按钮事件
+    /**
+     * @desc 登陆按钮事件
+     */
     login () {
-      const me = this
       if (!this.$refs.logintext.value) {
         this.tips1 = '账号不能为空'
       } else if (!this.$refs.passwordeye.value) {
@@ -176,46 +170,7 @@ export default {
         this.tips2 = ''
         this.tips1 = ''
         this.inputVal = ''
-
-        const url = 'login/login'
-        this.$api(url, {
-          params: {
-            username: this.logindata.uname,
-            password: this.logindata.pass
-          }
-        })
-          .then(res => {
-            const { code, user } = res
-            if (parseInt(code) === 101) {
-              window.sessionStorage.setItem(
-                'storeData',
-                user.realname
-              ) // 将数据存储到浏览器内嵌的数据库内
-              window.sessionStorage.setItem(
-                'userData',
-                JSON.stringify(user)
-              ) // 将数据存储到浏览器内嵌的数据库内
-              window.sessionStorage.setItem(
-                'sData',
-                user.roleId
-              ) // 将数据存储到浏览器内嵌的数据库内
-              this.logindata.uname = ''
-              this.logindata.pass = ''
-              this.getCookie()
-              this.$router.push({ path: 'home' }) // 页面跳转
-             
-            } else if (parseInt(code) === 102) {
-              this.$message.error('账号或密码错误') // element失败提示框上部
-              this.tips2 = '账号或密码错误'
-              // 验证码提示框
-              this.result = ''
-            } else {
-              this.$message.error(res.error)
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          })
+        this.goLogin()
       } else {
         this.result = '验证码输入错误'
         // 验证码input内的值
@@ -225,16 +180,45 @@ export default {
         this.$refs.ref_validateCode.draw()
       }
     },
-    getCookie() {
-      this.$api('login/getCookie').then(() => {
-        this.$router.push({ path: 'home' }) // 页面跳转
-          this.$notify({
-          // element登陆成功提示框右上边
-            title: '登陆成功',
-            message: '欢迎管理员！',
-            type: 'success'
-          })
-      })
+    /**
+     * @desc 登陆
+     */
+    async goLogin () {
+      const url = 'login/login'
+      const data = {
+        username: this.logindata.uname,
+        password: this.logindata.pass
+      }
+      await this.$api(url, data)
+        .then(res => {
+          const { code, user, sessionId } = res
+          if (parseInt(code) === 101) {
+            window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userid', user.userid)
+            this.logindata.uname = ''
+            this.logindata.pass = ''
+            this.$router.push({ path: 'home' }) // 页面跳转
+            this.$notify({
+            // element登陆成功提示框右上边
+              title: '登陆成功',
+              message: '欢迎管理员！',
+              type: 'success'
+            })
+          } else if (parseInt(code) === 102) {
+            this.$message.error('账号或密码错误') // element失败提示框上部
+            this.tips2 = '账号或密码错误'
+            // 验证码提示框
+            this.result = ''
+          } else {
+            this.$message.error(res.error)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

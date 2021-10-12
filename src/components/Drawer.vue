@@ -15,19 +15,20 @@
           <div class="drawertopstatus"  v-if="openType === 'see'">
             <el-steps
               :space="200"
-              :active="form.uptype"
+              align-center
+              :active="listIn.uptype===4 ? 0 : listIn.uptype"
               finish-status="success"
             >
-              <el-step title="已提交"></el-step>
-              <el-step title="审核"></el-step>
+              <el-step title="待审核"></el-step>
+              <el-step title="部门通过"></el-step>
               <el-step title="通过"></el-step>
             </el-steps>
           </div>
           <div class="drawerFormBox">
             <div class="formBody">
-              <el-form :model="listIn" label-width="120px">
+              <el-form :model="listIn" label-width="120px" v-if="openType === 'write'">
                 <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText[typeName]" :key="index">
-                  <span v-if="item.model!=='comment'" >{{listIn[item.model]}}</span>
+                  <span v-if="item.model!=='comment'" >{{(item.model!=='neednum' && item.model!=='num') ?listIn[item.model]:listIn[item.model]+listIn.unit}}</span>
                   <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
                 </el-form-item>
               </el-form>
@@ -57,23 +58,19 @@
                       :color="typeList[parseInt(item.id)-1].color"
                       size="large"
                       :key="key"
-                      :timestamp="item.time"
+                      :timestamp="item.endTime"
                       placement="top"
                     >
                       <el-card>
-                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
-                          <div>{{parseInt(item.id)===1?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
+                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
                           <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                           ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                           <br />
                           <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
                           <p v-show="item.text">审批意见：{{ item.text }}</p>
-                          <!-- <el-button type="danger" @click="deletedata(key)"
-                            >删除</el-button -->
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  <!-- <el-button type="danger" @click="add()">添加</el-button> -->
                 </div>
               </div>
 
@@ -81,7 +78,7 @@
                 <div v-if="openType === 'see'">
                   <el-button @click="cancelForm">关 闭</el-button>
                   <el-button
-                    v-show="form.uptype==2"
+                    v-show="listIn.uptype===4"
                     type="primary"
                     @click="upData()"
                     :loading="loading"
@@ -107,22 +104,19 @@
                     :color="typeList[parseInt(item.id)-1].color"
                     size="large"
                     :key="key"
-                    :timestamp="item.time"
+                    :timestamp="item.endTime"
                     placement="top"
                   >
                     <el-card>
-                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===4?'总经理':''}}</div>
+                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
                       <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
                       ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
                       <br />
                       <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
                       <p v-show="item.text">审批意见：{{ item.text }}</p>
-                      <!-- <el-button type="danger" @click="deletedata(key)"
-                        >删除</el-button -->
                     </el-card>
                   </el-timeline-item>
                 </el-timeline>
-                <!-- <el-button type="danger" @click="add()">添加</el-button> -->
               </div>
             </div>
           </div>
@@ -134,19 +128,45 @@
 </template>
 
 <script>
-import { drawerText } from '../assets/data/drawerData'
+import { drawerText } from '../assets/data/drawerData' // 表单字段名称和label显示内容数据
 export default {
-  props: ['listIn', 'typeName', 'openType'],
-  watch: {
+  props: {
+    /**
+     * @desc 表单数据
+     */
+    listIn: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    /**
+     * @desc 获取drawerText对应当前表的数据
+     */
+    typeName: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * @desc 打开抽屉的类型 see write
+     */
     openType: {
-      handler: function (val) {
-        this.getDrawerType()
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * @desc 请求地址数据
+     */
+    urlList: {
+      type: Object,
+      default: () => {
+        return {}
       }
     }
-  },
-  mounted () {
-    this.msg()
-    // this.$parent.drawerClose(1)
   },
   data () {
     return {
@@ -166,30 +186,29 @@ export default {
           title: '通过',
           icon: 'el-icon-check',
           color: '#0bbd87'
+        }, {
+          title: '通过',
+          icon: 'el-icon-check',
+          color: '#0bbd87'
         },
         {
           title: '驳回',
           icon: 'el-icon-close',
           color: 'red'
-        },
-        {
-          title: '通过',
-          icon: 'el-icon-check',
-          color: '#0bbd87'
         }
       ],
       // 时间线
       list: [
         {
           id: '1',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           upname: '莫恩康',
           text: ''
 
         },
         {
           id: '2',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text:
@@ -197,13 +216,13 @@ export default {
         },
         {
           id: '3',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
         }, {
           id: '4',
-          time: '7/28 11:40',
+          endTime: '7/28 11:40',
           auther: '马家辉',
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
@@ -225,58 +244,75 @@ export default {
     }
   },
   methods: {
+    /**
+     * @desc 提交审批
+     */
     upData () {
-      if (this.loading) {
-        return
-      }
+      if (this.loading) return
       this.$confirm('确定要提交表单吗？')
         .then(_ => {
           this.loading = true
-          this.timer = setTimeout(() => {
-            // this.$store.commit('ChangeDraw')
-            this.dialog = !this.dialog
-            // 动画关闭需要一定的时间
-            setTimeout(() => {
-              this.loading = false
-            }, 300)
-          }, 300)
+          this.resetApproval()
         })
         .catch(() => {})
     },
-    handleClose (done) {
-      // if (this.loading) {
-      //   return
-      // }
-      // this.$confirm('确定要提交表单吗？')
-      //   .then(_ => {
-      //     this.loading = true
-      //     this.timer = setTimeout(() => {
-      //       // this.$store.commit('ChangeDraw')
-      this.dialog = !this.dialog
-      //       // 动画关闭需要一定的时间
-      //       setTimeout(() => {
-      //         this.loading = false
-      //       }, 300)
-      //     }, 300)
-      //   })
-      //   .catch(_ => {})
-      // this.$emit('close', 1)
+    /**
+     * @desc 驳回后重启审批请求
+     */
+    async resetApproval () {
+      const url = this.urlList.ressetApproval
+      const params = {
+        buyid: this.listIn.buyid
+      }
+      this.$api(url, { params }).then(res => {
+        if (res.code === '101') {
+          this.$message.success('提交审批成功')
+          this.loading = false
+          this.dialog = !this.dialog
+          this.$emit('close')
+        }
+      })
     },
+    /**
+     * @desc 关闭抽屉之前回调
+     */
+    handleClose () {
+      this.dialog = !this.dialog
+    },
+    /**
+     * @desc 关闭抽屉方法
+     */
     cancelForm () {
       this.loading = false
+      this.list = []
       this.dialog = !this.dialog
       clearTimeout(this.timer)
-      // this.$store.commit('ChangeDraw')
     },
-    msg () {
+    /**
+     * @desc 获取审批记录信息请求
+     */
+    async searchApprovalList () {
+      const url = this.urlList.getApprovalList
+      const params = {
+        needid: this.listIn.needid,
+        buyid: this.listIn.buyid
+      }
+      await this.$api(url, { params }).then((res) => {
+        this.list = res.list
+      })
     },
-    getDrawerType () {
-      // this.size
-    },
+    /**
+     * @desc 打开抽屉方法
+     */
     showDraw () {
       this.dialog = !this.dialog
-      console.log(this.openType)
+      this.$nextTick(() => {
+        this.searchApprovalList()
+      })
     },
+    /**
+     * @desc 审批（驳回/通过）
+     */
     witeApproval (type) {
       this.$confirm(type === 'reject' ? '是否确定驳回此申请' : '是否确定通过此申请', '提示', {
         confirmButtonText: '确定',
@@ -284,10 +320,25 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.loading = false
-          this.dialog = !this.dialog
-          clearTimeout(this.timer)
+          this.approvalAct(type)
         })
+    },
+    /**
+     * @desc 审批请求
+     */
+    approvalAct (type) {
+      const url = type === 'pass' ? this.urlList.passRequest : this.urlList.rejectRequest
+      const params = {
+        text: this.opinion,
+        taskId: this.listIn.taskId
+      }
+      this.$api(url, { params }).then(res => {
+        this.loading = false
+        this.dialog = !this.dialog
+        this.$$message.success('审批成功')
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -301,24 +352,20 @@ export default {
   display: flex;
   justify-content: center;
   overflow: auto;
-
 }
 .drawerStyle {
   margin-top: 20px;
   padding: 0px 25px;
-  // width: 520px;
   height: 780px;
 }
 
 .drawertopstatus {
-  margin-left: 100px;
   margin-bottom: 30px;
 }
 .drawerFormBox {
   display: flex;
 }
 .drawerApprovalBox {
-  // width:400px;
   margin-left:40px;
 }
 .departmentId {
@@ -332,18 +379,16 @@ export default {
   height: 720px;
   overflow: auto;
   border-left: 2px dashed #eee;
-  // padding: 15px 25px;
-  // border: 1px solid #eee;
 }
 .drawerInputBox {
   margin: 30px 0 20px;
   .inputBox {
-    // width: 70%;
     padding:0  10px;
   }
 }
 .demo-drawer__footer {
   text-align: center;
+
 }
 .drawerText {
   border: 1px solid rgba(99, 94, 94,0.3);

@@ -50,7 +50,7 @@
             src="../assets/img/heng.png"
             class="rightnav-topimghome"
             ref="rightnavtopimghome"
-            @click="changehomeimg()"
+            @click="changeHomeImg()"
           />
         </div>
 
@@ -59,7 +59,7 @@
         <div class="topright">
           <span class="top-time">{{ nowTime }}</span>
           <!-- 苹果图标 -->
-          <img src="../assets/img/timg.jpg" class="timg" />
+          <img src="../assets/img/titleImportant.png" class="timg" />
           <!-- 退出下拉框 -->
           <el-dropdown @command="gobacklogin" class="elsign-out">
             <span class="el-dropdown-link">
@@ -82,18 +82,16 @@
 <script>
 // 引入jquery
 // import $ from 'jquery'
-// 引入搜索框
-// import EditData from '../unusercom/EditData.vue'
 import { routerList } from '../assets/data/homeRouter'
+import { debounce } from '../assets/utils/index'
 export default {
-
-  provide () {
-    return {
-      departId: () => {
-        return this.departmentID
-      }
-    }
-  },
+  // provide () {
+  //   return {
+  //     departId: () => {
+  //       return this.departmentID
+  //     }
+  //   }
+  // },
   data () {
     return {
       nowTime: '',
@@ -110,18 +108,36 @@ export default {
       routerChioce: 1,
       checkIndex: 1,
       routerList,
-      arrowData: []
+      arrowData: [],
+      timer: null
     }
   },
+  created () {
+    this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
+    this.departmentID = window.sessionStorage.getItem('sData')
+    this.$store.commit('getDepartment', this.departmentID)
+    if (this.departmentID) this.getAdminType()
+  },
+  mounted () {
+    // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
+    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
+    this.changeHomeImgCreate()
+    this.nowTimes()
+  },
   methods: {
+    /**
+     * @desc 判断左侧导航收缩栏高度
+     */
     getSonTransition (list) {
       let index = 0
       list.forEach(item => {
         if (item.showtab) index++
       })
-      return index 
+      return index
     },
-    // 旋转子列箭头
+    /**
+     * @desc 旋转子列箭头
+     */
     changearrow (index) {
       this.routerList[index].navSonShow = !this.routerList[index].navSonShow
       if (!this.routerList[index].navSonShow) {
@@ -132,8 +148,26 @@ export default {
         this.arrowflag = !this.arrowflag
       }
     },
-    // 右边栏三条杠点击事件
-    changehomeimg () {
+    /**
+      * @desc 三条杠防抖点击
+    */
+    changeHomeImg: debounce(function () {
+      this.changeNav()
+    }, 1000, true),
+    debounce (func, wait) {
+      const that = this
+      if (this.timer) {
+        return
+      }
+      func.apply(this)
+      this.timer = setTimeout(function () {
+        that.timer = undefined
+      }, wait)
+    },
+    /**
+      * @desc 右边栏三条杠动画事件
+    */
+    changeNav () {
       // 动画class绑定
       this.navshow = !this.navshow
       let status = 'none'
@@ -166,13 +200,16 @@ export default {
         })
       }, times)
     },
-    // 开始动画文字出现延迟
-    changehomeimgCreate () {
-      this.changehomeimg()
-      this.changehomeimg()
+    /**
+     * @desc 开始动画文字出现延迟
+     */
+    changeHomeImgCreate () {
+      this.changeNav()
+      this.changeNav()
     },
-
-    // 退出登陆方法
+    /**
+     * @desc 退出登陆方法
+     */
     gobacklogin (command) {
       this.$confirm('是否退出登陆', '提示', {
         confirmButtonText: '确定',
@@ -188,7 +225,9 @@ export default {
         })
       })
     },
-    // 显示当前时间（年月日时分秒）
+    /**
+     * @desc 显示当前时间（年月日时分秒）
+     */
     timeFormate (timeStamp) {
       const year = new Date(timeStamp).getFullYear()
       const month =
@@ -225,15 +264,24 @@ export default {
         ':' +
         ss
     },
+    /**
+     * @desc 开启监听器
+     */
     nowTimes () {
       const that = this
       this.thistime = setInterval(function () {
         that.timeFormate(new Date())
       }, 1000)
     },
+    /**
+     * @desc 关闭监听器
+     */
     clearTime () {
       clearInterval(this.thistime)
     },
+    /**
+     * @desc 根据角色判断显示
+     */
     getAdminType () {
       this.initType(false)
       if (this.departmentID.includes('10000')) { // 管理管10000
@@ -269,15 +317,14 @@ export default {
         this.routerList[1].childrenList[1].showtab = true
         this.routerList[1].childrenList[2].showtab = true
       }
-      if(this.routerList[4].showtab ===  this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
-        if( this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ) {
+      if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
+        if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab) {
           this.routerList[4].showtab = false
           this.routerList[1].childrenList[2].showtab = false
-        }else {
+        } else {
           this.routerList[4].showtab = false
           this.routerList[2].childrenList[2].showtab = false
         }
-      
       }
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
@@ -285,7 +332,9 @@ export default {
         }
       })
     },
-
+    /**
+     * @desc 初始化左侧导航显示
+     */
     initType (bool) {
       for (let i = 1; i <= 6; i++) {
         this.routerList[i].showtab = bool
@@ -296,76 +345,33 @@ export default {
         }
       }
     },
+    /**
+     * @desc 判断点击左侧导航栏类型
+     */
     judgeType (val, index) {
       if (val.type === 'tips') this.changearrow(index)
       if (val.type === 'router') {
         this.goToRouter(val)
       }
     },
+    /**
+     * @desc 路由跳转
+     */
     goToRouter (val) {
       if (this.checkIndex === val.index || val.disabled) return
-      
       if (val.index === 21 || val.index === 22) {
         window.sessionStorage.setItem('currentRouter', 'see')
       }
       if (val.index === 31 || val.index === 32) {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
-      if((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21))
-      this.$refs.viewBox.getCurrentType()
-
+      if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21) || (val.index === 22 && this.checkIndex === 32) || (val.index === 32 && this.checkIndex === 22)) {
+        this.$refs.viewBox.getCurrentType()
+      }
       this.checkIndex = val.index
       window.sessionStorage.setItem('currentIndex', this.checkIndex)
-      this.$router.push({ path: val.path })
-      // 页面跳转
+      this.$router.push({ path: val.path })// 页面跳转
     }
-  },
-  created () {
-    this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
-    this.departmentID = window.sessionStorage.getItem('sData')
-    this.$store.commit('getDepartment', this.departmentID)
-    if(this.departmentID)this.getAdminType()
-  },
-  mounted () {
-    window.sessionStorage.setItem('sData', ['10010', '10000','10011','10020'])
-    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
-    this.changehomeimgCreate()
-    this.nowTimes()
-    // 实现左边子栏的缓慢消失jQuery
-    // $(document).ready(function(){
-    // $("#listlep").click(function(){
-    //     $(".navhome-son").slideToggle(500);
-    //   });
-    // });
-
-    // //实现左边nav栏的缩小
-    // $(document).ready(function(){
-    // $('.rightnav-topimghome').click(function(){
-    //     if($('.right-navigation').css("margin-left")=="180px"){
-    //         $('.right-navigation').animate({
-    //         'margin-left':'50px'
-    //     },700);
-    // }else{
-    // $('.right-navigation').animate({
-    //     'margin-left':'180px'
-    //     },700);
-    // }
-    // });
-    // });
-
-    // $(document).ready(function(){
-    // $('.rightnav-topimghome').click(function(){
-    //     if($('.left-navigation').css("width")!="50px"){
-    //         $('.left-navigation').animate({
-    //         width:'50px'
-    //     },700);
-    // }else{
-    // $('.left-navigation').animate({
-    //     width:'180px'
-    //     },700);
-    // }
-    // });
-    // });
   },
   beforeDestroy () {
     this.clearTime()
@@ -616,11 +622,13 @@ export default {
   right: 1%;
   position: absolute;
   display: flex;
+  align-items: center;
 }
 .timg {
-  height: 48px;
+  margin: 12px 6px 0;
+  height: 30px;
   cursor: pointer;
-  border-radius: 10px;
+  // border-radius: 10px;
 }
 .weltop {
   font-size: 14px;

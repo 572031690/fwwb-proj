@@ -35,8 +35,8 @@ export const rulesData = {
     { required: true, message: '请输入需求名单', trigger: 'blur' },
     {
       min: 3,
-      max: 10,
-      message: '长度在 3 到 10 个字符',
+      max: 20,
+      message: '长度在 3 到 20 个字符',
       trigger: 'blur'
     }
   ],
@@ -64,6 +64,10 @@ export const rulesData = {
   buyerid: [
     { required: true, message: 'ID不能为空', trigger: 'blur' },
     { type: 'number', message: 'ID必须为数字值' }
+  ],
+  auditid: [
+    { required: true, message: '订单码不能为空', trigger: 'blur' },
+    { type: 'number', message: '订单码必须为数字值' }
   ],
   neederid: [
     { required: true, message: 'ID不能为空', trigger: 'blur' },

@@ -11,7 +11,10 @@ export default [
       itemid: '',
       num: '',
       buyerid: '',
-      neederid: ''
+      neederid: '',
+      unit: '',
+      auditid: '',
+      comment: ''
     }
   },
   {
@@ -24,7 +27,7 @@ export default [
     }
   },
   {
-    name: 'editBuy',
+    name: 'updateBuy',
     method: 'POST',
     desc: '修改购买订单数据',
     path: '/webbuy/updateBuy',
@@ -35,8 +38,11 @@ export default [
       itemtype: '',
       itemid: '',
       num: '',
+      unit: '',
       buyerid: '',
-      neederid: ''
+      neederid: '',
+      auditid: '',
+      comment: ''
     }
   },
   {
@@ -60,5 +66,65 @@ export default [
       buyid: '',
       uptype: ''
     }
+  },
+  {
+    name: 'findHistotyBuy',
+    method: 'GET',
+    desc: '查看购买历史审批',
+    path: '/activiti/findHistotyBuy',
+    params: {
+      buyid: ''// int
+    }
+  },
+  {
+    name: 'startBuyAct',
+    method: 'GET',
+    desc: '启动采购流程',
+    path: '/activiti/startBuyAct',
+    params: {
+      buyid: ''// int
+    }
+  },
+  {
+    name: 'queryBuyActTask',
+    method: 'GET',
+    desc: '找出购买个人代办任务',
+    path: '/activiti/queryBuyActTask',
+    params: {
+      page: '', // 传递当前是第几页参数
+      limit: '', // 传递每页显示多少条记录参数
+      searchName: '', // 传递搜索参数
+      selectName: '' // 查看需求审批状态 ##没加
+    }
+  },
+  {
+    name: 'completeprocess',
+    method: 'GET',
+    desc: '完成审批节点/ 提交审批',
+    path: '/activiti/completeprocess',
+    params: {
+      taskId: '', // int
+      text: ''// String
+    }
+  },
+  {
+    name: 'deleteprocess',
+    method: 'GET',
+    desc: '驳回审批节点',
+    path: '/activiti/deleteprocess',
+    params: {
+      taskId: '', // int
+      text: ''// String
+    }
+  },
+  {
+    name: 'startBuyActAgain',
+    method: 'GET',
+    desc: '修改并重启采购流程',
+    path: ' /activiti/startBuyActAgain',
+    params: {
+      buyid: '' // int
+    }
   }
+
 ]

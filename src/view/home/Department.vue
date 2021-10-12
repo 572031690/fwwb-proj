@@ -80,7 +80,7 @@
             </tr>
           </tbody>
 
-        <addDialog ref="addDialog"
+        <!-- <addDialog ref="addDialog"
           :dialogFormShow="dialogFormShow"
           @updata="search"
           @closeaddDialog="closeaddDialog"
@@ -89,7 +89,7 @@
           :openType="openType"
           name="department"
         >
-        </addDialog>
+        </addDialog> -->
 
           <!-- </el-table> -->
         </div>
@@ -112,14 +112,14 @@
   </div>
 </template>
 <script>
-import addDialog from '../../components/addDataDialog.vue'
+// import addDialog from '../../components/addDataDialog.vue'
 import detail from '../../components/DepartDetail.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {
   mixins: [homeMix],
   components: {
-    addDialog,
+    // addDialog,
     detail
   },
   data () {

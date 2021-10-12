@@ -7,7 +7,18 @@
 <script>
 export default {
   props: {
-    titleFontSize: [Number],
+    /**
+     * @desc 界面适配比例大小值
+     */
+    titleFontSize: {
+      type: Number,
+      default: () => {
+        return 15
+      }
+    },
+    /**
+     * @desc 关闭抽屉方法
+     */
     pieData: {
       type: Array,
       default: () => {
@@ -16,145 +27,87 @@ export default {
     }
   },
   watch: {
+    /**
+     * @desc 监听屏幕适配参数
+     */
     titleFontSize: {
       handler: function (val) {
-        // this.chartInstance.resize();
-        this.screenAdapter(val);
+        this.screenAdapter(val)
       }
-      // immediate: true
     },
+    /**
+     * @desc 饼图数据
+     */
     pieData: {
       handler: function (val) {
-        if(val.length) {
+        if (val.length) {
           this.getData()
         }
       }
     }
   },
-  data() {
+  data () {
     return {
       chartInstance: null,
-      legendName: [
-        // "广东",
-        // "北京",
-        // "江苏",
-        // "浙江",
-        // "青海",
-        // "澳门",
-        // "黑龙江",
-        // "山东",
-        // "河北",
-        // "江西"
-      ],
-      seriesData: [
-        {
-          name: "广东",
-          value: 654.5
-        },
-        {
-          name: "北京",
-          value: 650.2
-        },
-        {
-          name: "江苏",
-          value: 525.3
-        },
-        {
-          name: "浙江",
-          value: 125.3
-        },
-        {
-          name: "青海",
-          value: 225.3
-        },
-        {
-          name: "澳门",
-          value: 125.3
-        },
-        {
-          name: "黑龙江",
-          value: 85.3
-        },
-        {
-          name: "山东",
-          value: 325.3
-        },
-        {
-          name: "河北",
-          value: 255.3
-        },
-        {
-          name: "江西",
-          value: 725.3
-        }
-      ]
-    };
+      legendName: [],
+      seriesData: []
+    }
   },
-  mounted() {
-    // setTimeout(() => {
-    this.getinitChart();
-    // this.getData();
-    // this.screenAdapter();
-    // }, 600);
-
-    // window.addEventListener("resize", this.screenAdapter);
-    // 在页面加载完成的时候, 主动进行屏幕的适配
-
-    // window.onresize = this.chartInstance.resize;
-  },
-  beforeDestroy() {
-    // 在组件销毁的时候, 需要将监听器取消掉
-    // window.removeEventListener("resize", this.screenAdapter);
+  mounted () {
+    this.getinitChart()
   },
   methods: {
-    getinitChart() {
-      this.chartInstance = this.$echarts.init(this.$refs.pie_chart);
+    /**
+     * @desc 初始化echarts
+     */
+    getinitChart () {
+      this.chartInstance = this.$echarts.init(this.$refs.pie_chart)
       // 对图表初始化配置的控制
       const initOption = {
         tooltip: {
-          trigger: "item",
+          trigger: 'item',
           formatter: arg => {
-            return arg.marker + arg.name + " : " + arg.value + "万元"; // marker就是前面有颜色的标记球
+            return arg.marker + arg.name + ' : ' + arg.value + '万元' // marker就是前面有颜色的标记球
           }
         },
         title: {
-          text: "| 全国销量比TOP10",
+          text: '| 全国销量比TOP10',
           top: 25,
           left: 25,
           textStyle: {
-            color: "white"
+            color: 'white'
           }
         },
         legend: [
           {
-            left: "center",
-            bottom: "5%",
+            left: 'center',
+            bottom: '5%',
 
             textStyle: {
-              color: "white"
+              color: 'white'
             }
           },
           {
-            left: "center",
-            bottom: "0%",
+            left: 'center',
+            bottom: '0%',
 
             textStyle: {
-              color: "white"
+              color: 'white'
             }
           }
         ],
         series: [
           {
-            type: "pie",
+            type: 'pie',
             // 饼图旁边文字显示和消失
-            radius: ["33%", "48%"], // 第0个元素代表的是內圆的半径 第1个元素外圆的半径
-            selectedMode: "single", // 选中的效果,能够将选中的区域偏离圆点一小段距离，并点击其他的时候恢复
+            radius: ['33%', '48%'], // 第0个元素代表的是內圆的半径 第1个元素外圆的半径
+            selectedMode: 'single', // 选中的效果,能够将选中的区域偏离圆点一小段距离，并点击其他的时候恢复
 
             label: {
               show: true,
-              color: "white",
+              color: 'white',
               formatter: arg => {
-                return arg.name + ":" + arg.percent.toFixed(1) + "%";
+                return arg.name + ':' + arg.percent.toFixed(1) + '%'
               }
             },
             labelLine: {
@@ -162,28 +115,34 @@ export default {
             }
           }
         ]
-      };
-      this.chartInstance.setOption(initOption);
+      }
+      this.chartInstance.setOption(initOption)
     },
-    getData() {
-      let pieDataCopy = JSON.parse(JSON.stringify(this.pieData))
-      for(let i = 0;i< pieDataCopy.length;i++) {
-        for(let j = i + 1; j< pieDataCopy.length; j++) {
-          if(pieDataCopy[i].value < pieDataCopy[j].value){
+    /**
+     * @desc 赋值数据
+     */
+    getData () {
+      const pieDataCopy = JSON.parse(JSON.stringify(this.pieData))
+      for (let i = 0; i < pieDataCopy.length; i++) {
+        for (let j = i + 1; j < pieDataCopy.length; j++) {
+          if (pieDataCopy[i].value < pieDataCopy[j].value) {
             const pie = pieDataCopy[i]
             pieDataCopy[i] = pieDataCopy[j]
             pieDataCopy[j] = pie
           }
         }
       }
-      const TopData10 = pieDataCopy.slice(0,10)
+      const TopData10 = pieDataCopy.slice(0, 10)
       TopData10.forEach(item => {
         this.legendName.push(item.name)
       })
       this.seriesData = TopData10
-      this.updateChart();
+      this.updateChart()
     },
-    updateChart() {
+    /**
+     * @desc 更新图表
+     */
+    updateChart () {
       const dataOption = {
         // 顶部事例
         legend: [
@@ -199,14 +158,13 @@ export default {
             data: this.seriesData
           }
         ]
-      };
-      this.chartInstance.setOption(dataOption);
+      }
+      this.chartInstance.setOption(dataOption)
     },
-    screenAdapter(val) {
-     
-      // this.$refs.pie_chart.style.width = val * 30;
-      // this.$ref.pie_chart.clientWidth =
-      // this.titleFontSize = (this.$refs.pie_chart.offsetWidth / 100) * 3.6; // 15.3
+    /**
+     * @desc 以及屏幕适配
+     */
+    screenAdapter (val) {
       const adapterOption = {
         title: {
           textStyle: {
@@ -236,17 +194,15 @@ export default {
             label: {
               fontSize: val * 0.9
             }
-            // 设置圆的中心点
-            // center: ["51%", "60%"]
           }
         ]
-      };
-      this.chartInstance.setOption(adapterOption);
+      }
+      this.chartInstance.setOption(adapterOption)
       // 手动的调用图表对象的resize 才能产生效果
-      this.chartInstance.resize();
+      this.chartInstance.resize()
     }
   }
-};
+}
 </script>
 
 <style scoped>

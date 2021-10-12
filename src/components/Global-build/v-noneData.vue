@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name:'vNone'
+  name: 'vNone'
 
 }
 </script>

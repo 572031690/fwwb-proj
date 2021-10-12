@@ -3,17 +3,17 @@
     <div class="personal-table">
       <el-descriptions direction="horizontal" :column="1" border class="style" >
         <el-descriptions-item label="用户名" >{{
-          username
+          userData.username
         }}</el-descriptions-item>
         <el-descriptions-item label="所属部门">{{
-          department
+          userData.department
         }}</el-descriptions-item>
          <el-descriptions-item label="工号">{{
           employeeid
         }}</el-descriptions-item>
         <el-descriptions-item label="姓名">{{ realname }}</el-descriptions-item>
         <el-descriptions-item label="手机号码">{{
-          telNum
+          userData.telNum
         }}</el-descriptions-item>
         <el-descriptions-item label="用户角色">{{ role }}</el-descriptions-item>
          <el-descriptions-item label="账号状态">{{
@@ -55,16 +55,16 @@
           label-width="120px"
           class="demo-ruleForm"
         >
-          <el-form-item label="原密码" prop="originalpass">
+          <el-form-item label="原密码" prop="oldpassword">
             <el-input
-              v-model="form.originalpass"
+              v-model="form.oldpassword"
               style="width: 400px"
               type="password"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pass">
+          <el-form-item label="密码" prop="password">
             <el-input
-              v-model="form.pass"
+              v-model="form.password"
               style="width: 400px"
               type="password"
             ></el-input>
@@ -90,108 +90,162 @@
 
 <script>
 export default {
-  data() {
+  data () {
     var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.pass) {
-        callback(new Error("两次输入密码不一致!"));
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
+      rolaSelect: [
+        {
+          value: '10011',
+          label: '需求专员',
+          depart: '需求部'
+        },
+        {
+          value: '10010',
+          label: '需求经理',
+          depart: '需求部'
+        },
+        {
+          value: '10021',
+          label: '采购专员',
+          depart: '采购部'
+        },
+        {
+          value: '10020',
+          label: '采购经理',
+          depart: '采购部'
+        },
+        {
+          value: '10001',
+          label: '总经理',
+          depart: '经理部'
+        },
+        {
+          value: '10000',
+          label: '管理员',
+          depart: '管理部'
+        }
+
+      ],
       dialogFormVisible: false,
-      username: "mek",
-      realname: "mek",
-      password: 5454165,
-      telNum: 17816536995,
-      employeeid: "3",
-      department: "10001",
-      role: "管理员",
-      userid:"",
-      isDisabled:'',
+      userData: {},
       form: {
-        // userId:'',
-        originalpass: "",
-        pass: "",
-        repass: "",
+        oldpassword: '',
+        password: '',
+        repass: ''
       },
       rules: {
-        originalpass: [
-          { required: true, message: "请输入原密码", trigger: "blur" },
-          { min: 6, max: 24, message: "长度不能小于六位", trigger: "blur" },
+        oldpassword: [
+          { required: true, message: '请输入原密码', trigger: 'blur' },
+          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
         ],
-        pass: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 24, message: "长度不能小于六位", trigger: "blur" },
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 24, message: '长度不能小于六位', trigger: 'blur' }
         ],
-        repass: [{ required: true, validator: validatePass2, trigger: "blur" }],
-      },
-    };
+        repass: [{ required: true, validator: validatePass2, trigger: 'blur' }]
+      }
+    }
   },
-  mounted() {
-    this.getUserData;
+  mounted () {
+    this.getUserData()
   },
   methods: {
-    getUserData() {
-      const userList = JSON.parse(window.sessionStorage.getItem("userData"));
+    /**
+     * @desc 获取角色信息
+     */
+    getUserData () {
+      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
+      this.userData = userList
+      this.userData.role = this.showRoleData(this.userData.roleId)
+      this.userData.department = this.showDepartData(this.userData.roleId)
     },
-    changepassword() {
-      this.dialogFormVisible = true;
+    /**
+     * @desc 显示角色内容
+     */
+    showRoleData (val) {
+      if (!val) return
+      const rolaArr = []
+      this.rolaSelect.forEach(item => {
+        if (val.includes(parseInt(item.value))) rolaArr.push(item.label)
+      })
+      return rolaArr.join(',')
     },
-    submitForm(formName) {
+    /**
+     * @desc 显示部门内容
+     */
+    showDepartData (val) {
+      if (!val) return
+      let depart
+      this.rolaSelect.forEach(item => {
+        if (val.includes(parseInt(item.value))) depart = item.depart
+      })
+      return depart
+    },
+    /**
+     * @desc 打开修改密码
+     */
+    changepassword () {
+      this.dialogFormVisible = true
+    },
+    /**
+     * @desc 提交修改密码
+     */
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 提示框
-          this.$confirm("是否确定修改密码?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
+          this.$confirm('是否确定修改密码?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
           }).then(() => {
-            this.edit();
-          });
+            this.upPassword()
+          })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    closeres() {
-      this.dialogFormVisible = false;
+    /**
+     * @desc 关闭窗口
+     */
+    closeres () {
+      this.dialogFormVisible = false
       for (const i in this.form) {
-        this.form[i] = "";
+        this.form[i] = ''
       }
     },
-    // edit () {
-    //   // $ajax请求
-    //   const url = ''
-
-    //   const data = {
-    //       originalpass: this.form.originalpass,
-    //       password: this.form.pass,
-    //   }
-    //   this.$api(
-    //     url,
-    //     data
-    //   )
-    //     .then(res => {
-    //       if (res.code === '101') {
-    //         this.$message({
-    //           type: 'success',
-    //           message: '修改成功!'
-    //         })
-    //         this.dialogFormVisible = false
-    //       } else if (res.code === '99') {
-    //         this.$message.error('用户名重复!')
-    //       }
-    //     })
-    //     .catch(() => {
-    //       this.$message.error('网络异常') // element失败提示框上部
-    //     })
-    // },
-  },
-};
+    /**
+     * @desc 请求修改密码
+     */
+    async upPassword () {
+      const url = 'home/personal/updateUserPassword'
+      const data = {
+        ...this.form
+      }
+      data.userid = this.userData.userid
+      await this.$api(url, data).then((res) => {
+        if (res.code === '101') {
+          this.$message.success('修改成功')
+          this.closeres()
+        } else if (res.code === '102') {
+          this.$message.error('原密码不正确')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  }
+}
 </script>
 
 <style lang="less" >
@@ -211,7 +265,7 @@ export default {
   box-sizing: border-box;
   font-size: 16px;
   color: #303133;
-  
+
 }
 .style{
 .el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
@@ -221,6 +275,5 @@ export default {
     line-height: 3;
  }
 }
-
 
 </style>
