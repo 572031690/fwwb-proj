@@ -29,6 +29,7 @@
             v-model="dialogData.formList[item.dataName]"
             style="width:400px"
             v-if="item.putType === 'input'"
+            :placeholder="item.placeholder"
           ></el-input>
 
           <el-date-picker
@@ -82,6 +83,7 @@
             v-model.number="dialogData.formList[item.dataName]"
             style="width:400px"
             v-if="item.putType === 'numput'"
+            :placeholder="item.placeholder"
           ></el-input>
 
           <el-input
@@ -99,6 +101,7 @@
             auto-complete="off"
             style="width: 400px"
             v-if="item.putType === 'textarea'"
+            :placeholder="item.placeholder"
           ></el-input>
         </el-form-item>
       </el-form>

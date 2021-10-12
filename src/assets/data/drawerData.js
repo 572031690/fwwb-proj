@@ -1,10 +1,6 @@
 export const drawerText = {
   need: [
     {
-      label: '编号',
-      model: 'needid'
-    },
-    {
       label: '需求单名',
       model: 'needtitle'
     },

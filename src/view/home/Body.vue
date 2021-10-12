@@ -35,7 +35,7 @@
                         <form v-on:submit.prevent="search">
                           <input
                             type="text"
-                            placeholder="请输入需求名称"
+                            placeholder="请输入需求标题"
                             @change="search"
                             v-model="params.dname"
                           />
@@ -73,7 +73,7 @@
                     colspan="1"
                     rowspan="1"
                     :class="{
-                      'htop-th7':item === '需求单名',
+                      'htop-th7':item === '需求标题',
                       'htop-th2':item === '详情',
                       'htop-ope1':item === '操作'
                     }"
@@ -205,6 +205,10 @@ export default {
         getApprovalList: 'home/need/findHistoty',
         passRequest: 'home/need/completeprocess',
         rejectRequest: 'home/need/deleteprocess'
+      },
+      dialogUrl: {
+        startApproval: 'home/need/approvalNeed',
+        upApproval: 'home/need/completeprocess'
       },
       currentApprovalType: true,
       drawOpenType: 'see',

@@ -2,14 +2,16 @@ export const addEditList = {
   needList: {
     dataTableList: [
       {
-        label: '编号ID',
+        label: '需求编号',
         putType: 'disput',
-        dataName: 'needid'
+        dataName: 'needid',
+        placeholder: ''
       },
       {
-        label: '需求单名',
+        label: '需求标题',
         putType: 'input',
-        dataName: 'needtitle'
+        dataName: 'needtitle',
+        placeholder: '例如:钢材购买需求申请'
       },
       {
         label: '类型',
@@ -20,7 +22,7 @@ export const addEditList = {
       { label: '数量', putType: 'num', dataName: 'neednum' },
       { label: '需求日期', putType: 'date', dataName: 'needday' },
       { label: '申请人编号', putType: 'disput', dataName: 'neederid' },
-      { label: '详情', putType: 'textarea', dataName: 'comment' }
+      { label: '详情', putType: 'textarea', dataName: 'comment', placeholder: '例如:此申请用于XXX公司的订单交易' }
     ],
     formList: {
       needid: '',
@@ -45,14 +47,15 @@ export const addEditList = {
   buyList: {
     dataTableList: [
       {
-        label: '编号ID',
+        label: '订单编号',
         putType: 'disput',
         dataName: 'buyid'
       },
       {
-        label: '购买单名',
+        label: '订单标题',
         putType: 'input',
-        dataName: 'buytitle'
+        dataName: 'buytitle',
+        placeholder: '例如:钢材购买申请'
       },
       {
         label: '日期',
@@ -74,21 +77,25 @@ export const addEditList = {
         label: '购买专员编号',
         putType: 'disput',
         dataName: 'buyerid'
+
       },
       {
         label: '需求专员编号',
         putType: 'numput',
-        dataName: 'neederid'
+        dataName: 'neederid',
+        placeholder: '例如:15,2,25'
       },
       {
         label: '订单码',
         putType: 'numput',
-        dataName: 'auditid'
+        dataName: 'auditid',
+        placeholder: '例如:165042101'
       },
       {
         label: '详情',
         putType: 'textarea',
-        dataName: 'comment'
+        dataName: 'comment',
+        placeholder: '例如:此申请用于XXX公司的订单交易'
       }
     ],
     formList: {
@@ -143,14 +150,16 @@ export const addEditList = {
   itemList: {
     dataTableList: [
       {
-        label: '类型ID',
+        label: '类型编号',
         putType: 'input',
-        dataName: 'itemid'
+        dataName: 'itemid',
+        placeholder: '例如:JS001，XP201，JP015'
       },
       {
         label: '种类',
         putType: 'input',
-        dataName: 'itemtype'
+        dataName: 'itemtype',
+        placeholder: '例如:钢材，木材，橡胶'
       },
       {
         label: '库存',
@@ -160,12 +169,14 @@ export const addEditList = {
       {
         label: '单位',
         putType: 'input',
-        dataName: 'unit'
+        dataName: 'unit',
+        placeholder: '例如:kg,t,片'
       },
       {
         label: '详情',
         putType: 'textarea',
-        dataName: 'comment'
+        dataName: 'comment',
+        placeholder: '例如:此XXX材料是最新型号合成材料，有很强的硬度'
       }
     ],
     formList: {

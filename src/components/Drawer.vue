@@ -26,7 +26,7 @@
           </div>
           <div class="drawerFormBox">
             <div class="formBody">
-              <el-form :model="listIn" label-width="120px">
+              <el-form :model="listIn" label-width="120px" v-if="openType === 'write'">
                 <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText[typeName]" :key="index">
                   <span v-if="item.model!=='comment'" >{{(item.model!=='neednum' && item.model!=='num') ?listIn[item.model]:listIn[item.model]+listIn.unit}}</span>
                   <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
@@ -352,24 +352,20 @@ export default {
   display: flex;
   justify-content: center;
   overflow: auto;
-
 }
 .drawerStyle {
   margin-top: 20px;
   padding: 0px 25px;
-  // width: 520px;
   height: 780px;
 }
 
 .drawertopstatus {
-  // margin-left: 80px;
   margin-bottom: 30px;
 }
 .drawerFormBox {
   display: flex;
 }
 .drawerApprovalBox {
-  // width:400px;
   margin-left:40px;
 }
 .departmentId {
@@ -383,18 +379,16 @@ export default {
   height: 720px;
   overflow: auto;
   border-left: 2px dashed #eee;
-  // padding: 15px 25px;
-  // border: 1px solid #eee;
 }
 .drawerInputBox {
   margin: 30px 0 20px;
   .inputBox {
-    // width: 70%;
     padding:0  10px;
   }
 }
 .demo-drawer__footer {
   text-align: center;
+
 }
 .drawerText {
   border: 1px solid rgba(99, 94, 94,0.3);

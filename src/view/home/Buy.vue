@@ -34,7 +34,7 @@
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入需求名称"
+                        placeholder="请输入需求标题"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -70,7 +70,7 @@
                 colspan="1"
                 rowspan="1"
                 :class="
-                item === '购买单名'?'htop-th2'
+                item === '订单标题'?'htop-th2'
                 :item==='操作'?'htop-ope1'
                 :'htop-th1'">
                   <div class="cell">{{item}}</div>
@@ -190,6 +190,10 @@ export default {
         getApprovalList: 'home/buy/findHistotyBuy',
         passRequest: 'home/buy/completeprocess',
         rejectRequest: 'home/buy/deleteprocess'
+      },
+      dialogUrl: {
+        startApproval: 'home/buy/startBuyAct',
+        upApproval: 'home/buy/completeprocess'
       },
       currentApprovalType: true,
       drawOpenType: 'see',

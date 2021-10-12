@@ -18,9 +18,7 @@ export default {
      * @desc ajax请求后台数据 获得list数据 并用于分页
      */
     async search () {
-      // const url = '/webneed/findAllNeed'
       await this.$api(this.searchUrl, {
-      // await this.$ajax.get('/web/listUser', {
         params: {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
@@ -28,9 +26,8 @@ export default {
           selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
-        console.log(res)
-        // const { data } = res
         this.list = res.list || [] // 获取里面的data数据
+        console.log(this.list, 'dsad')
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
         this.loading2 = false
@@ -49,7 +46,6 @@ export default {
       const roleList = window.sessionStorage.getItem('sData')
       if (roleList.includes('10011') || roleList.includes('10021')) {
         this.list = this.list.filter(item => {
-          console.log(item, 'dsaitem')
           return item.uptype !== 1 && item.uptype !== 0
         })
       }
@@ -119,10 +115,57 @@ export default {
     /**
      * @desc 提交送审表单
      */
-    upData (e) {
-      this.openType = 'approval'
-      this.currentList = e
-      this.dialogFormShow = true
+    upData (item) {
+      // this.openType = 'approval'
+      // this.currentList = e
+      // this.dialogFormShow = true
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          this.startApproval(item)
+        })
+        .catch(err => {
+          if (err === 'cancel') {
+            this.$message('取消删除')
+          } else {
+            this.$message({
+              type: 'error',
+              message: err
+            })
+          }
+        })
+    },
+    /**
+     * @desc 启动审批请求
+     */
+    async startApproval (item) {
+      const url = this.dialogUrl.startApproval
+      const params = {
+        needid: item.needid,
+        buyid: item.buyid
+      }
+      await this.$api(url, { params }).then(res => {
+        this.upApproval(res.list[0].taskId)
+      })
+    },
+    /**
+     * @desc 提交审批请求
+     */
+    async upApproval (taskId) {
+      const url = this.dialogUrl.upApproval
+      const params = {
+        taskId: taskId
+      }
+      await this.$api(url, { params }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '送审成功'
+        })
+        this.search()
+      })
     },
     /**
      * @desc 修改表单
