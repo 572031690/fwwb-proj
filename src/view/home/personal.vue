@@ -1,23 +1,30 @@
 <template>
   <div class="personal">
     <div class="personal-table">
-      <el-descriptions direction="vertical" :column="3" border class="style">
+      <el-descriptions direction="horizontal" :column="1" border class="style" >
         <el-descriptions-item label="用户名" >{{
           username
         }}</el-descriptions-item>
         <el-descriptions-item label="所属部门">{{
           department
         }}</el-descriptions-item>
+         <el-descriptions-item label="工号">{{
+          employeeid
+        }}</el-descriptions-item>
         <el-descriptions-item label="姓名">{{ realname }}</el-descriptions-item>
         <el-descriptions-item label="手机号码">{{
           telNum
         }}</el-descriptions-item>
         <el-descriptions-item label="用户角色">{{ role }}</el-descriptions-item>
+         <el-descriptions-item label="账号状态">{{
+          isDisabled
+        }}</el-descriptions-item>
         <el-descriptions-item label="密码">
           <el-button type="primary" size="small" @click="changepassword()"
             >修改密码</el-button
           >
         </el-descriptions-item>
+        
       </el-descriptions>
     </div>
     <div id="register">
@@ -102,6 +109,8 @@ export default {
       employeeid: "3",
       department: "10001",
       role: "管理员",
+      userid:"",
+      isDisabled:'',
       form: {
         // userId:'',
         originalpass: "",
