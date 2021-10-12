@@ -116,7 +116,7 @@
                           驳回结果
                         </button>
                       </div>
-                      <div class="cell"  v-if="currentRouter==='approval'">
+                      <div class="cell"  v-if="currentRouter==='approval' && currentApprovalType">
                         <button class="writeApproval" @click="writeApproval(key)">
                           审批
                         </button>

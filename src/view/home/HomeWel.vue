@@ -4,7 +4,7 @@
       <div class="top-box">
         <el-card class="box-card-right">
           <div slot="header" class="clearfix">
-            <span>用户信息</span>
+            <span>系统简介</span>
           </div>
           <div>
             <el-table :data="tableData" borderstyle="width: 100%">
@@ -30,7 +30,7 @@
         </el-card>
       </div>
       <div class="bottom-box" >
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeBuy"  >
+        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeNeed"  >
           <div class="img">
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
@@ -39,7 +39,7 @@
           </div>
           <div class="text1">需求通过数量</div>
         </el-card>
-        <el-card class="box-card" style="background-color:#f56c6c;" v-if="getdpartmentTypeBuy">
+        <el-card class="box-card" style="background-color:#f56c6c;" v-if="getdpartmentTypeNeed">
           <div class="img">
             <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
           </div>
@@ -49,7 +49,7 @@
           </div>
           <div class="text1">需求驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff" v-if="getdpartmentTypeBuy">
+        <el-card class="box-card" style=" background-color: #409eff" v-if="getdpartmentTypeNeed">
           <div class="img">
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>
@@ -58,7 +58,7 @@
           </div>
           <div class="text1">需求总数</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeNeed">
+        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeBuy">
           <div class="img">
             <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
           </div>
@@ -67,7 +67,7 @@
           </div>
           <div class="text1">订单通过数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color:#f56c6c;" v-if="getdpartmentTypeNeed">
+        <el-card class="box-card" style=" background-color:#f56c6c;" v-if="getdpartmentTypeBuy">
           <div class="img">
             <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
           </div>
@@ -76,7 +76,7 @@
           </div>
           <div class="text1">订单驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff;" v-if="getdpartmentTypeNeed">
+        <el-card class="box-card" style=" background-color: #409eff;" v-if="getdpartmentTypeBuy">
           <div class="img">
             <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
           </div>

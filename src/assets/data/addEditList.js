@@ -20,7 +20,6 @@ export const addEditList = {
         dataName: 'itemtype'
       },
       { label: '数量', putType: 'num', dataName: 'neednum' },
-      { label: '需求日期', putType: 'date', dataName: 'needday' },
       { label: '申请人编号', putType: 'disput', dataName: 'neederid' },
       { label: '详情', putType: 'textarea', dataName: 'comment', placeholder: '例如:此申请用于XXX公司的订单交易' }
     ],
@@ -56,11 +55,6 @@ export const addEditList = {
         putType: 'input',
         dataName: 'buytitle',
         placeholder: '例如:钢材购买申请'
-      },
-      {
-        label: '日期',
-        putType: 'date',
-        dataName: 'btime'
       },
       {
         label: '类型',
@@ -195,35 +189,34 @@ export const addEditList = {
   userList: {
     dataTableList: [
       {
-        label: '编号',
+        label: '系统编号',
         putType: 'disput',
-        dataName: 'userid'
+        dataName: 'userid',
+        placeholder: ''
       },
       {
-        label: '账号',
+        label: '登陆账号',
         putType: 'input',
-        dataName: 'username'
+        dataName: 'username',
+        placeholder: '例如: 543214'
       },
       {
-        label: '姓名',
+        label: '真实姓名',
         putType: 'input',
-        dataName: 'realname'
+        dataName: 'realname',
+        placeholder: '张三'
       },
       {
         label: '电话',
         putType: 'numput',
-        dataName: 'telNum'
+        dataName: 'telNum',
+        placeholder: '例如: 185424215411'
       },
-      // {
-      //   label: '部门编号',
-      //   putType: 'select',
-      //   selectData: ['10000', '10001', '10010', '10020'],
-      //   dataName: 'departmentid'
-      // },
       {
         label: '员工号',
         putType: 'numput',
-        dataName: 'employeeid'
+        dataName: 'employeeid',
+        placeholder: '例如: 12531'
       }
     ],
     formList: {

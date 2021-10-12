@@ -2,29 +2,31 @@
   <div class="personal">
     <div class="personal-table">
       <el-descriptions direction="horizontal" :column="1" border class="style" >
-        <el-descriptions-item label="用户名" >{{
-          userData.username
-        }}</el-descriptions-item>
-        <el-descriptions-item label="所属部门">{{
-          userData.department
-        }}</el-descriptions-item>
-         <el-descriptions-item label="工号">{{
-          employeeid
-        }}</el-descriptions-item>
-        <el-descriptions-item label="姓名">{{ realname }}</el-descriptions-item>
-        <el-descriptions-item label="手机号码">{{
-          userData.telNum
-        }}</el-descriptions-item>
-        <el-descriptions-item label="用户角色">{{ role }}</el-descriptions-item>
-         <el-descriptions-item label="账号状态">{{
-          isDisabled
-        }}</el-descriptions-item>
+        <el-descriptions-item label="登陆账户" >
+          {{userData.username}}
+        </el-descriptions-item>
+        <el-descriptions-item label="姓名">{{ userData.realname }}</el-descriptions-item>
+        <el-descriptions-item label="所属部门">
+          {{userData.department}}
+        </el-descriptions-item>
+        <el-descriptions-item label="工号">
+           {{userData.employeeid}}
+        </el-descriptions-item>
+        <el-descriptions-item label="手机号码">
+          {{userData.telNum}}
+       </el-descriptions-item>
+        <el-descriptions-item label="用户角色">
+          {{ userData.role }}
+        </el-descriptions-item>
+         <el-descriptions-item label="账号状态">
+          {{userData.isDisabled ? '禁用' : '正常'}}
+        </el-descriptions-item>
         <el-descriptions-item label="密码">
           <el-button type="primary" size="small" @click="changepassword()"
             >修改密码</el-button
           >
         </el-descriptions-item>
-        
+
       </el-descriptions>
     </div>
     <div id="register">

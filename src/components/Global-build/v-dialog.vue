@@ -30,6 +30,7 @@
             style="width:400px"
             v-if="item.putType === 'input'"
             :placeholder="item.placeholder"
+            clearable
           ></el-input>
 
           <el-date-picker
@@ -84,6 +85,7 @@
             style="width:400px"
             v-if="item.putType === 'numput'"
             :placeholder="item.placeholder"
+            clearable
           ></el-input>
 
           <el-input
@@ -254,6 +256,8 @@ export default {
           this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
+      this.dialogData.formList.btime = new Date()
+      console.log(this.dialogData.formList.btime)
     },
     /**
      * @desc 编辑表单数据初始化
@@ -335,10 +339,6 @@ export default {
           this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
         }
       }).catch(() => {
-        this.$message({
-          type: 'error',
-          message: '网络异常'
-        })
       })
     },
     /**

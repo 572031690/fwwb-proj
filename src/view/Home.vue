@@ -63,7 +63,7 @@
           <!-- 退出下拉框 -->
           <el-dropdown @command="gobacklogin" class="elsign-out">
             <span class="el-dropdown-link">
-              欢迎你管理员: <span class="adminname">{{ adminname }} </span
+              欢迎你: <span class="adminname">{{ adminname }} </span
               ><i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -107,7 +107,7 @@ export default {
       admin: true,
       routerChioce: 1,
       checkIndex: 1,
-      routerList,
+      routerList: routerList,
       arrowData: [],
       timer: null
     }
@@ -116,7 +116,8 @@ export default {
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
-    if (this.departmentID) this.getAdminType()
+    console.log(routerList, 'sda')
+    this.initType(false)
   },
   mounted () {
     // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
@@ -217,6 +218,7 @@ export default {
         type: 'warning'
       }).then(() => {
         sessionStorage.clear() // 删除所有数据
+        this.initType(false)
         this.$store.commit('getDepartment', '')
         this.$router.push({ name: 'login' }) // 直接跳转
         this.$message({
@@ -283,49 +285,48 @@ export default {
      * @desc 根据角色判断显示
      */
     getAdminType () {
-      this.initType(false)
       if (this.departmentID.includes('10000')) { // 管理管10000
-        this.routerList[4].showtab = true
+        this.routerList[1].showtab = true
         this.routerList[5].showtab = true
         this.routerList[6].showtab = true
       }
       if (this.departmentID.includes('10001')) { // 总经理10001
-        this.routerList[2].showtab = true
+        this.routerList[3].showtab = true
         this.routerList[5].showtab = true
         this.routerList[6].showtab = true
-        this.routerList[2].childrenList.forEach(item => {
+        this.routerList[3].childrenList.forEach(item => {
           item.showtab = true
         })
       }
       if (this.departmentID.includes('10010')) { // 需求部门经理10010
-        this.routerList[2].showtab = true
-        this.routerList[2].childrenList[0].showtab = true
-        this.routerList[2].childrenList[2].showtab = true
+        this.routerList[5].showtab = true
+        this.routerList[3].showtab = true
+        this.routerList[3].childrenList[0].showtab = true
       }
       if (this.departmentID.includes('10011')) { // 需求专员10011
-        this.routerList[1].showtab = true
-        this.routerList[1].childrenList[0].showtab = true
-        this.routerList[1].childrenList[2].showtab = true
+        this.routerList[5].showtab = true
+        this.routerList[2].showtab = true
+        this.routerList[2].childrenList[0].showtab = true
       }
       if (this.departmentID.includes('10020')) { // 购买部门经理10020
-        this.routerList[2].showtab = true
-        this.routerList[2].childrenList[1].showtab = true
-        this.routerList[2].childrenList[2].showtab = true
+        this.routerList[5].showtab = true
+        this.routerList[3].showtab = true
+        this.routerList[3].childrenList[1].showtab = true
       }
       if (this.departmentID.includes('10021')) { //   购买专员10021
-        this.routerList[1].showtab = true
-        this.routerList[1].childrenList[1].showtab = true
-        this.routerList[1].childrenList[2].showtab = true
+        this.routerList[5].showtab = true
+        this.routerList[2].showtab = true
+        this.routerList[2].childrenList[1].showtab = true
       }
-      if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
-        if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab) {
-          this.routerList[4].showtab = false
-          this.routerList[1].childrenList[2].showtab = false
-        } else {
-          this.routerList[4].showtab = false
-          this.routerList[2].childrenList[2].showtab = false
-        }
-      }
+      // if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
+      //   if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab) {
+      //     this.routerList[4].showtab = false
+      //     this.routerList[1].childrenList[2].showtab = false
+      //   } else {
+      //     this.routerList[4].showtab = false
+      //     this.routerList[2].childrenList[2].showtab = false
+      //   }
+      // }
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
           this.arrowData.push(item.arrowRef)
@@ -338,12 +339,14 @@ export default {
     initType (bool) {
       for (let i = 1; i <= 6; i++) {
         this.routerList[i].showtab = bool
-        if (!this.routerList[i].childrenList.length) {
-          this.routerList[i].childrenList.forEach(item => {
-            item.showtab = bool
+        if (this.routerList[i].childrenList.length) {
+          this.routerList[i].childrenList = this.routerList[i].childrenList.map((item) => {
+            item.showtab = false
+            return item
           })
         }
       }
+      if (this.departmentID) this.getAdminType()
     },
     /**
      * @desc 判断点击左侧导航栏类型

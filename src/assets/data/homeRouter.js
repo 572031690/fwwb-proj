@@ -11,6 +11,17 @@ export const routerList = [
     childrenList: []
   },
   {
+    type: 'router',
+    index: 7,
+    path: '/home/driver',
+    label: '驾驶舱',
+    ref: 'spans9',
+    disabled: false,
+    imgSrc: require('@/assets/img/driver.png'),
+    showtab: false,
+    childrenList: []
+  },
+  {
     type: 'tips',
     index: 2,
     path: '',
@@ -40,16 +51,16 @@ export const routerList = [
         disabled: false,
         showtab: false,
         imgSrc: require('@/assets/img/buy.png')
-      },
-      {
-        index: 23,
-        path: '/home/item',
-        label: '材料',
-        ref: 'spans6',
-        disabled: false,
-        showtab: false,
-        imgSrc: require('@/assets/img/material.png')
       }
+      // {
+      //   index: 23,
+      //   path: '/home/item',
+      //   label: '材料',
+      //   ref: 'spans6',
+      //   disabled: false,
+      //   showtab: false,
+      //   imgSrc: require('@/assets/img/material.png')
+      // }
     ]
   },
   {
@@ -82,16 +93,16 @@ export const routerList = [
         disabled: false,
         showtab: false,
         imgSrc: require('@/assets/img/buy.png')
-      },
-      {
-        index: 33,
-        path: '/home/item',
-        label: '物料',
-        ref: 'spans13',
-        disabled: false,
-        showtab: false,
-        imgSrc: require('@/assets/img/material.png')
       }
+      // {
+      //   index: 33,
+      //   path: '/home/item',
+      //   label: '物料',
+      //   ref: 'spans13',
+      //   disabled: false,
+      //   showtab: false,
+      //   imgSrc: require('@/assets/img/material.png')
+      // }
     ]
   },
   {
@@ -124,17 +135,6 @@ export const routerList = [
     ref: 'spans8',
     disabled: false,
     imgSrc: require('@/assets/img/user.png'),
-    showtab: false,
-    childrenList: []
-  },
-  {
-    type: 'router',
-    index: 7,
-    path: '/home/driver',
-    label: '驾驶舱',
-    ref: 'spans9',
-    disabled: false,
-    imgSrc: require('@/assets/img/driver.png'),
     showtab: false,
     childrenList: []
   },
