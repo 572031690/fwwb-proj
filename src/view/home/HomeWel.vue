@@ -8,13 +8,11 @@
           </div>
           <div>
             <el-table :data="tableData" borderstyle="width: 100%">
-              <el-table-column prop="username" label="用户账户" width="180">
-              </el-table-column>
-              <el-table-column prop="realname" label="姓名" width="180">
-              </el-table-column>
-              <el-table-column prop="department" label="所属部门">
-              </el-table-column>
-              <el-table-column prop="role" label="用户角色"> </el-table-column>
+              <template slot="empty" >
+                  <div>
+                    {{briefIntroduction}}
+                  </div>
+                </template>
             </el-table>
           </div>
         </el-card>
@@ -145,15 +143,8 @@ export default {
         }
 
       ],
-      tableData: [
-        {
-          username: '',
-          realname: '',
-          department: '',
-          role: '',
-          roleId: ''
-        }
-      ],
+      briefIntroduction: '智能制作协调共享平台是一个后台管理审批平台，',
+      tableData: [],
       needCount: {
         approve: '',
         reject: '',
@@ -168,7 +159,6 @@ export default {
     }
   },
   mounted () {
-    this.getUserData()
     this.getItemData()
     this.getAprovalCount()
   },
