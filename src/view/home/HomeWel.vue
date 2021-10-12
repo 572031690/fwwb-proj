@@ -208,12 +208,18 @@ export default {
      * @desc 获取审批数据
      */
     getAprovalCount () {
-      this.$api('home/welcome/getNeedCount').then(res => {
-        this.needCount = res
-      })
-      this.$api('home/welcome/getBuyCount').then(res => {
-        this.buyCount = res
-      })
+      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
+      console.log(userList.roleId)
+      if (userList.roleId.includes(10011) || userList.roleId.includes(10010) || userList.roleId.includes(10000) || userList.roleId.includes(10001)) {
+        this.$api('home/welcome/getNeedCount').then(res => {
+          this.needCount = res
+        })
+      }
+      if (userList.roleId.includes(10021) || userList.roleId.includes(10020) || userList.roleId.includes(10000) || userList.roleId.includes(10001)) {
+        this.$api('home/welcome/getBuyCount').then(res => {
+          this.buyCount = res
+        })
+      }
     },
     /**
      * @desc 请求库存数据

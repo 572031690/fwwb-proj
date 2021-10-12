@@ -257,7 +257,7 @@ export default {
         }
       })
       this.dialogData.formList.btime = new Date()
-      console.log(this.dialogData.formList.btime)
+      this.dialogData.formList.needday = new Date()
     },
     /**
      * @desc 编辑表单数据初始化
