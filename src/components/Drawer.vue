@@ -173,7 +173,6 @@ export default {
       size: '30%',
       dialog: false,
       loading: false,
-      timer: null,
       drawerText,
       opinion: '',
       typeList: [
@@ -286,7 +285,6 @@ export default {
       this.loading = false
       this.list = []
       this.dialog = !this.dialog
-      clearTimeout(this.timer)
     },
     /**
      * @desc 获取审批记录信息请求
@@ -336,6 +334,7 @@ export default {
         this.loading = false
         this.dialog = !this.dialog
         this.$$message.success('审批成功')
+        this.$emit('close')
       }).catch(err => {
         console.log(err)
       })
