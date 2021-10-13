@@ -76,7 +76,6 @@ export default {
         this.ctx.fillText(this.codes[i], x, 25)
         x = x + 30
       }
-
       this.drawLine()
     }
   }

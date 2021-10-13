@@ -261,21 +261,22 @@ export default {
   &-table {
     height: 90%;
     width: 90%;
+    overflow: auto;
   }
-}
-.el-descriptions {
-  box-sizing: border-box;
-  font-size: 16px;
-  color: #303133;
-
-}
-.style{
-.el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
+  .el-descriptions {
     box-sizing: border-box;
-    text-align: center;
-    font-weight: 400;
-    line-height: 3;
- }
+    font-size: 16px;
+    color: #303133;
+
+  }
+  .style{
+    .el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
+        box-sizing: border-box;
+        text-align: center;
+        font-weight: 400;
+        line-height: 3;
+    }
+  }
 }
 
 </style>
