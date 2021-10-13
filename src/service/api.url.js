@@ -1,5 +1,5 @@
 // const TEST = 'https://rap2-delos.yscredit.com/app/mock/125'
-const localFWWB = '/api' //'http://localhost:8081/controller_war'
+const localFWWB = '/api' // 'http://localhost:8081/controller_war'
 
 export default {
   DOMAIN: 'http://www.baidu.com',

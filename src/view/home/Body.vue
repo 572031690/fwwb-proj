@@ -334,6 +334,7 @@ export default {
      * @desc 抽屉关闭事件
      */
     drawerClose (val) {
+      debugger
       this.search()
     },
     /**

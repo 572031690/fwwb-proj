@@ -265,7 +265,22 @@ export default {
       }
       this.$api(url, { params }).then(res => {
         if (res.code === '101') {
-          this.$message.success('提交审批成功')
+          this.resetUpApproval()
+        }
+      })
+    },
+    /**
+     * @desc 驳回后重启提交审批请求
+     */
+    async resetUpApproval () {
+      const url = this.urlList.passRequest
+      const params = {
+        text: '',
+        taskId: this.listIn.taskId
+      }
+      this.$api(url, { params }).then(res => {
+        if (res.code === '101') {
+          this.$message.success('重新提交审批成功')
           this.loading = false
           this.dialog = !this.dialog
           this.$emit('close')
@@ -332,10 +347,12 @@ export default {
         taskId: this.listIn.taskId
       }
       this.$api(url, { params }).then(res => {
-        this.loading = false
-        this.dialog = !this.dialog
-        this.$$message.success('审批成功')
-        this.$emit('close')
+        if (res.code === '101') {
+          this.loading = false
+          this.dialog = !this.dialog
+          this.$message.success('审批成功')
+          this.$emit('close')
+        }
       }).catch(err => {
         console.log(err)
       })

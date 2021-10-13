@@ -29,11 +29,9 @@ axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用
 axios.interceptors.request.use(
   config => {
     const token = window.sessionStorage.getItem('sessionId') // 拿到浏览器的token
-    // if (token) {
     // config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
     config.headers['x-token'] = token
-    // config.headers.token = '123456' // 和服务器约定好token叫什么名字  token Authorization
-    // }
+    // 和服务器约定好token叫什么名字  token Authorization
     return config
   },
   err => {
@@ -61,7 +59,11 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    console.log('错误信息：' + error)
+    Message({
+      type: 'error',
+      showClose: true,
+      message: error
+    })
     return Promise.reject(error)
   }
 )
@@ -81,11 +83,12 @@ export function post (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
-        Message({
-          type: 'error',
-          showClose: true,
-          message: '网络异常'
-        })
+        // Message({
+        //   type: 'error',
+        //   showClose: true,
+        //   message: '网络异常'
+        // })
+        console.log('错误信息：' + err)
         reject(err)
       }
     )
@@ -105,11 +108,12 @@ export function get (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
-        Message({
-          type: 'error',
-          showClose: true,
-          message: '网络异常'
-        })
+        // Message({
+        //   type: 'error',
+        //   showClose: true,
+        //   message: '网络异常'
+        // })
+        console.log('错误信息：' + err)
         reject(err)
       }
     )

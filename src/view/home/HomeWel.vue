@@ -141,9 +141,8 @@ export default {
           label: '管理员',
           depart: '管理部'
         }
-
       ],
-      briefIntroduction: '智能制作协调共享平台是一个后台管理审批平台，',
+      briefIntroduction: '智能制作协调共享平台是一个后台管理审批平台，实现对需求的创建到最终订单生成并实施的全部审批流程。管理员可以对用户，材料进行修改,专员和经理可以对需求和订单进行提交和审批操作实现企业内的审批流程。',
       tableData: [],
       needCount: {
         approve: '',
@@ -238,7 +237,14 @@ export default {
 
 }
 </script>
+<style lang="less" >
+.box-card-right {
 
+    .el-table__empty-text {
+      line-height: 24px
+    }
+  }
+</style>
 <style lang="less" scoped>
 .wel-body {
   width: 100%;
