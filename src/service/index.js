@@ -132,7 +132,9 @@ function getErrorMessage (error) {
   const typeData = {
     404: '请求地址无法找到  404',
     500: '服务器错误 500',
-    302: '暂无权限 302'
+    302: '暂无权限 302',
+    405: '请求方法错误 405',
+    400: '请求语法错误 400'
   }
   if (typeData[error.response.status]) return typeData[error.response.status]
   return '网络异常'
