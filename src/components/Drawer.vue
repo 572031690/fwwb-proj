@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="approvalDrawar">
     <el-drawer
       title="审批信息"
       :destroy-on-close="true"
@@ -25,20 +25,19 @@
             </el-steps>
           </div>
           <div class="drawerFormBox">
-            <div class="formBody">
+            <div :class="{'formBody' :openType === 'see','tableBody' : openType === 'write'}">
               <el-form :model="listIn" label-width="120px" v-if="openType === 'write'">
                 <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText[typeName]" :key="index">
                   <span v-if="item.model!=='comment'" >{{(item.model!=='neednum' && item.model!=='num') ?listIn[item.model]:listIn[item.model]+listIn.unit}}</span>
                   <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
                 </el-form-item>
               </el-form>
-
               <div class="drawerInputBox" v-if="openType === 'write'">
                 <h3>审批意见</h3>
                 <hr />
                 <br />
                 <div class="inputBox">
-                    <el-input
+                  <el-input
                       type="textarea"
                       :rows="4"
                       placeholder="请输入意见"
@@ -46,11 +45,12 @@
                     </el-input>
                 </div>
               </div>
+
               <div  class="drawerApprovalBox" v-if="openType === 'see'">
                 <h3>审批详情</h3>
                 <hr />
                 <br />
-                <div class="block">
+                <div class="ApprovalListBlock">
                   <el-timeline>
                     <el-timeline-item
                       v-for="(item, key) in list"
@@ -362,71 +362,95 @@ export default {
 </script>
 
 <style lang="less" >
-
-.drawercenter {
-  border-top: 1px solid #eee;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  overflow: auto;
-}
-.drawerStyle {
-  margin-top: 20px;
-  padding: 0px 25px;
-  height: 780px;
-}
-
-.drawertopstatus {
-  margin-bottom: 30px;
-}
-.drawerFormBox {
-  display: flex;
-}
-.drawerApprovalBox {
-  margin-left:40px;
-}
-.departmentId {
-  font-weight: 600;
-  font-size: 15px;
-  color: rgb(177, 7, 16);
-}
-.drawerApprovalBoxRight {
-  margin-left:20px;
-  padding: 0 40px;
-  height: 720px;
-  overflow: auto;
-  border-left: 2px dashed #eee;
-}
-.drawerInputBox {
-  margin: 30px 0 20px;
-  .inputBox {
-    padding:0  10px;
+.approvalDrawar {
+    .drawercenter {
+    border-top: 1px solid #eee;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
   }
-}
-.demo-drawer__footer {
-  text-align: center;
+  .drawerStyle {
+    margin-top: 20px;
+    padding: 0px 25px;
+    height: 780px;
+  }
 
-}
-.drawerText {
-  border: 1px solid rgba(99, 94, 94,0.3);
-  border-radius: 5px;
-  font-size: 16px;
-  line-height: 18px;
-  padding: 5px;
-  width: 270px;
-  margin-top: 6px;
-  min-height: 50px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-
-}
-.el-drawer__header {
-  margin-bottom: 22px !important;
-  span {
+  .drawertopstatus {
+    margin-bottom: 30px;
+  }
+  .drawerFormBox {
+    height: 88%;
+    width: 100% ;
+    display: flex;
+    .formBody {
+      height: 100%;
+      width: 80%;
+      .tableBody {
+        width: 54% ;
+      }
+    }
+  }
+  .drawerApprovalBox {
+    margin-left:40px;
+    height: 100%;
+    width: 100%;
+    .ApprovalListBlock {
+      height: 92%;
+      width: 70%;
+      padding-right: 30%;
+      overflow: auto;
+      padding-left: 6px;
+    }
+  }
+  .departmentId {
+    font-weight: 600;
+    font-size: 15px;
+    color: rgb(177, 7, 16);
+  }
+  .drawerApprovalBoxRight {
+    margin-left:20px;
+    padding: 0 40px;
+    height: 720px;
+    overflow: auto;
+    border-left: 2px dashed #eee;
+  }
+  .drawerInputBox {
+    margin: 30px 0 20px;
+    .inputBox {
+      padding:0  10px;
+    }
+  }
+  .demo-drawer__footer {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 3%;
     text-align: center;
-    font-weight: 700;
-    font-size: 20px;
+
+  }
+  .drawerText {
+    border: 1px solid rgba(99, 94, 94,0.3);
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 18px;
+    padding: 5px;
+    width: 270px;
+    margin-top: 6px;
+    min-height: 50px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+
+  }
+  .el-drawer__header {
+    margin-bottom: 22px !important;
+    span {
+      text-align: center;
+      font-weight: 700;
+      font-size: 20px;
+    }
   }
 }
+
 </style>

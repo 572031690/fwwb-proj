@@ -45,8 +45,8 @@
               </el-col>
               <el-col :span="8" class="topRightBox">
                 <div class="approvalBtn" v-if="!showAdd">
-                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人代办</div>
-                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史代办</div>
+                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
+                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
                 </div>
                 <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                   <i class="el-icon-plus"></i>添加
@@ -182,7 +182,7 @@ export default {
   },
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(226, 63, 63)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)'],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
       drawerUrlList: {

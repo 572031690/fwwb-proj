@@ -23,15 +23,15 @@ export default {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           searchName: this.params.dname, // 传递搜索参数
-          selectName: this.params.selectValue // 筛选参数
+          selectName: this.params.selectValue, // 筛选参数
+          roleId: window.sessionStorage.getItem('sData')
         }
       }).then((res) => {
         this.list = res.list || [] // 获取里面的data数据
-        console.log(this.list, 'dsad')
         this.params.total = res.count // 获取后台传过来的总数据条数
         this.params.page = res.page // 将后端的当前页反传回来
         this.loading2 = false
-        this.getApprovalCurrentData()
+        // this.getApprovalCurrentData()
       }).catch(() => {
         this.loading2 = false
       })
@@ -65,7 +65,6 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          // const url = '/web/deleteUser'
           await this.$api(url, {
             params: data
           }).then(res => {
@@ -75,7 +74,6 @@ export default {
                 message: '删除成功!'
               })
               this.search()
-              // this.list.splice(e, 1)
             } else {
               this.$message.error('错了哦，删除失败')
             }
@@ -129,7 +127,7 @@ export default {
         })
         .catch(err => {
           if (err === 'cancel') {
-            this.$message('取消删除')
+            this.$message('取消提交')
           } else {
             this.$message({
               type: 'error',

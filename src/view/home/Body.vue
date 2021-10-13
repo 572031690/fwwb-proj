@@ -46,8 +46,8 @@
                   </el-col>
                   <el-col :span="8" class="topRightBox">
                     <div class="approvalBtn" v-if="!showAdd">
-                      <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人代办</div>
-                      <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史代办</div>
+                      <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
+                      <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
                     </div>
                     <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                       <i class="el-icon-plus"></i>添加
