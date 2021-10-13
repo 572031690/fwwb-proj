@@ -5,7 +5,7 @@ const components = {
   vDialog
 }
 const install = function (Vue) {
-  for (let key in components) {
+  for (const key in components) {
     Vue.component(components[key].name, components[key])
   }
 }

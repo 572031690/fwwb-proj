@@ -264,7 +264,8 @@ export default {
      */
     getApprovalType (type) {
       this.currentApprovalType = type
-      this.searchUrl = type ? 'home/buy/queryBuyActTask' : 'home/buy/getBuy'
+      this.searchUrl = type ? 'home/buy/queryBuyActTask' : 'home/buy/findFinishedBuy'
+      this.tableText = type ? this.$tables.buyList : this.$tables.buyListHistry
       this.search()
     },
     /**

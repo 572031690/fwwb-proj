@@ -23,13 +23,12 @@ export default {
           page: this.params.page, // 传递当前是第几页参数
           limit: this.params.limit, // 传递每页显示多少条记录参数
           searchName: this.params.dname, // 传递搜索参数
-          selectName: this.params.selectValue, // 筛选参数
-          roleId: window.sessionStorage.getItem('sData')
+          selectName: this.params.selectValue // 筛选参数
         }
       }).then((res) => {
         this.list = res.list || [] // 获取里面的data数据
         this.params.total = res.count // 获取后台传过来的总数据条数
-        this.params.page = res.page // 将后端的当前页反传回来
+        // this.params.page = res.page // 将后端的当前页反传回来
         this.loading2 = false
         // this.getApprovalCurrentData()
       }).catch(() => {

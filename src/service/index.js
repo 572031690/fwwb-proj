@@ -43,19 +43,26 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   response => {
-    switch (response.data.error) {
-      case 404:
-
-        response.data.msg = '未授权，请登录'
-        Message({
-          type: 'error',
-          showClose: true,
-          message: '端口404 未找到网页'
-        })
-        break
-      default:
-        break
+    console.log(response.data, 'responseresponse')
+    if (response.data.code === '403') {
+      Message({
+        type: 'error',
+        showClose: true,
+        message: response.data.error
+      })
     }
+    // switch (response.data.error) {
+    //   case 404:
+    //     response.data.msg = '未授权，请登录'
+    //     Message({
+    //       type: 'error',
+    //       showClose: true,
+    //       message: '端口404 未找到网页'
+    //     })
+    //     break
+    //   default:
+    //     break
+    // }
     return response
   },
   error => {

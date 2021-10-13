@@ -7,6 +7,14 @@ export const tableList = {
     tableTitle: ['编号', '订单标题', '创建日期', '物料名称', '物料编号', '数量', '提交专员编号', '订单码', '状态', '操作'],
     tableBody: ['buyid', 'buytitle', 'btime', 'itemtype', 'itemid', 'num', 'buyerid', 'auditid', 'opetation2', 'opetation1']
   },
+  needListHistry: {
+    tableTitle: ['编号', '需求标题', '物料名称', '数量', '创建日期', '提交专员编号', '详情', '状态'],
+    tableBody: ['needid', 'needtitle', 'itemtype', 'neednum', 'needday', 'neederid', 'comment', 'opetation2']
+  },
+  buyListHistry: {
+    tableTitle: ['编号', '订单标题', '创建日期', '物料名称', '物料编号', '数量', '提交专员编号', '订单码', '状态'],
+    tableBody: ['buyid', 'buytitle', 'btime', 'itemtype', 'itemid', 'num', 'buyerid', 'auditid', 'opetation2']
+  },
   departmentList: {
     tableTitle: ['部门名称', '部门编号', '操作'],
     tableBody: ['departmentname', 'departmentid', 'opetation']

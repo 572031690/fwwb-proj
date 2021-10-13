@@ -50,8 +50,19 @@ export default [
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
       searchName: '', // 传递搜索参数
-      selectName: '', // 查询审批状态
-      roleId: ''
+      selectName: '' // 查询审批状态
+    }
+  },
+  {
+    name: 'findFinishedNeed',
+    method: 'GET',
+    desc: '获取需求表历史待办',
+    path: '/activiti/findFinishedNeed',
+    params: {
+      page: '', // 传递当前是第几页参数
+      limit: '', // 传递每页显示多少条记录参数
+      searchName: '', // 传递搜索参数
+      selectName: '' // 查询审批状态
     }
   },
   {

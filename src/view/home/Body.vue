@@ -327,7 +327,8 @@ export default {
      */
     getApprovalType (type) {
       this.currentApprovalType = type
-      this.searchUrl = type ? 'home/need/queryNeedActTask' : 'home/need/getNeed'
+      this.searchUrl = type ? 'home/need/queryNeedActTask' : 'home/need/findFinishedNeed'
+      this.tableText = type ? this.$tables.needList : this.$tables.needListHistry
       this.search()
     },
     /**
