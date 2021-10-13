@@ -261,7 +261,8 @@ export default {
     async resetApproval () {
       const url = this.urlList.ressetApproval
       const params = {
-        buyid: this.listIn.buyid
+        buyid: this.listIn.buyid,
+        needid: this.listIn.needid
       }
       this.$api(url, { params }).then(res => {
         if (res.code === '101') {
@@ -322,7 +323,6 @@ export default {
       this.$nextTick(() => {
         this.searchApprovalList()
       })
-      // console.log(object);
     },
     /**
      * @desc 审批（驳回/通过）
