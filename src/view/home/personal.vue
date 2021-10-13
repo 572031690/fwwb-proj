@@ -64,7 +64,7 @@
               type="password"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="新密码" prop="password">
             <el-input
               v-model="form.password"
               style="width: 400px"
