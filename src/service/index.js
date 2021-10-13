@@ -69,7 +69,7 @@ axios.interceptors.response.use(
     Message({
       type: 'error',
       showClose: true,
-      message: error
+      message: getErrorMessage(error)
     })
     return Promise.reject(error)
   }
@@ -93,9 +93,9 @@ export function post (url, data = {}, headers) {
         // Message({
         //   type: 'error',
         //   showClose: true,
-        //   message: '网络异常'
+        //   message: error.message
         // })
-        console.log('错误信息：' + err)
+        console.log('错误信息：' + err.message)
         reject(err)
       }
     )
@@ -127,6 +127,16 @@ export function get (url, data = {}, headers) {
   })
 }
 
+function getErrorMessage (error) {
+  // console.log(error.response.status)
+  const typeData = {
+    404: '请求地址无法找到  404',
+    500: '服务器错误 500',
+    302: '暂无权限 302'
+  }
+  if (typeData[error.response.status]) return typeData[error.response.status]
+  return '网络异常'
+}
 /**
  * 其他delete等的封装类似
  * 可以查看中文文档 自行封装
