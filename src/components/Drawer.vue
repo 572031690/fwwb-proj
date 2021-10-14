@@ -96,7 +96,7 @@
               <h3>审批详情</h3>
               <hr />
               <br />
-              <div class="block">
+              <div class="ApprovalListRightBlock">
                 <el-timeline>
                   <el-timeline-item
                     v-for="(item, key) in list"
@@ -225,6 +225,12 @@ export default {
           auther: '马家辉',
           upname: '莫恩康',
           text: '王小虎 提交于 2018/4/3 20:46'
+        }, {
+          id: '3',
+          endTime: '7/28 11:40',
+          auther: '马家辉',
+          upname: '莫恩康',
+          text: '王小虎 提交于 2018/4/3 20:46'
         }
       ],
       form: {
@@ -266,18 +272,18 @@ export default {
       }
       this.$api(url, { params }).then(res => {
         if (res.code === '101') {
-          this.resetUpApproval()
+          this.resetUpApproval(res.list.taskId)
         }
       })
     },
     /**
      * @desc 驳回后重启提交审批请求
      */
-    async resetUpApproval () {
+    async resetUpApproval (taskId) {
       const url = this.urlList.passRequest
       const params = {
         text: '',
-        taskId: this.listIn.taskId
+        taskId
       }
       this.$api(url, { params }).then(res => {
         if (res.code === '101') {
@@ -410,10 +416,14 @@ export default {
   }
   .drawerApprovalBoxRight {
     margin-left:20px;
-    padding: 0 40px;
+    padding: 0 30px;
     height: 720px;
-    overflow: auto;
     border-left: 2px dashed #eee;
+    .ApprovalListRightBlock {
+      overflow: auto;
+      padding:0 10px;
+      height: 90%;
+    }
   }
   .drawerInputBox {
     margin: 30px 0 20px;

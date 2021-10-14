@@ -6,7 +6,7 @@ export default [
     path: '/web/addUser',
     data: {
       username: '',
-      realname:'',
+      realname: '',
       password: '',
       telNum: '',
       departmentid: '',

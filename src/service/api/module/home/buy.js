@@ -133,7 +133,7 @@ export default [
     name: 'startBuyActAgain',
     method: 'GET',
     desc: '重启采购流程',
-    path: ' /activiti/startBuyActAgain',
+    path: '/activiti/startBuyActAgain',
     params: {
       buyid: '' // int
     }
