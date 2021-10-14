@@ -78,6 +78,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     const _this = this
     const erd = elementResizeDetectorMaker()
     erd.listenTo(document.getElementById('body'), element => {

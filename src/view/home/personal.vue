@@ -157,6 +157,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getUserData()
   },
   methods: {

@@ -158,6 +158,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getItemData()
     this.getAprovalCount()
   },

@@ -54,8 +54,7 @@ router.beforeEach((to, from, next) => {
       showClose: true,
       message: '请先退出登陆'
     })
-    window.sessionStorage.setItem('currentIndex', 1)
-    return next('/home')
+    return next('/home/homewel?routerIndex=1')
   } else if (!store) {
     next('/login')
     // return next()

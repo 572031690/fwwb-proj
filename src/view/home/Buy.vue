@@ -233,6 +233,7 @@ export default {
     this.currentRouter = sessionStorage.getItem('currentRouter')
   },
   mounted () {
+    this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getTyp()
   },
   methods: {
@@ -241,6 +242,7 @@ export default {
      */
     getCurrentType () {
       this.currentRouter = sessionStorage.getItem('currentRouter')
+      this.$emit('changeRouterIndex', this.$route.query.routerIndex)
       this.getTyp()
     },
     /**
@@ -249,7 +251,6 @@ export default {
     getTyp () {
       if (this.currentRouter === 'approval') {
         this.searchUrl = 'home/buy/queryBuyActTask'
-        // this.searchUrl = 'home/need/getNeed'
         this.drawOpenType = 'write'
         this.showAdd = false
       } else {

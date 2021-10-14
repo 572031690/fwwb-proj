@@ -39,7 +39,7 @@ export default {
      * @desc 判断当是需求或购买审批时过滤历史代办数据
      */
     getApprovalCurrentData () {
-      const currentRouter = window.sessionStorage.getItem('currentIndex')
+      const currentRouter = this.$route.query.routerIndex
       if (!['32', '31'].includes(currentRouter)) return
       if (this.currentApprovalType) return
       const roleList = window.sessionStorage.getItem('sData')

@@ -218,6 +218,7 @@ export default {
     }
   },
   mounted () {
+    this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()

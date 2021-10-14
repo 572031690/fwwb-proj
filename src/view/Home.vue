@@ -3,11 +3,11 @@
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
       <div v-for="(item,index) in routerList" v-show="item.showtab" :key="index">
         <div @click="judgeType(item,index)" class="navhome">
-          <div class="checkLineDiv" v-if="item.index === checkIndex"></div>
+          <div class="checkLineDiv" v-if="item.index == checkIndex"></div>
           <img :src="item.imgSrc" class="navhome-img" />
           <span :class="{
             'spans1' : true,
-            'checkBox' :item.index === checkIndex}" :ref="item.ref">{{ item.label }}</span>
+            'checkBox' :item.index == checkIndex}" :ref="item.ref">{{ item.label }}</span>
           <img
             v-if="item.type === 'tips' && item.showtab"
             :src="item.imgtips"
@@ -31,9 +31,9 @@
                 v-show="itemson.showtab"
               >
                 <div :class="!itemson.disabled?'namehome-son1':'disabledClick'">
-                  <div class="checkLineDiv" v-if="itemson.index === checkIndex"></div>
+                  <div class="checkLineDiv" v-if="itemson.index == checkIndex"></div>
                   <img :src="itemson.imgSrc" class="navson-img" />
-                  <span :ref="itemson.ref" :class="{'checkBox' :itemson.index === checkIndex}">{{ itemson.label }}</span>
+                  <span :ref="itemson.ref" :class="{'checkBox' :itemson.index == checkIndex}">{{ itemson.label }}</span>
 
                 </div>
               </div>
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="rightbody">
-        <router-view ref="viewBox"></router-view>
+        <router-view ref="viewBox" @changeRouterIndex='changeRouterIndex'></router-view>
       </div>
     </div>
   </div>
@@ -82,6 +82,7 @@
 <script>
 // 引入jquery
 // import $ from 'jquery'
+import merge from 'webpack-merge'
 import { routerList } from '../assets/data/homeRouter'
 import { debounce } from '../assets/utils/index'
 export default {
@@ -116,16 +117,16 @@ export default {
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
     this.departmentID = window.sessionStorage.getItem('sData')
     this.$store.commit('getDepartment', this.departmentID)
-    console.log(routerList, 'sda')
     this.initType(false)
   },
   mounted () {
-    // window.sessionStorage.setItem('sData', ['10010', '10000', '10011', '10020'])
-    this.checkIndex = parseInt(window.sessionStorage.getItem('currentIndex')) || 1
     this.changeHomeImgCreate()
     this.nowTimes()
   },
   methods: {
+    changeRouterIndex (index) {
+      this.checkIndex = index
+    },
     /**
      * @desc 判断左侧导航收缩栏高度
      */
@@ -211,7 +212,7 @@ export default {
     /**
      * @desc 退出登陆方法
      */
-    gobacklogin (command) {
+    gobacklogin () {
       this.$confirm('是否退出登陆', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -361,7 +362,8 @@ export default {
      * @desc 路由跳转
      */
     goToRouter (val) {
-      if (this.checkIndex === val.index || val.disabled) return
+      this.checkIndex = parseInt(this.checkIndex)
+      if (this.$route.query.routerIndex === val.index || val.disabled) return
       if (val.index === 21 || val.index === 22) {
         window.sessionStorage.setItem('currentRouter', 'see')
       }
@@ -369,11 +371,13 @@ export default {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
       if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21) || (val.index === 22 && this.checkIndex === 32) || (val.index === 32 && this.checkIndex === 22)) {
+        this.$router.push({
+          query: merge(this.$route.query, { routerIndex: val.index })
+        })
         this.$refs.viewBox.getCurrentType()
+      } else {
+        this.$router.push({ path: val.path, query: { routerIndex: val.index } })// 页面跳转
       }
-      this.checkIndex = val.index
-      window.sessionStorage.setItem('currentIndex', this.checkIndex)
-      this.$router.push({ path: val.path })// 页面跳转
     }
   },
   beforeDestroy () {

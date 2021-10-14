@@ -200,7 +200,7 @@ export default {
             window.sessionStorage.setItem('userid', user.userid)
             this.logindata.uname = ''
             this.logindata.pass = ''
-            this.$router.push({ path: 'home' }) // 页面跳转
+            this.$router.push({ path: 'home/homewel', query: { routerIndex: 1 } }) // 页面跳转
             this.$notify({
             // element登陆成功提示框右上边
               title: '登陆成功',

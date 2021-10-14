@@ -197,42 +197,7 @@ export default {
         }
       ],
       // 时间线
-      list: [
-        {
-          id: '1',
-          endTime: '7/28 11:40',
-          upname: '莫恩康',
-          text: ''
-
-        },
-        {
-          id: '2',
-          endTime: '7/28 11:40',
-          auther: '马家辉',
-          upname: '莫恩康',
-          text:
-            '这次可以的加油这次可以的加油这次可以的加油这次可以的加油这次可以的加油'
-        },
-        {
-          id: '3',
-          endTime: '7/28 11:40',
-          auther: '马家辉',
-          upname: '莫恩康',
-          text: '王小虎 提交于 2018/4/3 20:46'
-        }, {
-          id: '4',
-          endTime: '7/28 11:40',
-          auther: '马家辉',
-          upname: '莫恩康',
-          text: '王小虎 提交于 2018/4/3 20:46'
-        }, {
-          id: '3',
-          endTime: '7/28 11:40',
-          auther: '马家辉',
-          upname: '莫恩康',
-          text: '王小虎 提交于 2018/4/3 20:46'
-        }
-      ],
+      list: [],
       form: {
         needid: '25',
         needtitle: '数据表',
