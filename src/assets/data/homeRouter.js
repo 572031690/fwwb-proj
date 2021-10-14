@@ -120,7 +120,7 @@ export const routerList = [
     type: 'router',
     index: 5,
     path: '/home/item',
-    label: '物料',
+    label: '基础数据',
     ref: 'spans14',
     disabled: false,
     imgSrc: require('@/assets/img/material.png'),
