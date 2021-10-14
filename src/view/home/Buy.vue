@@ -97,7 +97,7 @@
                     <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 4">
                       编辑
                     </button>
-                    <button class="delete" @click="deletedata({needid: item.needid},'home/buy/deleteBuy')"  v-if="item.uptype == 0 || item.uptype == 4">
+                    <button class="delete" @click="deletedata({buyid: item.buyid},'home/buy/deleteBuy')"  v-if="item.uptype == 0 || item.uptype == 4">
                       删除
                     </button>
                     <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>

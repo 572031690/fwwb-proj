@@ -64,6 +64,7 @@ export default {
         type: 'warning'
       })
         .then(async () => {
+          console.log(data, 'data')
           await this.$api(url, {
             params: data
           }).then(res => {
