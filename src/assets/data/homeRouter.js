@@ -14,7 +14,7 @@ export const routerList = [
     type: 'router',
     index: 7,
     path: '/home/driver',
-    label: '驾驶舱',
+    label: '数据驾驶舱',
     ref: 'spans9',
     disabled: false,
     imgSrc: require('@/assets/img/driver.png'),
