@@ -321,6 +321,8 @@ export default {
         this.searchUrl = 'home/need/getNeed'
         this.drawOpenType = 'see'
         this.showAdd = true
+        this.tableText = this.$tables.needList
+        this.currentApprovalType = true
       }
       this.search()
     },

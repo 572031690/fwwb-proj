@@ -256,6 +256,8 @@ export default {
       } else {
         this.searchUrl = 'home/buy/getBuy'
         this.drawOpenType = 'see'
+        this.tableText = this.$tables.buyList
+        this.currentApprovalType = true
         this.showAdd = true
       }
       this.search()
