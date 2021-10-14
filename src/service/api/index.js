@@ -14,7 +14,7 @@ requireModule.keys().forEach(fileName => {
   let moduleName = ''
   if (fileName.split('/').length > 2) {
     moduleName = fileName.replace(/(\.\/|\.js)/g, '')
-    console.log(moduleName, 'moduleName')
+    // console.log(moduleName, 'moduleName')
   } else {
     moduleName = _camelCase(fileName.replace(/(\.\/|\.js)/g, ''))
   }
@@ -22,5 +22,5 @@ requireModule.keys().forEach(fileName => {
     ...requireModule(fileName)
   }.default
 })
-console.log(modules, 'modules')
+// console.log(modules, 'modules')
 export default modules

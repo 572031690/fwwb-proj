@@ -373,7 +373,6 @@ export default {
      */
     async startApproval () {
       const url = this.dialogData.url.startApproval
-      console.log(url, 'dsad')
       const params = {
         needid: this.dialogData.formList.needid,
         buyid: this.dialogData.formList.buyid

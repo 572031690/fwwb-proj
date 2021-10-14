@@ -81,7 +81,6 @@ export default {
             this.lineSc.push(lineData)
           }
         })
-        console.log(this.lineSc, '.this.lineSc')
       })
     },
     /**

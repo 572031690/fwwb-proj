@@ -43,7 +43,7 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   response => {
-    console.log(response.data, 'responseresponse')
+    // console.log(response.data, 'responseresponse')
     if (response.data.code === '403') {
       Message({
         type: 'error',

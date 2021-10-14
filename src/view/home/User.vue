@@ -356,7 +356,6 @@ export default {
      * @desc 打开分配角色表
      */
     getRole (item) {
-      console.log(item.roleId)
       this.currentRola = []
       if (item.roleId[0] !== 0) this.currentRola = item.roleId || []
       this.currentId = item.userid

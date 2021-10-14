@@ -263,7 +263,6 @@ export default {
   mounted () {
     setTimeout(() => {
       this.loading2 = false
-      console.log(this.list, 'list')
     }, 400)
     this.getSearchUrl()
     // 调用方法获取后端数据
@@ -284,7 +283,6 @@ export default {
      * @desc 分配角色请求
      */
     checkRoleList () {
-      console.log(this.currentRola)
       this.$confirm('确定是否分配此用户该权限角色?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -379,7 +377,6 @@ export default {
     async getRolaList () {
       const url = 'home/user/getRolaList'
       await this.$api(url).then((res) => {
-        console.log(res)
         this.dialogVisibleRole = true
       })
     },
@@ -393,7 +390,6 @@ export default {
           userid: id
         }
       }).then((res) => {
-        console.log(res)
         this.search()
       })
     }

@@ -64,7 +64,6 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          console.log(data, 'data')
           await this.$api(url, {
             params: data
           }).then(res => {
@@ -94,12 +93,12 @@ export default {
      * @desc 页码
      */
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      // console.log(`每页 ${val} 条`)
       this.params.limit = val // 设置每页多少条记录
       this.search()
     },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      // console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
     },

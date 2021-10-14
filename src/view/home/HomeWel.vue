@@ -199,7 +199,6 @@ export default {
      */
     getAprovalCount () {
       const userList = JSON.parse(window.sessionStorage.getItem('userData'))
-      console.log(userList.roleId)
       if (userList.roleId.includes(10011) || userList.roleId.includes(10010) || userList.roleId.includes(10000) || userList.roleId.includes(10001)) {
         this.$api('home/welcome/getNeedCount').then(res => {
           this.needCount = res

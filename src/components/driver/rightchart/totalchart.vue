@@ -169,7 +169,6 @@ export default {
           selectName: ''
         }
       }).then((res) => {
-        console.log(res)
         this.totalData = []
         this.surplusData = []
         this.DataName = []
