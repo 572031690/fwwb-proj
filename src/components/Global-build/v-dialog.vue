@@ -277,6 +277,11 @@ export default {
           this.dialogData.formList[i] = this.currentList[i] ? this.currentList[i].toString() : ''
         }
       }
+      this.dialogData.dataTableList.forEach(item => {
+        if (item.putType === 'disput') {
+          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
+        }
+      })
     },
     /**
      * @desc 审批表单数据初始化
@@ -297,6 +302,7 @@ export default {
      * @desc 点击提交添加编辑验证
      */
     submitForm (formName) {
+      console.log(this.dialogData.formList, 'dialogData.formList')
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$confirm(this.openType === 'add' ? '是否确定保存并添加此条数据?'

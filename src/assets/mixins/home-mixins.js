@@ -2,7 +2,7 @@ export default {
   data () {
     return {
       params: {
-        limit: 5, // 每页显示5条记录
+        limit: 10, // 每页显示5条记录
         page: 1, // 当前是第几页
         total: 0, // 总共几条记录去分页
         dname: '', // 查询数据

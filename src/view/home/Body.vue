@@ -296,7 +296,6 @@ export default {
     this.currentRouter = sessionStorage.getItem('currentRouter')
   },
   mounted () {
-    // this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getTyp()
     this.getCurrentType()
   },
@@ -330,6 +329,7 @@ export default {
      * @desc 切换代办任务（审批）
      */
     getApprovalType (type) {
+      this.loading2 = true
       this.currentApprovalType = type
       this.searchUrl = type ? 'home/need/queryNeedActTask' : 'home/need/findFinishedNeed'
       this.tableText = type ? this.$tables.needList : this.$tables.needListHistry

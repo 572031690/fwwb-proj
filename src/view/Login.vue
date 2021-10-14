@@ -19,7 +19,7 @@
                   <img src="../assets/img/login-top.png" />
                 </div>
                 <div class="logintext">
-                  登陆
+                  登录
                 </div>
                 <form>
                   <div class="inputbox">
@@ -79,7 +79,7 @@
                     <button type="button" id="login" @click="login()">
                       登陆
                     </button>
-                    <button type="button" id="regiser" @click="seeData">
+                    <button type="button" id="regiser" @click="seeData" v-if="false">
                       注册
                     </button>
                   </div>
@@ -405,9 +405,10 @@ input {
 .loginbutton {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin-top: 12px;
   button {
-    width: 50%;
+    width: 70%;
     color: white;
     font-size: 18px;
     background-color: #409eff;

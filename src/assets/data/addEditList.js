@@ -71,7 +71,6 @@ export const addEditList = {
         label: '采购专员编号',
         putType: 'disput',
         dataName: 'buyerid'
-
       },
       {
         label: '需求专员编号',
