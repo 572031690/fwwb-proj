@@ -65,31 +65,26 @@
           >
             <div class="mytable">
               <div class="table-top">
-                <thead>
-                  <!-- 表头 -->
-                  <tr >
-                    <th v-for="(item,index) in tableText.tableTitle"
-                    :key="index"
-                    colspan="1"
-                    rowspan="1"
-                    :class="{
-                      'htop-th7':item === '需求标题',
-                      'htop-th2':item === '详情',
-                      'htop-ope1':item === '操作'
-                    }"
-                    >
-                      <div class="cell">{{item}}</div>
-                    </th>
-                  </tr>
-                </thead>
+                <div v-for="(item,index) in tableText.tableTitle"
+                  :key="index"
+                  colspan="1"
+                  rowspan="1"
+                  :class="{
+                    'htop-th7':item === '需求标题',
+                    'htop-th2':item === '详情',
+                    'htop-ope1':item === '操作'
+                  }"
+                  >
+                    <div class="cell">{{item}}</div>
+                </div>
               </div>
               <vNone v-if="!list.length" />
-              <tbody>
-                <tr
+              <div class="tbody">
+                <div class="bodyLine"
                   v-for="(item, key) in list"
                   :key="key"
                 >
-                  <td v-for="(data,index) in tableText.tableBody"
+                  <div v-for="(data,index) in tableText.tableBody"
                   :key="index"
                   :class="{
                     ['body-td3']:data==='needtitle',
@@ -139,13 +134,10 @@
                         </span>
                       </div>
                     </div>
-                  </td>
-
-                </tr>
-              </tbody>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <!-- </el-table> -->
           </div>
         </div>
 

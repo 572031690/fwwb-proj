@@ -40,10 +40,7 @@
         >
           <div class="mytable">
             <div class="table-top">
-              <thead>
-                <!-- 表头 -->
-                <tr>
-                  <th v-for="(item,index) in tableText.tableTitle"
+                <div v-for="(item,index) in tableText.tableTitle"
                   :key="index"
                   colspan="1"
                   rowspan="1"
@@ -51,22 +48,18 @@
                   item === '描述'?'htop-th3'
                   :item === '需求单名'?'htop-th7'
                   :'htop-th1'">
-                    <div class="cell">{{item}}</div>
-                  </th>
-                </tr>
-              </thead>
+                  <div class="cell">{{item}}</div>
+                </div>
             </div>
             <vNone v-if="!list.length" />
-            <!-- 数据列表 -->
-            <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
-            <tbody>
-              <tr v-for="(item, key) in list" :key="key">
+            <div class="tbody" >
+              <div class="bodyLine" v-for="(item, key) in list" :key="key">
 
-                <td v-for="(data,index) in tableText.tableBody"
+                <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
                 :class="{'body-td4': data==='comment'}" >
 
-                  <div :class="data ==='comment'?'cell1':'cell'" v-if="data!=='opetation'">
+                  <div class="cell" v-if="data!=='opetation'">
                     {{ item[data] }}
                   </div>
 
@@ -74,10 +67,10 @@
                     <button class="modify" @click="seeData(item)">编辑</button>
                     <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
                   </div>
-                </td>
+                </div>
 
-              </tr>
-            </tbody>
+              </div >
+            </div>
           </div>
 
           <vDialog ref="addDialog"
@@ -158,13 +151,6 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
-
-.body-top {
-  height: 45px;
-  width: 1210px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-}
 
 .searchfa {
   margin-left: 35px;

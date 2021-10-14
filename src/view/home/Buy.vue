@@ -62,33 +62,26 @@
         >
         <div class="mytable">
           <div class="table-top">
-            <thead>
-              <!-- 表头 -->
-              <tr >
-                <th v-for="(item,index) in tableText.tableTitle"
-                :key="index"
-                colspan="1"
-                rowspan="1"
-                :class="
-                item === '订单标题'?'htop-th2'
-                :item==='操作'?'htop-ope1'
-                :'htop-th1'">
-                  <div class="cell">{{item}}</div>
-                </th>
-              </tr>
-
-            </thead>
+            <div v-for="(item,index) in tableText.tableTitle"
+            :key="index"
+            colspan="1"
+            rowspan="1"
+            :class="
+            item === '订单标题'?'htop-th2'
+            :item==='操作'?'htop-ope1'
+            :'htop-th1'">
+              <div class="cell">{{item}}</div>
+            </div>
           </div>
           <vNone v-if="!list.length" />
           <!-- 数据列表 -->
-          <tbody>
-            <tr v-for="(item, key) in list" :key="key">
-              <td v-for="(data,index) in tableText.tableBody"
+          <div class="tbody">
+            <div class="bodyLine" v-for="(item, key) in list" :key="key">
+              <div v-for="(data,index) in tableText.tableBody"
               :key="index"
               :class="data==='buytitle'? 'body-td2'
               :data==='opetation1'?'body-ope1'
               :'body-td1'" >
-
                 <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
                   {{ data==='neednum'? item[data] + (item.unit  || '') :item[data]}}
                 </div>
@@ -130,9 +123,9 @@
                     </span>
                   </div>
                 </div>
-              </td>
-            </tr>
-          </tbody>
+              </div>
+            </div>
+          </div >
         </div>
 
         </div>

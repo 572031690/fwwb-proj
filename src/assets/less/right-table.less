@@ -22,7 +22,7 @@
   margin: 0 auto;
   margin-top: 40px;
   height: 45px;
-  width: 1460px;
+  width: 1440px;
   border: 1px solid #dadce0;
   border-radius: 4px;
   .bodytop-heart {
@@ -156,6 +156,7 @@
   border-radius: 5px;
   box-shadow:0 0 18px #dadce0 ;
   padding: 15px 18px 35px;
+  width: 80%;
   position: relative;
 }
 .mytable::after {
@@ -169,35 +170,29 @@
 }
 .table-top {
   margin-bottom: 15px;
-  thead {
-    tr {
-      display: flex;
-      // flex-direction: row;
-      // border-bottom: 1px solid #dadce0;
-      th {
-        display: flex;
-        align-content: space-between;
-        justify-content: center;
-        width: 120px;
-        height: 35px;
-        color: rgb(144,147,153);
-        // border: 0.5px solid #dadce0;
-        padding-top: 10px;
-        // text-align: center;
-      }
-      .htop-th2 {
-        width: 350px;
-      }
-      .htop-th3 {
-        width: 500px;
-      }
-      .htop-th7 {
-        width: 140px;
-      }
-      .htop-ope1 {
-        width: 156px;
-      }
-    }
+  width: 100%;
+  display: flex;
+  color: rgb(144,147,153);
+  & > div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+  }
+  .htop-th1 {
+    flex: 1;
+  }
+  .htop-th2 {
+    flex: 3;
+  }
+  .htop-th3 {
+    flex: 3.5;
+  }
+  .htop-th7 {
+    flex: 1.2;
+  }
+  .htop-ope1 {
+    flex: 1.5;
   }
 }
 
@@ -211,45 +206,38 @@
   // justify-content: center;
 
 }
-tbody {
-  tr {
-    transition: all 0.2s;
+.tbody {
+  width: 100%;
+  .bodyLine {
+    width: 100%;
     display: flex;
-    border-bottom: 1px solid #dadce0;
-    // flex-direction: row;
-    // align-content: space-between;
-    // justify-content: center;
-    td {
-      display: flex;
-      align-content: space-between;
-      justify-content: center;
-      width: 120px;
-      height: 35px;
-      // border: 0.5px solid #dadce0;
-      padding-top: 10px;
-      text-align: center;
-      font-size: 15px;
-      line-height: 28px;
+    & > div {
+      flex: 1;
+      padding: 8px 0;
+      border-bottom: 1px solid #dadce0;
     }
     .body-td2 {
-      width: 350px;
+      flex: 3;
     }
     .body-td4 {
-      width: 500px;
+      flex: 3.5;
     }
     .body-td3 {
-      width: 140px;
+      flex: 1.2;
     }
     .body-ope1 {
-      width: 156px;
+      flex: 1.5;
     }
     &:hover {
       background-color: #f5f7fa;
     }
   }
+  
   .cell {
     height: 28px;
     width: 100%;
+    line-height: 28px;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

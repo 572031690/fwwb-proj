@@ -57,27 +57,23 @@
         >
           <div class="mytable">
             <div class="table-top">
-              <thead>
-                <tr >
-                  <th v-for="(item,index) in tableText.tableTitle"
-                  :key="index"
-                  colspan="1"
-                  rowspan="1"
-                  :class="{
-                    'htop-th2':  item === '登陆账号',
-                    'htop-ope1':item === '操作',
-                    'htop-th7':item === '职位'
-                  }">
-                    <div class="cell">{{item}}</div>
-                  </th>
-                </tr>
-              </thead>
+              <div v-for="(item,index) in tableText.tableTitle"
+                :key="index"
+                colspan="1"
+                rowspan="1"
+                :class="{
+                  'htop-th2':  item === '登陆账号',
+                  'htop-ope1':item === '操作',
+                  'htop-th7':item === '职位'
+                }">
+                  <div class="cell">{{item}}</div>
+              </div>
             </div>
             <vNone v-if="!list.length" />
-            <tbody>
-              <tr v-for="(item, key) in list" :key="key">
+            <div class="tbody" >
+              <div class="bodyLine" v-for="(item, key) in list" :key="key">
 
-                <td v-for="(data,index) in tableText.tableBody"
+                <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
                 :class="{
                     ['body-td2']:data==='username',
@@ -115,9 +111,9 @@
                         {{item.isDisabled?  '禁用':'正常'}}
                   </div>
 
-                </td>
-              </tr>
-            </tbody>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -394,11 +390,6 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
-
-.body-top {
-  width: 1280px;
-}
-
 .tableRole {
   &Top {
     display: flex;

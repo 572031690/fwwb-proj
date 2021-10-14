@@ -278,7 +278,7 @@ export default {
         }
       }
       this.dialogData.dataTableList.forEach(item => {
-        if (item.putType === 'disput') {
+        if (item.putType === 'disput' && (item.dataName === 'buyerid' || item.dataName === 'neederid')) {
           this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
