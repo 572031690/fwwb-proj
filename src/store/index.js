@@ -22,7 +22,6 @@ const store = new Vuex.Store({
       state.departmentId = id
     },
     setRouter (state, id) {
-      debugger
       state.routerIndex = id
     }
   },

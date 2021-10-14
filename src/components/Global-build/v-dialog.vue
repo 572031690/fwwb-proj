@@ -24,6 +24,7 @@
           :key="index"
           :label="item.label"
           :prop="item.dataName"
+          v-show="item.putType === 'disput'? false: true"
         >
           <el-input
             v-model="dialogData.formList[item.dataName]"

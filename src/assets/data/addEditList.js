@@ -68,7 +68,7 @@ export const addEditList = {
         dataName: 'num'
       },
       {
-        label: '购买专员编号',
+        label: '采购专员编号',
         putType: 'disput',
         dataName: 'buyerid'
 
