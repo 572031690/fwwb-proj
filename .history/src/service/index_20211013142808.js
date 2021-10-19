@@ -1,10 +1,10 @@
 // import { reject, resolve } from 'any-promise'
 import axios from 'axios'
 // import { response } from 'express'
-// import qs from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
+import qs from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
 import APIUrl from './api.url'
-// import router from '../router' // 引入路由
-import { Message } from 'element-ui'
+import router from '../router' // 引入路由
+import { Loading, Message } from 'element-ui'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 5000 // 超时默认值
@@ -28,10 +28,11 @@ axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用
 // 在ajax发送之前拦截 比如对所有请求统一添加header token
 axios.interceptors.request.use(
   config => {
-    const token = window.sessionStorage.getItem('sessionId') // 拿到浏览器的token
-    // config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
-    config.headers['x-token'] = token
-    // 和服务器约定好token叫什么名字  token Authorization
+    const token = window.sessionStorage.getItem('token-access') // 拿到浏览器的token
+    // if (token) {
+    config.headers.Authorization = `token ${token}` // 创建并赋值请求头字段
+    // config.headers.token = '123456' // 和服务器约定好token叫什么名字  token Authorization
+    // }
     return config
   },
   err => {
@@ -43,34 +44,23 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   response => {
-    // console.log(response.data, 'responseresponse')
-    if (response.data.code === '403') {
-      Message({
-        type: 'error',
-        showClose: true,
-        message: response.data.error
-      })
+    switch (response.data.error) {
+      case 404:
+
+        response.data.msg = '未授权，请登录'
+        Message({
+          type: 'error',
+          showClose: true,
+          message: '端口404 未找到网页'
+        })
+        break
+      default:
+        break
     }
-    // switch (response.data.error) {
-    //   case 404:
-    //     response.data.msg = '未授权，请登录'
-    //     Message({
-    //       type: 'error',
-    //       showClose: true,
-    //       message: '端口404 未找到网页'
-    //     })
-    //     break
-    //   default:
-    //     break
-    // }
     return response
   },
   error => {
-    Message({
-      type: 'error',
-      showClose: true,
-      message: getErrorMessage(error)
-    })
+    console.log('错误信息：' + error)
     return Promise.reject(error)
   }
 )
@@ -90,12 +80,11 @@ export function post (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
-        // Message({
-        //   type: 'error',
-        //   showClose: true,
-        //   message: error.message
-        // })
-        console.log('错误信息：' + err.message)
+        Message({
+          type: 'error',
+          showClose: true,
+          message: '网络异常'
+        })
         reject(err)
       }
     )
@@ -115,34 +104,17 @@ export function get (url, data = {}, headers) {
         resolve(response.data)
       },
       err => {
-        // Message({
-        //   type: 'error',
-        //   showClose: true,
-        //   message: '网络异常'
-        // })
-        console.log('错误信息：' + err)
+        Message({
+          type: 'error',
+          showClose: true,
+          message: '网络异常'
+        })
         reject(err)
       }
     )
   })
 }
 
-function getErrorMessage (error) {
-  if (error.code === 'ECONNABORTED') return '错误：请求超时'
-  const typeData = {
-    302: '错误：暂无权限 302',
-    401: '错误：未授权 401',
-    403: '错误：禁止访问 403',
-    400: '错误：请求语法错误 400',
-    404: '错误：请求地址无法找到  404',
-    405: '错误：请求方法错误 405',
-    500: '错误：服务器错误 500',
-    502: '错误：网关错误 502',
-    503: '错误：无法获得服务器 503'
-  }
-  if (typeData[error.response.status]) return typeData[error.response.status]
-  return '网络异常'
-}
 /**
  * 其他delete等的封装类似
  * 可以查看中文文档 自行封装

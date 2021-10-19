@@ -128,7 +128,9 @@ export function get (url, data = {}, headers) {
 }
 
 function getErrorMessage (error) {
-  if (error.code === 'ECONNABORTED') return '错误：请求超时'
+  if (error.code === 'ECONNABORTED') {
+    return '错误：请求超时'
+  }
   const typeData = {
     302: '错误：暂无权限 302',
     401: '错误：未授权 401',

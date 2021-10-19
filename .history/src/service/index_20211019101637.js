@@ -128,16 +128,13 @@ export function get (url, data = {}, headers) {
 }
 
 function getErrorMessage (error) {
-  if (error.code === 'ECONNABORTED') return '错误：请求超时'
+  console.log(typeof error.code, '打算')
   const typeData = {
     302: '错误：暂无权限 302',
-    401: '错误：未授权 401',
-    403: '错误：禁止访问 403',
     400: '错误：请求语法错误 400',
     404: '错误：请求地址无法找到  404',
     405: '错误：请求方法错误 405',
     500: '错误：服务器错误 500',
-    502: '错误：网关错误 502',
     503: '错误：无法获得服务器 503'
   }
   if (typeData[error.response.status]) return typeData[error.response.status]
