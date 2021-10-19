@@ -170,10 +170,6 @@ export default {
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
 
-.body-top {
-  width: 1210px;
-}
-
 .searchfa {
   margin-left: 35px;
 }

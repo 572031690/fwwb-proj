@@ -205,7 +205,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 提示框
-          this.$confirm('是否确定修改密码?', '提示', {
+          this.$confirm('修改成功后会自动退出登陆，是否确定修改密码?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -239,7 +239,8 @@ export default {
       await this.$api(url, data).then((res) => {
         if (res.code === '101') {
           this.$message.success('修改成功')
-          this.closeres()
+          sessionStorage.clear() // 删除所有数据
+          this.$router.push({ name: 'login' }) // 直接跳转
         } else if (res.code === '102') {
           this.$message.error('原密码不正确')
         }

@@ -128,13 +128,13 @@ export function get (url, data = {}, headers) {
 }
 
 function getErrorMessage (error) {
-  // console.log(error.response.status)
   const typeData = {
-    404: '请求地址无法找到  404',
-    500: '服务器错误 500',
-    302: '暂无权限 302',
-    405: '请求方法错误 405',
-    400: '请求语法错误 400'
+    302: '错误：暂无权限 302',
+    400: '错误：请求语法错误 400',
+    404: '错误：请求地址无法找到  404',
+    405: '错误：请求方法错误 405',
+    500: '错误：服务器错误 500',
+    503: '错误：无法获得服务器 503'
   }
   if (typeData[error.response.status]) return typeData[error.response.status]
   return '网络异常'

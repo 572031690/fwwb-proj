@@ -292,6 +292,7 @@ export default {
         this.routerList[6].showtab = true
       }
       if (this.departmentID.includes('10001')) { // 总经理10001
+        this.routerList[1].showtab = true
         this.routerList[3].showtab = true
         this.routerList[5].showtab = true
         this.routerList[6].showtab = true
