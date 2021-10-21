@@ -15,6 +15,7 @@ import Persion from '../view/home/personal.vue'
 import ControlStock from '../view/home/ControlStock.vue'
 import Role from '../view/home/Role.vue'
 import Warehouse from '../view/home/Warehouse.vue'
+import permission from '../view/home//permission.vue'
 
 Vue.use(VueRouter)
 // 2.配置路由
@@ -29,6 +30,7 @@ const routes = [
         meta: { title: '用户信息', isTab: true }
       },
       { path: 'body', component: Body },
+      { path: 'permission', component: permission },
       { path: 'personal', component: Persion },
       { path: 'item', component: Item },
       { path: 'buy', component: Buy },

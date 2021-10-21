@@ -163,7 +163,7 @@ export const routerList = [
     type: 'router',
     index: 13,
     id: 0,
-    path: '/home/warehouse',
+    path: '/home/permission',
     label: '权限管理',
     ref: 'spans19',
     disabled: false,

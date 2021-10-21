@@ -29,6 +29,7 @@
           <div class="tabmidtopBodyRight">
             <counTo
               :startVal="0"
+              :decimals="2"
               :endVal="totalValue"
               :duration="3000"
             />

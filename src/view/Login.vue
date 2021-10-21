@@ -336,6 +336,7 @@ img {
   background: rgba(64,158,255,0.5);
   .filImg {
     width: 100%;
+    height: 100%;
   }
 }
 .login-center {
