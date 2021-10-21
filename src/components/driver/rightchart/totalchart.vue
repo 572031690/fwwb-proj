@@ -161,7 +161,7 @@ export default {
      * @desc 获取服务器的数据
      */
     async getData () {
-      await this.$api('home/item/getItem', {
+      await this.$api('home/warehouse/findDepository', {
         params: {
           page: 1, // 传递当前是第几页参数
           limit: 20, // 传递每页显示多少条记录参数
@@ -174,9 +174,9 @@ export default {
         this.DataName = []
         this.unitData = []
         res.list.slice(0, 5).forEach(item => {
-          this.totalData.push(item.totalStock)
-          this.surplusData.push(parseInt(item.stock / item.totalStock * 100))
-          this.DataName.push(item.itemtype)
+          this.totalData.push(item.totalstock)
+          this.surplusData.push(parseInt(item.stock / item.totalstock * 100))
+          this.DataName.push(item.name)
           this.unitData.push(item.unit)
         })
       })

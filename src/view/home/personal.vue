@@ -92,6 +92,20 @@
 
 <script>
 export default {
+
+  computed: {
+    showRoleData: function () {
+      // val为传进来的值
+      return function (val) {
+        if (!val) return
+        const rolaArr = []
+        this.rolaSelect.forEach(item => {
+          if (val.includes(parseInt(item.roleId))) rolaArr.push(item.rolename)
+        })
+        return rolaArr.join(',')
+      }
+    }
+  },
   data () {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
@@ -134,7 +148,6 @@ export default {
           label: '管理员',
           depart: '管理部'
         }
-
       ],
       dialogFormVisible: false,
       userData: {},
@@ -158,9 +171,19 @@ export default {
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
-    this.getUserData()
+    this.getRoleList()
   },
   methods: {
+    /**
+     * @desc 请求角色列表
+     */
+    async getRoleList () {
+      const url = 'home/user/getRolaList'
+      await this.$api(url).then((res) => {
+        this.rolaSelect = res.roleList
+        this.getUserData()
+      })
+    },
     /**
      * @desc 获取角色信息
      */
@@ -169,17 +192,6 @@ export default {
       this.userData = userList
       this.userData.role = this.showRoleData(this.userData.roleId)
       this.userData.department = this.showDepartData(this.userData.roleId)
-    },
-    /**
-     * @desc 显示角色内容
-     */
-    showRoleData (val) {
-      if (!val) return
-      const rolaArr = []
-      this.rolaSelect.forEach(item => {
-        if (val.includes(parseInt(item.value))) rolaArr.push(item.label)
-      })
-      return rolaArr.join(',')
     },
     /**
      * @desc 显示部门内容

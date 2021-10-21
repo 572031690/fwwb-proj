@@ -9,7 +9,7 @@
           <div>
             <el-table :data="tableData" borderstyle="width: 100%">
               <template slot="empty" >
-                  <div>
+                  <div class="welTexts">
                     {{briefIntroduction}}
                   </div>
                 </template>
@@ -214,7 +214,7 @@ export default {
      * @desc 请求库存数据
      */
     async getItemData () {
-      await this.$api('home/item/getItem', {
+      await this.$api('home/welcome/findDepository', {
         params: {
           page: 1, // 传递当前是第几页参数
           limit: 20, // 传递每页显示多少条记录参数
@@ -226,7 +226,7 @@ export default {
         this.datalist = []
         for (let i = 0; i < 4; i++) {
           this.datalist.push({
-            name: itemData[i].itemtype,
+            name: itemData[i].name,
             num: itemData[i].stock,
             unit: itemData[i].unit
           })
@@ -258,6 +258,10 @@ export default {
   .top-box {
     display: flex;
     justify-content:center;
+  }
+  .welTexts {
+    font-size:17px;
+    width: 500px
   }
   .box-card-right {
     width: 55%;

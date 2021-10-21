@@ -21,6 +21,9 @@ export const rulesData = {
     // { type: 'number', message: '电话为数字值',trigger: 'blur'},
     // { min: 9, max: 15, message: '长度不能小于9位', trigger: 'blur' }
   ],
+  arrivaltime: [{ required: true, message: '到货日期不能为空', trigger: 'blur' }],
+  importance: [{ required: true, message: '请选择重要重度', trigger: 'blur' }],
+  department: [{ required: true, message: '请选择需求单位', trigger: 'change' }],
   departmentid: [{ required: true, message: '请选择部门编号', trigger: 'change' }],
   employeeid: [
     { required: true, message: '请输入员工编号', trigger: 'change' },
@@ -77,6 +80,9 @@ export const rulesData = {
     { required: true, message: '请输入需求单名', trigger: 'blur' },
     { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
   ],
+  itemcode: [{ required: true, message: '物料编号不能为空', trigger: 'blur' }],
+  unit: [{ required: true, message: '请选择单位', trigger: 'blur' }],
+  name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
   detail: [{ required: true, message: '部门描述不能为空', trigger: 'blur' }],
   itemunit: [{ required: true, message: '单位不能为空', trigger: 'blur' }]
 }

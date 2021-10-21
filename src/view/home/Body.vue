@@ -354,6 +354,7 @@ export default {
   @import url("../../assets/less/right-table.less");
 
   .tipsspan {
+    margin: 0 auto;
     display: block;
     border-radius:3px;
     width: 75px;

@@ -1,5 +1,5 @@
-// const LOCAL = 'http://localhost:8081/controller_war'
-const YS = 'http://10.1.8.199/controller_war'
+const LOCAL = 'http://localhost:8081/controller_war'
+// const YS = 'http://10.1.8.199/controller_war'
 module.exports = {
   lintOnSave: false,
   devServer: {
@@ -8,7 +8,7 @@ module.exports = {
     port: 8077,
     proxy: {
       '/api': {
-        target: YS,
+        target: LOCAL,
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       }

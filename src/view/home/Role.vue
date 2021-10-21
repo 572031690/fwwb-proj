@@ -7,7 +7,7 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>材料列表</span></el-col
+                <span>角色列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
@@ -16,7 +16,7 @@
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入名称"
+                        placeholder="请输入材料名称"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -25,10 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')" class="topRightBox">
-                <div class="approvalBtn" >
-                  <div v-for="(item,index) in typeList" :key="index" :class="{'currentBtn' : currentApprovalType ===index}" @click="getApprovalType(index)">{{item.label}}</div>
-                </div>
+              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -49,7 +46,6 @@
                   rowspan="1"
                   :class="
                   item === '描述'?'htop-th3'
-                  :item === '需求单名'?'htop-th7'
                   :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </div>
@@ -60,12 +56,20 @@
 
                 <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
-                :class="{'body-td4': data==='comment'}" >
+                :class="{'body-td4': data==='description'}" >
 
-                  <div class="cell" v-if="data!=='opetation'">
+                  <div class="cell" v-if="data!=='isDeleted' && data!=='opetation' && data!=='opetationRole' && data!=='index'">
                     {{ item[data] }}
                   </div>
-
+                   <div class="cell" v-if="data==='isDeleted'">
+                    {{ item[data]? '禁用' : '正常' }}
+                  </div>
+                  <div class="cell" v-if="data==='index'">
+                    {{key + 1}}
+                  </div>
+                  <div class="cell" v-if="data==='opetationRole'">
+                    <button class="roleBtn" @click="getRole(item)">分配权限</button>
+                  </div>
                   <div class="cell" v-if="data==='opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
                     <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
@@ -82,12 +86,35 @@
             :editDisabled="editDisabled"
             @closeaddDialog="closeaddDialog"
             :IntList="IntList"
-            :staticData="staticData"
             :currentList="currentList"
             :openType="openType"
             name="itemList"
         >
         </vDialog>
+
+        <el-dialog
+          title="分配角色"
+          :visible.sync="dialogVisibleRole"
+          width="30%">
+          <div class="tableRole">
+            <div class="tableRoleTop">
+              <div class="btnRole">选择</div>
+              <div class="textRole">角色名称</div>
+              <div class="textRole">描述</div>
+            </div>
+            <el-checkbox-group v-model="currentRola">
+              <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
+                <div class="btnRole"><el-checkbox :label="item.roleId">{{''}}</el-checkbox></div>
+                <div class="textRole">{{item.rolename}}</div>
+                <div class="textRole">{{item.description}}</div>
+              </div>
+            </el-checkbox-group>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisibleRole = false">取 消</el-button>
+            <el-button type="primary" @click="checkRoleList">确 定</el-button>
+          </span>
+        </el-dialog>
 
         </div>
         <div class="table-bottom">
@@ -114,10 +141,8 @@ export default {
   mixins: [homeMix],
   data () {
     return {
-      currentApprovalType: 0,
       editDisabled: ['itemid'],
       tableText: '',
-      staticData: { parentid: 1 },
       dialogFormShow: false,
       IntList: ['stock'],
       list: [
@@ -129,30 +154,14 @@ export default {
           unit: 'kg'
         }
       ],
-      typeList: [
-        {
-          label: '物料',
-          key: 1
-        },
-        {
-          label: '单位',
-          key: 7
-        },
-        {
-          label: '部门',
-          key: 12
-        }
-      ],
-      itemid: '',
+      currentRola: '',
+      rolaData: '',
+      dialogVisibleRole: false,
       loading2: true
     }
   },
   created () {
-    if (this.$store.state.departmentId.includes('10000')) {
-      this.tableText = this.$tables.itemListedit
-    } else {
-      this.tableText = this.$tables.itemListsee
-    }
+    this.tableText = this.$tables.roleList
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
@@ -162,43 +171,23 @@ export default {
   },
   methods: {
     /**
-     * @desc ajax请求后台数据 获得list数据 并用于分页
-     */
-    async search () {
-      await this.$api(this.searchUrl, {
-        params: {
-          page: this.params.page, // 传递当前是第几页参数
-          limit: this.params.limit, // 传递每页显示多少条记录参数
-          searchName: this.params.dname, // 传递搜索参数
-          selectName: this.params.selectValue // 筛选参数
-        }
-      }).then((res) => {
-        this.list = res.list.slice(1) || [] // 获取里面的data数据
-        this.params.total = res.count - 1 // 获取后台传过来的总数据条数
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
-      })
-    },
-    /**
-     * @desc 添加方法打开界面
-     */
-    gethomeAdd () {
-      this.openType = 'add'
-      this.dialogFormShow = true
-    },
-    /**
      * @desc 请求列表数据
      */
     getSearchUrl () {
-      this.params.selectValue = 1
-      this.searchUrl = 'home/item/findAllitem'
+      this.searchUrl = 'home/role/listRole'
+      // this.searchUrl = 'home/role/listPerm'
     },
-    getApprovalType (index) {
-      this.currentApprovalType = index
-      this.params.selectValue = this.typeList[index].key
-      this.staticData.parentid = this.typeList[index].key
-      this.search()
+    /**
+     * @desc 打开分配权限表
+     */
+    getRole (item) {
+      this.dialogVisibleRole = true
+    },
+    /**
+     * @desc 确定权限
+     */
+    checkRoleList () {
+
     }
   }
 }

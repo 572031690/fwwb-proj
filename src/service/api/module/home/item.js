@@ -5,11 +5,9 @@ export default [
     desc: '增加材料数据',
     path: '/webitem/addItem',
     data: {
-      itemid: '', // 因为材料的编号是一串字符 ##还没改
       itemtype: '',
-      stock: '',
       comment: '',
-      unit: ''
+      parentid: '' // 自查关键字（例如：物料类别的id 1）
     }
   },
   {
@@ -29,9 +27,8 @@ export default [
     data: {
       itemid: '',
       itemtype: '',
-      stock: '',
       comment: '',
-      unit: ''
+      parentid: ''
     }
   },
   {
@@ -47,6 +44,27 @@ export default [
     },
     headers: {
       asm: 'Basic dGVzdF9jbGllbnQ6dGVzdF9zZWNyZXQ='
+    }
+  },
+  {
+    name: 'findAllitem',
+    method: 'GET',
+    desc: '用于查找基础信息的详细内容',
+    path: '/webitem/findAllitem',
+    params: {
+      page: '', // 传递当前是第几页参数
+      limit: '', // 传递每页显示多少条记录参数
+      searchName: '', // 传递搜索参数
+      selectName: ''
+    }
+  },
+  {
+    name: 'findItemName',
+    method: 'GET',
+    desc: '用于查找基础信息的详细内容',
+    path: '/webitem/findItemName',
+    params: {
+      itemid: ''
     }
   }
 ]

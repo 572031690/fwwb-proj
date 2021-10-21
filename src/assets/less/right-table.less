@@ -71,6 +71,7 @@
   margin-left: auto;
   display: flex;
   margin-right: 15px;
+  margin-left: auto;
   vertical-align: middle;
   width: 150px;
   color: #8c959c;
@@ -80,6 +81,7 @@
     text-align: center;
     padding: 3px 0;
     border: 0.5px solid #c9d3da;
+    border-right: 0px;
   }
   >div:hover {
     color: #8ebaed;
@@ -90,6 +92,7 @@
   }
   div:last-child {
     border-radius: 0 5px 5px 0;
+    border-right: 0.5px solid #c9d3da;
   }
   .currentBtn {
     background-color: #f0f7ff;
@@ -172,6 +175,7 @@
   margin-bottom: 15px;
   width: 100%;
   display: flex;
+ 
   color: rgb(144,147,153);
   & > div {
     flex: 1;
@@ -212,6 +216,7 @@
     width: 100%;
     display: flex;
     & > div {
+      overflow: hidden;
       flex: 1;
       padding: 8px 0;
       border-bottom: 1px solid #dadce0;
@@ -279,10 +284,10 @@
     }
   }
   .roleBtn {
-    color: rgb(70, 69, 69);
+    color: white;
     width: 60px;
-    border: 0.5px solid rgb(219, 219, 127);
-    background-color: rgb(230, 230, 61);
+    border: 0.5px solid rgb(51, 131, 223);
+    background-color: rgb(78, 110, 242);
     &:hover {
       color: #8ebaed;
       border: 1px solid #8ebaed;

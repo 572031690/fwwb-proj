@@ -7,7 +7,7 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>材料列表</span></el-col
+                <span>仓库列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
@@ -16,7 +16,7 @@
                     <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入名称"
+                        placeholder="请输入材料名称"
                         @change="search"
                         v-model="params.dname"
                       />
@@ -25,10 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')" class="topRightBox">
-                <div class="approvalBtn" >
-                  <div v-for="(item,index) in typeList" :key="index" :class="{'currentBtn' : currentApprovalType ===index}" @click="getApprovalType(index)">{{item.label}}</div>
-                </div>
+              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -67,8 +64,8 @@
                   </div>
 
                   <div class="cell" v-if="data==='opetation'">
-                    <button class="modify" @click="seeData(item)">编辑</button>
-                    <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
+                    <button class="modify" @click="seeData(item)">修改</button>
+                    <button class="delete" @click="deletedata({id: item.id},'home/warehouse/deleteDepository')">删除</button>
                   </div>
                 </div>
 
@@ -82,10 +79,9 @@
             :editDisabled="editDisabled"
             @closeaddDialog="closeaddDialog"
             :IntList="IntList"
-            :staticData="staticData"
             :currentList="currentList"
             :openType="openType"
-            name="itemList"
+            name="warehouse"
         >
         </vDialog>
 
@@ -114,45 +110,16 @@ export default {
   mixins: [homeMix],
   data () {
     return {
-      currentApprovalType: 0,
-      editDisabled: ['itemid'],
+      editDisabled: ['id'],
       tableText: '',
-      staticData: { parentid: 1 },
       dialogFormShow: false,
-      IntList: ['stock'],
-      list: [
-        {
-          itemid: 'JPSC001',
-          itemtype: '钢材',
-          comment: '用于钢材的使用',
-          stock: 30165,
-          unit: 'kg'
-        }
-      ],
-      typeList: [
-        {
-          label: '物料',
-          key: 1
-        },
-        {
-          label: '单位',
-          key: 7
-        },
-        {
-          label: '部门',
-          key: 12
-        }
-      ],
-      itemid: '',
+      IntList: ['stock', 'totalstock'],
+      list: [],
       loading2: true
     }
   },
   created () {
-    if (this.$store.state.departmentId.includes('10000')) {
-      this.tableText = this.$tables.itemListedit
-    } else {
-      this.tableText = this.$tables.itemListsee
-    }
+    this.tableText = this.$tables.warehouseList
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
@@ -162,43 +129,10 @@ export default {
   },
   methods: {
     /**
-     * @desc ajax请求后台数据 获得list数据 并用于分页
-     */
-    async search () {
-      await this.$api(this.searchUrl, {
-        params: {
-          page: this.params.page, // 传递当前是第几页参数
-          limit: this.params.limit, // 传递每页显示多少条记录参数
-          searchName: this.params.dname, // 传递搜索参数
-          selectName: this.params.selectValue // 筛选参数
-        }
-      }).then((res) => {
-        this.list = res.list.slice(1) || [] // 获取里面的data数据
-        this.params.total = res.count - 1 // 获取后台传过来的总数据条数
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
-      })
-    },
-    /**
-     * @desc 添加方法打开界面
-     */
-    gethomeAdd () {
-      this.openType = 'add'
-      this.dialogFormShow = true
-    },
-    /**
      * @desc 请求列表数据
      */
     getSearchUrl () {
-      this.params.selectValue = 1
-      this.searchUrl = 'home/item/findAllitem'
-    },
-    getApprovalType (index) {
-      this.currentApprovalType = index
-      this.params.selectValue = this.typeList[index].key
-      this.staticData.parentid = this.typeList[index].key
-      this.search()
+      this.searchUrl = 'home/warehouse/findDepository'
     }
   }
 }

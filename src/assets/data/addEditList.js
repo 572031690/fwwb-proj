@@ -13,13 +13,46 @@ export const addEditList = {
         dataName: 'needtitle',
         placeholder: '例如:钢材购买需求申请'
       },
+      // {
+      //   label: '类型',
+      //   putType: 'selectItem',
+      //   selectData: ['钢铁', '熟料', '橡胶', '泡沫'],
+      //   dataName: 'itemtype'
+      // },
       {
-        label: '类型',
-        putType: 'selectItem',
-        selectData: ['钢铁', '熟料', '橡胶', '泡沫'],
-        dataName: 'itemtype'
+        label: '材料类型',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 1
+        },
+        selectData: [],
+        dataName: 'itemtype',
+        linkage: 'itemid'
+      },
+      {
+        label: '材料单位',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 7
+        },
+        selectData: [],
+        dataName: 'unit',
+        linkage: ''
       },
       { label: '数量', putType: 'num', dataName: 'neednum' },
+      {
+        label: '需求部门',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 12
+        },
+        selectData: [],
+        dataName: 'department',
+        linkage: ''
+      },
       { label: '申请人编号', putType: 'disput', dataName: 'neederid' },
       { label: '详情', putType: 'textarea', dataName: 'comment', placeholder: '例如:此申请用于XXX公司的订单交易' }
     ],
@@ -77,6 +110,11 @@ export const addEditList = {
         putType: 'numput',
         dataName: 'neederid',
         placeholder: '例如:15,2,25'
+      },
+      {
+        label: '到货日期',
+        putType: 'date',
+        dataName: 'arrivaltime'
       },
       {
         label: '订单码',
@@ -142,46 +180,107 @@ export const addEditList = {
   },
   itemList: {
     dataTableList: [
+      // {
+      //   label: '编号',
+      //   putType: 'input',
+      //   dataName: 'itemid',
+      //   placeholder: '例如:2，4，11'
+      // },
       {
-        label: '类型编号',
+        label: '名称',
         putType: 'input',
-        dataName: 'itemid',
+        dataName: 'itemtype',
+        placeholder: ''
+      },
+      // {
+      //   label: '库存',
+      //   putType: 'num',
+      //   dataName: 'stock'
+      // },
+      // {
+      //   label: '单位',
+      //   putType: 'input',
+      //   dataName: 'unit',
+      //   placeholder: '例如:kg,t,片'
+      // },
+      {
+        label: '描述',
+        putType: 'textarea',
+        dataName: 'comment',
+        placeholder: ''
+      }
+    ],
+    formList: {
+      itemid: '',
+      itemtype: '',
+      comment: '',
+      parentid: ''
+    },
+    url: {
+      add: 'home/item/additem',
+      edit: 'home/item/editItem',
+      approval: ''
+    }
+  },
+  warehouse: {
+    dataTableList: [
+      {
+        label: '物料编号',
+        putType: 'input',
+        dataName: 'itemcode',
         placeholder: '例如:JS001，XP201，JP015'
       },
       {
-        label: '种类',
-        putType: 'input',
-        dataName: 'itemtype',
-        placeholder: '例如:钢材，木材，橡胶'
+        label: '物料名称',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 1
+        },
+        selectData: [],
+        dataName: 'name',
+        linkage: ''
       },
       {
-        label: '库存',
+        label: '货量',
         putType: 'num',
         dataName: 'stock'
       },
       {
-        label: '单位',
-        putType: 'input',
-        dataName: 'unit',
-        placeholder: '例如:kg,t,片'
+        label: '空间',
+        putType: 'num',
+        dataName: 'totalstock'
       },
       {
-        label: '详情',
+        label: '材料单位',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 7
+        },
+        selectData: [],
+        dataName: 'unit',
+        linkage: ''
+      },
+      {
+        label: '描述',
         putType: 'textarea',
         dataName: 'comment',
         placeholder: '例如:此XXX材料是最新型号合成材料，有很强的硬度'
       }
     ],
     formList: {
-      itemid: '',
-      itemtype: '',
+      id: '',
+      itemcode: '',
+      name: '',
+      totalstock: '',
       stock: '',
       comment: '',
       unit: ''
     },
     url: {
-      add: 'home/item/additem',
-      edit: 'home/item/editItem',
+      add: 'home/warehouse/addDepository',
+      edit: 'home/warehouse/updateDepository',
       approval: ''
     }
   },

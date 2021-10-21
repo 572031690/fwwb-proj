@@ -11,6 +11,7 @@ export default [
       neednum: '',
       needday: '',
       unit: '',
+      department: '',
       neederid: '',
       comment: ''
     }
@@ -37,6 +38,7 @@ export default [
       unit: '',
       neednum: '',
       needday: '',
+      department: '',
       neederid: '',
       comment: ''
     }

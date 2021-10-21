@@ -12,6 +12,10 @@ import Login from '../view/Login.vue'
 import Department from '../view/home/Department.vue'
 import Driver from '../view/home/Driver.vue'
 import Persion from '../view/home/personal.vue'
+import ControlStock from '../view/home/ControlStock.vue'
+import Role from '../view/home/Role.vue'
+import Warehouse from '../view/home/Warehouse.vue'
+
 Vue.use(VueRouter)
 // 2.配置路由
 const routes = [
@@ -31,6 +35,9 @@ const routes = [
       { path: 'homewel', component: HomeWel },
       { path: 'department', component: Department },
       { path: 'driver', component: Driver },
+      { path: 'contrstock', component: ControlStock },
+      { path: 'role', component: Role },
+      { path: 'warehouse', component: Warehouse },
       { path: '', redirect: '/home/homewel' }
     ]
   },

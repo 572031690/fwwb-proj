@@ -377,7 +377,7 @@ export default {
         params: {
           userid: id
         }
-      }).then((res) => {
+      }).then(() => {
         this.$message.success('更改状态成功')
       }).catch(() => {
         setTimeout(() => {

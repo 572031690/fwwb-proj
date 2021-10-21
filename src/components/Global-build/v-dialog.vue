@@ -55,6 +55,22 @@
               ></el-option>
             </el-select>
 
+            <div v-if="item.putType === 'selectUrl' ">
+              <el-select
+                v-model="dialogData.formList[item.dataName]"
+                placeholder="请选择"
+                @change="getChangeUrl"
+                @visible-change="getSelectUrlList(item,index)"
+              >
+                <el-option
+                  :label="dat.itemtype"
+                  :value="dat.itemtype"
+                  v-for="(dat, key) in item.selectData"
+                  :key="key"
+                ></el-option>
+              </el-select>
+            </div>
+
             <div v-if="item.putType === 'selectItem'">
               <el-select
                 v-model.number="dialogData.formList[item.dataName]"
@@ -118,7 +134,7 @@
 
 <script>
 /* post请求
-类型 putType： textarea disput numput num select date input selectItem
+类型 putType：selectUrl textarea disput numput num select date input selectItem
 */
 import { rulesData } from '../../assets/data/rules'
 import { addEditList } from '../../assets/data/addEditList'
@@ -171,6 +187,15 @@ export default {
       }
     },
     /**
+     * @desc 添加数据初始化数据
+     */
+    staticData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    /**
      * @desc 在编辑模式下禁用的变量
      */
     editDisabled: {
@@ -200,7 +225,15 @@ export default {
     }
   },
   data () {
+    var validatePass2 = (rule, value, callback) => {
+      if (value < this.dialogData.formList.totalstock) {
+        callback(new Error('仓库空间需要大于等于库存！'))
+      } else {
+        callback()
+      }
+    }
     return {
+      totalstock: [{ required: true, validator: validatePass2, trigger: 'blur' }],
       rulesData, // 表单rules数据
       addEditList, // 静态表单inpput类型和表单字段名称以及url地址
       dialogData: {
@@ -213,6 +246,7 @@ export default {
     }
   },
   created () {
+    this.rulesData.totalstock = this.totalstock
     this.getList()
   },
   methods: {
@@ -257,6 +291,9 @@ export default {
           this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
+      if (JSON.stringify(this.staticData) !== '{}') {
+        Object.assign(this.dialogData.formList, this.staticData)
+      }
       this.dialogData.formList.btime = new Date()
       this.dialogData.formList.needday = new Date()
     },
@@ -282,6 +319,9 @@ export default {
           this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
         }
       })
+      if (JSON.stringify(this.staticData) !== '{}') {
+        Object.assign(this.dialogData.formList, this.staticData)
+      }
     },
     /**
      * @desc 审批表单数据初始化
@@ -402,6 +442,16 @@ export default {
         })
         this.$emit('updata')
         this.close()
+      })
+    },
+    getChangeUrl (data) {
+    },
+    getSelectUrlList (item, index) {
+      if (this.dialogData.dataTableList[index].selectData.length) return
+      this.$api(item.url, { params: { ...item.queryParams } }).then(res => {
+        this.dialogData.dataTableList[index].selectData = res.list
+      }).catch(err => {
+        console.log(err)
       })
     }
 
