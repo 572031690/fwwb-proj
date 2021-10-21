@@ -315,9 +315,8 @@ img {
 .top-backhome {
   font-size: 30px;
   line-height: 30px;
-  padding: 20px 0 0 15px;
+  padding-top: 20px;
   span {
-    margin-left: 15px;
     color: white;
     text-decoration: none;
     transition: all 0.2s;

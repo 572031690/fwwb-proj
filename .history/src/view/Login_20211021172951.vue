@@ -1,8 +1,8 @@
 <template>
   <div id="Login" ref="loginview">
-    <!-- <div class="topline" ></div> -->
-    <!-- <router-view class="homecss"></router-view>  -->
-
+    <div class="stars" ref="stars">
+      <div class="star" v-for="(item, key) in startList" :key="key" :ref="'star' + key"></div>
+    </div>
     <div ref="appref">
       <div class="top-backhome">
         <img
@@ -10,7 +10,7 @@
           height="50px"
           style="vertical-align: middle;"
         />
-        <span>登陆界面</span>
+        <span>智能制造协同共享平台</span>
       </div>
       <div class="login-top">
         <img src="../assets/img/center-login.png" width="100%" />
@@ -22,7 +22,7 @@
                   <img src="../assets/img/login-top.png" />
                 </div>
                 <div class="logintext">
-                  登陆
+                  登录
                 </div>
                 <form>
                   <div class="inputbox">
@@ -82,7 +82,7 @@
                     <button type="button" id="login" @click="login()">
                       登陆
                     </button>
-                    <button type="button" id="regiser" @click="seeData">
+                    <button type="button" id="regiser" @click="seeData" v-if="false">
                       注册
                     </button>
                   </div>
@@ -110,10 +110,10 @@ export default {
 
   data () {
     return {
+      startList: [],
       inputVal: '', // 获取input内输入的验证码
       checkCode: '', // 用于存放验证码答案
       result: '', // 显示验证码校验结果
-      // getCodeBtnDisable:false,// 是否禁用按钮
       // 获取睁闭眼图片  require默认是在根目录的不需要..来向后退
       studyDataPic: require('@/assets/img/closeeye.png'),
       eyesflag: true, // 判断眼睛图标是睁眼还是闭眼
@@ -124,31 +124,41 @@ export default {
       centerbox: false
     }
   },
+  created () {
+    const List = len => [...new Array(len).keys()]
+    this.startList = List(800)
+  },
   mounted () {
+    this.getStar()
     setTimeout(() => {
       this.centerbox = true
     }, 100)
   },
   methods: {
-    // 获得验证码组件内的验证码答案
+    getStar () {
+      this.startList.forEach((item, key) => {
+        var s = 0.2 + Math.random() * 1
+        var curR = 800 + Math.random() * 300
+        this.$refs['star' + key][0].style.transformOrigin = '0 0 ' + curR + 'px'
+        this.$refs['star' + key][0].style.transform = ' translate3d(0,0,-' + curR + 'px) rotateY(' + Math.random() * 360 + 'deg) rotateX(' + Math.random() * -50 + 'deg) scale(' + s + ',' + s + ')'
+      })
+    },
+    /**
+     * @desc 获得验证码组件内的验证码答案
+     */
     changeCode (value) {
       this.checkCode = value
     },
-    // compare() {
-    // if (this.inputVal.toUpperCase() === this.checkCode) {
-    // this.result = "比对成功";
-    // } else {
-    // this.result = "比对失败,请重新输入";
-    // this.inputVal = "";
-    // this.$refs["ref_validateCode"].draw();
-    // }
-    // },
-    // 打开注册蒙版表单
+    /**
+     * @desc 打开注册蒙版表单
+     */
     seeData () {
       // 注册按钮 点击后显示编辑对话框
       this.$refs.registertable.dialogFormVisible = true
     },
-    // 密码眼睛切换
+    /**
+     * @desc 密码眼睛切换
+     */
     eyeschange () {
       if (this.eyesflag) {
         this.studyDataPic = require('@/assets/img/eye.png')
@@ -159,67 +169,25 @@ export default {
         this.eyesflag = !this.eyesflag
         this.$refs.passwordeye.type = 'password'
       }
-      console.log(this.$refs.passeyes.src)
     },
-    // 登陆按钮事件
+    /**
+     * @desc 登陆按钮事件
+     */
     login () {
-      const me = this
       if (!this.$refs.logintext.value) {
         this.tips1 = '账号不能为空'
       } else if (!this.$refs.passwordeye.value) {
         this.tips2 = '密码不能为空'
         this.tips1 = ''
-      } else if (this.$refs.passwordeye.value.length < 6) {
-        this.tips2 = '密码长度不能少于6位'
+      } else if (this.$refs.passwordeye.value.length < 5) {
+        this.tips2 = '密码长度不能少于5位'
         this.tips1 = ''
         // 验证验证码是否正确，如果正确就往下一个界面跳
       } else if (this.inputVal.toUpperCase() === this.checkCode) {
         this.tips2 = ''
         this.tips1 = ''
         this.inputVal = ''
-
-        const url = 'login/login'
-        this.$api(url, {
-          params: {
-            username: this.logindata.uname,
-            password: this.logindata.pass
-          }
-        })
-          .then(res => {
-            const { code, user } = res
-            console.log(res)
-            if (parseInt(code) === 100) {
-              // console.log(res);
-              window.sessionStorage.setItem(
-                'storeData',
-                user.username
-              ) // 将数据存储到浏览器内嵌的数据库内
-              window.sessionStorage.setItem(
-                'sData',
-                user.departmentid
-              ) // 将数据存储到浏览器内嵌的数据库内
-              this.logindata.uname = ''
-              this.logindata.pass = ''
-              me.$router.push({ path: 'home' }) // 页面跳转
-              this.$notify({
-                // element登陆成功提示框右上边
-                title: '登陆成功',
-                message: '欢迎管理员！',
-                type: 'success'
-              })
-            } else if (res.data.code == 90) {
-              this.$message.error('账号或密码错误') // element失败提示框上部
-              this.tips2 = '账号或密码错误'
-              // 验证码提示框
-              this.result = ''
-            } else {
-              this.$message.error('网络异常')
-            }
-          })
-          .catch(() => {
-            this.$message.error('网络异常')
-            // console.error(error);
-          })
+        this.goLogin()
       } else {
         this.result = '验证码输入错误'
         // 验证码input内的值
@@ -228,11 +196,100 @@ export default {
         this.tips1 = ''
         this.$refs.ref_validateCode.draw()
       }
+    },
+    /**
+     * @desc 登陆
+     */
+    async goLogin () {
+      const url = 'login/login'
+      const data = {
+        username: this.logindata.uname,
+        password: this.logindata.pass
+      }
+      await this.$api(url, data)
+        .then(res => {
+          const { code, user, sessionId } = res
+          if (parseInt(code) === 101) {
+            window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userid', user.userid)
+            this.logindata.uname = ''
+            this.logindata.pass = ''
+            this.$router.push({ path: 'home/homewel', query: { routerIndex: 1 } }) // 页面跳转
+            this.$notify({
+            // element登陆成功提示框右上边
+              title: '登陆成功',
+              message: '欢迎管理员！',
+              type: 'success'
+            })
+          } else if (parseInt(code) === 102) {
+            this.$message.error('账号或密码错误') // element失败提示框上部
+            this.tips2 = '账号或密码错误'
+            // 验证码提示框
+            this.result = ''
+          } else {
+            this.$message.error(res.error)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
 </script>
+<style >
+body {
+    background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
+    background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
+    background-attachment: fixed;
+    overflow: hidden;
+}
+  /* .bodyss {
+    height: 100%;
+    width: 100%;
+    background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
+    background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
+    background-attachment: fixed;
+    overflow: hidden;
+  } */
 
+  @keyframes rotatestar {
+    0% {
+      transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
+    }
+
+    100% {
+      transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(-360deg);
+    }
+  }
+
+  .stars {
+    transform: perspective(500px);
+    transform-style: preserve-3d;
+    position: absolute;
+    bottom: 0;
+    perspective-origin: 50% 100%;
+    left: 50%;
+    animation: rotatestar 90s infinite linear;
+  }
+
+  .star {
+    width: 2px;
+    height: 2px;
+    background: #F7F7B6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 -300px;
+    transform: translate3d(0, 0, -300px);
+    backface-visibility: hidden;
+    animation: none;
+    opacity: 1;
+  }
+</style>
 <style lang="less" scoped>
 /*无法选中图片文字方法*/
 span,
@@ -414,9 +471,10 @@ input {
 .loginbutton {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin-top: 12px;
   button {
-    width: 50%;
+    width: 70%;
     color: white;
     font-size: 18px;
     background-color: #409eff;

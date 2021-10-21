@@ -6,7 +6,7 @@
     <div ref="appref">
       <div class="top-backhome">
         <img
-          src="../assets/img/titleImportant.png"
+          src="../assets/img/login-top.png"
           height="50px"
           style="vertical-align: middle;"
         />
@@ -125,7 +125,6 @@ export default {
     }
   },
   created () {
-    document.body.removeAttribute('style')
     const List = len => [...new Array(len).keys()]
     this.startList = List(800)
   },
@@ -209,9 +208,13 @@ export default {
       }
       await this.$api(url, data)
         .then(res => {
-          const { code, user, sessionId, permission, permissionId } = res
+          const { code, user, sessionId } = res
           if (parseInt(code) === 101) {
-            this.getCache(user, sessionId, permission, permissionId)
+            window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
+            window.sessionStorage.setItem('userid', user.userid)
             this.logindata.uname = ''
             this.logindata.pass = ''
             this.$router.push({ path: 'home/homewel', query: { routerIndex: 1 } }) // 页面跳转
@@ -233,20 +236,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    },
-    getCache (user, sessionId, permission, permissionId) {
-      window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
-      window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
-      window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
-      window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
-      window.sessionStorage.setItem('userid', user.userid) // 用户ID
-      permissionId.push(0)
-      window.sessionStorage.setItem('permissionId', JSON.stringify(permissionId)) // 权限Id
-      window.sessionStorage.setItem('permission', JSON.stringify(permission)) // 权限Id
     }
-  },
-  beforeDestroy () {
-    document.querySelector('body').setAttribute('style', 'background:#f4f4f4;')
   }
 }
 </script>
@@ -315,9 +305,8 @@ img {
 .top-backhome {
   font-size: 30px;
   line-height: 30px;
-  padding: 20px 0 0 15px;
+  padding-top: 20px;
   span {
-    margin-left: 15px;
     color: white;
     text-decoration: none;
     transition: all 0.2s;
@@ -333,7 +322,7 @@ img {
   justify-content: center;
   margin-top: 180px;
   height: 380px;
-  background: rgba(64,158,255,0.5);
+  background: #409eff;
 }
 .login-center {
   border-radius: 5px;
