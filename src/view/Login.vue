@@ -1,7 +1,7 @@
 <template>
   <div id="Login" ref="loginview">
-    <div class="stars" ref="stars">
-      <div class="star" v-for="(item, key) in startList" :key="key" :ref="'star' + key"></div>
+    <div class="stars-spot-anima" ref="stars">
+      <div class="star-spot-anima" v-for="(item, key) in startList" :key="key" :ref="'star' + key"></div>
     </div>
     <div ref="appref">
       <div class="top-backhome">
@@ -276,7 +276,7 @@ body {
     }
   }
 
-  .stars {
+  .stars-spot-anima {
     transform: perspective(500px);
     transform-style: preserve-3d;
     position: absolute;
@@ -286,7 +286,7 @@ body {
     animation: rotatestar 90s infinite linear;
   }
 
-  .star {
+  .star-spot-anima {
     width: 2px;
     height: 2px;
     background: #F7F7B6;
