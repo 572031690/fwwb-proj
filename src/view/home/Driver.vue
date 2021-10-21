@@ -19,11 +19,19 @@
         <div class="tabmidtopTitle">2021年统计</div>
         <div  class="tabmidtopBody" >
           <div class="tabmidtopBodyLeft">
-            <span>{{totalCount}} </span>
+            <counTo
+              :startVal="0"
+              :endVal="totalCount"
+              :duration="3000"
+            />
             <span> 单</span>
           </div>
           <div class="tabmidtopBodyRight">
-            <span>{{totalValue}} </span>
+            <counTo
+              :startVal="0"
+              :endVal="totalValue"
+              :duration="3000"
+            />
             <span> 万元</span>
           </div>
         </div>
@@ -54,6 +62,7 @@
   </div>
 </template>
 <script>
+import counTo from 'vue-count-to'
 import mapChina from '@/components/driver/MapChina.vue'
 import piechart from '@/components/driver/leftchart/piechart.vue'
 import rankchart from '@/components/driver/leftchart/rankchart.vue'
@@ -67,7 +76,8 @@ export default {
     piechart,
     rankchart,
     linechart,
-    totalchart
+    totalchart,
+    counTo
   },
   data () {
     return {
