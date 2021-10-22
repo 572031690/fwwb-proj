@@ -14,7 +14,8 @@
                   <el-col :span="8">
                     <div class="searchfa">
                       <!-- 搜索框 -->
-                      <div class="search">
+                      <div style="opacity: 0;">.</div>
+                      <div class="search" v-if="false">
                         <el-select
                           v-model="params.selectValue"
                           @change="search"
@@ -57,7 +58,7 @@
               </div>
 
           </div>
-
+          <bodySearch />
           <div
             class="tablebody"
             v-loading="loading2"
@@ -181,11 +182,13 @@
 <script>
 import Drawer from '../../components/Drawer.vue'
 import homeMix from '../../assets/mixins/home-mixins'
+import bodySearch from '../../components/bodySearch.vue'
 
 export default {
   mixins: [homeMix],
   components: {
-    Drawer
+    Drawer,
+    bodySearch
   },
   data () {
     return {
@@ -207,28 +210,6 @@ export default {
       IntList: ['needid', 'neednum', 'neederid'],
       topChange: 'needid',
       currentRouter: '',
-      select: [ // 搜索框筛选数据
-        {
-          value: '0',
-          label: '未送审'
-        },
-        {
-          value: '1',
-          label: '审核中'
-        },
-        {
-          value: '2',
-          label: '驳回'
-        },
-        {
-          value: '3',
-          label: '部门通过'
-        },
-        {
-          value: '4',
-          label: '经理通过'
-        }
-      ],
       currentIndex: 1, // 查看审批数据
       showAdd: false,
       list: [

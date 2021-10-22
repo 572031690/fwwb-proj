@@ -411,9 +411,15 @@ export default {
 #Home {
   height: 100vh;
   width: 100vw;
-  background-color: white;
+  // background-color: white;
   display: flex;
   flex-direction: row;
+  //background: radial-gradient(220% 105% at top center, rgb(82, 81, 81) 10%, #000035 40%, #0b2570 65%, #0070aa);
+  background: linear-gradient(
+    rgb(242,246,253),
+    rgb(230, 239, 253),
+    rgb(242,246,253)
+  );
 }
 .leftNavigation {
   /* position: fixed; */
@@ -620,6 +626,12 @@ export default {
   height: 48px;
   display: flex;
   flex-direction: row;
+  // background-color: #fff;
+  background: linear-gradient(to  right,
+    rgb(242,246,253),
+    rgb(235, 240, 248),
+    rgb(242,246,253),
+  );
   border-bottom: 1px solid #dadce0;
   border-top: 1px solid #dadce0;
   span {

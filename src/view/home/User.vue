@@ -83,7 +83,7 @@
                 >
 
                   <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus' && data!=='roleId'">
-                    {{ data==='index'? key+1 :item[data] }}
+                    {{ data==='index'? key+1 :data==='telNum'? desen(item[data]) :item[data] }}
                   </div>
                   <el-tooltip class="item" effect="dark" :content="showRoleData(item[data])" placement="top" v-if="data==='roleId'">
                     <div class="cell">
@@ -173,9 +173,17 @@
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
+import { desensitization } from '../../assets/utils/index'
 
 export default {
   mixins: [homeMix],
+  computed: {
+    desen: function () {
+      return function (val) {
+        return desensitization(val)
+      }
+    }
+  },
   data () {
     return {
       tableText: '',

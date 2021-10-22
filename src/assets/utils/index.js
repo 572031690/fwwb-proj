@@ -20,3 +20,14 @@ export function debounce (fn, wait, immediate) {
     }, wait)
   }
 }
+/**
+ * @desc 函数 电话脱敏
+  * @param desNum 传入的电话/身份证... number ，string
+  */
+export function desensitization (desNum) {
+  const strNum = desNum.toString()
+  const length = strNum.length
+  const staticNum = Math.ceil(length / 4)
+  const numReplace = '*'.repeat(staticNum + 1)
+  return strNum.substring(0, staticNum) + numReplace + strNum.substring(2 * staticNum + 1, length)
+}

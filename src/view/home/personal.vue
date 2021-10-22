@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import { desensitization } from '../../assets/utils/index'
+
 export default {
 
   computed: {
@@ -192,6 +194,7 @@ export default {
       this.userData = userList
       this.userData.role = this.showRoleData(this.userData.roleId)
       this.userData.department = this.showDepartData(this.userData.roleId)
+      this.userData.telNum = desensitization(this.userData.telNum)
     },
     /**
      * @desc 显示部门内容

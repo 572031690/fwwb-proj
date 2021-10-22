@@ -1,8 +1,10 @@
 import vNone from './v-noneData.vue'
 import vDialog from './v-dialog.vue'
+import vSearchNav from './v-searchNac.vue'
 const components = {
   vNone,
-  vDialog
+  vDialog,
+  vSearchNav
 }
 const install = function (Vue) {
   for (const key in components) {

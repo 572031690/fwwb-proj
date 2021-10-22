@@ -27,8 +27,8 @@
               </el-col>
               <el-col :span="8" >
                 <div class="approvalBtn" >
-                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">需求出库</div>
-                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">订单入库</div>
+                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">入库管理</div>
+                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">出库管理</div>
                 </div></el-col
               >
             </el-row>

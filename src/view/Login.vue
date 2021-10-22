@@ -252,7 +252,7 @@ export default {
 </script>
 <style >
 body {
-    background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
+    /* background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000); */
     background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
     background-attachment: fixed;
     overflow: hidden;
@@ -295,7 +295,7 @@ body {
     left: 0;
     transform-origin: 0 0 -300px;
     transform: translate3d(0, 0, -300px);
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* 旋转元素背面不可见*/
     animation: none;
     opacity: 1;
   }

@@ -121,7 +121,8 @@ export default {
 .welbody {
   height: 100%;
   width: 100%;
-  background: #0d3465;
+  // background: #0d3465;
+  background: radial-gradient(220% 105% at bottom center, #0b2570 10%, #04044b 40%, #0b2570 65%, #0070aa);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,9 +213,9 @@ export default {
   /* height: 20%; */
   height: 120px;
   width: 60%;
-  border: 2px solid rgb(13, 31, 107);
+  border: 2px solid rgba(13, 31, 107.0.6);
   left: 50%;
-  background-color: rgb(13, 31, 107);
+  background-color: rgba(13, 31, 107,0.6);
   transform: translate(-50%, 0);
   /* 50%为自身尺寸的一半 */
 }
