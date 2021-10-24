@@ -2,11 +2,12 @@
   <div class="vSearchNav" >
     <div class="vSearchNavHeart" >
       <vSearchNav width="280px" label="标题" labelwidth="90px">
-        <el-input  v-model="searchForm.searchName" style="width: 220px;"  suffix-icon="el-icon-search" clearable/>
+        <el-input @change="setSearchForm" v-model="searchForm.searchName" style="width: 220px;"  suffix-icon="el-icon-search" clearable/>
       </vSearchNav>
       <vSearchNav width="350px"  label="日期" labelwidth="130px">
         <el-date-picker
           type="date"
+          @change="setSearchForm"
           v-model="searchForm.needday"
           style="width: 220px;"
           placeholder="选择需求日期"
@@ -14,7 +15,7 @@
         </el-date-picker>
       </vSearchNav>
       <vSearchNav width="350px" label="审批状态" labelwidth="120px">
-        <el-select style="width: 220px;" v-model="searchForm.selectName" placeholder="请选择" clearable>
+        <el-select style="width: 220px;" v-model="searchForm.selectName" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
             v-for="item in select"
             :key="item.value"
@@ -24,9 +25,9 @@
         </el-select>
       </vSearchNav>
       <vSearchNav width="300px" label="需求单位" labelwidth="90px">
-        <el-select style="width: 220px;" v-model="searchForm.department" placeholder="请选择" clearable>
+        <el-select style="width: 220px;" v-model="searchForm.department" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
-            v-for="item in options"
+            v-for="item in optionsDepartment"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -34,9 +35,9 @@
         </el-select>
       </vSearchNav>
       <vSearchNav  width="320px" label="物料类别" labelwidth="90px">
-        <el-select style="width: 220px;" v-model="searchForm.itemtype" placeholder="请选择" clearable>
+        <el-select style="width: 220px;" v-model="searchForm.itemtype" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
-            v-for="item in options"
+            v-for="item in optionsType"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -44,9 +45,9 @@
         </el-select>
       </vSearchNav>
       <vSearchNav width="300px" label="物料编号" labelwidth="90px">
-        <el-select style="width: 220px;" v-model="searchForm.itemid" placeholder="请选择" clearable>
+        <el-select style="width: 220px;" v-model="searchForm.itemid" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
-            v-for="item in options"
+            v-for="item in optionsId"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -69,6 +70,9 @@ export default {
         itemid: '', // 物料编号
         needday: '' // 需求时间
       },
+      optionsDepartment: [],
+      optionsType: [],
+      optionsId: [],
       options: [],
       select: [ // 搜索框筛选数据
         {
@@ -94,8 +98,36 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getDepartment()
+    this.getType()
+    this.getId()
+  },
   methods: {
+    setSearchForm () {
+      this.$emit('getSearchForm', this.searchForm)
+    },
+    getDepartment () {
+      this.$api('home/item/findItemName', { params: { itemid: 12 } }).then(res => {
 
+      }).catch(() => {
+
+      })
+    },
+    getType () {
+      this.$api('home/item/findItemName', { params: { itemid: 1 } }).then(res => {
+
+      }).catch(() => {
+
+      })
+    },
+    getId () {
+      this.$api('home/item/findItemName', { params: { itemid: 16 } }).then(res => {
+
+      }).catch(() => {
+
+      })
+    }
   }
 
 }
@@ -104,6 +136,7 @@ export default {
 <style lang="less" scoped>
 .vSearchNav {
   width: 82%;
+  background-color: #fff;
   margin: 10px auto -10px;
   padding: 10px 0;
   border: 1px solid #dadce0;

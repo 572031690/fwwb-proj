@@ -35,6 +35,10 @@ export const tableList = {
     tableTitle: ['序号', '角色编号', '角色名称', '描述', '状态', '操作', '权限'],
     tableBody: ['index', 'roleId', 'rolename', 'description', 'isDeleted', 'opetation', 'opetationRole']
   },
+  permList: {
+    tableTitle: ['序号', '权限名称', '权限类型', '请求地址', '权限标识', '状态', '操作'],
+    tableBody: ['index', 'name', 'type', 'url', 'permission', 'isDisabled', 'opetation']
+  },
   userListedit: {
     tableTitle: ['序号', '职工号', '用户姓名', '登陆账号', '电话号码', '状态', '操作', '角色'],
     tableBody: ['index', 'employeeid', 'realname', 'username', 'telNum', 'roleStatus', 'opetation', 'opetationRole']

@@ -58,7 +58,7 @@
               </div>
 
           </div>
-          <bodySearch />
+          <bodySearch  @getSearchForm="getSearchForm"/>
           <div
             class="tablebody"
             v-loading="loading2"
@@ -201,6 +201,17 @@ export default {
         passRequest: 'home/need/completeprocess',
         rejectRequest: 'home/need/deleteprocess'
       },
+      params: {
+        limit: 10, // 每页显示5条记录
+        page: 1, // 当前是第几页
+        total: 0, // 总共几条记录去分页
+        searchName: '', // 查询数据
+        selectName: '', // 查询状态
+        department: '', // 需求单位
+        itemtype: '', // 物料类别
+        itemid: '', // 物料编号
+        needday: '' // 需求时间
+      },
       dialogUrl: {
         startApproval: 'home/need/approvalNeed',
         upApproval: 'home/need/completeprocess'
@@ -273,6 +284,26 @@ export default {
     this.getCurrentType()
   },
   methods: {
+    /**
+     * @desc ajax请求后台数据 获得list数据 并用于分页
+     */
+    async search () {
+      await this.$api(this.searchUrl, {
+        params: { ...this.params }
+      }).then((res) => {
+        this.list = res.list || [] // 获取里面的data数据
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        // this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+        // this.getApprovalCurrentData()
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    getSearchForm (searchFrom) {
+      Object.assign(this.params, searchFrom)
+      this.search()
+    },
     /**
      * @desc 获取是管理员打开还是专员打开
      */

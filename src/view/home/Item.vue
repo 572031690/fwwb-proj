@@ -141,6 +141,10 @@ export default {
         {
           label: '部门',
           key: 12
+        },
+        {
+          label: '编码',
+          key: 16
         }
       ],
       itemid: '',

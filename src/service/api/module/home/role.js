@@ -48,7 +48,7 @@ export default [
     desc: '查看角色的权限',
     path: '/Role/getRolePerm',
     data: {
-      username: ''
+      username: '' // 当前用户的用户名
     }
   },
   {

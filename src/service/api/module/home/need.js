@@ -49,10 +49,14 @@ export default [
     desc: '获取需求表',
     path: '/webneed/findAllNeed',
     params: {
-      page: '', // 传递当前是第几页参数
-      limit: '', // 传递每页显示多少条记录参数
-      searchName: '', // 传递搜索参数
-      selectName: '' // 查询审批状态
+      limit: 10, // 每页显示5条记录
+      page: 1, // 当前是第几页
+      searchName: '', // 查询数据
+      selectName: '', // 查询状态
+      department: '', // 需求单位
+      itemtype: '', // 物料类别
+      itemid: '', // 物料编号
+      needday: '' // 需求时间
     }
   },
   {

@@ -330,5 +330,77 @@ export const addEditList = {
       edit: 'home/user/editUser',
       approval: ''
     }
+  },
+  permissionList: {
+    dataTableList: [
+      {
+        label: '权限名称',
+        putType: 'input',
+        dataName: 'name',
+        placeholder: '例如:测试权限'
+      },
+      {
+        label: '权限类型',
+        putType: 'input',
+        dataName: 'type',
+        placeholder: '例如:user'
+      },
+      {
+        label: '权限地址',
+        putType: 'input',
+        dataName: 'url',
+        placeholder: '例如:/Perm/updatePerm'
+      },
+      {
+        label: '权限标识',
+        putType: 'input',
+        dataName: 'permission',
+        placeholder: '例如:admin:updatePerm'
+      }
+    ],
+    formList: {
+      id: '',
+      url: '',
+      permission: '',
+      name: '',
+      type: ''
+    },
+    url: {
+      add: 'home/permission/addPerm',
+      edit: 'home/permission/updatePerm',
+      approval: ''
+    }
+  },
+  roleList: {
+    dataTableList: [
+      {
+        label: '角色编号',
+        putType: 'numput',
+        dataName: 'roleId',
+        placeholder: '例如:11000'
+      },
+      {
+        label: '角色名称',
+        putType: 'input',
+        dataName: 'rolename',
+        placeholder: '例如:测试员'
+      },
+      {
+        label: '角色描述',
+        putType: 'textarea',
+        dataName: 'description',
+        placeholder: '例如:用于测试系统的异常'
+      }
+    ],
+    formList: {
+      roleId: '',
+      rolename: '',
+      description: ''
+    },
+    url: {
+      add: 'home/role/addRole',
+      edit: 'home/role/updateRole',
+      approval: ''
+    }
   }
 }

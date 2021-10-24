@@ -72,7 +72,7 @@
                   </div>
                   <div class="cell" v-if="data==='opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
-                    <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
+                    <button class="delete" @click="deletedata({roleId: item.roleId},'home/role/deleteRole')">删除</button>
                   </div>
                 </div>
 
@@ -83,12 +83,11 @@
           <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
-            :editDisabled="editDisabled"
             @closeaddDialog="closeaddDialog"
             :IntList="IntList"
             :currentList="currentList"
             :openType="openType"
-            name="itemList"
+            name="roleList"
         >
         </vDialog>
 
@@ -141,19 +140,10 @@ export default {
   mixins: [homeMix],
   data () {
     return {
-      editDisabled: ['itemid'],
       tableText: '',
       dialogFormShow: false,
-      IntList: ['stock'],
-      list: [
-        {
-          itemid: 'JPSC001',
-          itemtype: '钢材',
-          comment: '用于钢材的使用',
-          stock: 30165,
-          unit: 'kg'
-        }
-      ],
+      IntList: ['roleId'],
+      list: [],
       currentRola: '',
       rolaData: '',
       dialogVisibleRole: false,
@@ -175,7 +165,6 @@ export default {
      */
     getSearchUrl () {
       this.searchUrl = 'home/role/listRole'
-      // this.searchUrl = 'home/role/listPerm'
     },
     /**
      * @desc 打开分配权限表
