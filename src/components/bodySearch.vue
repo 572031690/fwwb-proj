@@ -54,6 +54,7 @@
           </el-option>
         </el-select>
      </vSearchNav>
+     <el-button size="medium" type="primary" class="resetBtn" @click="resetForm">重置</el-button>
     </div>
   </div>
 </template>
@@ -107,6 +108,12 @@ export default {
     setSearchForm () {
       this.$emit('getSearchForm', this.searchForm)
     },
+    resetForm () {
+      for (const i in this.searchForm) {
+        this.searchForm[i] = ''
+      }
+      this.$emit('getSearchForm', this.searchForm)
+    },
     getDepartment () {
       this.$api('home/item/findItemName', { params: { itemid: 12 } }).then(res => {
 
@@ -145,6 +152,12 @@ export default {
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    .resetBtn {
+      margin: 5px 100px 0 auto;
+      height: 30px;
+      line-height: 10px;
+    }
+
   }
 }
 </style>
