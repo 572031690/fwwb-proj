@@ -39,7 +39,7 @@ export const routerList = [
       {
         index: 21,
         id: 22,
-        path: '/home/body',
+        path: '/home/need',
         label: '需求申报',
         ref: 'spans7',
         disabled: false,
@@ -83,7 +83,7 @@ export const routerList = [
       {
         index: 31,
         id: 52,
-        path: '/home/body',
+        path: '/home/need',
         label: '审批需求',
         ref: 'spans11',
         disabled: false,

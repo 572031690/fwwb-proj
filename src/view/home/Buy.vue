@@ -154,24 +154,22 @@
         name="buyList"
       >
       </vDialog>
-      <Drawer
+      <vDrawer
         :listIn="list[currentIndex]"
         :urlList="drawerUrlList"
         typeName="buy"
         :openType="drawOpenType"
         @close="drawerClose"
         ref="Draw"
-      ></Drawer>
+      ></vDrawer>
     </div>
   </div>
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
-import Drawer from '../../components/Drawer.vue'
 export default {
   mixins: [homeMix],
   components: {
-    Drawer
   },
   data () {
     return {

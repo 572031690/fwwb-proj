@@ -58,7 +58,7 @@
               </div>
 
           </div>
-          <bodySearch  @getSearchForm="getSearchForm"/>
+          <needSearch  @getSearchForm="getSearchForm"/>
           <div
             class="tablebody"
             v-loading="loading2"
@@ -168,27 +168,25 @@
         >
         </vDialog>
 
-        <Drawer
+        <vDrawer
           :listIn="list[currentIndex]"
           :urlList="drawerUrlList"
           typeName="need"
           :openType="drawOpenType"
           @close="drawerClose"
           ref="Draw"
-        ></Drawer>
+        ></vDrawer>
       </div>
   </div>
 </template>
 <script>
-import Drawer from '../../components/Drawer.vue'
 import homeMix from '../../assets/mixins/home-mixins'
-import bodySearch from '../../components/bodySearch.vue'
+import needSearch from '../../components/need/needSearch.vue'
 
 export default {
   mixins: [homeMix],
   components: {
-    Drawer,
-    bodySearch
+    needSearch
   },
   data () {
     return {

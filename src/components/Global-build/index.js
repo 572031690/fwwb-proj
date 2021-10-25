@@ -1,10 +1,12 @@
 import vNone from './v-noneData.vue'
 import vDialog from './v-dialog.vue'
 import vSearchNav from './v-searchNac.vue'
+import vDrawer from './v-drawer.vue'
 const components = {
   vNone,
   vDialog,
-  vSearchNav
+  vSearchNav,
+  vDrawer
 }
 const install = function (Vue) {
   for (const key in components) {

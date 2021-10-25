@@ -100,8 +100,8 @@
 
 <script>
 // 调用验证码
-import ValidateCode from '../components/ValidateCode'
-import register from '../components/Register.vue' // 注册页面
+import ValidateCode from '../components/login/ValidateCode.vue'
+import register from '../components/login/Register.vue' // 注册页面
 export default {
   components: {
     'v-validateCode': ValidateCode,

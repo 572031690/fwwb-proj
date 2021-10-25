@@ -31,6 +31,17 @@ export const addEditList = {
         linkage: 'itemid'
       },
       {
+        label: '物料编号',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 16
+        },
+        selectData: [],
+        dataName: 'itemid',
+        linkage: ''
+      },
+      {
         label: '材料单位',
         putType: 'selectUrl',
         url: 'home/item/findItemName',

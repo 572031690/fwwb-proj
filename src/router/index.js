@@ -5,7 +5,7 @@ import { Message } from 'element-ui'
 import Home from '../view/Home.vue'
 import HomeWel from '../view/home/HomeWel.vue'
 import User from '../view/home/User.vue'
-import Body from '../view/home/Body.vue'
+import Need from '../view/home/need.vue'
 import Item from '../view/home/Item.vue'
 import Buy from '../view/home/Buy.vue'
 import Login from '../view/Login.vue'
@@ -29,7 +29,7 @@ const routes = [
         component: User,
         meta: { title: '用户信息', isTab: true }
       },
-      { path: 'body', component: Body },
+      { path: 'need', component: Need },
       { path: 'permission', component: permission },
       { path: 'personal', component: Persion },
       { path: 'item', component: Item },

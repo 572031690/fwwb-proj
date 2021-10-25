@@ -113,7 +113,7 @@
 </template>
 <script>
 // import addDialog from '../../components/addDataDialog.vue'
-import detail from '../../components/DepartDetail.vue'
+import detail from '../../components/department/DepartDetail.vue'
 import homeMix from '../../assets/mixins/home-mixins'
 
 export default {

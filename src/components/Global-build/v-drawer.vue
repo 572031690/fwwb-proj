@@ -128,8 +128,9 @@
 </template>
 
 <script>
-import { drawerText } from '../assets/data/drawerData' // 表单字段名称和label显示内容数据
+import { drawerText } from '../../assets/data/drawerData' // 表单字段名称和label显示内容数据
 export default {
+  name: 'vDrawer',
   props: {
     /**
      * @desc 表单数据
