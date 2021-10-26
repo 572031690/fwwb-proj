@@ -6,9 +6,9 @@
           {{userData.username}}
         </el-descriptions-item>
         <el-descriptions-item label="姓名">{{ userData.realname }}</el-descriptions-item>
-        <el-descriptions-item label="所属部门">
+        <!-- <el-descriptions-item label="所属部门">
           {{userData.department}}
-        </el-descriptions-item>
+        </el-descriptions-item> -->
         <el-descriptions-item label="工号">
            {{userData.employeeid}}
         </el-descriptions-item>

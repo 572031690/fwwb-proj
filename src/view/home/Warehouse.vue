@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
+              <el-col :span="8" v-if="$store.state.permissionName.includes('depository:addDepository')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -119,7 +119,11 @@ export default {
     }
   },
   created () {
-    this.tableText = this.$tables.warehouseList
+    if (this.$store.state.permissionName.includes('depository:updateDepository') && this.$store.state.permissionName.includes('depository:deleteDepository')) {
+      this.tableText = this.$tables.warehouseList
+    } else {
+      this.tableText = this.$tables.warehouseSeeList
+    }
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)

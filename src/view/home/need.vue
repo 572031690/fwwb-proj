@@ -286,7 +286,6 @@ export default {
      * @desc ajax请求后台数据 获得list数据 并用于分页
      */
     async search () {
-      console.log(typeof this.params.needday, 'needday')
       await this.$api(this.searchUrl, {
         params: { ...this.params }
       }).then((res) => {

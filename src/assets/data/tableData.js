@@ -31,6 +31,22 @@ export const tableList = {
     tableTitle: ['物料编号', '物资名称', '描述', '货量', '总货量', '单位', '操作'],
     tableBody: ['itemcode', 'name', 'comment', 'stock', 'totalstock', 'unit', 'opetation']
   },
+  warehouseSeeList: {
+    tableTitle: ['物料编号', '物资名称', '描述', '货量', '总货量', '单位'],
+    tableBody: ['itemcode', 'name', 'comment', 'stock', 'totalstock', 'unit']
+  },
+  controlStockList: {
+    tableTitle: ['物料编码', '物资名称', '需求专员编号', '货量', '单位', '提交时间', '操作', '管理'],
+    tableBody: ['itemid', 'name', 'needid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
+  },
+  controlNeedList: {
+    tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '操作'],
+    tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'opetation']
+  },
+  constrolBuyList: {
+    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '操作'],
+    tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation']
+  },
   roleList: {
     tableTitle: ['序号', '角色编号', '角色名称', '描述', '状态', '操作', '权限'],
     tableBody: ['index', 'roleId', 'rolename', 'description', 'isDeleted', 'opetation', 'opetationRole']

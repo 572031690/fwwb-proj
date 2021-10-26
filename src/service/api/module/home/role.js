@@ -44,11 +44,11 @@ export default [
   },
   {
     name: 'getRolePerm',
-    method: 'POST',
+    method: 'GET',
     desc: '查看角色的权限',
     path: '/Role/getRolePerm',
-    data: {
-      username: '' // 当前用户的用户名
+    params: {
+      roleId: '' // 当前用户的用户名
     }
   },
   {
@@ -59,6 +59,16 @@ export default [
     data: {
       roleId: '',
       permId: ''
+    }
+  },
+  {
+    name: 'updateRoleStatus',
+    method: 'POST',
+    desc: '修改角色状态',
+    path: '/Role/updateRoleStatus',
+    data: {
+      roleId: '',
+      isDisabled: ''
     }
   }
 ]

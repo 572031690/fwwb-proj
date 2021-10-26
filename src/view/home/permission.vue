@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')" class="topRightBox">
+              <el-col :span="8" v-if="$store.state.permissionName.includes('admin:addPerm')" class="topRightBox">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -59,8 +59,19 @@
                 :key="index"
                 :class="{'body-td4': data==='comment'}" >
 
-                  <div class="cell" v-if="data!=='opetation'">
+                  <div class="cell" v-if="data!=='opetation' && data!=='isDisabled'">
                     {{data==='index' ? key + 1 :item[data] }}
+                  </div>
+                  <div class="cell" v-if="data==='isDisabled'">
+                    <el-switch
+                      :name="item.id.toString()"
+                      v-model="item.isDisabled"
+                      active-color="#ff4949"
+                      inactive-color="#13ce66"
+                      @change="setStatus(item.id,key)"
+                    >
+                    </el-switch>
+                    {{item.isDisabled?  '禁用':'正常'}}
                   </div>
 
                   <div class="cell" v-if="data==='opetation'">
@@ -126,6 +137,56 @@ export default {
     this.search()
   },
   methods: {
+    /**
+     * @desc 请求用户数据
+     */
+    async search () {
+      await this.$api(this.searchUrl, {
+        params: {
+          page: this.params.page, // 传递当前是第几页参数
+          limit: this.params.limit, // 传递每页显示多少条记录参数
+          searchName: this.params.dname, // 传递搜索参数
+          selectName: this.params.selectValue // 筛选参数
+        }
+      }).then((res) => {
+        this.list = res.list || [] // 获取里面的data数据
+        this.getEmitData()
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    /**
+     * @desc 更改状态
+     */
+    async setStatus (id, key) {
+      const url = 'home/permission/updatePermissionStatus'
+      const data = {
+        id: id,
+        isDisabled: this.list[key].isDisabled ? 1 : 0
+      }
+      await this.$api(url, data).then(() => {
+        this.$message.success('更改状态成功')
+      }).catch(() => {
+        setTimeout(() => {
+          this.list[key].isDisabled = !this.list[key].isDisabled
+        }, 400)
+      })
+    },
+    /**
+     * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
+     */
+    getEmitData () {
+      this.list.forEach(function (item) {
+        if (item.isDisabled) {
+          item.isDisabled = true
+        } else {
+          item.isDisabled = false
+        }
+      })
+    },
     /**
      * @desc 添加方法打开界面
      */

@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
+              <el-col :span="8" v-if="$store.state.permissionName.includes('admin:addUser')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -100,15 +100,15 @@
                     <button class="roleBtn" @click="getRole(item)">分配角色</button>
                   </div>
                   <div class="cell" v-if="data==='roleStatus'">
-                        <el-switch
-                          :name="item.userid.toString()"
-                          v-model="item.isDisabled"
-                          active-color="#ff4949"
-                          inactive-color="#13ce66"
-                          @change="setStatus(item.userid,key)"
-                        >
-                        </el-switch>
-                        {{item.isDisabled?  '禁用':'正常'}}
+                    <el-switch
+                      :name="item.userid.toString()"
+                      v-model="item.isDisabled"
+                      active-color="#ff4949"
+                      inactive-color="#13ce66"
+                      @change="setStatus(item.userid,key)"
+                    >
+                    </el-switch>
+                    {{item.isDisabled?  '禁用':'正常'}}
                   </div>
 
                 </div>
@@ -215,7 +215,7 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.departmentId.includes('10000')) {
+    if (this.$store.state.permissionName.includes('admin:addUser')) {
       this.tableText = this.$tables.userListedit
     } else {
       this.tableText = this.$tables.userListsee

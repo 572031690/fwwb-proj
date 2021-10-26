@@ -342,7 +342,6 @@ export default {
      * @desc 点击提交添加编辑验证
      */
     submitForm (formName) {
-      console.log(this.dialogData.formList, 'dialogData.formList')
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$confirm(this.openType === 'add' ? '是否确定保存并添加此条数据?'

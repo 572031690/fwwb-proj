@@ -9,10 +9,9 @@ const store = new Vuex.Store({
     count: 1,
     flagwel: 'block',
     dialogDraw: false, // 显示抽屉
-    departmentId: '',
     routerIndex: 1,
     permission: '',
-    permissionId: ''
+    permissionName: ''
   },
   // 2.mutations里面放的是方法,方法主要用于改变state里面的数据
   mutations: {
@@ -20,17 +19,14 @@ const store = new Vuex.Store({
     ChangeDraw (state) {
       state.dialogDraw = !state.dialogDraw
     },
-    getDepartment (state, id) {
-      state.departmentId = id
-    },
     setRouter (state, id) {
       state.routerIndex = id
     },
     setPermission (state, data) {
       state.permission = data
     },
-    setPermissionId (state, data) {
-      state.permissionId = data
+    setPermissionName (state, data) {
+      state.permissionName = data
     }
   },
   actions: {

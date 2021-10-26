@@ -44,5 +44,15 @@ export default [
     params: {
       id: ''
     }
+  },
+  {
+    name: 'updatePermissionStatus',
+    method: 'POST',
+    desc: '修改权限状态',
+    path: '/Perm/updatePermissionStatus',
+    data: {
+      id: '',
+      isDisabled: ''
+    }
   }
 ]

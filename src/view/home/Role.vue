@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.departmentId.includes('10000')">
+              <el-col :span="8" v-if="$store.state.permissionName.includes('admin:addRole')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -62,6 +62,14 @@
                     {{ item[data] }}
                   </div>
                    <div class="cell" v-if="data==='isDeleted'">
+                    <el-switch
+                      :name="item.roleId.toString()"
+                      v-model="item.isDisabled"
+                      active-color="#ff4949"
+                      inactive-color="#13ce66"
+                      @change="setStatus(item.roleId,key)"
+                    >
+                    </el-switch>
                     {{ item[data]? '禁用' : '正常' }}
                   </div>
                   <div class="cell" v-if="data==='index'">
@@ -90,30 +98,7 @@
             name="roleList"
         >
         </vDialog>
-
-        <el-dialog
-          title="分配角色"
-          :visible.sync="dialogVisibleRole"
-          width="30%">
-          <div class="tableRole">
-            <div class="tableRoleTop">
-              <div class="btnRole">选择</div>
-              <div class="textRole">角色名称</div>
-              <div class="textRole">描述</div>
-            </div>
-            <el-checkbox-group v-model="currentRola">
-              <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
-                <div class="btnRole"><el-checkbox :label="item.roleId">{{''}}</el-checkbox></div>
-                <div class="textRole">{{item.rolename}}</div>
-                <div class="textRole">{{item.description}}</div>
-              </div>
-            </el-checkbox-group>
-          </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisibleRole = false">取 消</el-button>
-            <el-button type="primary" @click="checkRoleList">确 定</el-button>
-          </span>
-        </el-dialog>
+        <permissionDialog :dialogVisibleRole="dialogVisibleRole" @closeDialog="closeDialog"  :roleId='roleId'/>
 
         </div>
         <div class="table-bottom">
@@ -135,15 +120,20 @@
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
+import permissionDialog from '../../components/role/role-permission.vue'
 
 export default {
   mixins: [homeMix],
+  components: {
+    permissionDialog
+  },
   data () {
     return {
       tableText: '',
       dialogFormShow: false,
       IntList: ['roleId'],
       list: [],
+      roleId: -1,
       currentRola: '',
       rolaData: '',
       dialogVisibleRole: false,
@@ -167,16 +157,72 @@ export default {
       this.searchUrl = 'home/role/listRole'
     },
     /**
+     * @desc 请求用户数据
+     */
+    async search () {
+      await this.$api(this.searchUrl, {
+        params: {
+          page: this.params.page, // 传递当前是第几页参数
+          limit: this.params.limit, // 传递每页显示多少条记录参数
+          searchName: this.params.dname, // 传递搜索参数
+          selectName: this.params.selectValue // 筛选参数
+        }
+      }).then((res) => {
+        this.list = res.list || [] // 获取里面的data数据
+        this.getEmitData()
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    /**
+     * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
+     */
+    getEmitData () {
+      this.list.forEach(function (item) {
+        if (item.isDisabled) {
+          item.isDisabled = true
+        } else {
+          item.isDisabled = false
+        }
+      })
+    },
+    /**
      * @desc 打开分配权限表
      */
     getRole (item) {
+      this.currentRola = []
+      if (item.roleId[0] !== 0) this.currentRola = item.roleId || []
+      this.roleId = item.roleId
       this.dialogVisibleRole = true
+    },
+    /**
+     * @desc 更改状态
+     */
+    async setStatus (id, key) {
+      const url = 'home/role/updateRoleStatus'
+      const data = {
+        roleId: id,
+        isDisabled: this.list[key].isDisabled ? 1 : 0
+      }
+      await this.$api(url, data).then(() => {
+        this.$message.success('更改状态成功')
+      }).catch(() => {
+        setTimeout(() => {
+          this.list[key].isDisabled = !this.list[key].isDisabled
+        }, 400)
+      })
     },
     /**
      * @desc 确定权限
      */
     checkRoleList () {
 
+    },
+    closeDialog (val) {
+      this.dialogVisibleRole = false
     }
   }
 }

@@ -21,9 +21,8 @@
             <i class="el-icon-s-marketing" style="font-size: 100px; color: white"></i>
           </div>
             <div v-for="(item,index) in datalist"  class="item" :key="index" style="font-size:20px;color:white;padding-left:30px" >
-          {{item.name+'：'+item.num+item.unit}}
+              {{item.name+'：'+item.num+item.unit}}
             </div>
-
           <div class="text1">材料库存</div>
         </el-card>
       </div>
@@ -94,18 +93,10 @@
 export default {
   computed: {
     getdpartmentTypeNeed () {
-      const partIdList = ['10000', '10001', '10010', '10011']
-      for (const i of partIdList) {
-        if (this.$store.state.departmentId.includes(i)) return true
-      }
-      return false
+      return this.$store.state.permissionName.includes('need:getNeedCount')
     },
     getdpartmentTypeBuy () {
-      const partIdList = ['10000', '10001', '10020', '10021']
-      for (const i of partIdList) {
-        if (this.$store.state.departmentId.includes(i)) return true
-      }
-      return false
+      return this.$store.state.permissionName.includes('buy:getBuyCount')
     }
   },
   data () {
@@ -198,13 +189,12 @@ export default {
      * @desc 获取审批数据
      */
     getAprovalCount () {
-      const userList = JSON.parse(window.sessionStorage.getItem('userData'))
-      if (userList.roleId.includes(10011) || userList.roleId.includes(10010) || userList.roleId.includes(10000) || userList.roleId.includes(10001)) {
+      if (this.$store.state.permissionName.includes('need:getNeedCount')) {
         this.$api('home/welcome/getNeedCount').then(res => {
           this.needCount = res
         })
       }
-      if (userList.roleId.includes(10021) || userList.roleId.includes(10020) || userList.roleId.includes(10000) || userList.roleId.includes(10001)) {
+      if (this.$store.state.permissionName.includes('buy:getBuyCount')) {
         this.$api('home/welcome/getBuyCount').then(res => {
           this.buyCount = res
         })

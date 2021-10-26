@@ -2,7 +2,7 @@ export const routerList = [
   {
     type: 'router',
     index: 1,
-    id: 0,
+    permissionName: 0,
     path: '/home/homewel',
     label: '首页',
     ref: 'spans1',
@@ -14,7 +14,7 @@ export const routerList = [
   {
     type: 'router',
     index: 7,
-    id: 47,
+    permissionName: 'echart:monthsale',
     path: '/home/driver',
     label: '数据驾驶舱',
     ref: 'spans9',
@@ -38,7 +38,7 @@ export const routerList = [
     childrenList: [
       {
         index: 21,
-        id: 22,
+        permissionName: 'needer:addNeed',
         path: '/home/need',
         label: '需求申报',
         ref: 'spans7',
@@ -48,7 +48,7 @@ export const routerList = [
       },
       {
         index: 22,
-        id: 31,
+        permissionName: 'buyer:addBuy',
         path: '/home/buy',
         label: '采购申报',
         ref: 'spans5',
@@ -82,7 +82,7 @@ export const routerList = [
     childrenList: [
       {
         index: 31,
-        id: 52,
+        permissionName: 'needManager:findHistory',
         path: '/home/need',
         label: '审批需求',
         ref: 'spans11',
@@ -92,7 +92,7 @@ export const routerList = [
       },
       {
         index: 32,
-        id: 53,
+        permissionName: 'buyManager:findHistory',
         path: '/home/buy',
         label: '审批订单',
         ref: 'spans12',
@@ -114,7 +114,7 @@ export const routerList = [
   {
     type: 'router',
     index: 4,
-    id: 100,
+    permissionName: 100,
     path: '/home/department',
     label: '部门管理',
     ref: 'spans3',
@@ -126,7 +126,7 @@ export const routerList = [
   {
     type: 'router',
     index: 5,
-    id: 42,
+    permissionName: 'item:addItem',
     path: '/home/item',
     label: '基础数据',
     ref: 'spans14',
@@ -138,7 +138,7 @@ export const routerList = [
   {
     type: 'router',
     index: 6,
-    id: 2,
+    permissionName: 'admin:userlist',
     path: '/home/user',
     label: '用户信息',
     ref: 'spans8',
@@ -150,7 +150,7 @@ export const routerList = [
   {
     type: 'router',
     index: 9,
-    id: 0,
+    permissionName: 0,
     path: '/home/warehouse',
     label: '物料仓库',
     ref: 'spans16',
@@ -162,7 +162,7 @@ export const routerList = [
   {
     type: 'router',
     index: 13,
-    id: 0,
+    permissionName: 'admin:listPerm',
     path: '/home/permission',
     label: '权限管理',
     ref: 'spans19',
@@ -174,7 +174,7 @@ export const routerList = [
   {
     type: 'router',
     index: 10,
-    id: 0,
+    permissionName: 'admin:listRole',
     path: '/home/role',
     label: '角色管理',
     ref: 'spans17',
@@ -186,9 +186,9 @@ export const routerList = [
   {
     type: 'router',
     index: 11,
-    id: 0,
+    permissionName: 'storekeeper:findInRepositoryList',
     path: '/home/contrstock',
-    label: '仓库代办',
+    label: '仓库管理',
     ref: 'spans18',
     disabled: false,
     imgSrc: require('@/assets/img/controlstock.png'),
@@ -198,7 +198,7 @@ export const routerList = [
   {
     type: 'router',
     index: 8,
-    id: 0,
+    permissionName: 0,
     path: '/home/personal',
     label: '个人中心',
     ref: 'spans15',

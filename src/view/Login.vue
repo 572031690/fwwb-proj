@@ -209,9 +209,9 @@ export default {
       }
       await this.$api(url, data)
         .then(res => {
-          const { code, user, sessionId, permission, permissionId } = res
+          const { code, user, sessionId, permission, permissionName } = res
           if (parseInt(code) === 101) {
-            this.getCache(user, sessionId, permission, permissionId)
+            this.getCache(user, sessionId, permission, permissionName)
             this.logindata.uname = ''
             this.logindata.pass = ''
             this.$router.push({ path: 'home/homewel', query: { routerIndex: 1 } }) // 页面跳转
@@ -234,14 +234,14 @@ export default {
           console.log(err)
         })
     },
-    getCache (user, sessionId, permission, permissionId) {
+    getCache (user, sessionId, permission, permissionName) {
       window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('userData', JSON.stringify(user)) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('userid', user.userid) // 用户ID
-      permissionId.push(0)
-      window.sessionStorage.setItem('permissionId', JSON.stringify(permissionId)) // 权限Id
+      permissionName.push(0)
+      window.sessionStorage.setItem('permissionName', JSON.stringify(permissionName)) // 权限Name
       window.sessionStorage.setItem('permission', JSON.stringify(permission)) // 权限Id
     }
   },

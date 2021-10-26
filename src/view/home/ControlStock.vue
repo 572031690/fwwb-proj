@@ -7,7 +7,7 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>仓库代办列表</span></el-col
+                <span>仓库管理列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
@@ -25,12 +25,15 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" >
+              <el-col :span="8" class="topRightBox">
                 <div class="approvalBtn" >
-                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">入库管理</div>
-                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">出库管理</div>
-                </div></el-col
-              >
+                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">出库管理</div>
+                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">入库管理</div>
+                </div>
+                <button class="bodyadd" @click="gethomeAdd()" >
+                  <i class="el-icon-plus"></i>添加
+                </button>
+              </el-col>
             </el-row>
           </div>
         </div>
@@ -39,40 +42,52 @@
           v-loading="loading2"
           element-loading-text="拼命加载中"
         >
-          <div class="mytable">
+          <div class="mytable" >
             <div class="table-top">
                 <div v-for="(item,index) in tableText.tableTitle"
                   :key="index"
                   colspan="1"
                   rowspan="1"
                   :class="
-                  item === '描述'?'htop-th3'
+                  item === '详情'?'htop-th3'
                   :item === '需求单名'?'htop-th7'
                   :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </div>
             </div>
             <vNone v-if="!list.length" />
-            <div class="tbody" >
+            <div class="tbody"  >
               <div class="bodyLine" v-for="(item, key) in list" :key="key">
 
                 <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
                 :class="{'body-td4': data==='comment'}" >
-
-                  <div class="cell" v-if="data!=='opetation'">
-                    {{ item[data] }}
+                  <div class="cell" v-if="data!=='opetation' && data!=='importance'">
+                    {{ data === 'index' ? key+1 : item[data] }}
                   </div>
-
                   <div class="cell" v-if="data==='opetation'">
-                    <button class="roleBtn" @click="seeData(item)">处理代办</button>
+                    <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
                   </div>
+                  <div class="cell" v-if="data==='importance' && item[data]">
+                    <span class="importantSpan" :style="{'background': importanceList[item[data]-1].color}">{{importanceList[item[data]-1].text}}</span>
+                  </div>
+                  <!-- <div class="cell" v-if="data==='opetation1'">
+                    <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
+                  </div>
+                  <div class="cell" v-if="data==='opetation2'">
+                    <button class="modify" @click="seeData(item)"  >
+                      编辑
+                    </button>
+                    <button class="delete" @click="deletedata({buyid: item.buyid},'home/buy/deleteBuy')"  >
+                      删除
+                    </button>
+                  </div> -->
                 </div>
 
               </div >
             </div>
           </div>
-
+          <controlDialog :dialogVisibleRole="dialogVisibleRole" :url='urlTypeList[currentApprovalType]' @closeDialog="closeDialog" :currentList="currentList"  :roleId='roleId'/>
           <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
@@ -105,14 +120,35 @@
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
+import controlDialog from '../../components/ControlStock/ControlStockDialog.vue'
 
 export default {
   mixins: [homeMix],
+  components: {
+    controlDialog
+  },
   data () {
     return {
+      dialogVisibleRole: false,
+      roleId: 0,
+      importanceList: [
+        {
+          text: '一般',
+          color: 'rgb(23, 165, 23)'
+        },
+        {
+          text: '紧急',
+          color: 'rgb(92, 92, 143)'
+        },
+        {
+          text: '加急',
+          color: 'rgb(226, 63, 63)'
+        }
+      ],
       currentApprovalType: true,
       editDisabled: ['itemid'],
       tableText: '',
+      currentList: {},
       dialogFormShow: false,
       IntList: ['stock'],
       list: [
@@ -124,15 +160,19 @@ export default {
           unit: 'kg'
         }
       ],
+      urlTypeList: {
+        true: {
+          search: 'home/controlStock/findOutRepositoryList'
+        },
+        false: {
+          search: 'home/controlStock/findInRepositoryList'
+        }
+      },
       loading2: true
     }
   },
   created () {
-    if (this.$store.state.departmentId.includes('10000')) {
-      this.tableText = this.$tables.itemListedit
-    } else {
-      this.tableText = this.$tables.itemListsee
-    }
+    this.tableText = this.$tables.controlNeedList
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
@@ -141,21 +181,56 @@ export default {
     this.search()
   },
   methods: {
+    closeDialog (val) {
+      this.dialogVisibleRole = false
+    },
+    /**
+     * @desc ajax请求后台数据 获得list数据 并用于分页
+     */
+    async search () {
+      await this.$api(this.searchUrl, {
+        params: {
+          page: this.params.page, // 传递当前是第几页参数
+          limit: this.params.limit, // 传递每页显示多少条记录参数
+          planName: this.currentApprovalType ? 2 : 1 // 传递搜索参数
+        }
+      }).then((res) => {
+        this.list = res.list || [] // 获取里面的data数据
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        // this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+        // this.getApprovalCurrentData()
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    seeDialog (item) {
+      this.currentList = item
+      this.dialogVisibleRole = true
+    },
     /**
      * @desc 请求列表数据
      */
     getSearchUrl () {
-      this.searchUrl = 'home/item/getItem'
+      // this.searchUrl = 'home/controlStock/findOutRepositoryList'
+      this.searchUrl = 'home/controlStock/findAllNeed'
     },
     getApprovalType (index) {
       this.currentApprovalType = index
+      this.tableText = index ? this.$tables.controlNeedList : this.$tables.constrolBuyList
+      this.searchUrl = index ? 'home/controlStock/findAllNeed' : 'home/controlStock/findAllBuy'
+      this.search()
     }
   }
 }
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
-
+.importantSpan {
+  padding: 3px 15px;
+  border-radius: 5px;
+  color: white;
+}
 .searchfa {
   margin-left: 35px;
 }

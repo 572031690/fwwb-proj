@@ -90,7 +90,7 @@ export default {
   // provide () {
   //   return {
   //     departId: () => {
-  //       return this.departmentID
+  //       return this.permissionName
   //     }
   //   }
   // },
@@ -102,7 +102,7 @@ export default {
       arrowflag: true,
       imghomeflag: true,
       adminname: '',
-      departmentID: '',
+      permissionName: '',
       navshow: true,
       navSonShow: true,
       lastTime: 0, // 默认上一次点击时间为0
@@ -114,16 +114,13 @@ export default {
       timer: null
     }
   },
-  beforeCreate () {
-    this.$store.commit('setPermissionId', JSON.parse(window.sessionStorage.getItem('permissionId')))
-  },
   created () {
+    this.permissionName = JSON.parse(window.sessionStorage.getItem('permissionName'))
+    this.$store.commit('setPermissionName', this.permissionName)
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
-    this.departmentID = window.sessionStorage.getItem('sData')
-    this.$store.commit('getDepartment', this.departmentID)
-    this.initType(false)
   },
   mounted () {
+    this.initType(false)
     this.changeHomeImgCreate()
     this.nowTimes()
   },
@@ -224,7 +221,7 @@ export default {
       }).then(() => {
         sessionStorage.clear() // 删除所有数据
         this.initType(false)
-        this.$store.commit('setPermissionId', '')
+        this.$store.commit('setPermissionName', '')
         this.$router.push({ name: 'login' }) // 直接跳转
         this.$message({
           type: 'success',
@@ -290,62 +287,19 @@ export default {
      * @desc 根据角色判断显示
      */
     getAdminType () {
-      const constrolPermission = this.$store.state.permissionId
+      const constrolPermission = this.permissionName
       for (let i = 0; i < this.routerList.length; i++) {
-        if (constrolPermission.includes(this.routerList[i].id) && this.routerList[i].type === 'router') this.routerList[i].showtab = true
+        if (constrolPermission.includes(this.routerList[i].permissionName) && this.routerList[i].type === 'router') this.routerList[i].showtab = true
         if (this.routerList[i].type === 'tips') {
-          this.routerList[i].childrenList = this.routerList[i].childrenList.map((item) => {
-            if (constrolPermission.includes(item.id)) {
+          this.routerList[i].childrenList.forEach((item) => {
+            if (constrolPermission.includes(item.permissionName)) {
               item.showtab = true
               this.routerList[i].showtab = true
             }
-            return item
           })
         }
       }
-      // if (this.departmentID.includes('10000')) { // 管理管10000
-      //   this.routerList[1].showtab = true
-      //   this.routerList[5].showtab = true
-      //   this.routerList[6].showtab = true
-      // }
-      // if (this.departmentID.includes('10001')) { // 总经理10001
-      //   this.routerList[1].showtab = true
-      //   this.routerList[3].showtab = true
-      //   this.routerList[5].showtab = true
-      //   this.routerList[6].showtab = true
-      //   this.routerList[3].childrenList.forEach(item => {
-      //     item.showtab = true
-      //   })
-      // }
-      // if (this.departmentID.includes('10010')) { // 需求部门经理10010
-      //   this.routerList[5].showtab = true
-      //   this.routerList[3].showtab = true
-      //   this.routerList[3].childrenList[0].showtab = true
-      // }
-      // if (this.departmentID.includes('10011')) { // 需求专员10011
-      //   this.routerList[5].showtab = true
-      //   this.routerList[2].showtab = true
-      //   this.routerList[2].childrenList[0].showtab = true
-      // }
-      // if (this.departmentID.includes('10020')) { // 购买部门经理10020
-      //   this.routerList[5].showtab = true
-      //   this.routerList[3].showtab = true
-      //   this.routerList[3].childrenList[1].showtab = true
-      // }
-      // if (this.departmentID.includes('10021')) { //   购买专员10021
-      //   this.routerList[5].showtab = true
-      //   this.routerList[2].showtab = true
-      //   this.routerList[2].childrenList[1].showtab = true
-      // }
-      // if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab ? this.routerList[4].showtab : this.routerList[1].childrenList[2].showtab) {
-      //   if (this.routerList[4].showtab === this.routerList[2].childrenList[2].showtab) {
-      //     this.routerList[4].showtab = false
-      //     this.routerList[1].childrenList[2].showtab = false
-      //   } else {
-      //     this.routerList[4].showtab = false
-      //     this.routerList[2].childrenList[2].showtab = false
-      //   }
-      // }
+
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
           this.arrowData.push(item.arrowRef)
@@ -356,16 +310,17 @@ export default {
      * @desc 初始化左侧导航显示
      */
     initType (bool) {
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i < this.routerList.length; i++) {
         this.routerList[i].showtab = bool
         if (this.routerList[i].childrenList.length) {
-          this.routerList[i].childrenList = this.routerList[i].childrenList.map((item) => {
+          this.routerList[i].childrenList.forEach((item) => {
             item.showtab = false
-            return item
           })
         }
       }
-      if (this.departmentID) this.getAdminType()
+      if (this.permissionName) {
+        this.getAdminType()
+      }
     },
     /**
      * @desc 判断点击左侧导航栏类型
@@ -411,14 +366,14 @@ export default {
 #Home {
   height: 100vh;
   width: 100vw;
-  // background-color: white;
   display: flex;
   flex-direction: row;
   //background: radial-gradient(220% 105% at top center, rgb(82, 81, 81) 10%, #000035 40%, #0b2570 65%, #0070aa);
-  background: linear-gradient(
+  background: linear-gradient(to top left,
     rgb(242,246,253),
-    rgb(230, 239, 253),
-    rgb(242,246,253)
+    rgb(209, 223, 245),
+    rgb(242,246,253),
+    rgb(199, 206, 218)
   );
 }
 .leftNavigation {
