@@ -45,10 +45,10 @@ export default [
   },
   {
     name: 'getNeed',
-    method: 'GET',
+    method: 'POST',
     desc: '获取需求表',
     path: '/webneed/findAllNeed',
-    params: {
+    data: {
       limit: 10, // 每页显示5条记录
       page: 1, // 当前是第几页
       searchName: '', // 查询数据

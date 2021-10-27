@@ -286,9 +286,8 @@ export default {
      * @desc ajax请求后台数据 获得list数据 并用于分页
      */
     async search () {
-      await this.$api(this.searchUrl, {
-        params: { ...this.params }
-      }).then((res) => {
+      const data = { ...this.params }
+      await this.$api(this.searchUrl, data).then((res) => {
         this.list = res.list || [] // 获取里面的data数据
         this.params.total = res.count // 获取后台传过来的总数据条数
         // this.params.page = res.page // 将后端的当前页反传回来
