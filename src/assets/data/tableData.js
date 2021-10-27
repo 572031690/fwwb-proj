@@ -4,16 +4,16 @@ export const tableList = {
     tableBody: ['needid', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation2', 'opetation1']
   },
   needListHistry: {
-    tableTitle: ['编号', '需求标题', '物料名称', '数量', '创建日期', '提交人编号', '需求单位', '详情', '状态'],
-    tableBody: ['needid', 'needtitle', 'itemtype', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation2']
+    tableTitle: ['编号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '详情', '状态'],
+    tableBody: ['needid', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation2']
   },
   buyList: {
-    tableTitle: ['编号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '订单码', '重要程度', '状态', '操作'],
-    tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'auditid', 'importance', 'opetation2', 'opetation1']
+    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '状态', '操作'],
+    tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation2', 'opetation1']
   },
   buyListHistry: {
-    tableTitle: ['编号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交专员编号', '订单码', '状态'],
-    tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'auditid', 'opetation2']
+    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交专员编号', '重要程度', '状态'],
+    tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation2']
   },
   departmentList: {
     tableTitle: ['部门名称', '部门编号', '操作'],
@@ -36,16 +36,16 @@ export const tableList = {
     tableBody: ['itemcode', 'name', 'comment', 'stock', 'totalstock', 'unit']
   },
   controlStockList: {
-    tableTitle: ['物料编码', '物资名称', '申请物资编号', '货量', '单位', '提交日期', '操作', '管理'],
+    tableTitle: ['物料编码', '物资名称', '申请物资编号', '货量', '单位', '创建日期', '操作', '管理'],
     tableBody: ['itemid', 'name', 'needid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
   },
   controlNeedList: {
-    tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '操作'],
-    tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'opetation']
+    tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '详情', '操作'],
+    tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation']
   },
   constrolBuyList: {
-    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '操作'],
-    tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation']
+    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '详情', '操作'],
+    tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'comment', 'opetation']
   },
   roleList: {
     tableTitle: ['序号', '角色编号', '角色名称', '描述', '状态', '操作', '权限'],

@@ -2,9 +2,7 @@
   <div class="right-body" id="body">
     <div class="overbox">
       <div class="bodyheart">
-
           <div class="body-top">
-
               <div class="bodytop-heart">
                 <el-row>
                   <el-col :span="8"
@@ -15,7 +13,7 @@
                     <div class="searchfa">
                       <!-- 搜索框 -->
                       <div style="opacity: 0;">.</div>
-                      <div class="search" v-if="false">
+                      <!-- <div class="search" v-if="false">
                         <el-select
                           v-model="params.selectValue"
                           @change="search"
@@ -42,7 +40,7 @@
                           />
                           <button type="button"></button>
                         </form>
-                      </div>
+                      </div> -->
                     </div>
                   </el-col>
                   <el-col :span="8" class="topRightBox">
@@ -209,10 +207,6 @@ export default {
         itemtype: '', // 物料类别
         itemid: '', // 物料编号
         needday: '' // 需求时间
-      },
-      dialogUrl: {
-        startApproval: 'home/need/approvalNeed',
-        upApproval: 'home/need/completeprocess'
       },
       currentApprovalType: true,
       drawOpenType: 'see',

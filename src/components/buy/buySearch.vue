@@ -8,7 +8,7 @@
         <el-date-picker
           type="date"
           @change="setSearchForm"
-          v-model="searchForm.needday"
+          v-model="searchForm.btime"
           style="width: 220px;"
           placeholder="选择需求日期"
           clearable>
@@ -28,9 +28,9 @@
         <el-select style="width: 220px;" v-model="searchForm.department" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
             v-for="item in optionsDepartment"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.itemtype"
+            :label="item.itemtype"
+            :value="item.itemtype">
           </el-option>
         </el-select>
       </vSearchNav>
@@ -38,9 +38,9 @@
         <el-select style="width: 220px;" v-model="searchForm.itemtype" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
             v-for="item in optionsType"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.itemtype"
+            :label="item.itemtype"
+            :value="item.itemtype">
           </el-option>
         </el-select>
       </vSearchNav>
@@ -48,9 +48,9 @@
         <el-select style="width: 220px;" v-model="searchForm.itemid" placeholder="请选择" @change="setSearchForm" clearable>
           <el-option
             v-for="item in optionsId"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.itemtype"
+            :label="item.itemtype"
+            :value="item.itemtype">
           </el-option>
         </el-select>
      </vSearchNav>
@@ -69,7 +69,7 @@ export default {
         department: '', // 需求单位
         itemtype: '', // 物料类别
         itemid: '', // 物料编号
-        needday: '' // 需求时间
+        btime: '' // 需求时间
       },
       optionsDepartment: [],
       optionsType: [],
@@ -116,21 +116,21 @@ export default {
     },
     getDepartment () {
       this.$api('home/item/findItemName', { params: { itemid: 12 } }).then(res => {
-
+        this.optionsDepartment = res.list
       }).catch(() => {
 
       })
     },
     getType () {
       this.$api('home/item/findItemName', { params: { itemid: 1 } }).then(res => {
-
+        this.optionsType = res.list
       }).catch(() => {
 
       })
     },
     getId () {
       this.$api('home/item/findItemName', { params: { itemid: 16 } }).then(res => {
-
+        this.optionsId = res.list
       }).catch(() => {
 
       })

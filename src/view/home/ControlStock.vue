@@ -48,9 +48,9 @@
                   :key="index"
                   colspan="1"
                   rowspan="1"
+                  v-show="item !== '详情'"
                   :class="
-                  item === '详情'?'htop-th3'
-                  :item === '需求单名'?'htop-th7'
+                  item === '需求单名'?'htop-th7'
                   :'htop-th1'">
                   <div class="cell">{{item}}</div>
                 </div>
@@ -61,7 +61,7 @@
 
                 <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
-                :class="{'body-td4': data==='comment'}" >
+                v-show="data !== 'comment'">
                   <div class="cell" v-if="data!=='opetation' && data!=='importance'">
                     {{ data === 'index' ? key+1 : item[data] }}
                   </div>
@@ -82,7 +82,17 @@
           @closeDialog="closeDialog"
           :currentList="currentList"
           :roleId='roleId'
-          />
+          >
+          <div>
+            <h3>{{currentApprovalType ? '需求信息' : '采购信息'}}</h3>
+            <div class="dialogTopBody">
+              <span class="dialogTopBodyBox" v-show="item !== '序号' && item !== '操作'" v-for="(item, index) in tableText.tableTitle" :key="index">
+                <span class="title">{{item + '：'}}</span>
+                <span>{{currentList[tableText.tableBody[index]]}}</span>
+              </span>
+            </div>
+          </div>
+          </controlDialog>
           <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
@@ -225,6 +235,21 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
+.overbox {
+  .dialogTopBody {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    &Box {
+      font-size: 16px;
+      padding:10px 10px 0 10px;
+      // width: 100px;
+      .title {
+        font-weight: 700;
+      }
+    }
+  }
+}
 .importantSpan {
   padding: 3px 15px;
   border-radius: 5px;

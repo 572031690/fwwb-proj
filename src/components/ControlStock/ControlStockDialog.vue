@@ -6,11 +6,15 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
+      top="30px"
       width="1000px">
-
+      <div class="topText">
+        <slot></slot>
+      </div>
       <div class="tableRole" >
         <div class="tableRoleTopAdd">
           <div class="textRole">
+            <span  v-show="!showAdd" style="font-weight:700;">仓库操作列表</span>
             <el-select style="width: 220px;" v-show="showAdd" v-model="addData.itemid" placeholder="请选择" >
               <el-option
                 v-for="item in optionsId"
@@ -89,7 +93,7 @@
                 <span  v-if="data.outRept">已出库</span>
             </div>
             <div class="textRole" v-if="curr==='opetation2'">
-              <button class="modify" @click="editData(data,index)"  >
+              <button class="modify" @click="editData(data,index)"   v-if="!data.outRept">
                 编辑
               </button>
               <el-popover
@@ -176,8 +180,8 @@
           </el-pagination>
         </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog()">取 消</el-button>
-        <el-button type="primary" @click="upCurrentPermissionList">确 定</el-button>
+        <el-button @click="closeDialog()">关 闭</el-button>
+        <!-- <el-button type="primary" @click="upCurrentPermissionList">确 定</el-button> -->
       </span>
     </el-dialog>
   </div>
@@ -223,12 +227,10 @@ export default {
       visible: '',
       showAdd: false,
       addData: {
-        id: '',
         itemid: '',
         name: '',
         needid: '',
         num: '',
-        outRept: '',
         time: '',
         unit: ''
       },
@@ -277,19 +279,6 @@ export default {
         this.loading2 = false
       })
     },
-    async upCurrentPermissionList () {
-      const url = 'home/role/addRolePerm'
-      const data = {
-        roleId: this.roleId,
-        permId: this.currentPermission
-      }
-      await this.$api(url, data).then((res) => {
-        if (res.code === '101') {
-          this.$message.success('修改成功！')
-          this.closeDialog()
-        }
-      })
-    },
     editData (item, index) {
       this.editForm[index] = item
       this.list[index].editType = true
@@ -314,6 +303,8 @@ export default {
         if (res.code === '101') {
           this.$message.success('仓库操作成功！')
           this.search()
+        } else {
+          this.$message.error(res.error)
         }
       }).catch(() => {})
     },
@@ -323,6 +314,10 @@ export default {
     saveAddData () {
       this.addData.needid = this.currentList.needid
       this.addData.time = new Date()
+      if (this.checkAdd()) {
+        this.$message.error('请填写完整！')
+        return
+      }
       const data = { ...this.addData }
       const url = this.url.add
       this.$api(url, data).then(res => {
@@ -332,6 +327,11 @@ export default {
           this.search()
         }
       }).catch(() => {})
+    },
+    checkAdd () {
+      for (const i in this.addData) {
+        if (!this.addData[i] && this.addData[i] !== 0) return true
+      }
     },
     cancelAddData () {
       for (const i in this.addData) {
@@ -388,30 +388,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.bodyadd {
-    height: 28px;
-    width: 48px;
-    margin: 2px 15px 0 0;
-    margin-left: auto;
-    vertical-align: middle;
-    background-color: #fff;
-    border-radius: 4px;
-    outline: none;
-    border: 1px solid #dadce0;
-    font-size: 11px;
-    // float: right;
-    cursor: pointer;
-    &:hover {
-      background-color: #f0f7ff;
-      color: #8ebaed;
-      border: 1px solid #8ebaed;
-    }
-    &:active {
-      border: 1px solid #144379;
-    }
-  }
+
 .tableRole {
   max-height: 500px;
+  min-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 15px;
@@ -438,6 +418,28 @@ export default {
     display: flex;
     border-bottom: 1px solid rgb(235, 238, 245);
   }
+  .bodyadd {
+    height: 28px;
+    width: 48px;
+    margin: 2px 15px 0 0;
+    margin-left: auto;
+    vertical-align: middle;
+    background-color: #fff;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #dadce0;
+    font-size: 11px;
+    // float: right;
+    cursor: pointer;
+    &:hover {
+      background-color: #f0f7ff;
+      color: #8ebaed;
+      border: 1px solid #8ebaed;
+    }
+    &:active {
+      border: 1px solid #144379;
+    }
+  }
   .textLongRole {
     color: rgb(111, 115, 116);
     font-size: 14px;
@@ -446,11 +448,12 @@ export default {
     line-height: 50px;
   }
   .textRole {
+
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(111, 115, 116);
-    font-size: 14px;
+    font-size: 15px;
     width: 120px;
     height:50px;
     line-height: 50px;

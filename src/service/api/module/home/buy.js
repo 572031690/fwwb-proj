@@ -10,10 +10,8 @@ export default [
       itemtype: '',
       itemid: '',
       num: '',
-      buyerid: '',
-      neederid: '',
-      unit: '',
-      auditid: '',
+      importance: '',
+      department: '',
       comment: ''
     }
   },
@@ -38,23 +36,29 @@ export default [
       itemtype: '',
       itemid: '',
       num: '',
-      unit: '',
-      buyerid: '',
-      neederid: '',
-      auditid: '',
+      importance: '',
+      department: '',
       comment: ''
     }
   },
   {
     name: 'getBuy',
-    method: 'GET',
+    method: 'POST',
     desc: '获取购买订单数据列表',
     path: '/webbuy/findAllBuy',
-    params: {
-      page: '', // 传递当前是第几页参数
-      limit: '', // 传递每页显示多少条记录参数
-      searchName: '', // 传递搜索参数
-      selectName: '' // 查看需求审批状态 ##没加
+    data: {
+      limit: '', // 每页显示5条记录
+      page: '', // 当前是第几页
+      searchName: '', // 查询数据
+      selectName: '', // 查询状态
+      ordertype: '',
+      importancetype: '',
+      arrivaltimetype: '',
+      btimetype: '',
+      department: '', // 需求单位
+      itemtype: '', // 物料类别
+      itemid: '', // 物料编号
+      btime: '' // 需求时间: '' // 需求时间
     }
   },
   {

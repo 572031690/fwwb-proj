@@ -13,7 +13,7 @@
               <el-col :span="8">
                 <div class="searchfa">
                   <!-- 搜索框 -->
-                  <div class="search">
+                  <!-- <div class="search">
                     <el-select
                       v-model="params.selectValue"
                       @change="search"
@@ -40,7 +40,8 @@
                       />
                       <button type="button"></button>
                     </form>
-                  </div>
+                  </div> -->
+                  <div style="opacity: 0;">.</div>
                 </div>
               </el-col>
               <el-col :span="8" class="topRightBox">
@@ -48,6 +49,9 @@
                   <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
                   <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
                 </div>
+                <button class="bodyadd" v-print="'#printTest'" @click="gethomeAdd()" v-if="showAdd">
+                  打印
+                </button>
                 <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                   <i class="el-icon-plus"></i>添加
                 </button>
@@ -55,14 +59,16 @@
             </el-row>
           </div>
         </div>
+        <buySearch  @getSearchForm="getSearchForm"/>
         <div
           class="tablebody"
           v-loading="loading2"
           element-loading-text="拼命加载中"
+          id="printTest"
         >
         <div class="mytable">
           <div class="table-top">
-            <div v-for="(item,index) in tableText.tableTitle"
+            <div v-for="(item, index) in tableText.tableTitle"
             :key="index"
             colspan="1"
             rowspan="1"
@@ -70,7 +76,29 @@
             item === '订单标题'?'htop-th2'
             :item==='操作'?'htop-ope1'
             :'htop-th1'">
-              <div class="cell">{{item}}</div>
+              <div  class="cell"
+              v-show="item !== '重要程度'
+              && item !== '到货日期'
+              && item !== '需求日期'
+              && item !== '编号'">
+                {{item}}
+              </div>
+              <div class="cellSort"
+               @click="checkTriangle(sortList[item])"
+                v-show="item === '重要程度'
+                || item === '到货日期'
+                || item === '需求日期'
+                || item === '编号'">
+                <div class="cellSortBox" >
+                  <div :style="{ 'border-bottom-color'
+                  : params[sortList[item]]?'rgb(77, 90, 204)'
+                  : 'rgb(189, 207, 228)' }"
+                  class="triangleTop"
+                 ></div>
+                  <!-- <div class="triangleBottom"> </div> -->
+                </div>
+                <div class="cell"> {{item}}</div>
+              </div>
             </div>
           </div>
           <vNone v-if="!list.length" />
@@ -82,7 +110,7 @@
               :class="data==='buytitle'? 'body-td2'
               :data==='opetation1'?'body-ope1'
               :'body-td1'" >
-                <div class="cell" v-if="data!=='opetation1' && data!=='opetation2'">
+                <div class="cell" v-if="data!=='opetation1' && data!=='opetation2' && data !== 'importance'">
                   {{ data==='neednum'? item[data] + (item.unit  || '') :item[data]}}
                 </div>
                 <div class="bodyButton" v-if="data==='opetation1'">
@@ -107,6 +135,9 @@
                     </button>
                   </div>
                 </div>
+                <div class="cell" v-if="data==='importance' && item[data]">
+                    <span class="importantSpan">{{importanceList[item[data]-1].text}}</span>
+                  </div>
                 <div class="bodyButton" v-if="data==='opetation2'">
                   <div class="cell"  style="backgournd-color:red;">
                     <span class="tipsspan" :style="{
@@ -167,9 +198,12 @@
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
+import buySearch from '../../components/buy/buySearch.vue'
+
 export default {
   mixins: [homeMix],
   components: {
+    buySearch
   },
   data () {
     return {
@@ -193,6 +227,41 @@ export default {
       topChange: 'buyid',
       currentIndex: 1, // 查看审批数据
       showAdd: false,
+      importanceList: [
+        {
+          text: '一般',
+          color: 'rgb(23, 165, 23)'
+        },
+        {
+          text: '紧急',
+          color: 'rgb(92, 92, 143)'
+        },
+        {
+          text: '加急',
+          color: 'rgb(226, 63, 63)'
+        }
+      ],
+      params: {
+        limit: 10, // 每页显示5条记录
+        page: 1, // 当前是第几页
+        total: 0, // 总共几条记录去分页
+        searchName: '', // 查询数据
+        selectName: '', // 查询状态
+        ordertype: 0,
+        importancetype: 0,
+        arrivaltimetype: 0,
+        btimetype: 0,
+        department: '', // 需求单位
+        itemtype: '', // 物料类别
+        itemid: '', // 物料编号
+        btime: '' // 需求时间: '' // 需求时间
+      },
+      sortList: {
+        重要程度: 'importancetype',
+        到货日期: 'arrivaltimetype',
+        需求日期: 'btimetype',
+        编号: 'ordertype'
+      },
       select: [ // 搜索框筛选数据
         {
           value: '0',
@@ -228,6 +297,29 @@ export default {
     this.getTyp()
   },
   methods: {
+    checkTriangle (tips) {
+      this.params[tips] = 1 - this.params[tips]
+      this.search()
+    },
+    /**
+     * @desc ajax请求后台数据 获得list数据 并用于分页
+     */
+    async search () {
+      const data = { ...this.params }
+      await this.$api(this.searchUrl, data).then((res) => {
+        this.list = res.list || [] // 获取里面的data数据
+        this.params.total = res.count // 获取后台传过来的总数据条数
+        // this.params.page = res.page // 将后端的当前页反传回来
+        this.loading2 = false
+        // this.getApprovalCurrentData()
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    getSearchForm (searchFrom) {
+      Object.assign(this.params, searchFrom)
+      this.search()
+    },
     /**
      * @desc 获取是管理员打开还是专员打开
      */
@@ -287,7 +379,29 @@ export default {
 </script>
 <style lang="less" scoped>
   @import url("../../assets/less/right-table.less");
+.cellSort {
+  display: flex;
+  cursor: pointer;
+  &Box {
+    margin-right: 2px;
+    .triangleTop {
+      border-style: solid;
+      border-width: 7px;
+      border-color: transparent transparent rgb(189, 207, 228) transparent;
+      width: 0px;
+      height: 0px;
+      margin-bottom: 1px;
+    }
+    .triangleBottom {
+      border-style: solid;
+      border-width: 6px;
+      border-color: rgb(189, 207, 228) transparent transparent transparent;
+      width: 0px;
+      height: 0px;
 
+    }
+  }
+}
 .tipsspan {
     display: block;
     border-radius:3px;

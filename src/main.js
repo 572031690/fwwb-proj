@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/index'
+
+// 引入打印插件
+import Print from 'vue-print-nb'
 // 引入echarts
 import * as echarts from 'echarts'
 import globalComponent from './components/Global-build/index.js'
@@ -13,6 +16,7 @@ import './plugins/element.js'
 import 'font-awesome/css/font-awesome.css'
 import 'element-ui/lib/theme-chalk/index.css'// 引用全局组件index
 Vue.use(globalComponent)
+Vue.use(Print)
 Vue.prototype.$echarts = echarts
 
 Vue.prototype.$tables = tableList

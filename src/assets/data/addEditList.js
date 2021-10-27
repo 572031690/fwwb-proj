@@ -101,10 +101,26 @@ export const addEditList = {
         placeholder: '例如:钢材购买申请'
       },
       {
-        label: '类型',
-        putType: 'selectItem',
-        selectData: ['10000', '996', '007', '123'],
-        dataName: 'itemtype'
+        label: '材料类型',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 1
+        },
+        selectData: [],
+        dataName: 'itemtype',
+        linkage: 'itemid'
+      },
+      {
+        label: '物料编号',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 16
+        },
+        selectData: [],
+        dataName: 'itemid',
+        linkage: ''
       },
       {
         label: '数量',
@@ -112,26 +128,56 @@ export const addEditList = {
         dataName: 'num'
       },
       {
-        label: '采购专员编号',
-        putType: 'disput',
-        dataName: 'buyerid'
+        label: '重要程度',
+        putType: 'select',
+        selectData: [
+          {
+            value: 1,
+            label: '一般'
+          },
+          {
+            value: 2,
+            label: '紧急'
+          },
+          {
+            value: 3,
+            label: '加急'
+          }
+        ],
+        dataName: 'importance'
       },
+      // {
+      //   label: '采购专员编号',
+      //   putType: 'disput',
+      //   dataName: 'buyerid'
+      // },
+      // {
+      //   label: '需求专员编号',
+      //   putType: 'numput',
+      //   dataName: 'neederid',
+      //   placeholder: '例如:15,2,25'
+      // },
+      // {
+      //   label: '到货日期',
+      //   putType: 'date',
+      //   dataName: 'arrivaltime'
+      // },
+      // {
+      //   label: '订单码',
+      //   putType: 'numput',
+      //   dataName: 'auditid',
+      //   placeholder: '例如:165042101'
+      // },
       {
-        label: '需求专员编号',
-        putType: 'numput',
-        dataName: 'neederid',
-        placeholder: '例如:15,2,25'
-      },
-      {
-        label: '到货日期',
-        putType: 'date',
-        dataName: 'arrivaltime'
-      },
-      {
-        label: '订单码',
-        putType: 'numput',
-        dataName: 'auditid',
-        placeholder: '例如:165042101'
+        label: '部门',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 12
+        },
+        selectData: [],
+        dataName: 'department',
+        linkage: ''
       },
       {
         label: '详情',
@@ -147,11 +193,11 @@ export const addEditList = {
       itemtype: '',
       itemid: '',
       num: '',
-      auditid: '',
-      buyerid: '',
-      neederid: '',
+      importance: '',
+      // buyerid: '',
+      // neederid: '',
       comment: '',
-      uptype: ''
+      department: ''
     },
     url: {
       add: 'home/buy/addBuy',

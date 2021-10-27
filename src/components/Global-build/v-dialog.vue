@@ -43,13 +43,13 @@
           </el-date-picker>
 
             <el-select
-              v-model.number="dialogData.formList[item.dataName]"
+              v-model="dialogData.formList[item.dataName]"
               placeholder="请选择类型"
               v-if="item.putType === 'select'"
             >
               <el-option
-                :label="dat"
-                :value="dat"
+                :label="dat.label"
+                :value="dat.value"
                 v-for="(dat, key) in item.selectData"
                 :key="key"
               ></el-option>
