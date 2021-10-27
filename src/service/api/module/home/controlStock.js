@@ -36,11 +36,40 @@ export default [
     }
   },
   {
+    name: 'updateOutRepository',
+    method: 'POST',
+    desc: '修改出库信息',
+    path: '/repository/updateOutRepository',
+    data: {
+      id: '',
+      name: '',
+      itemid: '',
+      time: '',
+      num: '',
+      unit: ''
+    }
+  },
+  {
+    name: 'RepositoryOut',
+    method: 'POST',
+    desc: '出库操作',
+    path: '/repository/RepositoryOut',
+    data: {
+      name: '',
+      itemid: '',
+      time: '',
+      num: '',
+      unit: '',
+      outRept: '',
+      needid: ''
+    }
+  },
+  {
     name: 'findAllNeed',
-    method: 'GET',
+    method: 'POST',
     desc: '获取需求表',
     path: '/webneed/findAllNeed',
-    params: {
+    data: {
       limit: 10,
       page: 1,
       planName: ''
@@ -48,10 +77,10 @@ export default [
   },
   {
     name: 'findAllBuy',
-    method: 'GET',
+    method: 'POST',
     desc: '获取购买订单数据列表',
     path: '/webbuy/findAllBuy',
-    params: {
+    data: {
       page: '',
       limit: '',
       planName: ''

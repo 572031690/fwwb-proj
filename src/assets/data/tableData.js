@@ -36,7 +36,7 @@ export const tableList = {
     tableBody: ['itemcode', 'name', 'comment', 'stock', 'totalstock', 'unit']
   },
   controlStockList: {
-    tableTitle: ['物料编码', '物资名称', '需求专员编号', '货量', '单位', '提交时间', '操作', '管理'],
+    tableTitle: ['物料编码', '物资名称', '申请物资编号', '货量', '单位', '提交日期', '操作', '管理'],
     tableBody: ['itemid', 'name', 'needid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
   },
   controlNeedList: {

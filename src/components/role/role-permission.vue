@@ -20,7 +20,7 @@
             <div class="textLongRole">{{item.permission}}</div>
             <div class="textRole">{{item.type}}</div>
             <div class="textLongRole">{{item.url}}</div>
-            <div class="textRole">{{item.isDisabled ? '禁用' : '正常'}}</div>
+            <div class="textRole" :style="{ color: item.isDisabled ? 'red': 'green'}">{{item.isDisabled ? '禁用' : '正常'}}</div>
 
           </div>
         </el-checkbox-group>

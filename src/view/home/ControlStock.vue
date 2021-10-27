@@ -71,23 +71,18 @@
                   <div class="cell" v-if="data==='importance' && item[data]">
                     <span class="importantSpan" :style="{'background': importanceList[item[data]-1].color}">{{importanceList[item[data]-1].text}}</span>
                   </div>
-                  <!-- <div class="cell" v-if="data==='opetation1'">
-                    <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
-                  </div>
-                  <div class="cell" v-if="data==='opetation2'">
-                    <button class="modify" @click="seeData(item)"  >
-                      编辑
-                    </button>
-                    <button class="delete" @click="deletedata({buyid: item.buyid},'home/buy/deleteBuy')"  >
-                      删除
-                    </button>
-                  </div> -->
                 </div>
 
               </div >
             </div>
           </div>
-          <controlDialog :dialogVisibleRole="dialogVisibleRole" :url='urlTypeList[currentApprovalType]' @closeDialog="closeDialog" :currentList="currentList"  :roleId='roleId'/>
+          <controlDialog
+          :dialogVisibleRole="dialogVisibleRole"
+          :url='urlTypeList[currentApprovalType]'
+          @closeDialog="closeDialog"
+          :currentList="currentList"
+          :roleId='roleId'
+          />
           <vDialog ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
@@ -162,10 +157,15 @@ export default {
       ],
       urlTypeList: {
         true: {
-          search: 'home/controlStock/findOutRepositoryList'
+          search: 'home/controlStock/findOutRepositoryList',
+          add: 'home/controlStock/addOutRepository',
+          edit: 'home/controlStock/updateOutRepository',
+          delete: 'home/controlStock/deleteOutRepository',
+          Repos: 'home/controlStock/RepositoryOut'
         },
         false: {
-          search: 'home/controlStock/findInRepositoryList'
+          search: 'home/controlStock/findInRepositoryList',
+          add: ''
         }
       },
       loading2: true
@@ -188,13 +188,12 @@ export default {
      * @desc ajax请求后台数据 获得list数据 并用于分页
      */
     async search () {
-      await this.$api(this.searchUrl, {
-        params: {
-          page: this.params.page, // 传递当前是第几页参数
-          limit: this.params.limit, // 传递每页显示多少条记录参数
-          planName: this.currentApprovalType ? 2 : 1 // 传递搜索参数
-        }
-      }).then((res) => {
+      const data = {
+        page: this.params.page, // 传递当前是第几页参数
+        limit: this.params.limit, // 传递每页显示多少条记录参数
+        planName: this.currentApprovalType ? 2 : 1 // 传递搜索参数
+      }
+      await this.$api(this.searchUrl, data).then((res) => {
         this.list = res.list || [] // 获取里面的data数据
         this.params.total = res.count // 获取后台传过来的总数据条数
         // this.params.page = res.page // 将后端的当前页反传回来
