@@ -7,9 +7,11 @@
       <vSearchNav width="350px"  label="日期" labelwidth="130px">
         <el-date-picker
           type="date"
+          value-format="yyyy-MM-dd"
           @change="setSearchForm"
           v-model="searchForm.btime"
           style="width: 220px;"
+          :picker-options="pickerOptions"
           placeholder="选择需求日期"
           clearable>
         </el-date-picker>
@@ -63,6 +65,11 @@
 export default {
   data () {
     return {
+      pickerOptions: {
+        disabledDate: (time) => {
+          return time.getTime() > Date.now() - 8.64e7
+        }
+      },
       searchForm: {
         searchName: '', // 传递搜索参数
         selectName: '',
