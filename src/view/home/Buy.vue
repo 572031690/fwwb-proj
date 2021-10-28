@@ -96,7 +96,7 @@
                 || item === '编号'">
                 <div class="cellSortBox" >
                   <div :style="{ 'border-bottom-color'
-                  : params[sortList[item]]?'rgb(77, 90, 204)'
+                  : params.sortType === sortList[item]?'rgb(77, 90, 204)'
                   : 'rgb(189, 207, 228)' }"
                   class="triangleTop"
                  ></div>
@@ -154,7 +154,8 @@
                         :item.uptype == 1 ? '审批中'
                         :item.uptype == 2? '部门通过'
                         :item.uptype == 3? '审批通过'
-                        :item.uptype == 4? '审批驳回':''
+                        :item.uptype == 4? '审批驳回'
+                        :'逾期'
                       }}
                     </span>
                   </div>
@@ -213,7 +214,7 @@ export default {
   },
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)'],
+      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)', 'rgb(98, 98, 207)'],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
       drawerUrlList: {
@@ -253,20 +254,21 @@ export default {
         total: 0, // 总共几条记录去分页
         searchName: '', // 查询数据
         selectName: '', // 查询状态
-        ordertype: 0,
-        importancetype: 0,
-        arrivaltimetype: 0,
-        btimetype: 0,
+        sortType: '',
+        // ordertype: 0,
+        // importancetype: 0,
+        // arrivaltimetype: 0,
+        // btimetype: 0,
         department: '', // 需求单位
         itemtype: '', // 物料类别
         itemid: '', // 物料编号
         btime: '' // 需求时间: '' // 需求时间
       },
       sortList: {
-        重要程度: 'importancetype',
-        到货日期: 'arrivaltimetype',
-        需求日期: 'btimetype',
-        编号: 'ordertype'
+        编号: 0,
+        重要程度: 1,
+        到货日期: 2,
+        需求日期: 3
       },
       select: [ // 搜索框筛选数据
         {
@@ -288,6 +290,10 @@ export default {
         {
           value: '4',
           label: '经理通过'
+        },
+        {
+          value: '5',
+          label: '逾期'
         }
       ],
       // 表内静态数据列表
@@ -307,7 +313,10 @@ export default {
      * @desc 修改排序方法
      */
     checkTriangle (tips) {
-      this.params[tips] = 1 - this.params[tips]
+      console.log(tips, this.params.sortType, 'sdad')
+      if (this.params.sortType === tips) this.params.sortType = ''
+      else this.params.sortType = tips
+      // this.params[tips] = 1 - this.params[tips]
       this.search()
     },
     /**

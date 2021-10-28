@@ -51,6 +51,7 @@ export default [
       page: '', // 当前是第几页
       searchName: '', // 查询数据
       selectName: '', // 查询状态
+      sortType: '',
       ordertype: '',
       importancetype: '',
       arrivaltimetype: '',
