@@ -61,10 +61,10 @@ export default [
   },
   {
     name: 'findFinishedNeed',
-    method: 'GET',
+    method: 'POST',
     desc: '获取需求表历史待办',
     path: '/activiti/findFinishedNeed',
-    params: {
+    data: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
       searchName: '', // 传递搜索参数
@@ -101,10 +101,10 @@ export default [
   },
   {
     name: 'queryNeedActTask',
-    method: 'GET',
+    method: 'POST',
     desc: '找出需求个人待办任务',
     path: '/activiti/queryNeedActTask',
-    params: {
+    data: {
       page: '', // 传递当前是第几页参数
       limit: '', // 传递每页显示多少条记录参数
       searchName: '', // 传递搜索参数
@@ -129,5 +129,12 @@ export default [
     params: {
       needid: ''// int
     }
+  },
+  {
+    name: 'needResult',
+    method: 'GET',
+    desc: '导出excel',
+    path: '/webneed/needResult',
+    params: {}
   }
 ]

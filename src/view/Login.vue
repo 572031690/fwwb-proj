@@ -136,6 +136,9 @@ export default {
     }, 100)
   },
   methods: {
+    /**
+     * @desc 生成800个动画星星
+     */
     getStar () {
       this.startList.forEach((item, key) => {
         var s = 0.2 + Math.random() * 1
@@ -234,6 +237,9 @@ export default {
           console.log(err)
         })
     },
+    /**
+     * @desc 缓存数据到浏览器内
+     */
     getCache (user, sessionId, permission, permissionName) {
       window.sessionStorage.setItem('storeData', user.realname) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('sessionId', sessionId) // 将数据存储到浏览器内嵌的数据库内

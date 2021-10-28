@@ -198,6 +198,9 @@ export default {
       this.params.selectValue = 1
       this.searchUrl = 'home/item/findAllitem'
     },
+    /**
+     * @desc 顶部type页切换
+     */
     getApprovalType (index) {
       this.currentApprovalType = index
       this.params.selectValue = this.typeList[index].key

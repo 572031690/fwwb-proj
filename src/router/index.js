@@ -66,6 +66,13 @@ router.beforeEach((to, from, next) => {
     return next('/home/homewel?routerIndex=1')
   } else if (!store) {
     next('/login')
+    if (to.path !== '/') {
+      Message({
+        type: 'info',
+        showClose: true,
+        message: '请先登陆！'
+      })
+    }
     // return next()
   } else {
     return next()

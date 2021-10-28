@@ -191,6 +191,9 @@ export default {
     this.search()
   },
   methods: {
+    /**
+     * @desc 关闭弹窗
+     */
     closeDialog (val) {
       this.dialogVisibleRole = false
     },
@@ -224,6 +227,9 @@ export default {
       // this.searchUrl = 'home/controlStock/findOutRepositoryList'
       this.searchUrl = 'home/controlStock/findAllNeed'
     },
+    /**
+     * @desc 顶部type页切换
+     */
     getApprovalType (index) {
       this.currentApprovalType = index
       this.tableText = index ? this.$tables.controlNeedList : this.$tables.constrolBuyList

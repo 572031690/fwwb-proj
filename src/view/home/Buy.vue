@@ -49,9 +49,14 @@
                   <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
                   <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
                 </div>
-                <button class="bodyadd" v-print="'#printTest'" @click="gethomeAdd()" v-if="showAdd">
-                  打印
-                </button>
+                <div class="approvalBtn" v-if="showAdd">
+                  <!-- <button class="bodyadd" v-if="showAdd">
+                    打印
+                  </button> -->
+                   <!-- v-print="'#printTest'"  -->
+                   <el-button class="systemBtn" type="primary" plain  @click="getPrint()">打 印</el-button>
+                   <el-button class="systemBtn" type="primary" plain  @click="outData()">导 出</el-button>
+                </div>
                 <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                   <i class="el-icon-plus"></i>添加
                 </button>
@@ -59,7 +64,7 @@
             </el-row>
           </div>
         </div>
-        <buySearch  @getSearchForm="getSearchForm"/>
+        <buySearch  @getSearchForm="getSearchForm" />
         <div
           class="tablebody"
           v-loading="loading2"
@@ -199,6 +204,7 @@
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
 import buySearch from '../../components/buy/buySearch.vue'
+import printJS from 'print-js'
 
 export default {
   mixins: [homeMix],
@@ -297,9 +303,74 @@ export default {
     this.getTyp()
   },
   methods: {
+    /**
+     * @desc 修改排序方法
+     */
     checkTriangle (tips) {
       this.params[tips] = 1 - this.params[tips]
       this.search()
+    },
+    /**
+     * @desc 导出请求
+     */
+    outData () {
+      window.location.href = 'http://localhost:8081/controller_war/webbuy/buyResult'
+    },
+    /**
+     * @desc 打印调取数据库全部数据
+     */
+    async getPrint () {
+      const data = {
+        limit: 0, // 每页显示5条记录
+        page: 0, // 当前是第几页
+        searchName: '', // 查询数据
+        selectName: '' // 查询状态
+      }
+      await this.$api(this.searchUrl, data).then((res) => {
+        const currentPrint = []
+        for (let i = 0; i < this.list.length; i++) {
+          currentPrint.push({
+            buyid: res.list[i].buyid,
+            buytitle: res.list[i].buytitle,
+            btime: res.list[i].btime,
+            arrivaltime: res.list[i].arrivaltime,
+            itemtype: res.list[i].itemtype,
+            itemid: res.list[i].itemid,
+            num: res.list[i].num,
+            importance: this.importanceList[res.list[i].importance - 1].text,
+            uptype: this.select[res.list[i].uptype].label
+          })
+        }
+        this.setPrintJS(currentPrint)
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    /**
+     * @desc 打印方法
+     */
+    setPrintJS (currentPrint) {
+      const titleList = ['编号', '采购标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '重要程度', '审批状态']
+      let keys = 0
+      const propertiesList = []
+      for (const i in currentPrint[0]) {
+        propertiesList.push({
+          field: i,
+          displayName: titleList[keys],
+          columnSize: 1
+        })
+        keys++
+      }
+      printJS({
+        printable: currentPrint,
+        properties: propertiesList,
+        type: 'json',
+        header: '采购申报列表',
+        // 样式设置
+        scanStyles: false,
+        gridStyle: 'border: 2px solid #3c3d3d; padding: 3px 1px;',
+        gridHeaderStyle: 'color: black; padding: 3px 5px; border: 2px solid #3c3d3d;'
+      })
     },
     /**
      * @desc ajax请求后台数据 获得list数据 并用于分页
@@ -316,6 +387,9 @@ export default {
         this.loading2 = false
       })
     },
+    /**
+     * @desc 顶部搜索调用更新表格
+     */
     getSearchForm (searchFrom) {
       Object.assign(this.params, searchFrom)
       this.search()
@@ -379,6 +453,11 @@ export default {
 </script>
 <style lang="less" scoped>
   @import url("../../assets/less/right-table.less");
+  .approvalBtn {
+      /deep/ .el-button {
+        padding: 8px 20px !important;
+      }
+  }
 .cellSort {
   display: flex;
   cursor: pointer;

@@ -216,11 +216,8 @@ export default {
       })
     },
     /**
-     * @desc 确定权限
+     * @desc 关闭权限弹窗
      */
-    checkRoleList () {
-
-    },
     closeDialog (val) {
       this.dialogVisibleRole = false
     }

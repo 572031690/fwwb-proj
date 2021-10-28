@@ -125,6 +125,9 @@ export default {
     this.nowTimes()
   },
   methods: {
+    /**
+     * @desc 导航栏点击样式切换
+     */
     changeRouterIndex (index) {
       this.checkIndex = index
     },
@@ -299,7 +302,6 @@ export default {
           })
         }
       }
-
       this.routerList.forEach(item => {
         if (item.type === 'tips' && item.showtab) {
           this.arrowData.push(item.arrowRef)

@@ -48,6 +48,10 @@
                       <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
                       <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
                     </div>
+                    <div class="approvalBtn" v-if="showAdd">
+                      <el-button class="systemBtn" type="primary" plain  @click="getPrint()">打 印</el-button>
+                      <el-button class="systemBtn" type="primary" plain  @click="outData()">导 出</el-button>
+                    </div>
                     <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                       <i class="el-icon-plus"></i>添加
                     </button>
@@ -56,7 +60,7 @@
               </div>
 
           </div>
-          <needSearch  @getSearchForm="getSearchForm"/>
+          <needSearch v-if="showAdd"  @getSearchForm="getSearchForm"/>
           <div
             class="tablebody"
             v-loading="loading2"
@@ -180,6 +184,7 @@
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
 import needSearch from '../../components/need/needSearch.vue'
+import printJS from 'print-js'
 
 export default {
   mixins: [homeMix],
@@ -265,6 +270,28 @@ export default {
           uptype: 3
         }
       ],
+      select: [ // 搜索框筛选数据
+        {
+          value: '0',
+          label: '未送审'
+        },
+        {
+          value: '1',
+          label: '审核中'
+        },
+        {
+          value: '2',
+          label: '驳回'
+        },
+        {
+          value: '3',
+          label: '部门通过'
+        },
+        {
+          value: '4',
+          label: '经理通过'
+        }
+      ],
       loading2: true
     }
   },
@@ -291,6 +318,71 @@ export default {
         this.loading2 = false
       })
     },
+    /**
+     * @desc 打印调取数据库全部数据
+     */
+    async getPrint () {
+      const data = {
+        limit: 0, // 每页显示5条记录
+        page: 0, // 当前是第几页
+        searchName: '', // 查询数据
+        selectName: '' // 查询状态
+      }
+      await this.$api(this.searchUrl, data).then((res) => {
+        const currentPrint = []
+        for (let i = 0; i < this.list.length; i++) {
+          currentPrint.push({
+            needid: res.list[i].needid,
+            needtitle: res.list[i].needtitle,
+            itemtype: res.list[i].itemtype,
+            itemid: res.list[i].itemid,
+            neednum: res.list[i].neednum + res.list[i].unit,
+            needday: res.list[i].needday,
+            neederid: res.list[i].neederid,
+            department: res.list[i].department,
+            comment: res.list[i].comment,
+            uptype: this.select[res.list[i].uptype].label
+          })
+        }
+        this.setPrintJS(currentPrint)
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    /**
+     * @desc 导出请求
+     */
+    outData () {
+      window.location.href = 'http://localhost:8081/controller_war/webneed/needResult'
+    },
+    /**
+     * @desc 打印方法
+     */
+    setPrintJS (currentPrint) {
+      const titleList = ['编号', '需求标题', '物料名称', '物料编号', '数量', '需求日期', '需求专员编号', '部门', '描述', '审批状态']
+      let keys = 0
+      const propertiesList = []
+      for (const i in currentPrint[0]) {
+        propertiesList.push({
+          field: i,
+          displayName: titleList[keys],
+          columnSize: 1
+        })
+        keys++
+      }
+      printJS({
+        printable: currentPrint,
+        properties: propertiesList,
+        type: 'json',
+        header: '需求申报列表',
+        // 样式设置
+        gridStyle: 'border: 2px solid #3c3d3d;padding: 3px 1px;',
+        gridHeaderStyle: 'color: black; padding: 3px 5px;border: 2px solid #3c3d3d;'
+      })
+    },
+    /**
+     * @desc 顶部搜索调用更新表格
+     */
     getSearchForm (searchFrom) {
       Object.assign(this.params, searchFrom)
       this.search()
@@ -356,6 +448,11 @@ export default {
 <style lang="less" scoped>
   @import url("../../assets/less/right-table.less");
 
+  .approvalBtn {
+    /deep/ .el-button {
+      padding: 8px 20px !important;
+    }
+  }
   .tipsspan {
     margin: 0 auto;
     display: block;
