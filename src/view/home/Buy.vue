@@ -254,7 +254,7 @@ export default {
         total: 0, // 总共几条记录去分页
         searchName: '', // 查询数据
         selectName: '', // 查询状态
-        sortType: '',
+        sortType: -1,
         // ordertype: 0,
         // importancetype: 0,
         // arrivaltimetype: 0,
@@ -313,8 +313,7 @@ export default {
      * @desc 修改排序方法
      */
     checkTriangle (tips) {
-      console.log(tips, this.params.sortType, 'sdad')
-      if (this.params.sortType === tips) this.params.sortType = ''
+      if (this.params.sortType === tips) this.params.sortType = -1
       else this.params.sortType = tips
       // this.params[tips] = 1 - this.params[tips]
       this.search()
