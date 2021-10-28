@@ -35,9 +35,13 @@ export const tableList = {
     tableTitle: ['物料编号', '物资名称', '描述', '货量', '总货量', '单位'],
     tableBody: ['itemcode', 'name', 'comment', 'stock', 'totalstock', 'unit']
   },
-  controlStockList: {
+  controlOutStockList: {
     tableTitle: ['物料编码', '物资名称', '申请物资编号', '货量', '单位', '创建日期', '操作', '管理'],
     tableBody: ['itemid', 'name', 'needid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
+  },
+  controlInStockList: {
+    tableTitle: ['物料编码', '物资名称', '申请物资编号', '货量', '单位', '创建日期', '操作', '管理'],
+    tableBody: ['itemid', 'name', 'buyid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
   },
   controlNeedList: {
     tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '详情', '操作'],

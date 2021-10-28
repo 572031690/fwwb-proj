@@ -97,5 +97,58 @@ export default [
       searchName: '',
       selectName: ''
     }
+  },
+  {
+    name: 'addInRepository',
+    method: 'POST',
+    desc: '添加入库信息',
+    path: '/repository/addInRepository',
+    data: {
+      name: '',
+      itemid: '',
+      time: '',
+      num: '',
+      unit: '',
+      outRept: '',
+      buyid: ''
+    }
+  },
+  {
+    name: 'updateInRepository',
+    method: 'POST',
+    desc: '修改入库信息',
+    path: '/repository/updateInRepository',
+    data: {
+      id: '',
+      name: '',
+      itemid: '',
+      time: '',
+      num: '',
+      unit: ''
+    }
+  },
+  {
+    name: 'deleteInRepository',
+    method: 'GET',
+    desc: '删除入库信息',
+    path: '/repository/deleteInRepository',
+    params: {
+      id: ''
+    }
+  },
+  {
+    name: 'RepositoryIn',
+    method: 'POST',
+    desc: '入库操作',
+    path: '/repository/RepositoryIn',
+    data: {
+      name: '',
+      itemid: '',
+      time: '',
+      num: '',
+      unit: '',
+      outRept: '',
+      buyid: ''
+    }
   }
 ]

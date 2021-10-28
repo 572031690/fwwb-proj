@@ -30,7 +30,7 @@
                   <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">出库管理</div>
                   <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">入库管理</div>
                 </div>
-                <button class="bodyadd" @click="gethomeAdd()" >
+                <button class="bodyadd" @click="gethomeAdd()" v-if="false">
                   <i class="el-icon-plus"></i>添加
                 </button>
               </el-col>
@@ -69,7 +69,11 @@
                     <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
                   </div>
                   <div class="cell" v-if="data==='importance' && item[data]">
-                    <span class="importantSpan" :style="{'background': importanceList[item[data]-1].color}">{{importanceList[item[data]-1].text}}</span>
+                    <span class="importantSpan"
+                    :style="{'background'
+                    :importanceList[item[data]-1].color}">
+                    {{importanceList[item[data]-1].text}}
+                    </span>
                   </div>
                 </div>
 
@@ -77,16 +81,20 @@
             </div>
           </div>
           <controlDialog
-          :dialogVisibleRole="dialogVisibleRole"
-          :url='urlTypeList[currentApprovalType]'
-          @closeDialog="closeDialog"
-          :currentList="currentList"
-          :roleId='roleId'
+            :dialogVisibleRole="dialogVisibleRole"
+            :url='urlTypeList[currentApprovalType]'
+            @closeDialog="closeDialog"
+            :currentList="currentList"
+            :roleId='roleId'
+            :openType="currentApprovalType"
           >
           <div>
             <h3>{{currentApprovalType ? '需求信息' : '采购信息'}}</h3>
             <div class="dialogTopBody">
-              <span class="dialogTopBodyBox" v-show="item !== '序号' && item !== '操作'" v-for="(item, index) in tableText.tableTitle" :key="index">
+              <span class="dialogTopBodyBox"
+              v-show="item !== '序号'
+              && item !== '操作'"
+              v-for="(item, index) in tableText.tableTitle" :key="index">
                 <span class="title">{{item + '：'}}</span>
                 <span>{{currentList[tableText.tableBody[index]]}}</span>
               </span>
@@ -175,7 +183,10 @@ export default {
         },
         false: {
           search: 'home/controlStock/findInRepositoryList',
-          add: ''
+          add: 'home/controlStock/addInRepository',
+          edit: 'home/controlStock/updateInRepository',
+          delete: 'home/controlStock/deleteInRepository',
+          Repos: 'home/controlStock/RepositoryIn'
         }
       },
       loading2: true
@@ -258,8 +269,9 @@ export default {
 }
 .importantSpan {
   padding: 3px 15px;
-  border-radius: 5px;
+  line-height: 24px;
   color: white;
+   border-radius: 5px;
 }
 .searchfa {
   margin-left: 35px;

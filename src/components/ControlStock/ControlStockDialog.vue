@@ -35,7 +35,7 @@
             </el-select>
           </div>
           <div class="textRole">
-            <span v-show="showAdd">{{currentList.needid}}</span>
+            <span v-show="showAdd">{{openType ? currentList.needid : currentList.buyid }}</span>
           </div>
           <div class="textRole">
             <el-input-number
@@ -89,11 +89,15 @@
               {{data[curr]}}
             </div>
             <div class="textRole" v-if="curr==='opetation1'">
-                <button class="roleBtn" @click="upStock(data)" v-if="!data.outRept">入库</button>
-                <span  v-if="data.outRept">已出库</span>
+                <button class="roleBtn" @click="upStock(data)" v-if="!data.outRept">
+                  {{openType ? '出 库' : '入 库'}}
+                </button>
+                <span  v-if="data.outRept">
+                  {{openType ? '已出库' : '已入库'}}
+                </span>
             </div>
             <div class="textRole" v-if="curr==='opetation2'">
-              <button class="modify" @click="editData(data,index)"   v-if="!data.outRept">
+              <button class="modify" @click="editData(data,index)" v-if="!data.outRept">
                 编辑
               </button>
               <el-popover
@@ -131,7 +135,7 @@
               </el-select>
             </div>
             <div class="textRole">
-               {{editForm[index].needid}}
+               {{openType ? editForm[index].needid : editForm[index].buyid }}
             </div>
             <div class="textRole">
               <el-input-number
@@ -166,7 +170,7 @@
           </div>
         </div>
       </div>
-       <div class="table-bottom">
+      <div class="table-bottom">
           <!-- 底部页码功能 -->
           <el-pagination
             @size-change="handleSizeChange"
@@ -190,24 +194,45 @@
 <script >
 export default {
   props: {
+    /**
+     * @desc 控制弹窗打开关闭
+     */
     dialogVisibleRole: {
       type: Boolean,
       default: () => {
         return false
       }
     },
+    /**
+     * @desc 弹窗打开类型是采购还是需求（false/true）
+     */
+    openType: {
+      type: Boolean,
+      default: () => {
+        return true
+      }
+    },
+    /**
+     * @desc 角色id
+     */
     roleId: {
       type: Number,
       default: () => {
         return 0
       }
     },
+    /**
+     * @desc 当前采购或者需求数据
+     */
     currentList: {
       type: Object,
       default: () => {
         return {}
       }
     },
+    /**
+     * @desc 请求地址
+     */
     url: {
       type: Object,
       default: () => {
@@ -232,7 +257,8 @@ export default {
         needid: '',
         num: '',
         time: '',
-        unit: ''
+        unit: '',
+        buyid: ''
       },
       params: {
         limit: 10, // 每页显示5条记录
@@ -251,7 +277,7 @@ export default {
     }
   },
   created () {
-    this.tableList = this.$tables.controlStockList
+
   },
   mounted () {
     this.getUnit()
@@ -259,13 +285,20 @@ export default {
     this.getId()
   },
   methods: {
+    /**
+     * @desc 关闭弹窗
+     */
     closeDialog () {
       this.cancelAddData()
       this.$emit('closeDialog')
     },
+    /**
+     * @desc 获取代办数据
+     */
     async search () {
+      this.tableList = this.openType ? this.$tables.controlOutStockList : this.$tables.controlInStockList
       const url = this.url.search
-      this.params.selectName = this.currentList.needid
+      this.params.selectName = this.openType ? this.currentList.needid : this.currentList.buyid
       const params = this.params
       await this.$api(url, { params }).then((res) => {
         res.list.forEach(item => {
@@ -279,10 +312,16 @@ export default {
         this.loading2 = false
       })
     },
+    /**
+     * @desc 编辑按钮点击事件
+     */
     editData (item, index) {
       this.editForm[index] = item
       this.list[index].editType = true
     },
+    /**
+     * @desc 保存编辑
+     */
     saveeditData (data, index) {
       const url = this.url.edit
       this.$api(url, data).then(res => {
@@ -293,9 +332,15 @@ export default {
         }
       }).catch(() => {})
     },
+    /**
+     * @desc 取消编辑
+     */
     cancelEditData (index) {
       this.list[index].editType = false
     },
+    /**
+     * @desc 操作入库/出库
+     */
     upStock (item) {
       const data = { ...item }
       const url = this.url.Repos
@@ -308,11 +353,18 @@ export default {
         }
       }).catch(() => {})
     },
+    /**
+     * @desc 添加按钮事件
+     */
     getAdd () {
       this.showAdd = !this.showAdd
     },
+    /**
+     * @desc 保存添加
+     */
     saveAddData () {
-      this.addData.needid = this.currentList.needid
+      this.addData.needid = this.currentList.needid || 1
+      this.addData.buyid = this.currentList.buyid || 1
       this.addData.time = new Date()
       if (this.checkAdd()) {
         this.$message.error('请填写完整！')
@@ -328,17 +380,26 @@ export default {
         }
       }).catch(() => {})
     },
+    /**
+     * @desc 添加按钮验证
+     */
     checkAdd () {
       for (const i in this.addData) {
         if (!this.addData[i] && this.addData[i] !== 0) return true
       }
     },
+    /**
+     * @desc 取消添加
+     */
     cancelAddData () {
       for (const i in this.addData) {
         this.addData[i] = ''
       }
       this.showAdd = false
     },
+    /**
+     * @desc 删除事件
+     */
     deletedata (id, index) {
       this.list[index].visible = false
       const params = { id: id }
@@ -361,6 +422,9 @@ export default {
       this.params.page = val
       this.search()
     },
+    /**
+     * @desc 获取单位筛选框数据
+     */
     getUnit () {
       this.$api('home/item/findItemName', { params: { itemid: 7 } }).then(res => {
         this.optionsUnit = res.list
@@ -368,6 +432,9 @@ export default {
 
       })
     },
+    /**
+     * @desc 获取物料类别筛选框数据
+     */
     getType () {
       this.$api('home/item/findItemName', { params: { itemid: 1 } }).then(res => {
         this.optionsType = res.list
@@ -375,6 +442,9 @@ export default {
 
       })
     },
+    /**
+     * @desc 获取编码筛选框数据
+     */
     getId () {
       this.$api('home/item/findItemName', { params: { itemid: 16 } }).then(res => {
         this.optionsId = res.list
@@ -429,7 +499,6 @@ export default {
     outline: none;
     border: 1px solid #dadce0;
     font-size: 11px;
-    // float: right;
     cursor: pointer;
     &:hover {
       background-color: #f0f7ff;

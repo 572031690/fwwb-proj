@@ -112,15 +112,24 @@ export default {
     this.getId()
   },
   methods: {
+    /**
+     * @desc 搜索
+     */
     setSearchForm () {
       this.$emit('getSearchForm', this.searchForm)
     },
+    /**
+     * @desc 重置
+     */
     resetForm () {
       for (const i in this.searchForm) {
         this.searchForm[i] = ''
       }
       this.$emit('getSearchForm', this.searchForm)
     },
+    /**
+     * @desc 获得部门数据
+     */
     getDepartment () {
       this.$api('home/item/findItemName', { params: { itemid: 12 } }).then(res => {
         this.optionsDepartment = res.list
@@ -128,6 +137,9 @@ export default {
 
       })
     },
+    /**
+     * @desc 获得编码
+     */
     getType () {
       this.$api('home/item/findItemName', { params: { itemid: 1 } }).then(res => {
         this.optionsType = res.list
@@ -135,6 +147,9 @@ export default {
 
       })
     },
+    /**
+     * @desc 获得物料类型数据
+     */
     getId () {
       this.$api('home/item/findItemName', { params: { itemid: 16 } }).then(res => {
         this.optionsId = res.list

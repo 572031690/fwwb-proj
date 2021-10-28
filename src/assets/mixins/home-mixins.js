@@ -28,9 +28,7 @@ export default {
       }).then((res) => {
         this.list = res.list || [] // 获取里面的data数据
         this.params.total = res.count // 获取后台传过来的总数据条数
-        // this.params.page = res.page // 将后端的当前页反传回来
         this.loading2 = false
-        // this.getApprovalCurrentData()
       }).catch(() => {
         this.loading2 = false
       })
@@ -93,12 +91,10 @@ export default {
      * @desc 页码
      */
     handleSizeChange (val) {
-      // console.log(`每页 ${val} 条`)
       this.params.limit = val // 设置每页多少条记录
       this.search()
     },
     handleCurrentChange (val) {
-      // console.log(`当前页: ${val}`)
       this.params.page = val
       this.search()
     },
@@ -113,9 +109,6 @@ export default {
      * @desc 提交送审表单
      */
     upData (item) {
-      // this.openType = 'approval'
-      // this.currentList = e
-      // this.dialogFormShow = true
       this.$confirm('是否确定提交审批申请?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
