@@ -281,15 +281,15 @@ export default {
         },
         {
           value: '2',
-          label: '驳回'
-        },
-        {
-          value: '3',
           label: '部门通过'
         },
         {
-          value: '4',
+          value: '3',
           label: '经理通过'
+        },
+        {
+          value: '4',
+          label: '驳回'
         },
         {
           value: '5',
