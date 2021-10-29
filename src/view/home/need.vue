@@ -202,6 +202,10 @@ export default {
         passRequest: 'home/need/completeprocess',
         rejectRequest: 'home/need/deleteprocess'
       },
+      dialogUrl: {
+        startApproval: 'home/need/approvalNeed',
+        upApproval: 'home/need/completeprocess'
+      },
       params: {
         limit: 10, // 每页显示5条记录
         page: 1, // 当前是第几页
