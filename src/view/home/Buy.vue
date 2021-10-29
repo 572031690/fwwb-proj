@@ -255,7 +255,7 @@ export default {
         searchName: '', // 查询数据
         selectName: '', // 查询状态
         sortType: -1,
-        // ordertype: 0,
+        ordertype: 0,
         // importancetype: 0,
         // arrivaltimetype: 0,
         // btimetype: 0,
@@ -265,7 +265,7 @@ export default {
         btime: '' // 需求时间: '' // 需求时间
       },
       sortList: {
-        编号: 0,
+        编号: '',
         重要程度: 1,
         到货日期: 2,
         需求日期: 3
@@ -313,8 +313,13 @@ export default {
      * @desc 修改排序方法
      */
     checkTriangle (tips) {
-      if (this.params.sortType === tips) this.params.sortType = -1
-      else this.params.sortType = tips
+      if (this.params.sortType === tips) {
+        this.params.sortType = 0
+        this.params.ordertype = 0
+      } else {
+        this.params.sortType = tips
+        if (this.params.sortType === '') this.params.ordertype = 1
+      }
       // this.params[tips] = 1 - this.params[tips]
       this.search()
     },
