@@ -26,6 +26,7 @@ export default {
     }
   },
   mounted () {
+    this.getMap()
     this.getCountryData()
     this.getCompanyData()
   },
@@ -37,7 +38,10 @@ export default {
       const url = 'home/driver/countrySale'
       await this.$api(url).then((res) => {
         this.airData = res
-        this.getMap()
+        // this.getMap()
+        setTimeout(() => {
+          this.upDataMap()
+        }, 0)
         this.airData.forEach(item => {
           const lineData = {
             name: '',
@@ -128,29 +132,30 @@ export default {
         series: [
           {
             // 地图数据
-            data: that.airData,
+            data: [],
+            // data: that.airData,
             geoIndex: 0, // 将空气质量的数据和第0个geo配置关联在一起
-            type: 'map',
-            tooltip: {
-              textStyle: {
-                fontSize: 10
-              },
-              // 利用formatter来自定义tooltip展示的数据
-              formatter: function (params, ticket, callback) {
-                if (params.value) {
-                  return (
-                    params.name +
-                    '<br/>成交量：' +
-                    that.airData[params.dataIndex].count + '单<br/>' +
-                    '平均每单价格：' +
-                    params.value +
-                    '元<br/>'
-                  )
-                } else {
-                  return ''
-                }
-              }
-            }
+            type: 'map'
+            // tooltip: {
+            //   textStyle: {
+            //     fontSize: 10
+            //   },
+            //   // 利用formatter来自定义tooltip展示的数据
+            //   formatter: function (params, ticket, callback) {
+            //     if (params.value) {
+            //       return (
+            //         params.name +
+            //         '<br/>成交量：' +
+            //         that.airData[params.dataIndex].count + '单<br/>' +
+            //         '平均每单价格：' +
+            //         params.value +
+            //         '元<br/>'
+            //       )
+            //     } else {
+            //       return ''
+            //     }
+            //   }
+            // }
           },
           {
             // 动态红线
@@ -168,7 +173,8 @@ export default {
               width: 0,
               curveness: 0.2 // 弯曲度
             },
-            data: that.lineSc
+            // data: that.lineSc
+            data: []
           },
           {
             // 箭头线
@@ -191,47 +197,49 @@ export default {
                 curveness: 0.2
               }
             },
-            data: that.lineSc,
-            tooltip: {
-              // 利用formatter来自定义tooltip展示的数据
-              formatter: function (params, ticket, callback) {
-                return (
-                  params.data.fromName +
-                  '采购：<br/> 木材：' +
-                  params.data.value +
-                  '万吨'
-                )
-              }
-            }
+            data: []
+            // data: that.lineSc,
+            // tooltip: {
+            //   // 利用formatter来自定义tooltip展示的数据
+            //   formatter: function (params, ticket, callback) {
+            //     return (
+            //       params.data.fromName +
+            //       '采购：<br/> 木材：' +
+            //       params.data.value +
+            //       '万吨'
+            //     )
+            //   }
+            // }
           },
           {
             // 散点数据
             name: '杭州',
-            data: that.effectScatterData, // 配置散点的坐标数据
+            data: [],
+            // data: that.effectScatterData, // 配置散点的坐标数据
             type: 'effectScatter',
             coordinateSystem: 'geo', // 指明散点使用的坐标系统  geo的坐标系统
             rippleEffect: {
               scale: 3, // 设置涟漪动画的缩放比例
               brushType: 'stroke'
-            },
-            label: {
-              normal: {
-                show: true,
-                position: 'right',
-                formatter: function (params, ticket, callback) {
-                  return that.labelFormatter[params.dataIndex].name
-                }
-              }
-            },
-            tooltip: {
-              textStyle: {
-                fontSize: 10
-              },
-              // 利用formatter来自定义tooltip展示的数据
-              formatter: function (params, ticket, callback) {
-                return that.labelFormatter[params.dataIndex].matter
-              }
             }
+            // label: {
+            //   normal: {
+            //     show: true,
+            //     position: 'right',
+            //     formatter: function (params, ticket, callback) {
+            //       return that.labelFormatter[params.dataIndex].name
+            //     }
+            //   }
+            // },
+            // tooltip: {
+            //   textStyle: {
+            //     fontSize: 10
+            //   },
+            //   // 利用formatter来自定义tooltip展示的数据
+            //   formatter: function (params, ticket, callback) {
+            //     return that.labelFormatter[params.dataIndex].matter
+            //   }
+            // }
           }
         ],
         visualMap: {
@@ -262,6 +270,75 @@ export default {
       this.chartInstance.setOption(setOption)
       // 跟随屏幕自适应
       window.onresize = this.chartInstance.resize
+    },
+    upDataMap () {
+      const that = this
+      const setUpOption = {
+        series: [
+          {
+            data: that.airData,
+            tooltip: {
+              textStyle: {
+                fontSize: 10
+              },
+              // 利用formatter来自定义tooltip展示的数据
+              formatter: function (params, ticket, callback) {
+                if (params.value) {
+                  return (
+                    params.name +
+                    '<br/>成交量：' +
+                    that.airData[params.dataIndex].count + '单<br/>' +
+                    '平均每单价格：' +
+                    params.value +
+                    '元<br/>'
+                  )
+                } else {
+                  return ''
+                }
+              }
+            }
+          },
+          {
+            data: this.lineSc
+          },
+          {
+            data: this.lineSc,
+            tooltip: {
+              // 利用formatter来自定义tooltip展示的数据
+              formatter: function (params, ticket, callback) {
+                return (
+                  params.data.fromName +
+                  '采购：<br/> 木材：' +
+                  params.data.value +
+                  '万吨'
+                )
+              }
+            }
+          },
+          {
+            data: this.effectScatterData, // 配置散点的坐标数据
+            label: {
+              normal: {
+                show: true,
+                position: 'right',
+                formatter: (params, ticket, callback) => {
+                  return this.labelFormatter[params.dataIndex].name
+                }
+              }
+            },
+            tooltip: {
+              textStyle: {
+                fontSize: 10
+              },
+              // 利用formatter来自定义tooltip展示的数据
+              formatter: (params, ticket, callback) => {
+                return this.labelFormatter[params.dataIndex].matter
+              }
+            }
+          }
+        ]
+      }
+      this.chartInstance.setOption(setUpOption)
     }
   }
 }

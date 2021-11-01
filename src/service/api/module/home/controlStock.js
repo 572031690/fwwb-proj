@@ -143,6 +143,7 @@ export default [
     desc: '入库操作',
     path: '/repository/RepositoryIn',
     data: {
+      id: '',
       name: '',
       itemid: '',
       time: '',
