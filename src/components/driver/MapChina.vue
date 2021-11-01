@@ -1,5 +1,6 @@
 <template>
-  <div id="mapchina">
+  <div id="mapchina" @dblclick="revertMap">
+    <div class="tipsText" v-if="inflag">双击中间任意位置返回中国地图</div>
     <div class="earthmap1"></div>
     <div class="earthmap2"></div>
     <div class="earthmap3"></div>
@@ -9,6 +10,7 @@
 
 <script>
 import { planePath } from '@/assets/data/echarts'
+import { getProvinceMapInfo } from '@/assets/utils/map_utils'
 
 export default {
   data () {
@@ -22,7 +24,8 @@ export default {
       airData: [], // 地图销量和单价数据
       labelFormatter: [],
       lineSc: [],
-      planePath
+      planePath,
+      inflag: false
     }
   },
   mounted () {
@@ -104,31 +107,54 @@ export default {
           // 鼠标一上去的信息框
           trigger: 'item'
         },
-        geo: {
-          type: 'map',
-          map: 'chinaMap', // chinaMap需要和registerMap中的第一个参数保持一致
-          roam: true, // 设置允许缩放以及拖动的效果
-          label: {
-            show: true, // 展示标签
-            textStyle: {
-              fontSize: 12,
-              textWeight: 900,
-              color: 'white'
+        geo: [
+
+          {
+            zoom: 1.2, // 默认显示级别
+            layoutSize: '80%', // 设置地图占容器的大小百分比
+            layoutCenter: ['50%', '50%'], // 设置地图中心点位置
+            zlevel: 2,
+            type: 'map',
+            map: 'chinaMap', // chinaMap需要和registerMap中的第一个参数保持一致
+            // roam: 'false', // true 设置允许缩放以及拖动的效果 也可以设置scale，move
+            label: {
+              show: true, // 展示标签
+              textStyle: {
+                fontSize: 12,
+                textWeight: 900,
+                color: 'white'
+              }
+            },
+            itemStyle: {
+              normal: {
+                areaColor: '#416cbb', // 地图区域的颜色。
+                borderColor: '#fff', // 图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
+                shadowColor: 'black', // 阴影颜色。#41587f
+                shadowBlur: 8, // 图形阴影的模糊大小。
+                opacity: 0.75 // 图形透明度
+              },
+              emphasis: {
+                areaColor: '#fdd145'
+              }
             }
           },
-          itemStyle: {
-            normal: {
-              areaColor: '#416cbb', // 地图区域的颜色。
-              borderColor: '#fff', // 图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
-              shadowColor: 'black', // 阴影颜色。#41587f
-              shadowBlur: 8, // 图形阴影的模糊大小。
-              opacity: 0.75 // 图形透明度
+          {
+            map: 'chinaMap',
+            // aspectScale: 0.7,  //这个参数用于 scale 地图的长宽比。geoBoundingRect.width / geoBoundingRect.height * aspectScale
+            roam: false, // 是否允许缩放
+            zoom: 1.2, // 默认显示级别
+            layoutSize: '80%',
+            layoutCenter: ['50.5%', '51.5%'],
+            itemStyle: {
+              // areaColor: '#005DDC',
+              areaColor: 'black', // 'rgba(0,27,95,0.4)',
+              // borderColor: '#004db5',
+              borderWidth: 0
             },
-            emphasis: {
-              areaColor: '#fdd145'
-            }
+            zlevel: 1,
+            silent: true
           }
-        },
+        ],
         series: [
           {
             // 地图数据
@@ -215,6 +241,7 @@ export default {
             // 散点数据
             name: '杭州',
             data: [],
+            zlevel: 2,
             // data: that.effectScatterData, // 配置散点的坐标数据
             type: 'effectScatter',
             coordinateSystem: 'geo', // 指明散点使用的坐标系统  geo的坐标系统
@@ -270,6 +297,39 @@ export default {
       this.chartInstance.setOption(setOption)
       // 跟随屏幕自适应
       window.onresize = this.chartInstance.resize
+      this.setonClick()
+    },
+    async setonClick () {
+      // 监听点击
+      this.chartInstance.on('click', async (arg) => {
+        console.log(arg)
+        if (this.inflag) return
+        // console.log(arg)
+        // 调用外部方法获取中文身份的拼音
+        const provinceInfo = getProvinceMapInfo(arg.name)
+        // 判断获取的地图数据是否已经缓存 如果不存在
+        if (!this.mapData[provinceInfo.key]) {
+          // 获取这个省份的地图矢量数据
+          const ret = await this.$ajax.get(
+            'http://localhost:8077' + provinceInfo.path
+          )
+          // 缓存数据
+          this.mapData[provinceInfo.key] = ret.data
+          this.$echarts.registerMap(provinceInfo.key, ret.data)
+        }
+        const changeOption = {
+          geo: [
+            {
+              map: provinceInfo.key
+            },
+            {
+              map: provinceInfo.key
+            }
+          ]
+        }
+        this.chartInstance.setOption(changeOption)
+        this.inflag = true
+      })
     },
     upDataMap () {
       const that = this
@@ -339,6 +399,22 @@ export default {
         ]
       }
       this.chartInstance.setOption(setUpOption)
+    },
+    // 双击事件返回china
+    revertMap () {
+      if (!this.inflag) return
+      const revertOption = {
+        geo: [
+          {
+            map: 'chinaMap'
+          },
+          {
+            map: 'chinaMap'
+          }
+        ]
+      }
+      this.chartInstance.setOption(revertOption)
+      this.inflag = false
     }
   }
 }
@@ -408,5 +484,15 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+.tipsText {
+  position: absolute;
+  color: white;
+  top: 10%;
+  opacity: 0.8;
+  z-index: 99999;
+  background-color: rgb(84, 116, 177);
+  border: 1px solid #031942;
+  padding: 2px 5px;
 }
 </style>

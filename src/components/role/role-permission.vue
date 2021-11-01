@@ -7,7 +7,7 @@
       <div class="tableRole">
         <div class="tableRoleTop">
           <div class="btnRole">选择</div>
-          <div class="textRole">权限名称</div>
+          <div class="textRoleName">权限名称</div>
           <div class="textLongRole">权限标识</div>
           <div class="textRole">权限类型</div>
           <div class="textLongRole">权限地址</div>
@@ -16,7 +16,7 @@
         <el-checkbox-group v-model="currentPermission">
           <div class="tableRoleBody" v-for="(item,index) in permissionData" :key="index">
             <div class="btnRole"><el-checkbox :label="item.id">{{''}}</el-checkbox></div>
-            <div class="textRole">{{item.name}}</div>
+            <div class="textRoleName">{{item.name}}</div>
             <div class="textLongRole">{{item.permission}}</div>
             <div class="textRole">{{item.type}}</div>
             <div class="textLongRole">{{item.url}}</div>
@@ -133,6 +133,13 @@ export default {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 300px;
+    height:50px;
+    line-height: 50px;
+  }
+  .textRoleName {
+    color: rgb(111, 115, 116);
+    font-size: 14px;
+    width: 200px;
     height:50px;
     line-height: 50px;
   }
