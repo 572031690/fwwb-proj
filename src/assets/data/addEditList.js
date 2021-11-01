@@ -283,9 +283,14 @@ export const addEditList = {
     dataTableList: [
       {
         label: '物料编号',
-        putType: 'input',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 16
+        },
+        selectData: [],
         dataName: 'itemcode',
-        placeholder: '例如:JS001，XP201，JP015'
+        linkage: ''
       },
       {
         label: '物料名称',

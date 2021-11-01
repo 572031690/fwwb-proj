@@ -122,18 +122,12 @@
                     </div>
 
                     <div class="bodyButton" v-if="data==='opetation2'">
-                      <div class="cell"  style="backgournd-color:red;">
+                      <div class="cell"  >
                         <span class="tipsspan" :style="{
-                          'background-color': statusColorList[item.uptype],
+                          'background-color': select[item.uptype].color,
                           'color': item.uptype == 0?'black':'white'
                           }">
-                          {{
-                            item.uptype == 0 ? '未送审'
-                            :item.uptype == 1 ? '审批中'
-                            :item.uptype == 2? '部门通过'
-                            :item.uptype == 3? '审批通过'
-                            :item.uptype == 4? '审批驳回':''
-                          }}
+                          {{showStatus(item.uptype,item.planName,item.approvaltype)}}
                         </span>
                       </div>
                     </div>
@@ -190,6 +184,15 @@ export default {
   mixins: [homeMix],
   components: {
     needSearch
+  },
+  computed: {
+    showStatus: function () {
+      return function (type, plan, approvaltype) {
+        if (type !== 3) return this.select[type].label
+        else if (approvaltype === 1) return plan === 1 ? '待采购' : '待出库'
+        else if (approvaltype === 2) return plan === 1 ? '完成采购' : '完成出库'
+      }
+    }
   },
   data () {
     return {
@@ -276,28 +279,34 @@ export default {
       ],
       select: [ // 搜索框筛选数据
         {
-          value: '0',
-          label: '未送审'
+          value: 0,
+          label: '未送审',
+          color: '#eee'
         },
         {
-          value: '1',
-          label: '审核中'
+          value: 1,
+          label: '审核中',
+          color: 'rgb(92, 92, 143)'
         },
         {
-          value: '2',
-          label: '部门通过'
+          value: 2,
+          label: '部门通过',
+          color: 'rgb(92, 92, 143)'
         },
         {
-          value: '3',
-          label: '经理通过'
+          value: 3,
+          label: '经理通过',
+          color: 'rgb(23, 165, 23)'
         },
         {
-          value: '4',
-          label: '驳回'
+          value: 4,
+          label: '驳回',
+          color: 'rgb(226, 63, 63)'
         },
         {
-          value: '5',
-          label: '逾期'
+          value: 5,
+          label: '逾期',
+          color: 'rgb(98, 98, 207)'
         }
       ],
       loading2: true
@@ -349,7 +358,7 @@ export default {
             neederid: res.list[i].neederid,
             department: res.list[i].department,
             comment: res.list[i].comment,
-            uptype: this.select[res.list[i].uptype].label
+            uptype: this.showStatus(res.list[i].uptype, res.list[i].planName, res.list[i].approvaltype)
           })
         }
         this.setPrintJS(currentPrint)

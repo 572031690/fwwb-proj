@@ -89,15 +89,15 @@
               {{data[curr]}}
             </div>
             <div class="textRole" v-if="curr==='opetation1'">
-                <button class="roleBtn" @click="upStock(data)" v-if="!data.outRept">
+                <button class="roleBtn" @click="upStock(data)" v-if="!data.status">
                   {{openType ? '出 库' : '入 库'}}
                 </button>
-                <span  v-if="data.outRept">
+                <span  v-if="data.status">
                   {{openType ? '已出库' : '已入库'}}
                 </span>
             </div>
             <div class="textRole" v-if="curr==='opetation2'">
-              <button class="modify" @click="editData(data,index)" v-if="!data.outRept">
+              <button class="modify" @click="editData(data,index)" v-if="!data.status">
                 编辑
               </button>
               <el-popover

@@ -62,12 +62,16 @@
                 <div v-for="(data,index) in tableText.tableBody"
                 :key="index"
                 v-show="data !== 'comment'">
-                  <div class="cell" v-if="data!=='opetation' && data!=='importance'">
+                  <div class="cell" v-if="data!=='opetation' && data!=='importance' && data !== 'approvaltype' && data !== 'buytype'">
                     {{ data === 'index' ? key+1 : item[data] }}
                   </div>
                   <div class="cell" v-if="data==='opetation'">
                     <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
                   </div>
+                  <div class="cell" v-if="data==='approvaltype' || data==='buytype'">
+                    {{item[data]===1 ? '未完成' : '完成'}}
+                  </div>
+
                   <div class="cell" v-if="data==='importance' && item[data]">
                     <span class="importantSpan"
                     :style="{'background'
@@ -207,6 +211,7 @@ export default {
      */
     closeDialog (val) {
       this.dialogVisibleRole = false
+      this.search()
     },
     /**
      * @desc ajax请求后台数据 获得list数据 并用于分页

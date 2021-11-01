@@ -44,12 +44,12 @@ export const tableList = {
     tableBody: ['itemid', 'name', 'buyid', 'num', 'unit', 'time', 'opetation2', 'opetation1']
   },
   controlNeedList: {
-    tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '详情', '操作'],
-    tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation']
+    tableTitle: ['序号', '需求标题', '物料名称', '物料编号', '数量', '创建日期', '提交人编号', '需求单位', '出库状态', '详情', '操作'],
+    tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'approvaltype', 'comment', 'opetation']
   },
   constrolBuyList: {
-    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '详情', '操作'],
-    tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'comment', 'opetation']
+    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '入库状态', '详情', '操作'],
+    tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'buytype', 'comment', 'opetation']
   },
   roleList: {
     tableTitle: ['序号', '角色编号', '角色名称', '描述', '状态', '操作', '权限'],

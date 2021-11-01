@@ -55,6 +55,7 @@ export default [
     desc: '出库操作',
     path: '/repository/RepositoryOut',
     data: {
+      id: '',
       name: '',
       itemid: '',
       time: '',
