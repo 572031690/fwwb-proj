@@ -309,7 +309,7 @@ export default {
       // 监听点击
       this.chartInstance.on('click', async (arg) => {
         console.log(arg)
-        if (this.inflag) return
+        if (this.inflag || arg.componentSubType !== 'map') return
         // console.log(arg)
         // 调用外部方法获取中文身份的拼音
         const provinceInfo = getProvinceMapInfo(arg.name)
@@ -352,7 +352,7 @@ export default {
                 if (params.value) {
                   return (
                     params.name +
-                    '<br/>成交量：' +
+                    '销售<br/>成交量：' +
                     that.airData[params.dataIndex].count + '单<br/>' +
                     '平均每单价格：' +
                     params.value +

@@ -93,10 +93,10 @@
 export default {
   computed: {
     getdpartmentTypeNeed () {
-      return this.$store.state.permissionName.includes('need:getNeedCount')
+      return this.$store.getters.getPermission.includes('need:getNeedCount')
     },
     getdpartmentTypeBuy () {
-      return this.$store.state.permissionName.includes('buy:getBuyCount')
+      return this.$store.getters.getPermission.includes('buy:getBuyCount')
     }
   },
   data () {
@@ -189,12 +189,12 @@ export default {
      * @desc 获取审批数据
      */
     getAprovalCount () {
-      if (this.$store.state.permissionName.includes('need:getNeedCount')) {
+      if (this.$store.getters.getPermission.includes('need:getNeedCount')) {
         this.$api('home/welcome/getNeedCount').then(res => {
           this.needCount = res
         })
       }
-      if (this.$store.state.permissionName.includes('buy:getBuyCount')) {
+      if (this.$store.getters.getPermission.includes('buy:getBuyCount')) {
         this.$api('home/welcome/getBuyCount').then(res => {
           this.buyCount = res
         })

@@ -65,7 +65,7 @@ export default {
     this.initChart()
     this.getData()
   },
-  destroyed () {
+  beforeDestroy () {
     // 在组件销毁的时候, 需要将监听器取消掉
     clearInterval(this.timeId)
   },
