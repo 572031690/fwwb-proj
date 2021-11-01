@@ -29,7 +29,7 @@
                 <div class="approvalBtn" >
                   <div v-for="(item,index) in typeList" :key="index" :class="{'currentBtn' : currentApprovalType ===index}" @click="getApprovalType(index)">{{item.label}}</div>
                 </div>
-                <button class="bodyadd" @click="gethomeAdd()" v-if="$store.state.permissionName.includes('item:addItem')">
+                <button class="bodyadd" @click="gethomeAdd()" v-if="$store.getters.getPermission.includes('item:addItem')">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
               >
@@ -152,7 +152,7 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.permissionName.includes('item:updateItem') && this.$store.state.permissionName.includes('item:deleteItem')) {
+    if (this.$store.getters.getPermission.includes('item:updateItem') && this.$store.getters.getPermission.includes('item:deleteItem')) {
       this.tableText = this.$tables.itemListedit
     } else {
       this.tableText = this.$tables.itemListsee

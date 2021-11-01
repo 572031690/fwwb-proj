@@ -116,7 +116,7 @@ export default {
   },
   created () {
     this.permissionName = JSON.parse(window.sessionStorage.getItem('permissionName'))
-    this.$store.commit('setPermissionName', this.permissionName)
+    this.$store.commit('SET_PERMISSION_NAME', this.permissionName)
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
   },
   mounted () {
@@ -224,7 +224,7 @@ export default {
       }).then(() => {
         sessionStorage.clear() // 删除所有数据
         this.initType(false)
-        this.$store.commit('setPermissionName', '')
+        this.$store.commit('SET_PERMISSION_NAME', '')
         this.$router.push({ name: 'login' }) // 直接跳转
         this.$message({
           type: 'success',

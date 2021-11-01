@@ -25,7 +25,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.permissionName.includes('admin:addRole')">
+              <el-col :span="8" v-if="$store.getters.getPermission.includes('admin:addRole')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col

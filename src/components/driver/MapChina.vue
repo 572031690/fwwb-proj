@@ -1,6 +1,6 @@
 <template>
   <div id="mapchina" @dblclick="revertMap">
-    <div class="tipsText" v-if="inflag">双击中间任意位置返回中国地图</div>
+    <div class="tipsText" v-if="inflag">双击任意位置返回中国地图</div>
     <div class="earthmap1"></div>
     <div class="earthmap2"></div>
     <div class="earthmap3"></div>
@@ -108,7 +108,6 @@ export default {
           trigger: 'item'
         },
         geo: [
-
           {
             zoom: 1.2, // 默认显示级别
             layoutSize: '80%', // 设置地图占容器的大小百分比
@@ -134,7 +133,13 @@ export default {
                 opacity: 0.75 // 图形透明度
               },
               emphasis: {
-                areaColor: '#fdd145'
+                areaColor: '#fdd145',
+                borderColor: 'rgba(204, 229, 248, 0.7)',
+                borderWidth: 1,
+                shadowColor: 'rgba(204, 229, 248, 0.7)', // 119, 153, 198
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowOffsetY: 1
               }
             }
           },
@@ -144,12 +149,13 @@ export default {
             roam: false, // 是否允许缩放
             zoom: 1.2, // 默认显示级别
             layoutSize: '80%',
-            layoutCenter: ['50.5%', '51.5%'],
+            layoutCenter: ['51.5%', '51%'],
             itemStyle: {
               // areaColor: '#005DDC',
-              areaColor: 'black', // 'rgba(0,27,95,0.4)',
+              areaColor: 'rgb(0, 0, 0)', // 'rgba(0,27,95,0.4)',
               // borderColor: '#004db5',
-              borderWidth: 0
+              borderWidth: 0,
+              opacity: 0.1 // 图形透明度
             },
             zlevel: 1,
             silent: true
@@ -484,6 +490,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
+  /* color: rgba(204, 229, 248, 0.7); */
 }
 .tipsText {
   position: absolute;

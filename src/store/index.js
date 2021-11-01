@@ -3,30 +3,22 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const SET_PERMISSION_NAME = 'SET_PERMISSION_NAME'
+
 const store = new Vuex.Store({
   // 1.state主要用于存储数据
   state: {
-    count: 1,
-    flagwel: 'block',
-    dialogDraw: false, // 显示抽屉
-    routerIndex: 1,
-    permission: '',
     permissionName: ''
   },
   // 2.mutations里面放的是方法,方法主要用于改变state里面的数据
   mutations: {
-
-    ChangeDraw (state) {
-      state.dialogDraw = !state.dialogDraw
-    },
-    setRouter (state, id) {
-      state.routerIndex = id
-    },
-    setPermission (state, data) {
-      state.permission = data
-    },
-    setPermissionName (state, data) {
+    [SET_PERMISSION_NAME] (state, data) {
       state.permissionName = data
+    }
+  },
+  getters: {
+    getPermission (state) {
+      return state.permissionName
     }
   },
   actions: {

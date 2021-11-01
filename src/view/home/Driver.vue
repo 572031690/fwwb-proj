@@ -1,8 +1,5 @@
 <template>
   <div class="welbody" ref="body_ref" id="body">
-    <!-- <div class="welcomehome" ref="welcomehome">
-                欢迎管理员回来！
-        </div> -->
     <div class="bodyleft">
       <div class="tabbody">
         <rankchart class="piechart" :titleFontSize="titleFontSize"></rankchart>

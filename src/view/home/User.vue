@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.state.permissionName.includes('admin:addUser')">
+              <el-col :span="8" v-if="$store.getters.getPermission.includes('admin:addUser')">
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -215,7 +215,7 @@ export default {
     }
   },
   created () {
-    if (this.$store.state.permissionName.includes('admin:addUser')) {
+    if (this.$store.getters.getPermission.includes('admin:addUser')) {
       this.tableText = this.$tables.userListedit
     } else {
       this.tableText = this.$tables.userListsee
