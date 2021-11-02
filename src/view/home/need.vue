@@ -411,7 +411,6 @@ export default {
           this.params.total = res.count // 获取后台传过来的总数据条数
           // this.params.page = res.page // 将后端的当前页反传回来
           this.loading2 = false
-          // this.getApprovalCurrentData()
         })
         .catch(() => {
           this.loading2 = false

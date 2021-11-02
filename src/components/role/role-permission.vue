@@ -79,12 +79,15 @@ export default {
     this.getPermissionList()
   },
   methods: {
+    /**
+     * @desc 关闭方法
+     */
     closeDialog () {
       this.$emit('closeDialog')
     },
-    checkRoleList () {
-      this.closeDialog(true)
-    },
+    /**
+     * @desc 获取权限数据
+     */
     async getCurrentPermissionList () {
       const url = 'home/role/getRolePerm'
       const params = {
@@ -97,6 +100,9 @@ export default {
         })
       })
     },
+    /**
+     * @desc 修改角色权限请求
+     */
     async upCurrentPermissionList () {
       const url = 'home/role/addRolePerm'
       const data = {

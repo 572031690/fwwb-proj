@@ -21,7 +21,7 @@ export function debounce (fn, wait, immediate) {
   }
 }
 /**
- * @desc 函数 电话脱敏
+ * @desc 函数 数字脱敏
   * @param desNum 传入的电话/身份证... number ，string
   */
 export function desensitization (desNum) {

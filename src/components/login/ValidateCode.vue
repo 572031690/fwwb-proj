@@ -35,6 +35,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * @desc 生成随机验证码
+     */
     generateRandom () {
       this.codes = []
       const chars = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -45,10 +48,16 @@ export default {
         this.codes.push(charsArr[num])
       }
     },
+    /**
+     * @desc 初始化
+     */
     draw () {
       this.generateRandom()
       this.drawText()
     },
+    /**
+     * @desc 画干扰线
+     */
     drawLine () {
       const lineNumber = 3 // 线条条数
       const lineX = 140
@@ -67,16 +76,16 @@ export default {
         this.ctx.stroke()
       }
     },
+    /**
+     * @desc 画变形文字
+     */
     drawText () {
       const canvas = this.$refs.canvas
       this.ctx = canvas.getContext('2d')
-
       this.ctx.fillStyle = '#BFEFFF'
       this.ctx.fillRect(0, 0, 140, 40)
       this.ctx.font = '20px Verdana'
-
       let x = 15
-
       for (let i = 0; i < this.code_Len; i++) {
         this.ctx.fillStyle = this.colors[Math.floor(Math.random() * 5)]
         this.ctx.fillText(this.codes[i], x, 25)

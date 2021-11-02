@@ -310,6 +310,9 @@ export default {
       window.onresize = this.chartInstance.resize
       this.setonClick()
     },
+    /**
+     * @desc 设置点击事件
+     */
     async setonClick () {
       // 监听点击
       this.chartInstance.on('click', async (arg) => {
@@ -342,6 +345,9 @@ export default {
         this.inflag = true
       })
     },
+    /**
+     * @desc 更新视图数据
+     */
     upDataMap () {
       const that = this
       const setUpOption = {
@@ -412,7 +418,9 @@ export default {
       }
       this.chartInstance.setOption(setUpOption)
     },
-    // 双击事件返回china
+    /**
+     * @desc 双击事件返回china
+     */
     revertMap () {
       if (!this.inflag) return
       const revertOption = {

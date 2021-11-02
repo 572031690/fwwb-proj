@@ -196,7 +196,6 @@ export default {
       }
       this.chartInstance.setOption(adapterOption)
       // 手动的调用图表对象的resize 才能产生效果
-      // console.log("resizeresizeresizeresize");
       this.chartInstance.resize()
     }
   }

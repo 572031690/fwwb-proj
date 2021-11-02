@@ -16,18 +16,27 @@
 export default {
   name: 'vSearchNav',
   props: {
+    /**
+     * @desc 搜索框文字前缀的宽度
+     */
     labelwidth: {
       type: [String, Number],
       default: () => {
         return '80px'
       }
     },
+    /**
+     * @desc 整个搜索框的宽度
+     */
     width: {
       type: [String, Number],
       default: () => {
         return '240px'
       }
     },
+    /**
+     * @desc 文本内容
+     */
     label: {
       type: [String, Number],
       default: () => {

@@ -106,6 +106,9 @@
 export default {
   data () {
     return {
+      /**
+     * @desc 返回当天之前的日期
+     */
       pickerOptions: {
         disabledDate: (time) => {
           return time.getTime() > Date.now() - 8.64e7
@@ -158,15 +161,24 @@ export default {
     this.getId()
   },
   methods: {
+    /**
+     * @desc 搜索
+     */
     setSearchForm () {
       this.$emit('getSearchForm', this.searchForm)
     },
+    /**
+     * @desc 重置
+     */
     resetForm () {
       for (const i in this.searchForm) {
         this.searchForm[i] = ''
       }
       this.$emit('getSearchForm', this.searchForm)
     },
+    /**
+     * @desc 部门数据请求
+     */
     getDepartment () {
       this.$api('home/item/findItemName', { params: { itemid: 12 } })
         .then((res) => {
@@ -174,6 +186,9 @@ export default {
         })
         .catch(() => {})
     },
+    /**
+     * @desc 物资类型请求
+     */
     getType () {
       this.$api('home/item/findItemName', { params: { itemid: 1 } })
         .then((res) => {
@@ -181,6 +196,9 @@ export default {
         })
         .catch(() => {})
     },
+    /**
+     * @desc id数据请求
+     */
     getId () {
       this.$api('home/item/findItemName', { params: { itemid: 16 } })
         .then((res) => {
