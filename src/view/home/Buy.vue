@@ -85,7 +85,7 @@
             </el-row>
           </div>
         </div>
-        <buySearch @getSearchForm="getSearchForm" />
+        <buySearch v-if="showAdd" @getSearchForm="getSearchForm" />
         <div
           class="tablebody"
           v-loading="loading2"
@@ -130,6 +130,7 @@
                 >
                   <div class="cellSortBox">
                     <div
+                      v-if="showAdd"
                       :style="{
                         'border-bottom-color':
                           params.sortType === sortList[item]
@@ -190,7 +191,7 @@
                             'home/buy/deleteBuy'
                           )
                         "
-                        v-if="item.uptype == 0 || item.uptype == 4"
+                        v-if="item.uptype == 0 || item.uptype == 4 || item.uptype == 5"
                       >
                         删除
                       </button>
@@ -243,8 +244,7 @@
                         {{
                           showStatus(
                             item.uptype,
-                            item.planName,
-                            item.approvaltype
+                            item.buytype
                           )
                         }}
                       </span>
@@ -304,7 +304,7 @@ export default {
   },
   computed: {
     showStatus: function () {
-      return function (type, plan, approvaltype) {
+      return function (type, approvaltype) {
         if (type !== 3) return this.select[type].label
         else if (approvaltype === 1) return '待采购'
         else if (approvaltype === 2) return '完成采购'
@@ -468,8 +468,7 @@ export default {
               importance: this.importanceList[res.list[i].importance - 1].text,
               uptype: this.showStatus(
                 res.list[i].uptype,
-                res.list[i].planName,
-                res.list[i].approvaltype
+                res.list[i].buytype
               )
             })
           }
@@ -525,9 +524,7 @@ export default {
         .then((res) => {
           this.list = res.list || [] // 获取里面的data数据
           this.params.total = res.count // 获取后台传过来的总数据条数
-          // this.params.page = res.page // 将后端的当前页反传回来
           this.loading2 = false
-          // this.getApprovalCurrentData()
         })
         .catch(() => {
           this.loading2 = false

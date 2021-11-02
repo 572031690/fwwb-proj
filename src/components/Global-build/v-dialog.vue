@@ -469,8 +469,7 @@ export default {
         .then((res) => {
           this.itemList = res.list
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
     },
     /**
@@ -510,8 +509,7 @@ export default {
         .then((res) => {
           this.dialogData.dataTableList[index].selectData = res.list
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
     }
   }

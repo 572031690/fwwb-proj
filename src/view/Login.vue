@@ -256,8 +256,7 @@ export default {
             this.$message.error(res.error)
           }
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
     },
     /**

@@ -142,7 +142,7 @@
                             'home/need/deleteNeed'
                           )
                         "
-                        v-if="item.uptype == 0 || item.uptype == 4"
+                        v-if="item.uptype == 0 || item.uptype == 4 || item.uptype == 5"
                       >
                         删除
                       </button>

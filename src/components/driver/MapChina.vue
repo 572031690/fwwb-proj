@@ -316,9 +316,7 @@ export default {
     async setonClick () {
       // 监听点击
       this.chartInstance.on('click', async (arg) => {
-        console.log(arg)
         if (this.inflag || arg.componentSubType !== 'map') return
-        // console.log(arg)
         // 调用外部方法获取中文身份的拼音
         const provinceInfo = getProvinceMapInfo(arg.name)
         // 判断获取的地图数据是否已经缓存 如果不存在

@@ -261,8 +261,7 @@ export default {
             this.$message.error('原密码不正确')
           }
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
     }
   }

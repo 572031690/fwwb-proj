@@ -386,8 +386,7 @@ export default {
             this.$emit('close')
           }
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
         })
     }
   }
