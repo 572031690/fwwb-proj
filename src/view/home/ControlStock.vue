@@ -128,7 +128,23 @@
                   :key="index"
                 >
                   <span class="title">{{ item + "：" }}</span>
-                  <span>{{ currentList[tableText.tableBody[index]] }}</span>
+                  <span
+                    v-if="
+                      tableText.tableBody[index] !== 'neednum' &&
+                      tableText.tableBody[index] !== 'num'
+                    "
+                    >{{ currentList[tableText.tableBody[index]] }}</span
+                  >
+                  <span
+                    style="color: red"
+                    v-if="
+                      tableText.tableBody[index] === 'neednum' ||
+                      tableText.tableBody[index] === 'num'
+                    "
+                    >{{
+                      currentList[tableText.tableBody[index]] + currentList.unit
+                    }}</span
+                  >
                 </span>
               </div>
             </div>

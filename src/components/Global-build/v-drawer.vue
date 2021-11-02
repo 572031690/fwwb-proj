@@ -327,6 +327,7 @@ export default {
     cancelForm () {
       this.loading = false
       this.list = []
+      this.opinion = ''
       this.dialog = !this.dialog
     },
     /**

@@ -14,8 +14,12 @@
       </div>
       <div class="tableRole">
         <div class="tableRoleTopAdd">
-          <div class="textRole">
-            <span v-show="!showAdd" style="font-weight: 700">仓库操作列表</span>
+          <div :class="showAdd ? 'textRole' : 'textRoleTitle'">
+            <span v-show="!showAdd" style="font-weight: 700">
+              仓库操作列表 出库{{ geTotalNum }}/总共{{
+                openType ? currentList.neednum : currentList.num
+              }}
+            </span>
             <el-select
               style="width: 220px"
               v-show="showAdd"
@@ -80,7 +84,13 @@
           </div>
 
           <div class="textRole"></div>
-          <div class="textRole" v-if="!showAdd">
+          <div
+            class="textRole"
+            v-if="
+              !showAdd &&
+              (list.outRept === 1 || list.inRept === 1)
+            "
+          >
             <button class="bodyadd" @click="getAdd()">
               <i class="el-icon-plus"></i>添加
             </button>
@@ -129,7 +139,12 @@
               >
                 编辑
               </button>
-              <el-popover placement="top" width="160" v-model="data.visible">
+              <el-popover
+                placement="top"
+                width="160"
+                v-model="data.visible"
+                v-if="!data.status"
+              >
                 <p>这是一段内容确定删除吗？</p>
                 <div style="text-align: right; margin: 0">
                   <el-button
@@ -289,6 +304,17 @@ export default {
       default: () => {
         return {}
       }
+    }
+  },
+  computed: {
+    geTotalNum () {
+      let total = 0
+      this.list.forEach((item) => {
+        if (item.status) {
+          total += this.openType ? item.neednum : item.num
+        }
+      })
+      return total
     }
   },
   watch: {
@@ -584,6 +610,16 @@ export default {
     color: rgb(111, 115, 116);
     font-size: 15px;
     width: 120px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .textRoleTitle {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    color: rgb(111, 115, 116);
+    font-size: 15px;
+    width: 300px;
     height: 50px;
     line-height: 50px;
   }
