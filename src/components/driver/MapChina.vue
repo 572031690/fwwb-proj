@@ -45,19 +45,24 @@ export default {
         setTimeout(() => {
           this.upDataMap()
         }, 0)
-        this.airData.forEach(item => {
+        this.airData.forEach((item) => {
           const lineData = {
             name: '',
             value: ''
           }
           lineData.name = item.name
           const currentValue = item.value * item.count
-          lineData.value = Math.round(currentValue / 10000 * 10) / 10
+          lineData.value = Math.round((currentValue / 10000) * 10) / 10
           this.totalValue += currentValue
           this.totalCount += item.count
           this.topCityData.push(lineData)
         })
-        this.$emit('backMapData', this.topCityData, this.totalCount, this.totalValue)
+        this.$emit(
+          'backMapData',
+          this.topCityData,
+          this.totalCount,
+          this.totalValue
+        )
       })
     },
     /**
@@ -353,7 +358,8 @@ export default {
                   return (
                     params.name +
                     '销售<br/>成交量：' +
-                    that.airData[params.dataIndex].count + '单<br/>' +
+                    that.airData[params.dataIndex].count +
+                    '单<br/>' +
                     '平均每单价格：' +
                     params.value +
                     '元<br/>'

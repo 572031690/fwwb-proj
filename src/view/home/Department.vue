@@ -41,7 +41,6 @@
           <div class="table-top">
             <thead>
               <!-- 表头 -->
-
               <tr >
                 <th v-for="(item,index) in tableText.tableTitle"
                 :key="index"
@@ -56,22 +55,16 @@
 
             </thead>
           </div>
-          <!-- 数据列表 -->
-          <!-- <el-table v-loading="loading2" element-loading-text="拼命加载中"> -->
           <tbody>
-
             <tr v-for="(item, key) in list" :key="key">
-
               <td v-for="(data,index) in tableText.tableBody"
               :key="index"
               :class="data==='opetation'? 'body-td1'
               :'body-td4'"
               @click="getDetail(item)">
-
                 <div class="cell1" v-if="data!=='opetation'">
                   {{ item[data] }}
                 </div>
-
                 <div class="cell" v-if="data==='opetation'">
                   <button class="modify" @click.stop="seeData(item)">编辑</button>
                   <button class="delete" @click.stop="deletedata({departmentid: item.departmentid},'home/department/deleteDepart')">删除</button>
@@ -79,18 +72,6 @@
               </td>
             </tr>
           </tbody>
-
-        <!-- <addDialog ref="addDialog"
-          :dialogFormShow="dialogFormShow"
-          @updata="search"
-          @closeaddDialog="closeaddDialog"
-          :IntList="IntList"
-          :currentList="currentList"
-          :openType="openType"
-          name="department"
-        >
-        </addDialog> -->
-
           <!-- </el-table> -->
         </div>
         <div class="table-bottom">

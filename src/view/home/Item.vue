@@ -25,11 +25,22 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8"  class="topRightBox">
-                <div class="approvalBtn" >
-                  <div v-for="(item,index) in typeList" :key="index" :class="{'currentBtn' : currentApprovalType ===index}" @click="getApprovalType(index)">{{item.label}}</div>
+              <el-col :span="8" class="topRightBox">
+                <div class="approvalBtn">
+                  <div
+                    v-for="(item, index) in typeList"
+                    :key="index"
+                    :class="{ currentBtn: currentApprovalType === index }"
+                    @click="getApprovalType(index)"
+                  >
+                    {{ item.label }}
+                  </div>
                 </div>
-                <button class="bodyadd" @click="gethomeAdd()" v-if="$store.getters.getPermission.includes('item:addItem')">
+                <button
+                  class="bodyadd"
+                  @click="gethomeAdd()"
+                  v-if="$store.getters.getPermission.includes('item:addItem')"
+                >
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
               >
@@ -43,40 +54,55 @@
         >
           <div class="mytable">
             <div class="table-top">
-                <div v-for="(item,index) in tableText.tableTitle"
-                  :key="index"
-                  colspan="1"
-                  rowspan="1"
-                  :class="
-                  item === '描述'?'htop-th3'
-                  :item === '需求单名'?'htop-th7'
-                  :'htop-th1'">
-                  <div class="cell">{{item}}</div>
-                </div>
+              <div
+                v-for="(item, index) in tableText.tableTitle"
+                :key="index"
+                colspan="1"
+                rowspan="1"
+                :class="
+                  item === '描述'
+                    ? 'htop-th3'
+                    : item === '需求单名'
+                    ? 'htop-th7'
+                    : 'htop-th1'
+                "
+              >
+                <div class="cell">{{ item }}</div>
+              </div>
             </div>
             <vNone v-if="!list.length" />
-            <div class="tbody" >
+            <div class="tbody">
               <div class="bodyLine" v-for="(item, key) in list" :key="key">
-
-                <div v-for="(data,index) in tableText.tableBody"
-                :key="index"
-                :class="{'body-td4': data==='comment'}" >
-
-                  <div class="cell" v-if="data!=='opetation'">
+                <div
+                  v-for="(data, index) in tableText.tableBody"
+                  :key="index"
+                  :class="{ 'body-td4': data === 'comment' }"
+                >
+                  <div class="cell" v-if="data !== 'opetation'">
                     {{ item[data] }}
                   </div>
 
-                  <div class="cell" v-if="data==='opetation'">
+                  <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
-                    <button class="delete" @click="deletedata({itemid: item.itemid},'home/item/deleteItem')">删除</button>
+                    <button
+                      class="delete"
+                      @click="
+                        deletedata(
+                          { itemid: item.itemid },
+                          'home/item/deleteItem'
+                        )
+                      "
+                    >
+                      删除
+                    </button>
                   </div>
                 </div>
-
-              </div >
+              </div>
             </div>
           </div>
 
-          <vDialog ref="addDialog"
+          <vDialog
+            ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
             :editDisabled="editDisabled"
@@ -86,9 +112,8 @@
             :currentList="currentList"
             :openType="openType"
             name="itemList"
-        >
-        </vDialog>
-
+          >
+          </vDialog>
         </div>
         <div class="table-bottom">
           <!-- 底部页码功能 -->
@@ -152,7 +177,10 @@ export default {
     }
   },
   created () {
-    if (this.$store.getters.getPermission.includes('item:updateItem') && this.$store.getters.getPermission.includes('item:deleteItem')) {
+    if (
+      this.$store.getters.getPermission.includes('item:updateItem') &&
+      this.$store.getters.getPermission.includes('item:deleteItem')
+    ) {
       this.tableText = this.$tables.itemListedit
     } else {
       this.tableText = this.$tables.itemListsee
@@ -176,13 +204,15 @@ export default {
           searchName: this.params.dname, // 传递搜索参数
           selectName: this.params.selectValue // 筛选参数
         }
-      }).then((res) => {
-        this.list = res.list.slice(1) || [] // 获取里面的data数据
-        this.params.total = res.count - 1 // 获取后台传过来的总数据条数
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
       })
+        .then((res) => {
+          this.list = res.list.slice(1) || [] // 获取里面的data数据
+          this.params.total = res.count - 1 // 获取后台传过来的总数据条数
+          this.loading2 = false
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 添加方法打开界面

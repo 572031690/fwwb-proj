@@ -26,9 +26,19 @@
                 </div>
               </el-col>
               <el-col :span="8" class="topRightBox">
-                <div class="approvalBtn" >
-                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">出库管理</div>
-                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">入库管理</div>
+                <div class="approvalBtn">
+                  <div
+                    :class="{ currentBtn: currentApprovalType }"
+                    @click="getApprovalType(true)"
+                  >
+                    出库管理
+                  </div>
+                  <div
+                    :class="{ currentBtn: !currentApprovalType }"
+                    @click="getApprovalType(false)"
+                  >
+                    入库管理
+                  </div>
                 </div>
                 <button class="bodyadd" @click="gethomeAdd()" v-if="false">
                   <i class="el-icon-plus"></i>添加
@@ -42,70 +52,89 @@
           v-loading="loading2"
           element-loading-text="拼命加载中"
         >
-          <div class="mytable" >
+          <div class="mytable">
             <div class="table-top">
-                <div v-for="(item,index) in tableText.tableTitle"
-                  :key="index"
-                  colspan="1"
-                  rowspan="1"
-                  v-show="item !== '详情'"
-                  :class="
-                  item === '需求单名'?'htop-th7'
-                  :'htop-th1'">
-                  <div class="cell">{{item}}</div>
-                </div>
+              <div
+                v-for="(item, index) in tableText.tableTitle"
+                :key="index"
+                colspan="1"
+                rowspan="1"
+                v-show="item !== '详情'"
+                :class="item === '需求单名' ? 'htop-th7' : 'htop-th1'"
+              >
+                <div class="cell">{{ item }}</div>
+              </div>
             </div>
             <vNone v-if="!list.length" />
-            <div class="tbody"  >
+            <div class="tbody">
               <div class="bodyLine" v-for="(item, key) in list" :key="key">
+                <div
+                  v-for="(data, index) in tableText.tableBody"
+                  :key="index"
+                  v-show="data !== 'comment'"
+                >
+                  <div
+                    class="cell"
+                    v-if="
+                      data !== 'opetation' &&
+                      data !== 'importance' &&
+                      data !== 'approvaltype' &&
+                      data !== 'buytype'
+                    "
+                  >
+                    {{ data === "index" ? key + 1 : item[data] }}
+                  </div>
+                  <div class="cell" v-if="data === 'opetation'">
+                    <button class="roleBtn" @click="seeDialog(item)">
+                      处理代办
+                    </button>
+                  </div>
+                  <div
+                    class="cell"
+                    v-if="data === 'approvaltype' || data === 'buytype'"
+                  >
+                    {{ item[data] === 1 ? "未完成" : "完成" }}
+                  </div>
 
-                <div v-for="(data,index) in tableText.tableBody"
-                :key="index"
-                v-show="data !== 'comment'">
-                  <div class="cell" v-if="data!=='opetation' && data!=='importance' && data !== 'approvaltype' && data !== 'buytype'">
-                    {{ data === 'index' ? key+1 : item[data] }}
-                  </div>
-                  <div class="cell" v-if="data==='opetation'">
-                    <button class="roleBtn" @click="seeDialog(item)">处理代办</button>
-                  </div>
-                  <div class="cell" v-if="data==='approvaltype' || data==='buytype'">
-                    {{item[data]===1 ? '未完成' : '完成'}}
-                  </div>
-
-                  <div class="cell" v-if="data==='importance' && item[data]">
-                    <span class="importantSpan"
-                    :style="{'background'
-                    :importanceList[item[data]-1].color}">
-                    {{importanceList[item[data]-1].text}}
+                  <div class="cell" v-if="data === 'importance' && item[data]">
+                    <span
+                      class="importantSpan"
+                      :style="{
+                        background: importanceList[item[data] - 1].color,
+                      }"
+                    >
+                      {{ importanceList[item[data] - 1].text }}
                     </span>
                   </div>
                 </div>
-
-              </div >
+              </div>
             </div>
           </div>
           <controlDialog
             :dialogVisibleRole="dialogVisibleRole"
-            :url='urlTypeList[currentApprovalType]'
+            :url="urlTypeList[currentApprovalType]"
             @closeDialog="closeDialog"
             :currentList="currentList"
-            :roleId='roleId'
+            :roleId="roleId"
             :openType="currentApprovalType"
           >
-          <div>
-            <h3>{{currentApprovalType ? '需求信息' : '采购信息'}}</h3>
-            <div class="dialogTopBody">
-              <span class="dialogTopBodyBox"
-              v-show="item !== '序号'
-              && item !== '操作'"
-              v-for="(item, index) in tableText.tableTitle" :key="index">
-                <span class="title">{{item + '：'}}</span>
-                <span>{{currentList[tableText.tableBody[index]]}}</span>
-              </span>
+            <div>
+              <h3>{{ currentApprovalType ? "需求信息" : "采购信息" }}</h3>
+              <div class="dialogTopBody">
+                <span
+                  class="dialogTopBodyBox"
+                  v-show="item !== '序号' && item !== '操作'"
+                  v-for="(item, index) in tableText.tableTitle"
+                  :key="index"
+                >
+                  <span class="title">{{ item + "：" }}</span>
+                  <span>{{ currentList[tableText.tableBody[index]] }}</span>
+                </span>
+              </div>
             </div>
-          </div>
           </controlDialog>
-          <vDialog ref="addDialog"
+          <vDialog
+            ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
             :editDisabled="editDisabled"
@@ -114,9 +143,8 @@
             :currentList="currentList"
             :openType="openType"
             name="itemList"
-        >
-        </vDialog>
-
+          >
+          </vDialog>
         </div>
         <div class="table-bottom">
           <!-- 底部页码功能 -->
@@ -222,15 +250,17 @@ export default {
         limit: this.params.limit, // 传递每页显示多少条记录参数
         planName: this.currentApprovalType ? 2 : 1 // 传递搜索参数
       }
-      await this.$api(this.searchUrl, data).then((res) => {
-        this.list = res.list || [] // 获取里面的data数据
-        this.params.total = res.count // 获取后台传过来的总数据条数
-        // this.params.page = res.page // 将后端的当前页反传回来
-        this.loading2 = false
-        // this.getApprovalCurrentData()
-      }).catch(() => {
-        this.loading2 = false
-      })
+      await this.$api(this.searchUrl, data)
+        .then((res) => {
+          this.list = res.list || [] // 获取里面的data数据
+          this.params.total = res.count // 获取后台传过来的总数据条数
+          // this.params.page = res.page // 将后端的当前页反传回来
+          this.loading2 = false
+          // this.getApprovalCurrentData()
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     seeDialog (item) {
       this.currentList = item
@@ -248,8 +278,12 @@ export default {
      */
     getApprovalType (index) {
       this.currentApprovalType = index
-      this.tableText = index ? this.$tables.controlNeedList : this.$tables.constrolBuyList
-      this.searchUrl = index ? 'home/controlStock/findAllNeed' : 'home/controlStock/findAllBuy'
+      this.tableText = index
+        ? this.$tables.controlNeedList
+        : this.$tables.constrolBuyList
+      this.searchUrl = index
+        ? 'home/controlStock/findAllNeed'
+        : 'home/controlStock/findAllBuy'
       this.search()
     }
   }
@@ -264,7 +298,7 @@ export default {
     margin-bottom: 30px;
     &Box {
       font-size: 16px;
-      padding:10px 10px 0 10px;
+      padding: 10px 10px 0 10px;
       // width: 100px;
       .title {
         font-weight: 700;
@@ -276,7 +310,7 @@ export default {
   padding: 3px 15px;
   line-height: 24px;
   color: white;
-   border-radius: 5px;
+  border-radius: 5px;
 }
 .searchfa {
   margin-left: 35px;

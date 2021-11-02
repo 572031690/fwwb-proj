@@ -1,5 +1,11 @@
 <template>
-  <canvas ref="canvas" @click="draw" width="140" height="40" style="cursor: pointer;"></canvas>
+  <canvas
+    ref="canvas"
+    @click="draw"
+    width="140"
+    height="40"
+    style="cursor: pointer"
+  ></canvas>
 </template>
 <script>
 export default {

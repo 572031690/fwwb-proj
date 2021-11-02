@@ -8,37 +8,59 @@
           </div>
           <div>
             <el-table :data="tableData" borderstyle="width: 100%">
-              <template slot="empty" >
-                  <div class="welTexts">
-                    {{briefIntroduction}}
-                  </div>
-                </template>
+              <template slot="empty">
+                <div class="welTexts">
+                  {{ briefIntroduction }}
+                </div>
+              </template>
             </el-table>
           </div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #E6A23C;">
+        <el-card class="box-card" style="background-color: #e6a23c">
           <div class="img">
-            <i class="el-icon-s-marketing" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-s-marketing"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
-            <div v-for="(item,index) in datalist"  class="item" :key="index" style="font-size:20px;color:white;padding-left:30px" >
-              {{item.name+'：'+item.num+item.unit}}
-            </div>
+          <div
+            v-for="(item, index) in datalist"
+            class="item"
+            :key="index"
+            style="font-size: 20px; color: white; padding-left: 30px"
+          >
+            {{ item.name + "：" + item.num + item.unit }}
+          </div>
           <div class="text1">材料库存</div>
         </el-card>
       </div>
-      <div class="bottom-box" >
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeNeed"  >
+      <div class="bottom-box">
+        <el-card
+          class="box-card"
+          style="background-color: MediumSeaGreen"
+          v-if="getdpartmentTypeNeed"
+        >
           <div class="img">
-            <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-document-checked"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
           <div class="text item">
             {{ needCount.approve }}
           </div>
           <div class="text1">需求通过数量</div>
         </el-card>
-        <el-card class="box-card" style="background-color:#f56c6c;" v-if="getdpartmentTypeNeed">
+        <el-card
+          class="box-card"
+          style="background-color: #f56c6c"
+          v-if="getdpartmentTypeNeed"
+        >
           <div class="img">
-            <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-s-data"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
 
           <div class="text item">
@@ -46,46 +68,72 @@
           </div>
           <div class="text1">需求驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff" v-if="getdpartmentTypeNeed">
+        <el-card
+          class="box-card"
+          style="background-color: #409eff"
+          v-if="getdpartmentTypeNeed"
+        >
           <div class="img">
-            <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-s-order"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
           <div class="text item">
             {{ needCount.sum }}
           </div>
           <div class="text1">需求总数</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: MediumSeaGreen;" v-if="getdpartmentTypeBuy">
+        <el-card
+          class="box-card"
+          style="background-color: MediumSeaGreen"
+          v-if="getdpartmentTypeBuy"
+        >
           <div class="img">
-            <i class="el-icon-document-checked" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-document-checked"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
           <div class="text item">
             {{ buyCount.approve }}
           </div>
           <div class="text1">订单通过数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color:#f56c6c;" v-if="getdpartmentTypeBuy">
+        <el-card
+          class="box-card"
+          style="background-color: #f56c6c"
+          v-if="getdpartmentTypeBuy"
+        >
           <div class="img">
-            <i class="el-icon-s-data" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-s-data"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
           <div class="text item">
             {{ buyCount.reject }}
           </div>
           <div class="text1">订单驳回数量</div>
         </el-card>
-        <el-card class="box-card" style=" background-color: #409eff;" v-if="getdpartmentTypeBuy">
+        <el-card
+          class="box-card"
+          style="background-color: #409eff"
+          v-if="getdpartmentTypeBuy"
+        >
           <div class="img">
-            <i class="el-icon-s-order" style="font-size: 100px; color: white"></i>
+            <i
+              class="el-icon-s-order"
+              style="font-size: 100px; color: white"
+            ></i>
           </div>
           <div class="text item">
             {{ buyCount.sum }}
           </div>
           <div class="text1">订单总数量</div>
         </el-card>
-
       </div>
     </div>
-
   </div>
 </template>
 
@@ -133,7 +181,8 @@ export default {
           depart: '管理部'
         }
       ],
-      briefIntroduction: '智能制作协调共享平台是一个后台管理审批平台，实现对需求的创建到最终订单生成并实施的全部审批流程。管理员可以对用户，材料进行修改,专员和经理可以对需求和订单进行提交和审批操作实现企业内的审批流程。',
+      briefIntroduction:
+        '智能制作协调共享平台是一个后台管理审批平台，实现对需求的创建到最终订单生成并实施的全部审批流程。管理员可以对用户，材料进行修改,专员和经理可以对需求和订单进行提交和审批操作实现企业内的审批流程。',
       tableData: [],
       needCount: {
         approve: '',
@@ -161,7 +210,9 @@ export default {
       const userList = JSON.parse(window.sessionStorage.getItem('userData'))
       this.tableData[0] = userList
       this.tableData[0].role = this.showRoleData(this.tableData[0].roleId)
-      this.tableData[0].department = this.showDepartData(this.tableData[0].roleId)
+      this.tableData[0].department = this.showDepartData(
+        this.tableData[0].roleId
+      )
     },
     /**
      * @desc 显示角色内容
@@ -169,7 +220,7 @@ export default {
     showRoleData (val) {
       if (!val) return
       const rolaArr = []
-      this.rolaSelect.forEach(item => {
+      this.rolaSelect.forEach((item) => {
         if (val.includes(parseInt(item.value))) rolaArr.push(item.label)
       })
       return rolaArr.join(',')
@@ -180,7 +231,7 @@ export default {
     showDepartData (val) {
       if (!val) return
       let depart
-      this.rolaSelect.forEach(item => {
+      this.rolaSelect.forEach((item) => {
         if (val.includes(parseInt(item.value))) depart = item.depart
       })
       return depart
@@ -190,12 +241,12 @@ export default {
      */
     getAprovalCount () {
       if (this.$store.getters.getPermission.includes('need:getNeedCount')) {
-        this.$api('home/welcome/getNeedCount').then(res => {
+        this.$api('home/welcome/getNeedCount').then((res) => {
           this.needCount = res
         })
       }
       if (this.$store.getters.getPermission.includes('buy:getBuyCount')) {
-        this.$api('home/welcome/getBuyCount').then(res => {
+        this.$api('home/welcome/getBuyCount').then((res) => {
           this.buyCount = res
         })
       }
@@ -224,16 +275,14 @@ export default {
       })
     }
   }
-
 }
 </script>
 <style lang="less" >
 .box-card-right {
-
-    .el-table__empty-text {
-      line-height: 24px
-    }
+  .el-table__empty-text {
+    line-height: 24px;
   }
+}
 </style>
 <style lang="less" scoped>
 .wel-body {
@@ -247,11 +296,11 @@ export default {
   }
   .top-box {
     display: flex;
-    justify-content:center;
+    justify-content: center;
   }
   .welTexts {
-    font-size:17px;
-    width: 500px
+    font-size: 17px;
+    width: 500px;
   }
   .box-card-right {
     width: 55%;
@@ -262,7 +311,7 @@ export default {
   }
   .bottom-box {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     flex-wrap: wrap;
   }
   .box-card {
@@ -273,7 +322,7 @@ export default {
     margin-top: 30px;
     margin-left: 40px;
   }
-    .img {
+  .img {
     float: right;
     padding-top: 25px;
   }
@@ -304,5 +353,4 @@ export default {
     clear: both;
   }
 }
-
 </style>

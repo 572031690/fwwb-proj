@@ -10,7 +10,12 @@
     >
       <template slot="title">
         <div
-          style="color:#409EFF;font-size:26px;font-weight:bold;margin-top:9px;"
+          style="
+            color: #409eff;
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 9px;
+          "
         >
           注册用户
         </div>
@@ -23,19 +28,19 @@
         class="demo-ruleForm"
       >
         <el-form-item label="用户名" prop="name">
-          <el-input v-model="form.name" style="width:400px"></el-input>
+          <el-input v-model="form.name" style="width: 400px"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
           <el-input
             v-model="form.pass"
-            style="width:400px"
+            style="width: 400px"
             type="password"
           ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="repass">
           <el-input
             v-model="form.repass"
-            style="width:400px"
+            style="width: 400px"
             type="password"
           ></el-input>
         </el-form-item>
@@ -44,7 +49,7 @@
             type="age"
             v-model.number="form.tel"
             auto-complete="off"
-            style="width:400px"
+            style="width: 400px"
           ></el-input>
         </el-form-item>
         <el-form-item label="员工号" prop="employeeid">
@@ -52,7 +57,7 @@
             type="age"
             v-model.number="form.employeeid"
             auto-complete="off"
-            style="width:400px"
+            style="width: 400px"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -122,7 +127,12 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入姓名名称', trigger: 'blur' },
-          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+          {
+            min: 2,
+            max: 10,
+            message: '长度在 2 到 10 个字符',
+            trigger: 'blur'
+          }
         ],
         pass: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -149,7 +159,7 @@ export default {
      * @desc 编辑表 的验证数据
      */
     submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           // 提示框
           this.$confirm('是否确定保存并注册账户?', '提示', {
@@ -177,17 +187,18 @@ export default {
         telNum: this.form.tel,
         employeeid: this.form.employeeid
       }
-      this.$api(url, data).then(res => {
-        if (res.code === '101') {
-          this.$message({
-            type: 'success',
-            message: '注册成功!'
-          })
-          this.dialogFormVisible = false
-        } else if (res.code === '99') {
-          this.$message.error('用户名重复!')
-        }
-      })
+      this.$api(url, data)
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message({
+              type: 'success',
+              message: '注册成功!'
+            })
+            this.dialogFormVisible = false
+          } else if (res.code === '99') {
+            this.$message.error('用户名重复!')
+          }
+        })
         .catch(() => {
           this.$message.error('网络异常') // element失败提示框上部
         })
@@ -207,7 +218,7 @@ export default {
     sendresCode () {
       // 调用获取短信验证码接口
       this.$api('login/getCode', { params: { phone: this.form.tel } })
-        .then(res => {
+        .then((res) => {
           res = res.data
           if (res.code) {
             this.phone.code = res.code
@@ -220,7 +231,8 @@ export default {
           } else {
             this.$message.error('发送失败！请稍后尝试') // element失败提示框上部
           }
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message.error('网络异常') // element失败提示框上部
         })
       // 因为下面用到了定时器，需要保存this指向

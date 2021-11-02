@@ -10,7 +10,12 @@
     >
       <template slot="title">
         <div
-          style="color:#409EFF;font-size:26px;font-weight:bold;margin-top:9px;"
+          style="
+            color: #409eff;
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 9px;
+          "
         >
           企业详情
         </div>
@@ -21,19 +26,18 @@
         label-width="120px"
         class="demo-ruleForm"
       >
-
-        <el-form-item label="部门名称：" >
-          <span>{{form.name}}</span>
+        <el-form-item label="部门名称：">
+          <span>{{ form.name }}</span>
         </el-form-item>
 
-        <el-form-item label="员工数量：" >
-          <span>{{form.employenum}}</span>
+        <el-form-item label="员工数量：">
+          <span>{{ form.employenum }}</span>
         </el-form-item>
-        <el-form-item label="部门编号：" >
-          <span>{{form.departmentid}}</span>
+        <el-form-item label="部门编号：">
+          <span>{{ form.departmentid }}</span>
         </el-form-item>
-        <el-form-item label="企业描述：" >
-              <div class="detail">{{form.detail}}</div>
+        <el-form-item label="企业描述：">
+          <div class="detail">{{ form.detail }}</div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -71,6 +75,6 @@ export default {
 <style scoped lang="less">
 .detail {
   font-size: 16px;
-  line-height:20px;
+  line-height: 20px;
 }
 </style>

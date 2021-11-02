@@ -22,7 +22,7 @@
                       class="selectAvro"
                     >
                       <el-option
-                        style="padding:0 18px 0 10px;"
+                        style="padding: 0 18px 0 10px"
                         v-for="item in rolaSelect"
                         :key="item.roleId"
                         :label="item.rolename"
@@ -42,7 +42,10 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.getters.getPermission.includes('admin:addUser')">
+              <el-col
+                :span="8"
+                v-if="$store.getters.getPermission.includes('admin:addUser')"
+              >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -57,65 +60,98 @@
         >
           <div class="mytable">
             <div class="table-top">
-              <div v-for="(item,index) in tableText.tableTitle"
+              <div
+                v-for="(item, index) in tableText.tableTitle"
                 :key="index"
                 colspan="1"
                 rowspan="1"
                 :class="{
-                  'htop-th2':  item === '登陆账号',
-                  'htop-ope1':item === '操作',
-                  'htop-th7':item === '职位'
-                }">
-                  <div class="cell">{{item}}</div>
+                  'htop-th2': item === '登陆账号',
+                  'htop-ope1': item === '操作',
+                  'htop-th7': item === '职位',
+                }"
+              >
+                <div class="cell">{{ item }}</div>
               </div>
             </div>
             <vNone v-if="!list.length" />
-            <div class="tbody" >
+            <div class="tbody">
               <div class="bodyLine" v-for="(item, key) in list" :key="key">
-
-                <div v-for="(data,index) in tableText.tableBody"
-                :key="index"
-                :class="{
-                    ['body-td2']:data==='username',
-                    ['body-td3']:data==='roleId',
-                    ['body-ope1']:data==='opetation'
+                <div
+                  v-for="(data, index) in tableText.tableBody"
+                  :key="index"
+                  :class="{
+                    ['body-td2']: data === 'username',
+                    ['body-td3']: data === 'roleId',
+                    ['body-ope1']: data === 'opetation',
                   }"
                 >
-
-                  <div class="cell" v-if="data!=='opetation' && data!=='opetationRole' && data!=='roleStatus' && data!=='roleId'">
-                    {{ data==='index'? key+1 :data==='telNum'? desen(item[data]) :item[data] }}
+                  <div
+                    class="cell"
+                    v-if="
+                      data !== 'opetation' &&
+                      data !== 'opetationRole' &&
+                      data !== 'roleStatus' &&
+                      data !== 'roleId'
+                    "
+                  >
+                    {{
+                      data === "index"
+                        ? key + 1
+                        : data === "telNum"
+                        ? desen(item[data])
+                        : item[data]
+                    }}
                   </div>
-                  <el-tooltip class="item" effect="dark" :content="showRoleData(item[data])" placement="top" v-if="data==='roleId'">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="showRoleData(item[data])"
+                    placement="top"
+                    v-if="data === 'roleId'"
+                  >
                     <div class="cell">
-                      {{showRoleData(item[data])}}
+                      {{ showRoleData(item[data]) }}
                     </div>
                   </el-tooltip>
 
-                  <div class="cell" v-if="data==='opetation'">
+                  <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
-                    <button class="delete" @click="deletedata({userid: item.userid},'home/user/deleteUser')">删除</button>
-                    <button class="approval" @click="resetPass(item)">重置密码</button>
+                    <button
+                      class="delete"
+                      @click="
+                        deletedata(
+                          { userid: item.userid },
+                          'home/user/deleteUser'
+                        )
+                      "
+                    >
+                      删除
+                    </button>
+                    <button class="approval" @click="resetPass(item)">
+                      重置密码
+                    </button>
                   </div>
-                  <div class="cell" v-if="data==='opetationRole'">
-                    <button class="roleBtn" @click="getRole(item)">分配角色</button>
+                  <div class="cell" v-if="data === 'opetationRole'">
+                    <button class="roleBtn" @click="getRole(item)">
+                      分配角色
+                    </button>
                   </div>
-                  <div class="cell" v-if="data==='roleStatus'">
+                  <div class="cell" v-if="data === 'roleStatus'">
                     <el-switch
                       :name="item.userid.toString()"
                       v-model="item.isDisabled"
                       active-color="#ff4949"
                       inactive-color="#13ce66"
-                      @change="setStatus(item.userid,key)"
+                      @change="setStatus(item.userid, key)"
                     >
                     </el-switch>
-                    {{item.isDisabled?  '禁用':'正常'}}
+                    {{ item.isDisabled ? "禁用" : "正常" }}
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
-
         </div>
         <div class="table-bottom">
           <!-- 底部页码功能 -->
@@ -131,7 +167,8 @@
           </el-pagination>
         </div>
 
-        <vDialog ref="addDialog"
+        <vDialog
+          ref="addDialog"
           :dialogFormShow="dialogFormShow"
           @updata="search"
           :editDisabled="editDisabled"
@@ -147,7 +184,8 @@
         <el-dialog
           title="分配角色"
           :visible.sync="dialogVisibleRole"
-          width="30%">
+          width="30%"
+        >
           <div class="tableRole">
             <div class="tableRoleTop">
               <div class="btnRole">选择</div>
@@ -155,10 +193,16 @@
               <div class="textRole">描述</div>
             </div>
             <el-checkbox-group v-model="currentRola">
-              <div class="tableRoleBody" v-for="(item,index) in rolaData" :key="index">
-                <div class="btnRole"><el-checkbox :label="item.roleId">{{''}}</el-checkbox></div>
-                <div class="textRole">{{item.rolename}}</div>
-                <div class="textRole">{{item.description}}</div>
+              <div
+                class="tableRoleBody"
+                v-for="(item, index) in rolaData"
+                :key="index"
+              >
+                <div class="btnRole">
+                  <el-checkbox :label="item.roleId">{{ "" }}</el-checkbox>
+                </div>
+                <div class="textRole">{{ item.rolename }}</div>
+                <div class="textRole">{{ item.description }}</div>
               </div>
             </el-checkbox-group>
           </div>
@@ -240,15 +284,17 @@ export default {
           searchName: this.params.dname, // 传递搜索参数
           selectName: this.params.selectValue // 筛选参数
         }
-      }).then((res) => {
-        this.list = res.list || [] // 获取里面的data数据
-        this.getEmitData()
-        this.params.total = res.count // 获取后台传过来的总数据条数
-        this.params.page = res.page // 将后端的当前页反传回来
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
       })
+        .then((res) => {
+          this.list = res.list || [] // 获取里面的data数据
+          this.getEmitData()
+          this.params.total = res.count // 获取后台传过来的总数据条数
+          this.params.page = res.page // 将后端的当前页反传回来
+          this.loading2 = false
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
@@ -268,7 +314,7 @@ export default {
     showRoleData (val) {
       if (!val) return
       const rolaArr = []
-      this.rolaSelect.forEach(item => {
+      this.rolaSelect.forEach((item) => {
         if (val.includes(item.roleId)) rolaArr.push(item.rolename)
       })
       return rolaArr.join(',')
@@ -281,26 +327,27 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async () => {
-        const url = 'home/user/checkRola'
-        const data = {
-          roleId: this.currentRola,
-          userid: this.currentId
-        }
-        await this.$api(url, data).then(res => {
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '分配权限成功!'
-            })
-            this.search()
-            this.dialogVisibleRole = false
-          } else {
-            this.$message.error('错了哦，分配失败')
-          }
-        })
       })
-        .catch(err => {
+        .then(async () => {
+          const url = 'home/user/checkRola'
+          const data = {
+            roleId: this.currentRola,
+            userid: this.currentId
+          }
+          await this.$api(url, data).then((res) => {
+            if (res) {
+              this.$message({
+                type: 'success',
+                message: '分配权限成功!'
+              })
+              this.search()
+              this.dialogVisibleRole = false
+            } else {
+              this.$message.error('错了哦，分配失败')
+            }
+          })
+        })
+        .catch((err) => {
           if (err === 'cancel') {
             this.$message('取消删除')
           } else {
@@ -325,27 +372,28 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async () => {
-        const url = 'home/user/resetPass'
-        const params = {
-          userid: item.userid
-        }
-        await this.$api(url, {
-          params
-        }).then(res => {
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '重置成功!'
-            })
-            this.search()
-            this.dialogVisibleRole = false
-          } else {
-            this.$message.error('错了哦，重置密码失败')
-          }
-        })
       })
-        .catch(err => {
+        .then(async () => {
+          const url = 'home/user/resetPass'
+          const params = {
+            userid: item.userid
+          }
+          await this.$api(url, {
+            params
+          }).then((res) => {
+            if (res) {
+              this.$message({
+                type: 'success',
+                message: '重置成功!'
+              })
+              this.search()
+              this.dialogVisibleRole = false
+            } else {
+              this.$message.error('错了哦，重置密码失败')
+            }
+          })
+        })
+        .catch((err) => {
           if (err === 'cancel') {
             this.$message('取消重置')
           } else {
@@ -385,13 +433,15 @@ export default {
         params: {
           userid: id
         }
-      }).then(() => {
-        this.$message.success('更改状态成功')
-      }).catch(() => {
-        setTimeout(() => {
-          this.list[key].isDisabled = !this.list[key].isDisabled
-        }, 400)
       })
+        .then(() => {
+          this.$message.success('更改状态成功')
+        })
+        .catch(() => {
+          setTimeout(() => {
+            this.list[key].isDisabled = !this.list[key].isDisabled
+          }, 400)
+        })
     }
   }
 }
@@ -411,14 +461,14 @@ export default {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 150px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .btnRole {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 60px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
 }

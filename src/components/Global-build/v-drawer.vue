@@ -8,15 +8,18 @@
       direction="rtl"
       custom-class="demo-drawer"
       ref="drawer"
-      :size="openType === 'write'? '90%':585"
+      :size="openType === 'write' ? '90%' : 585"
     >
       <div class="drawercenter">
-        <div class="drawerStyle" :style="{'width': openType === 'write'? '760px':'520px'}">
-          <div class="drawertopstatus"  v-if="openType === 'see'">
+        <div
+          class="drawerStyle"
+          :style="{ width: openType === 'write' ? '760px' : '520px' }"
+        >
+          <div class="drawertopstatus" v-if="openType === 'see'">
             <el-steps
               :space="200"
               align-center
-              :active="listIn.uptype===4 ? 0 : listIn.uptype"
+              :active="listIn.uptype === 4 ? 0 : listIn.uptype"
               finish-status="success"
             >
               <el-step title="待审核"></el-step>
@@ -25,11 +28,30 @@
             </el-steps>
           </div>
           <div class="drawerFormBox">
-            <div :class="{'formBody' :openType === 'see','tableBody' : openType === 'write'}">
-              <el-form :model="listIn" label-width="120px" v-if="openType === 'write'">
-                <el-form-item :label="item.label+'：'" v-for="(item,index) in drawerText[typeName]" :key="index">
-                  <span v-if="item.model!=='comment'" >{{(item.model!=='neednum' && item.model!=='num') ?listIn[item.model]:listIn[item.model]+listIn.unit}}</span>
-                  <div v-if="item.model==='comment'" class="drawerText">{{listIn[item.model]}}</div>
+            <div
+              :class="{
+                formBody: openType === 'see',
+                tableBody: openType === 'write',
+              }"
+            >
+              <el-form
+                :model="listIn"
+                label-width="120px"
+                v-if="openType === 'write'"
+              >
+                <el-form-item
+                  :label="item.label + '：'"
+                  v-for="(item, index) in drawerText[typeName]"
+                  :key="index"
+                >
+                  <span v-if="item.model !== 'comment'">{{
+                    item.model !== "neednum" && item.model !== "num"
+                      ? listIn[item.model]
+                      : listIn[item.model] + listIn.unit
+                  }}</span>
+                  <div v-if="item.model === 'comment'" class="drawerText">
+                    {{ listIn[item.model] }}
+                  </div>
                 </el-form-item>
               </el-form>
               <div class="drawerInputBox" v-if="openType === 'write'">
@@ -38,15 +60,16 @@
                 <br />
                 <div class="inputBox">
                   <el-input
-                      type="textarea"
-                      :rows="4"
-                      placeholder="请输入意见"
-                      v-model="opinion">
-                    </el-input>
+                    type="textarea"
+                    :rows="4"
+                    placeholder="请输入意见"
+                    v-model="opinion"
+                  >
+                  </el-input>
                 </div>
               </div>
 
-              <div  class="drawerApprovalBox" v-if="openType === 'see'">
+              <div class="drawerApprovalBox" v-if="openType === 'see'">
                 <h3>审批详情</h3>
                 <hr />
                 <br />
@@ -54,20 +77,34 @@
                   <el-timeline>
                     <el-timeline-item
                       v-for="(item, key) in list"
-                      :icon="typeList[parseInt(item.id)-1].icon"
-                      :color="typeList[parseInt(item.id)-1].color"
+                      :icon="typeList[parseInt(item.id) - 1].icon"
+                      :color="typeList[parseInt(item.id) - 1].color"
                       size="large"
                       :key="key"
                       :timestamp="item.endTime"
                       placement="top"
                     >
                       <el-card>
-                        <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
-                          <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
-                          ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
-                          <br />
-                          <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
-                          <p v-show="item.text">审批意见：{{ item.text }}</p>
+                        <div class="departmentId">
+                          {{
+                            parseInt(item.id) === 2
+                              ? "部门经理"
+                              : parseInt(item.id) === 3
+                              ? "总经理"
+                              : ""
+                          }}
+                        </div>
+                        <span style="font-weight: bold">{{
+                          typeList[parseInt(item.id) - 1].title
+                        }}</span
+                        ><span v-if="item.auther">
+                          审批人：{{ item.auther }}</span
+                        >
+                        <br />
+                        <span v-show="item.upname">
+                          提交人：{{ item.upname }}</span
+                        >
+                        <p v-show="item.text">审批意见：{{ item.text }}</p>
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -78,7 +115,7 @@
                 <div v-if="openType === 'see'">
                   <el-button @click="cancelForm">关 闭</el-button>
                   <el-button
-                    v-show="listIn.uptype===4"
+                    v-show="listIn.uptype === 4"
                     type="primary"
                     @click="upData()"
                     :loading="loading"
@@ -87,12 +124,16 @@
                 </div>
                 <div v-else>
                   <el-button @click="cancelForm">关 闭</el-button>
-                  <el-button @click="witeApproval('reject')" type="danger">驳 回</el-button>
-                  <el-button @click="witeApproval('pass')"  type="success">通 过</el-button>
+                  <el-button @click="witeApproval('reject')" type="danger"
+                    >驳 回</el-button
+                  >
+                  <el-button @click="witeApproval('pass')" type="success"
+                    >通 过</el-button
+                  >
                 </div>
               </div>
             </div>
-            <div  class="drawerApprovalBoxRight" v-if="openType === 'write'">
+            <div class="drawerApprovalBoxRight" v-if="openType === 'write'">
               <h3>审批详情</h3>
               <hr />
               <br />
@@ -100,19 +141,33 @@
                 <el-timeline>
                   <el-timeline-item
                     v-for="(item, key) in list"
-                    :icon="typeList[parseInt(item.id)-1].icon"
-                    :color="typeList[parseInt(item.id)-1].color"
+                    :icon="typeList[parseInt(item.id) - 1].icon"
+                    :color="typeList[parseInt(item.id) - 1].color"
                     size="large"
                     :key="key"
                     :timestamp="item.endTime"
                     placement="top"
                   >
                     <el-card>
-                      <div class="departmentId">{{parseInt(item.id)===2?'部门经理':parseInt(item.id)===3?'总经理':''}}</div>
-                      <span style="font-weight:bold;">{{ typeList[parseInt(item.id)-1].title }}</span
-                      ><span v-if="item.auther"> 审批人：{{ item.auther }}</span>
+                      <div class="departmentId">
+                        {{
+                          parseInt(item.id) === 2
+                            ? "部门经理"
+                            : parseInt(item.id) === 3
+                            ? "总经理"
+                            : ""
+                        }}
+                      </div>
+                      <span style="font-weight: bold">{{
+                        typeList[parseInt(item.id) - 1].title
+                      }}</span
+                      ><span v-if="item.auther">
+                        审批人：{{ item.auther }}</span
+                      >
                       <br />
-                      <span v-show="item.upname"> 提交人：{{ item.upname }}</span>
+                      <span v-show="item.upname">
+                        提交人：{{ item.upname }}</span
+                      >
                       <p v-show="item.text">审批意见：{{ item.text }}</p>
                     </el-card>
                   </el-timeline-item>
@@ -120,7 +175,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </el-drawer>
@@ -186,7 +240,8 @@ export default {
           title: '通过',
           icon: 'el-icon-check',
           color: '#0bbd87'
-        }, {
+        },
+        {
           title: '通过',
           icon: 'el-icon-check',
           color: '#0bbd87'
@@ -221,7 +276,7 @@ export default {
     upData () {
       if (this.loading) return
       this.$confirm('确定要提交表单吗？')
-        .then(_ => {
+        .then((_) => {
           this.loading = true
           this.resetApproval()
         })
@@ -236,7 +291,7 @@ export default {
         buyid: this.listIn.buyid,
         needid: this.listIn.needid
       }
-      this.$api(url, { params }).then(res => {
+      this.$api(url, { params }).then((res) => {
         if (res.code === '101') {
           this.resetUpApproval(res.list.taskId)
         }
@@ -251,7 +306,7 @@ export default {
         text: '',
         taskId
       }
-      this.$api(url, { params }).then(res => {
+      this.$api(url, { params }).then((res) => {
         if (res.code === '101') {
           this.$message.success('重新提交审批成功')
           this.loading = false
@@ -300,34 +355,40 @@ export default {
      * @desc 审批（驳回/通过）
      */
     witeApproval (type) {
-      this.$confirm(type === 'reject' ? '是否确定驳回此申请' : '是否确定通过此申请', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm(
+        type === 'reject' ? '是否确定驳回此申请' : '是否确定通过此申请',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(() => {
+        this.approvalAct(type)
       })
-        .then(() => {
-          this.approvalAct(type)
-        })
     },
     /**
      * @desc 审批请求
      */
     approvalAct (type) {
-      const url = type === 'pass' ? this.urlList.passRequest : this.urlList.rejectRequest
+      const url =
+        type === 'pass' ? this.urlList.passRequest : this.urlList.rejectRequest
       const params = {
         text: this.opinion,
         taskId: this.listIn.taskId
       }
-      this.$api(url, { params }).then(res => {
-        if (res.code === '101') {
-          this.loading = false
-          this.dialog = !this.dialog
-          this.$message.success('审批成功')
-          this.$emit('close')
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      this.$api(url, { params })
+        .then((res) => {
+          if (res.code === '101') {
+            this.loading = false
+            this.dialog = !this.dialog
+            this.$message.success('审批成功')
+            this.$emit('close')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -335,7 +396,7 @@ export default {
 
 <style lang="less" >
 .approvalDrawar {
-    .drawercenter {
+  .drawercenter {
     border-top: 1px solid #eee;
     width: 100%;
     display: flex;
@@ -353,18 +414,18 @@ export default {
   }
   .drawerFormBox {
     height: 88%;
-    width: 100% ;
+    width: 100%;
     display: flex;
     .formBody {
       height: 100%;
       width: 80%;
       .tableBody {
-        width: 54% ;
+        width: 54%;
       }
     }
   }
   .drawerApprovalBox {
-    margin-left:40px;
+    margin-left: 40px;
     height: 100%;
     width: 100%;
     .ApprovalListBlock {
@@ -381,20 +442,20 @@ export default {
     color: rgb(177, 7, 16);
   }
   .drawerApprovalBoxRight {
-    margin-left:20px;
+    margin-left: 20px;
     padding: 0 30px;
     height: 720px;
     border-left: 2px dashed #eee;
     .ApprovalListRightBlock {
       overflow: auto;
-      padding:0 10px;
+      padding: 0 10px;
       height: 90%;
     }
   }
   .drawerInputBox {
     margin: 30px 0 20px;
     .inputBox {
-      padding:0  10px;
+      padding: 0 10px;
     }
   }
   .demo-drawer__footer {
@@ -403,10 +464,9 @@ export default {
     transform: translate(-50%);
     bottom: 3%;
     text-align: center;
-
   }
   .drawerText {
-    border: 1px solid rgba(99, 94, 94,0.3);
+    border: 1px solid rgba(99, 94, 94, 0.3);
     border-radius: 5px;
     font-size: 16px;
     line-height: 18px;
@@ -417,7 +477,6 @@ export default {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     word-break: break-all;
-
   }
   .el-drawer__header {
     margin-bottom: 22px !important;
@@ -428,5 +487,4 @@ export default {
     }
   }
 }
-
 </style>

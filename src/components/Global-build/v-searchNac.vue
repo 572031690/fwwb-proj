@@ -1,11 +1,14 @@
 <template>
-  <div class="vSearchBoxs" :style="'width:'+ width + ';'">
-   <div class="inputLabel" :style="'width:'+ (label ? labelwidth : '30px') + ';'">
-     {{label? label + '：': ''}}
+  <div class="vSearchBoxs" :style="'width:' + width + ';'">
+    <div
+      class="inputLabel"
+      :style="'width:' + (label ? labelwidth : '30px') + ';'"
+    >
+      {{ label ? label + "：" : "" }}
     </div>
-   <div style="width:100px;">
-     <slot></slot>
-   </div>
+    <div style="width: 100px">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -32,7 +35,6 @@ export default {
       }
     }
   }
-
 }
 </script>
 

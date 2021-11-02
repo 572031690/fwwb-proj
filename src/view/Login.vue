@@ -1,14 +1,19 @@
 <template>
   <div id="Login" ref="loginview">
     <div class="stars-spot-anima" ref="stars">
-      <div class="star-spot-anima" v-for="(item, key) in startList" :key="key" :ref="'star' + key"></div>
+      <div
+        class="star-spot-anima"
+        v-for="(item, key) in startList"
+        :key="key"
+        :ref="'star' + key"
+      ></div>
     </div>
     <div ref="appref">
       <div class="top-backhome">
         <img
           src="../assets/img/titleImportant.png"
           height="50px"
-          style="vertical-align: middle;"
+          style="vertical-align: middle"
         />
         <span>智能制造协同共享平台</span>
       </div>
@@ -21,9 +26,7 @@
                 <div class="imgtop">
                   <img src="../assets/img/login-top.png" />
                 </div>
-                <div class="logintext">
-                  登录
-                </div>
+                <div class="logintext">登录</div>
                 <form>
                   <div class="inputbox">
                     <span class="userimg"></span>
@@ -82,7 +85,12 @@
                     <button type="button" id="login" @click="login()">
                       登陆
                     </button>
-                    <button type="button" id="regiser" @click="seeData" v-if="false">
+                    <button
+                      type="button"
+                      id="regiser"
+                      @click="seeData"
+                      v-if="false"
+                    >
                       注册
                     </button>
                   </div>
@@ -126,7 +134,7 @@ export default {
   },
   created () {
     document.body.removeAttribute('style')
-    const List = len => [...new Array(len).keys()]
+    const List = (len) => [...new Array(len).keys()]
     this.startList = List(800)
   },
   mounted () {
@@ -143,8 +151,20 @@ export default {
       this.startList.forEach((item, key) => {
         var s = 0.2 + Math.random() * 1
         var curR = 800 + Math.random() * 300
-        this.$refs['star' + key][0].style.transformOrigin = '0 0 ' + curR + 'px'
-        this.$refs['star' + key][0].style.transform = ' translate3d(0,0,-' + curR + 'px) rotateY(' + Math.random() * 360 + 'deg) rotateX(' + Math.random() * -50 + 'deg) scale(' + s + ',' + s + ')'
+        this.$refs['star' + key][0].style.transformOrigin =
+          '0 0 ' + curR + 'px'
+        this.$refs['star' + key][0].style.transform =
+          ' translate3d(0,0,-' +
+          curR +
+          'px) rotateY(' +
+          Math.random() * 360 +
+          'deg) rotateX(' +
+          Math.random() * -50 +
+          'deg) scale(' +
+          s +
+          ',' +
+          s +
+          ')'
       })
     },
     /**
@@ -211,15 +231,18 @@ export default {
         password: this.logindata.pass
       }
       await this.$api(url, data)
-        .then(res => {
+        .then((res) => {
           const { code, user, sessionId, permission, permissionName } = res
           if (parseInt(code) === 101) {
             this.getCache(user, sessionId, permission, permissionName)
             this.logindata.uname = ''
             this.logindata.pass = ''
-            this.$router.push({ path: 'home/homewel', query: { routerIndex: 1 } }) // 页面跳转
+            this.$router.push({
+              path: 'home/homewel',
+              query: { routerIndex: 1 }
+            }) // 页面跳转
             this.$notify({
-            // element登陆成功提示框右上边
+              // element登陆成功提示框右上边
               title: '登陆成功',
               message: '欢迎管理员！',
               type: 'success'
@@ -233,7 +256,7 @@ export default {
             this.$message.error(res.error)
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err)
         })
     },
@@ -247,7 +270,10 @@ export default {
       window.sessionStorage.setItem('sData', user.roleId) // 将数据存储到浏览器内嵌的数据库内
       window.sessionStorage.setItem('userid', user.userid) // 用户ID
       permissionName.push(0)
-      window.sessionStorage.setItem('permissionName', JSON.stringify(permissionName)) // 权限Name
+      window.sessionStorage.setItem(
+        'permissionName',
+        JSON.stringify(permissionName)
+      ) // 权限Name
       window.sessionStorage.setItem('permission', JSON.stringify(permission)) // 权限Id
     }
   },
@@ -258,12 +284,18 @@ export default {
 </script>
 <style >
 body {
-    /* background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000); */
-    background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
-    background-attachment: fixed;
-    overflow: hidden;
+  /* background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000); */
+  background: radial-gradient(
+    220% 105% at top center,
+    #000 10%,
+    #000035 40%,
+    #0b2570 65%,
+    #0070aa
+  );
+  background-attachment: fixed;
+  overflow: hidden;
 }
-  /* .bodyss {
+/* .bodyss {
     height: 100%;
     width: 100%;
     background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
@@ -272,39 +304,40 @@ body {
     overflow: hidden;
   } */
 
-  @keyframes rotatestar {
-    0% {
-      transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
-    }
-
-    100% {
-      transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(-360deg);
-    }
+@keyframes rotatestar {
+  0% {
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
   }
 
-  .stars-spot-anima {
-    transform: perspective(500px);
-    transform-style: preserve-3d;
-    position: absolute;
-    bottom: 0;
-    perspective-origin: 50% 100%;
-    left: 50%;
-    animation: rotatestar 90s infinite linear;
+  100% {
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg)
+      rotateY(-360deg);
   }
+}
 
-  .star-spot-anima {
-    width: 2px;
-    height: 2px;
-    background: #F7F7B6;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0 -300px;
-    transform: translate3d(0, 0, -300px);
-    backface-visibility: hidden; /* 旋转元素背面不可见*/
-    animation: none;
-    opacity: 1;
-  }
+.stars-spot-anima {
+  transform: perspective(500px);
+  transform-style: preserve-3d;
+  position: absolute;
+  bottom: 0;
+  perspective-origin: 50% 100%;
+  left: 50%;
+  animation: rotatestar 90s infinite linear;
+}
+
+.star-spot-anima {
+  width: 2px;
+  height: 2px;
+  background: #f7f7b6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0 -300px;
+  transform: translate3d(0, 0, -300px);
+  backface-visibility: hidden; /* 旋转元素背面不可见*/
+  animation: none;
+  opacity: 1;
+}
 </style>
 <style lang="less" scoped>
 /*无法选中图片文字方法*/
@@ -339,7 +372,7 @@ img {
   justify-content: center;
   margin-top: 180px;
   height: 380px;
-  background: rgba(64,158,255,0.5);
+  background: rgba(64, 158, 255, 0.5);
   .filImg {
     width: 100%;
     height: 100%;

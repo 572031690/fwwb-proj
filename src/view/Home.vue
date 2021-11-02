@@ -1,13 +1,22 @@
 <template>
   <div id="Home" ref="gobacklogin">
     <div :class="{ leftNavigation: navshow, leftNavigationChange: !navshow }">
-      <div v-for="(item,index) in routerList" v-show="item.showtab" :key="index">
-        <div @click="judgeType(item,index)" class="navhome">
+      <div
+        v-for="(item, index) in routerList"
+        v-show="item.showtab"
+        :key="index"
+      >
+        <div @click="judgeType(item, index)" class="navhome">
           <div class="checkLineDiv" v-if="item.index == checkIndex"></div>
           <img :src="item.imgSrc" class="navhome-img" />
-          <span :class="{
-            'spans1' : true,
-            'checkBox' :item.index == checkIndex}" :ref="item.ref">{{ item.label }}</span>
+          <span
+            :class="{
+              spans1: true,
+              checkBox: item.index == checkIndex,
+            }"
+            :ref="item.ref"
+            >{{ item.label }}</span
+          >
           <img
             v-if="item.type === 'tips' && item.showtab"
             :src="item.imgtips"
@@ -22,7 +31,15 @@
           ref="navhomebox"
           v-if="item.childrenList.length"
         >
-          <transition :name="getSonTransition(item.childrenList) === 3 ? 'navhom' : getSonTransition(item.childrenList) === 2?'navhomshort':'navhommin'">
+          <transition
+            :name="
+              getSonTransition(item.childrenList) === 3
+                ? 'navhom'
+                : getSonTransition(item.childrenList) === 2
+                ? 'navhomshort'
+                : 'navhommin'
+            "
+          >
             <div class="navhome-son" v-show="item.navSonShow">
               <div
                 @click="!itemson.disabled && goToRouter(itemson)"
@@ -30,11 +47,19 @@
                 :key="ind"
                 v-show="itemson.showtab"
               >
-                <div :class="!itemson.disabled?'namehome-son1':'disabledClick'">
-                  <div class="checkLineDiv" v-if="itemson.index == checkIndex"></div>
+                <div
+                  :class="!itemson.disabled ? 'namehome-son1' : 'disabledClick'"
+                >
+                  <div
+                    class="checkLineDiv"
+                    v-if="itemson.index == checkIndex"
+                  ></div>
                   <img :src="itemson.imgSrc" class="navson-img" />
-                  <span :ref="itemson.ref" :class="{'checkBox' :itemson.index == checkIndex}">{{ itemson.label }}</span>
-
+                  <span
+                    :ref="itemson.ref"
+                    :class="{ checkBox: itemson.index == checkIndex }"
+                    >{{ itemson.label }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -73,7 +98,10 @@
         </div>
       </div>
       <div class="rightbody">
-        <router-view ref="viewBox" @changeRouterIndex='changeRouterIndex'></router-view>
+        <router-view
+          ref="viewBox"
+          @changeRouterIndex="changeRouterIndex"
+        ></router-view>
       </div>
     </div>
   </div>
@@ -115,7 +143,9 @@ export default {
     }
   },
   created () {
-    this.permissionName = JSON.parse(window.sessionStorage.getItem('permissionName'))
+    this.permissionName = JSON.parse(
+      window.sessionStorage.getItem('permissionName')
+    )
     this.$store.commit('SET_PERMISSION_NAME', this.permissionName)
     this.adminname = window.sessionStorage.getItem('storeData') // 获取浏览器缓存值
   },
@@ -136,7 +166,7 @@ export default {
      */
     getSonTransition (list) {
       let index = 0
-      list.forEach(item => {
+      list.forEach((item) => {
         if (item.showtab) index++
       })
       return index
@@ -147,19 +177,25 @@ export default {
     changearrow (index) {
       this.routerList[index].navSonShow = !this.routerList[index].navSonShow
       if (!this.routerList[index].navSonShow) {
-        this.$refs[this.routerList[index].arrowRef][0].style.transform = 'rotate(270deg)'
+        this.$refs[this.routerList[index].arrowRef][0].style.transform =
+          'rotate(270deg)'
         this.arrowflag = !this.arrowflag
       } else {
-        this.$refs[this.routerList[index].arrowRef][0].style.transform = 'rotate(90deg)'
+        this.$refs[this.routerList[index].arrowRef][0].style.transform =
+          'rotate(90deg)'
         this.arrowflag = !this.arrowflag
       }
     },
     /**
-      * @desc 三条杠防抖点击
-    */
-    changeHomeImg: debounce(function () {
-      this.changeNav()
-    }, 1000, true),
+     * @desc 三条杠防抖点击
+     */
+    changeHomeImg: debounce(
+      function () {
+        this.changeNav()
+      },
+      1000,
+      true
+    ),
     debounce (func, wait) {
       const that = this
       if (this.timer) {
@@ -171,8 +207,8 @@ export default {
       }, wait)
     },
     /**
-      * @desc 右边栏三条杠动画事件
-    */
+     * @desc 右边栏三条杠动画事件
+     */
     changeNav () {
       // 动画class绑定
       this.navshow = !this.navshow
@@ -193,15 +229,15 @@ export default {
       this.imghomeflag = !this.imghomeflag
       const me = this
       setTimeout(function () {
-        me.routerList.forEach(item => {
+        me.routerList.forEach((item) => {
           me.$refs[item.ref][0].style.display = status
           if (item.childrenList.length) {
-            item.childrenList.forEach(val => {
+            item.childrenList.forEach((val) => {
               me.$refs[val.ref][0].style.display = status
             })
           }
         })
-        me.arrowData.forEach(item => {
+        me.arrowData.forEach((item) => {
           me.$refs[item][0].style.display = status
         })
       }, times)
@@ -292,7 +328,10 @@ export default {
     getAdminType () {
       const constrolPermission = this.permissionName
       for (let i = 0; i < this.routerList.length; i++) {
-        if (constrolPermission.includes(this.routerList[i].permissionName) && this.routerList[i].type === 'router') this.routerList[i].showtab = true
+        if (
+          constrolPermission.includes(this.routerList[i].permissionName) &&
+          this.routerList[i].type === 'router'
+        ) { this.routerList[i].showtab = true }
         if (this.routerList[i].type === 'tips') {
           this.routerList[i].childrenList.forEach((item) => {
             if (constrolPermission.includes(item.permissionName)) {
@@ -302,7 +341,7 @@ export default {
           })
         }
       }
-      this.routerList.forEach(item => {
+      this.routerList.forEach((item) => {
         if (item.type === 'tips' && item.showtab) {
           this.arrowData.push(item.arrowRef)
         }
@@ -345,13 +384,21 @@ export default {
       if (val.index === 31 || val.index === 32) {
         window.sessionStorage.setItem('currentRouter', 'approval')
       }
-      if ((val.index === 21 && this.checkIndex === 31) || (val.index === 31 && this.checkIndex === 21) || (val.index === 22 && this.checkIndex === 32) || (val.index === 32 && this.checkIndex === 22)) {
+      if (
+        (val.index === 21 && this.checkIndex === 31) ||
+        (val.index === 31 && this.checkIndex === 21) ||
+        (val.index === 22 && this.checkIndex === 32) ||
+        (val.index === 32 && this.checkIndex === 22)
+      ) {
         this.$router.push({
           query: merge(this.$route.query, { routerIndex: val.index })
         })
         this.$refs.viewBox.getCurrentType()
       } else {
-        this.$router.push({ path: val.path, query: { routerIndex: val.index } })// 页面跳转
+        this.$router.push({
+          path: val.path,
+          query: { routerIndex: val.index }
+        }) // 页面跳转
       }
     }
   },
@@ -371,10 +418,11 @@ export default {
   display: flex;
   flex-direction: row;
   //background: radial-gradient(220% 105% at top center, rgb(82, 81, 81) 10%, #000035 40%, #0b2570 65%, #0070aa);
-  background: linear-gradient(to top left,
-    rgb(242,246,253),
+  background: linear-gradient(
+    to top left,
+    rgb(242, 246, 253),
     rgb(209, 223, 245),
-    rgb(242,246,253),
+    rgb(242, 246, 253),
     rgb(199, 206, 218)
   );
 }
@@ -414,13 +462,13 @@ export default {
   }
 }
 .leftNavigation {
-    a {
-      text-decoration: none;
-    }
+  a {
+    text-decoration: none;
+  }
 }
 
 .navhome {
-  position:relative;
+  position: relative;
   display: flex;
   flex-direction: row;
   /*水平排布*/
@@ -454,16 +502,24 @@ export default {
   transition: all 0.5s;
   transform: rotate(90deg);
 }
-.navhom-enter-active, .navhomshort-enter-active, .navhommin-enter-active {
+.navhom-enter-active,
+.navhomshort-enter-active,
+.navhommin-enter-active {
   transition: all 0.5s;
 }
-.navhom-leave-active, .navhomshort-leave-active, .navhommin-leave-active{
+.navhom-leave-active,
+.navhomshort-leave-active,
+.navhommin-leave-active {
   transition: all 0.5s;
 }
-.navhom-enter, .navhomshort-enter,.navhommin-enter {
+.navhom-enter,
+.navhomshort-enter,
+.navhommin-enter {
   height: 0;
 }
-.navhom-leave-to, .navhomshort-leave-to,.navhommin-leave-to {
+.navhom-leave-to,
+.navhomshort-leave-to,
+.navhommin-leave-to {
   height: 0;
 }
 .navhom-enter-to {
@@ -510,7 +566,7 @@ export default {
     background-color: #001121;
   }
 }
-.disabledClick{
+.disabledClick {
   display: flex;
   flex-direction: row;
   /*水平排布*/
@@ -518,8 +574,8 @@ export default {
   width: 100%;
   height: 53px;
   background-color: rgb(88, 88, 88);
-  cursor:no-drop;
-  span{
+  cursor: no-drop;
+  span {
     color: rgb(49, 48, 48);
   }
   img {
@@ -531,18 +587,18 @@ export default {
   margin-left: 25%;
   color: #409eff;
 }
-.lineTips{
+.lineTips {
   height: 2px;
   background-color: rgb(35, 101, 201);
 }
 .checkBox {
-  color:rgb(72, 117, 216) !important;
+  color: rgb(72, 117, 216) !important;
 }
 .checkLineDiv {
-  position:absolute;
+  position: absolute;
   height: 30px;
   width: 4px;
-  left:0;
+  left: 0;
   background-color: rgb(30, 149, 212);
 }
 .rightNavigation {
@@ -554,15 +610,15 @@ export default {
   /* margin-left: 180px; */
   animation: rightNavlong 0.7s;
 }
- .rightNavigations {
+.rightNavigations {
   display: inline-block;
   width: 97.2%;
   height: 100vh; // 占满一个屏幕的高度
   box-sizing: border-box;
   // margin-left: 50px;
   animation: rightNavshort 0.7s;
- }
- @keyframes rightNavlong {
+}
+@keyframes rightNavlong {
   0% {
     width: 97.2%;
   }
@@ -571,7 +627,7 @@ export default {
   }
 }
 @keyframes rightNavshort {
-   0% {
+  0% {
     width: 90%;
   }
   100% {
@@ -584,10 +640,11 @@ export default {
   display: flex;
   flex-direction: row;
   // background-color: #fff;
-  background: linear-gradient(to  right,
-    rgb(242,246,253),
+  background: linear-gradient(
+    to right,
+    rgb(242, 246, 253),
     rgb(235, 240, 248),
-    rgb(242,246,253),
+    rgb(242, 246, 253)
   );
   border-bottom: 1px solid #dadce0;
   border-top: 1px solid #dadce0;
@@ -650,5 +707,4 @@ export default {
   height: calc(100% - 50px);
   width: 100%;
 }
-
 </style>

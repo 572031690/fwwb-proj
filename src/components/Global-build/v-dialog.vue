@@ -2,7 +2,13 @@
   <div>
     <!-- 添加模板 -->
     <el-dialog
-      :title="openType==='add'?'添加数据':openType==='edit'?'修改数据':'提交送审'"
+      :title="
+        openType === 'add'
+          ? '添加数据'
+          : openType === 'edit'
+          ? '修改数据'
+          : '提交送审'
+      "
       :visible.sync="dialogFormShow"
       :modal-append-to-body="false"
       :close-on-click-modal="false"
@@ -24,11 +30,11 @@
           :key="index"
           :label="item.label"
           :prop="item.dataName"
-          v-show="item.putType === 'disput'? false: true"
+          v-show="item.putType === 'disput' ? false : true"
         >
           <el-input
             v-model="dialogData.formList[item.dataName]"
-            style="width:400px"
+            style="width: 400px"
             v-if="item.putType === 'input'"
             :placeholder="item.placeholder"
             clearable
@@ -37,56 +43,57 @@
           <el-date-picker
             v-model="dialogData.formList[item.dataName]"
             type="date"
-            style="width: 150px;"
+            style="width: 150px"
             v-if="item.putType === 'date'"
-            placeholder="选择日期">
+            placeholder="选择日期"
+          >
           </el-date-picker>
 
+          <el-select
+            v-model="dialogData.formList[item.dataName]"
+            placeholder="请选择类型"
+            v-if="item.putType === 'select'"
+          >
+            <el-option
+              :label="dat.label"
+              :value="dat.value"
+              v-for="(dat, key) in item.selectData"
+              :key="key"
+            ></el-option>
+          </el-select>
+
+          <div v-if="item.putType === 'selectUrl'">
             <el-select
               v-model="dialogData.formList[item.dataName]"
-              placeholder="请选择类型"
-              v-if="item.putType === 'select'"
+              placeholder="请选择"
+              @change="getChangeUrl"
+              @visible-change="getSelectUrlList(item, index)"
             >
               <el-option
-                :label="dat.label"
-                :value="dat.value"
+                :label="dat.itemtype"
+                :value="dat.itemtype"
                 v-for="(dat, key) in item.selectData"
                 :key="key"
               ></el-option>
             </el-select>
+          </div>
 
-            <div v-if="item.putType === 'selectUrl' ">
-              <el-select
-                v-model="dialogData.formList[item.dataName]"
-                placeholder="请选择"
-                @change="getChangeUrl"
-                @visible-change="getSelectUrlList(item,index)"
-              >
-                <el-option
-                  :label="dat.itemtype"
-                  :value="dat.itemtype"
-                  v-for="(dat, key) in item.selectData"
-                  :key="key"
-                ></el-option>
-              </el-select>
-            </div>
-
-            <div v-if="item.putType === 'selectItem'">
-              <el-select
-                v-model.number="dialogData.formList[item.dataName]"
-                placeholder="请选择材料"
-                @change="getUnit"
-                @visible-change="getItemList"
-              >
-                <el-option
-                  :label="dat.itemtype"
-                  :value="dat.itemtype"
-                  v-for="(dat, key) in itemList"
-                  :key="key"
-                ></el-option>
-              </el-select>
-               单位：{{dialogData.formList.unit}}
-            </div>
+          <div v-if="item.putType === 'selectItem'">
+            <el-select
+              v-model.number="dialogData.formList[item.dataName]"
+              placeholder="请选择材料"
+              @change="getUnit"
+              @visible-change="getItemList"
+            >
+              <el-option
+                :label="dat.itemtype"
+                :value="dat.itemtype"
+                v-for="(dat, key) in itemList"
+                :key="key"
+              ></el-option>
+            </el-select>
+            单位：{{ dialogData.formList.unit }}
+          </div>
           <el-input-number
             v-model="dialogData.formList[item.dataName]"
             :step="50"
@@ -99,7 +106,7 @@
           <el-input
             type="age"
             v-model.number="dialogData.formList[item.dataName]"
-            style="width:400px"
+            style="width: 400px"
             v-if="item.putType === 'numput'"
             :placeholder="item.placeholder"
             clearable
@@ -108,7 +115,7 @@
           <el-input
             type="age"
             auto-complete="off"
-            style="width:400px"
+            style="width: 400px"
             v-model.number="dialogData.formList[item.dataName]"
             disabled
             v-if="item.putType === 'disput'"
@@ -126,7 +133,13 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">{{openType==='add'?'添 加':openType==='edit'?'修 改':'提交送审'}}</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{
+          openType === "add"
+            ? "添 加"
+            : openType === "edit"
+            ? "修 改"
+            : "提交送审"
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -233,7 +246,9 @@ export default {
       }
     }
     return {
-      totalstock: [{ required: true, validator: validatePass2, trigger: 'blur' }],
+      totalstock: [
+        { required: true, validator: validatePass2, trigger: 'blur' }
+      ],
       rulesData, // 表单rules数据
       addEditList, // 静态表单inpput类型和表单字段名称以及url地址
       dialogData: {
@@ -278,17 +293,24 @@ export default {
      */
     add () {
       if (this.editDisabled.length) {
-        this.dialogData.dataTableList.forEach(item => {
-          if (this.editDisabled.includes(item.dataName)) { item.putType = 'input' }
+        this.dialogData.dataTableList.forEach((item) => {
+          if (this.editDisabled.includes(item.dataName)) {
+            item.putType = 'input'
+          }
         })
       }
-      if (this.dialogData.dataTableList[0].dataName === this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 1)
+      if (
+        this.dialogData.dataTableList[0].dataName === this.topChange &&
+        this.topChange
+      ) { this.dialogData.dataTableList.splice(0, 1) }
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
-      this.dialogData.dataTableList.forEach(item => {
+      this.dialogData.dataTableList.forEach((item) => {
         if (item.putType === 'disput') {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
+          this.dialogData.formList[item.dataName] = parseInt(
+            window.sessionStorage.getItem('userid')
+          )
         }
       })
       if (JSON.stringify(this.staticData) !== '{}') {
@@ -302,21 +324,35 @@ export default {
      */
     edit () {
       if (this.editDisabled.length) {
-        this.dialogData.dataTableList.forEach(item => {
-          if (this.editDisabled.includes(item.dataName)) { item.putType = 'disput' }
+        this.dialogData.dataTableList.forEach((item) => {
+          if (this.editDisabled.includes(item.dataName)) {
+            item.putType = 'disput'
+          }
         })
       }
-      if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
+      if (
+        this.dialogData.dataTableList[0].dataName !== this.topChange &&
+        this.topChange
+      ) { this.dialogData.dataTableList.splice(0, 0, this.topData) }
       for (const i in this.dialogData.formList) {
         if (this.IntList.includes(i)) {
-          this.dialogData.formList[i] = this.currentList[i] ? parseInt(this.currentList[i]) : ''
+          this.dialogData.formList[i] = this.currentList[i]
+            ? parseInt(this.currentList[i])
+            : ''
         } else {
-          this.dialogData.formList[i] = this.currentList[i] ? this.currentList[i].toString() : ''
+          this.dialogData.formList[i] = this.currentList[i]
+            ? this.currentList[i].toString()
+            : ''
         }
       }
-      this.dialogData.dataTableList.forEach(item => {
-        if (item.putType === 'disput' && (item.dataName === 'buyerid' || item.dataName === 'neederid')) {
-          this.dialogData.formList[item.dataName] = parseInt(window.sessionStorage.getItem('userid'))
+      this.dialogData.dataTableList.forEach((item) => {
+        if (
+          item.putType === 'disput' &&
+          (item.dataName === 'buyerid' || item.dataName === 'neederid')
+        ) {
+          this.dialogData.formList[item.dataName] = parseInt(
+            window.sessionStorage.getItem('userid')
+          )
         }
       })
       if (JSON.stringify(this.staticData) !== '{}') {
@@ -328,29 +364,39 @@ export default {
      */
     approval () {
       if (this.editDisabled) {
-        this.dialogData.dataTableList.forEach(item => {
-          if (item.dataName === this.editDisabled) { item.putType = 'input' }
+        this.dialogData.dataTableList.forEach((item) => {
+          if (item.dataName === this.editDisabled) {
+            item.putType = 'input'
+          }
         })
       }
-      if (this.dialogData.dataTableList[0].dataName !== this.topChange && this.topChange) this.dialogData.dataTableList.splice(0, 0, this.topData)
+      if (
+        this.dialogData.dataTableList[0].dataName !== this.topChange &&
+        this.topChange
+      ) { this.dialogData.dataTableList.splice(0, 0, this.topData) }
       for (const i in this.dialogData.formList) {
-        if (this.IntList.includes(i)) this.dialogData.formList[i] = parseInt(this.currentList[i])
-        else this.dialogData.formList[i] = this.currentList[i]
+        if (this.IntList.includes(i)) { this.dialogData.formList[i] = parseInt(this.currentList[i]) } else this.dialogData.formList[i] = this.currentList[i]
       }
     },
     /**
      * @desc 点击提交添加编辑验证
      */
     submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm(this.openType === 'add' ? '是否确定保存并添加此条数据?'
-            : this.openType === 'edit' ? '是否确定保存并修改此条数据'
-              : '是否确定保存并提交此条数据', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
+          this.$confirm(
+            this.openType === 'add'
+              ? '是否确定保存并添加此条数据?'
+              : this.openType === 'edit'
+                ? '是否确定保存并修改此条数据'
+                : '是否确定保存并提交此条数据',
+            '提示',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }
+          ).then(() => {
             this.submitData()
           })
         } else {
@@ -368,24 +414,36 @@ export default {
         data[i] = this.dialogData.formList[i]
       }
       const url = this.dialogData.url[this.openType]
-      await this.$api(url, data).then(res => {
-        const { code } = res
-        if (parseInt(code) === 101) {
-          if (this.openType === 'approval') {
-            this.startApproval()
+      await this.$api(url, data)
+        .then((res) => {
+          const { code } = res
+          if (parseInt(code) === 101) {
+            if (this.openType === 'approval') {
+              this.startApproval()
+            } else {
+              this.$message({
+                type: 'success',
+                message:
+                  this.openType === 'add'
+                    ? '添加成功!'
+                    : this.openType === 'edit'
+                      ? '修改成功'
+                      : '送审成功'
+              })
+              this.$emit('updata')
+              this.close()
+            }
           } else {
-            this.$message({
-              type: 'success',
-              message: this.openType === 'add' ? '添加成功!' : this.openType === 'edit' ? '修改成功' : '送审成功'
-            })
-            this.$emit('updata')
-            this.close()
+            this.$message.error(
+              this.openType === 'add'
+                ? '错了哦，添加失败'
+                : this.openType === 'edit'
+                  ? '错了哦，修改失败'
+                  : '错了哦，送审失败'
+            )
           }
-        } else {
-          this.$message.error(this.openType === 'add' ? '错了哦，添加失败' : this.openType === 'edit' ? '错了哦，修改失败' : '错了哦，送审失败')
-        }
-      }).catch(() => {
-      })
+        })
+        .catch(() => {})
     },
     /**
      * @desc 关闭窗口方法
@@ -407,11 +465,13 @@ export default {
         searchName: '', // 传递搜索参数
         selectName: '' // 筛选参数
       }
-      this.$api('home/item/getItem', { params }).then(res => {
-        this.itemList = res.list
-      }).catch(err => {
-        console.log(err)
-      })
+      this.$api('home/item/getItem', { params })
+        .then((res) => {
+          this.itemList = res.list
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     /**
      * @desc 启动审批请求
@@ -422,7 +482,7 @@ export default {
         needid: this.dialogData.formList.needid,
         buyid: this.dialogData.formList.buyid
       }
-      await this.$api(url, { params }).then(res => {
+      await this.$api(url, { params }).then((res) => {
         this.upApproval(res.list[0].taskId)
       })
     },
@@ -434,7 +494,7 @@ export default {
       const params = {
         taskId: taskId
       }
-      await this.$api(url, { params }).then(res => {
+      await this.$api(url, { params }).then((res) => {
         this.$message({
           type: 'success',
           message: '送审成功'
@@ -443,17 +503,17 @@ export default {
         this.close()
       })
     },
-    getChangeUrl (data) {
-    },
+    getChangeUrl (data) {},
     getSelectUrlList (item, index) {
       if (this.dialogData.dataTableList[index].selectData.length) return
-      this.$api(item.url, { params: { ...item.queryParams } }).then(res => {
-        this.dialogData.dataTableList[index].selectData = res.list
-      }).catch(err => {
-        console.log(err)
-      })
+      this.$api(item.url, { params: { ...item.queryParams } })
+        .then((res) => {
+          this.dialogData.dataTableList[index].selectData = res.list
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
-
   }
 }
 </script>

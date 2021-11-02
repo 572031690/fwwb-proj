@@ -1,8 +1,7 @@
 <template>
   <div class="right-body" id="body">
     <div class="overbox">
-
-    <div class="bodyheart">
+      <div class="bodyheart">
         <div class="body-top">
           <div class="bodytop-heart">
             <el-row>
@@ -41,21 +40,43 @@
                       <button type="button"></button>
                     </form>
                   </div> -->
-                  <div style="opacity: 0;">.</div>
+                  <div style="opacity: 0">.</div>
                 </div>
               </el-col>
               <el-col :span="8" class="topRightBox">
                 <div class="approvalBtn" v-if="!showAdd">
-                  <div :class="{'currentBtn' : currentApprovalType}" @click="getApprovalType(true)">个人待办</div>
-                  <div :class="{'currentBtn' : !currentApprovalType}" @click="getApprovalType(false)">历史待办</div>
+                  <div
+                    :class="{ currentBtn: currentApprovalType }"
+                    @click="getApprovalType(true)"
+                  >
+                    个人待办
+                  </div>
+                  <div
+                    :class="{ currentBtn: !currentApprovalType }"
+                    @click="getApprovalType(false)"
+                  >
+                    历史待办
+                  </div>
                 </div>
                 <div class="approvalBtn" v-if="showAdd">
                   <!-- <button class="bodyadd" v-if="showAdd">
                     打印
                   </button> -->
-                   <!-- v-print="'#printTest'"  -->
-                   <el-button class="systemBtn" type="primary" plain  @click="getPrint()">打 印</el-button>
-                   <el-button class="systemBtn" type="primary" plain  @click="outData()">导 出</el-button>
+                  <!-- v-print="'#printTest'"  -->
+                  <el-button
+                    class="systemBtn"
+                    type="primary"
+                    plain
+                    @click="getPrint()"
+                    >打 印</el-button
+                  >
+                  <el-button
+                    class="systemBtn"
+                    type="primary"
+                    plain
+                    @click="outData()"
+                    >导 出</el-button
+                  >
                 </div>
                 <button class="bodyadd" @click="gethomeAdd()" v-if="showAdd">
                   <i class="el-icon-plus"></i>添加
@@ -64,100 +85,175 @@
             </el-row>
           </div>
         </div>
-        <buySearch  @getSearchForm="getSearchForm" />
+        <buySearch @getSearchForm="getSearchForm" />
         <div
           class="tablebody"
           v-loading="loading2"
           element-loading-text="拼命加载中"
           id="printTest"
         >
-        <div class="mytable">
-          <div class="table-top">
-            <div v-for="(item, index) in tableText.tableTitle"
-            :key="index"
-            colspan="1"
-            rowspan="1"
-            :class="
-            item === '订单标题'?'htop-th2'
-            :item==='操作'?'htop-ope1'
-            :'htop-th1'">
-              <div  class="cell"
-              v-show="item !== '重要程度'
-              && item !== '到货日期'
-              && item !== '需求日期'
-              && item !== '编号'">
-                {{item}}
-              </div>
-              <div class="cellSort"
-               @click="checkTriangle(sortList[item])"
-                v-show="item === '重要程度'
-                || item === '到货日期'
-                || item === '需求日期'
-                || item === '编号'">
-                <div class="cellSortBox" >
-                  <div :style="{ 'border-bottom-color'
-                  : params.sortType === sortList[item]?'rgb(77, 90, 204)'
-                  : 'rgb(189, 207, 228)' }"
-                  class="triangleTop"
-                 ></div>
-                  <!-- <div class="triangleBottom"> </div> -->
+          <div class="mytable">
+            <div class="table-top">
+              <div
+                v-for="(item, index) in tableText.tableTitle"
+                :key="index"
+                colspan="1"
+                rowspan="1"
+                :class="
+                  item === '订单标题'
+                    ? 'htop-th2'
+                    : item === '操作'
+                    ? 'htop-ope1'
+                    : 'htop-th1'
+                "
+              >
+                <div
+                  class="cell"
+                  v-show="
+                    item !== '重要程度' &&
+                    item !== '到货日期' &&
+                    item !== '需求日期' &&
+                    item !== '编号'
+                  "
+                >
+                  {{ item }}
                 </div>
-                <div class="cell"> {{item}}</div>
+                <div
+                  class="cellSort"
+                  @click="checkTriangle(sortList[item])"
+                  v-show="
+                    item === '重要程度' ||
+                    item === '到货日期' ||
+                    item === '需求日期' ||
+                    item === '编号'
+                  "
+                >
+                  <div class="cellSortBox">
+                    <div
+                      :style="{
+                        'border-bottom-color':
+                          params.sortType === sortList[item]
+                            ? 'rgb(77, 90, 204)'
+                            : 'rgb(189, 207, 228)',
+                      }"
+                      class="triangleTop"
+                    ></div>
+                    <!-- <div class="triangleBottom"> </div> -->
+                  </div>
+                  <div class="cell">{{ item }}</div>
+                </div>
+              </div>
+            </div>
+            <vNone v-if="!list.length" />
+            <!-- 数据列表 -->
+            <div class="tbody">
+              <div class="bodyLine" v-for="(item, key) in list" :key="key">
+                <div
+                  v-for="(data, index) in tableText.tableBody"
+                  :key="index"
+                  :class="
+                    data === 'buytitle'
+                      ? 'body-td2'
+                      : data === 'opetation1'
+                      ? 'body-ope1'
+                      : 'body-td1'
+                  "
+                >
+                  <div
+                    class="cell"
+                    v-if="
+                      data !== 'opetation1' &&
+                      data !== 'opetation2' &&
+                      data !== 'importance'
+                    "
+                  >
+                    {{
+                      data === "neednum"
+                        ? item[data] + (item.unit || "")
+                        : item[data]
+                    }}
+                  </div>
+                  <div class="bodyButton" v-if="data === 'opetation1'">
+                    <div class="cell" v-if="currentRouter === 'see'">
+                      <button
+                        class="modify"
+                        @click="seeData(item)"
+                        v-if="item.uptype == 0 || item.uptype == 4"
+                      >
+                        编辑
+                      </button>
+                      <button
+                        class="delete"
+                        @click="
+                          deletedata(
+                            { buyid: item.buyid },
+                            'home/buy/deleteBuy'
+                          )
+                        "
+                        v-if="item.uptype == 0 || item.uptype == 4"
+                      >
+                        删除
+                      </button>
+                      <button
+                        class="modify"
+                        v-if="!item.uptype"
+                        @click="upData(item)"
+                      >
+                        提交
+                      </button>
+                      <button
+                        class="approval"
+                        @click="seeApproval(key)"
+                        v-if="
+                          item.uptype == 1 ||
+                          item.uptype == 2 ||
+                          item.uptype == 3
+                        "
+                      >
+                        查看审批
+                      </button>
+                      <button
+                        class="approval"
+                        @click="seeApproval(key)"
+                        v-if="item.uptype == 4"
+                      >
+                        驳回结果
+                      </button>
+                    </div>
+                    <div class="cell" v-if="currentRouter === 'approval'">
+                      <button class="writeApproval" @click="writeApproval(key)">
+                        审批
+                      </button>
+                    </div>
+                  </div>
+                  <div class="cell" v-if="data === 'importance' && item[data]">
+                    <span class="importantSpan">{{
+                      importanceList[item[data] - 1].text
+                    }}</span>
+                  </div>
+                  <div class="bodyButton" v-if="data === 'opetation2'">
+                    <div class="cell" style="backgournd-color: red">
+                      <span
+                        class="tipsspan"
+                        :style="{
+                          'background-color': select[item.uptype].color,
+                          color: item.uptype == 0 ? 'black' : 'white',
+                        }"
+                      >
+                        {{
+                          showStatus(
+                            item.uptype,
+                            item.planName,
+                            item.approvaltype
+                          )
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <vNone v-if="!list.length" />
-          <!-- 数据列表 -->
-          <div class="tbody">
-            <div class="bodyLine" v-for="(item, key) in list" :key="key">
-              <div v-for="(data,index) in tableText.tableBody"
-              :key="index"
-              :class="data==='buytitle'? 'body-td2'
-              :data==='opetation1'?'body-ope1'
-              :'body-td1'" >
-                <div class="cell" v-if="data!=='opetation1' && data!=='opetation2' && data !== 'importance'">
-                  {{ data==='neednum'? item[data] + (item.unit  || '') :item[data]}}
-                </div>
-                <div class="bodyButton" v-if="data==='opetation1'">
-                  <div class="cell" v-if="currentRouter==='see' ">
-                    <button class="modify" @click="seeData(item)"  v-if="item.uptype == 0 || item.uptype == 4">
-                      编辑
-                    </button>
-                    <button class="delete" @click="deletedata({buyid: item.buyid},'home/buy/deleteBuy')"  v-if="item.uptype == 0 || item.uptype == 4">
-                      删除
-                    </button>
-                    <button class="modify" v-if="!item.uptype" @click="upData(item)">提交</button>
-                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 1 || item.uptype == 2 || item.uptype == 3">
-                      查看审批
-                    </button>
-                    <button class="approval" @click="seeApproval(key)" v-if="item.uptype == 4">
-                      驳回结果
-                    </button>
-                  </div>
-                  <div class="cell"  v-if="currentRouter==='approval'">
-                    <button class="writeApproval" @click="writeApproval(key)">
-                      审批
-                    </button>
-                  </div>
-                </div>
-                <div class="cell" v-if="data==='importance' && item[data]">
-                    <span class="importantSpan">{{importanceList[item[data]-1].text}}</span>
-                  </div>
-                <div class="bodyButton" v-if="data==='opetation2'">
-                  <div class="cell"  style="backgournd-color:red;">
-                    <span class="tipsspan" :style="{
-                      'background-color': select[item.uptype].color,
-                      'color': item.uptype == 0?'black':'white'
-                      }">
-                      {{showStatus(item.uptype,item.planName,item.approvaltype)}}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div >
-        </div>
-
         </div>
       </div>
       <div class="table-bottom">
@@ -173,7 +269,8 @@
         >
         </el-pagination>
       </div>
-      <vDialog ref="addDialog"
+      <vDialog
+        ref="addDialog"
         :dialogFormShow="dialogFormShow"
         @updata="search"
         @closeaddDialog="closeaddDialog"
@@ -216,7 +313,14 @@ export default {
   },
   data () {
     return {
-      statusColorList: ['#eee', 'rgb(92, 92, 143)', 'rgb(92, 92, 143)', 'rgb(23, 165, 23)', 'rgb(226, 63, 63)', 'rgb(98, 98, 207)'],
+      statusColorList: [
+        '#eee',
+        'rgb(92, 92, 143)',
+        'rgb(92, 92, 143)',
+        'rgb(23, 165, 23)',
+        'rgb(226, 63, 63)',
+        'rgb(98, 98, 207)'
+      ],
       tableText: this.$tables.buyList,
       dialogFormShow: false,
       drawerUrlList: {
@@ -272,7 +376,8 @@ export default {
         到货日期: 2,
         需求日期: 3
       },
-      select: [ // 搜索框筛选数据
+      select: [
+        // 搜索框筛选数据
         {
           value: 0,
           label: '未送审',
@@ -335,7 +440,8 @@ export default {
      * @desc 导出请求
      */
     outData () {
-      window.location.href = 'http://localhost:8081/controller_war/webbuy/buyResult'
+      window.location.href =
+        'http://localhost:8081/controller_war/webbuy/buyResult'
     },
     /**
      * @desc 打印调取数据库全部数据
@@ -347,31 +453,47 @@ export default {
         searchName: '', // 查询数据
         selectName: '' // 查询状态
       }
-      await this.$api(this.searchUrl, data).then((res) => {
-        const currentPrint = []
-        for (let i = 0; i < this.list.length; i++) {
-          currentPrint.push({
-            buyid: res.list[i].buyid,
-            buytitle: res.list[i].buytitle,
-            btime: res.list[i].btime,
-            arrivaltime: res.list[i].arrivaltime,
-            itemtype: res.list[i].itemtype,
-            itemid: res.list[i].itemid,
-            num: res.list[i].num,
-            importance: this.importanceList[res.list[i].importance - 1].text,
-            uptype: this.showStatus(res.list[i].uptype, res.list[i].planName, res.list[i].approvaltype)
-          })
-        }
-        this.setPrintJS(currentPrint)
-      }).catch(() => {
-        this.loading2 = false
-      })
+      await this.$api(this.searchUrl, data)
+        .then((res) => {
+          const currentPrint = []
+          for (let i = 0; i < this.list.length; i++) {
+            currentPrint.push({
+              buyid: res.list[i].buyid,
+              buytitle: res.list[i].buytitle,
+              btime: res.list[i].btime,
+              arrivaltime: res.list[i].arrivaltime,
+              itemtype: res.list[i].itemtype,
+              itemid: res.list[i].itemid,
+              num: res.list[i].num,
+              importance: this.importanceList[res.list[i].importance - 1].text,
+              uptype: this.showStatus(
+                res.list[i].uptype,
+                res.list[i].planName,
+                res.list[i].approvaltype
+              )
+            })
+          }
+          this.setPrintJS(currentPrint)
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 打印方法
      */
     setPrintJS (currentPrint) {
-      const titleList = ['编号', '采购标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '重要程度', '审批状态']
+      const titleList = [
+        '编号',
+        '采购标题',
+        '需求日期',
+        '到货日期',
+        '物料名称',
+        '物料编号',
+        '数量',
+        '重要程度',
+        '审批状态'
+      ]
       let keys = 0
       const propertiesList = []
       for (const i in currentPrint[0]) {
@@ -390,7 +512,8 @@ export default {
         // 样式设置
         scanStyles: false,
         gridStyle: 'border: 2px solid #3c3d3d; padding: 3px 1px;',
-        gridHeaderStyle: 'color: black; padding: 3px 5px; border: 2px solid #3c3d3d;'
+        gridHeaderStyle:
+          'color: black; padding: 3px 5px; border: 2px solid #3c3d3d;'
       })
     },
     /**
@@ -398,15 +521,17 @@ export default {
      */
     async search () {
       const data = { ...this.params }
-      await this.$api(this.searchUrl, data).then((res) => {
-        this.list = res.list || [] // 获取里面的data数据
-        this.params.total = res.count // 获取后台传过来的总数据条数
-        // this.params.page = res.page // 将后端的当前页反传回来
-        this.loading2 = false
-        // this.getApprovalCurrentData()
-      }).catch(() => {
-        this.loading2 = false
-      })
+      await this.$api(this.searchUrl, data)
+        .then((res) => {
+          this.list = res.list || [] // 获取里面的data数据
+          this.params.total = res.count // 获取后台传过来的总数据条数
+          // this.params.page = res.page // 将后端的当前页反传回来
+          this.loading2 = false
+          // this.getApprovalCurrentData()
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 顶部搜索调用更新表格
@@ -445,7 +570,9 @@ export default {
      */
     getApprovalType (type) {
       this.currentApprovalType = type
-      this.searchUrl = type ? 'home/buy/queryBuyActTask' : 'home/buy/findFinishedBuy'
+      this.searchUrl = type
+        ? 'home/buy/queryBuyActTask'
+        : 'home/buy/findFinishedBuy'
       this.tableText = type ? this.$tables.buyList : this.$tables.buyListHistry
       this.search()
     },
@@ -473,12 +600,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  @import url("../../assets/less/right-table.less");
-  .approvalBtn {
-      /deep/ .el-button {
-        padding: 8px 20px !important;
-      }
+@import url("../../assets/less/right-table.less");
+.approvalBtn {
+  /deep/ .el-button {
+    padding: 8px 20px !important;
   }
+}
 .cellSort {
   display: flex;
   cursor: pointer;
@@ -498,16 +625,15 @@ export default {
       border-color: rgb(189, 207, 228) transparent transparent transparent;
       width: 0px;
       height: 0px;
-
     }
   }
 }
 .tipsspan {
-    display: block;
-    border-radius:3px;
-    width: 75px;
-    height: 27px;
-    line-height: 27px;
+  display: block;
+  border-radius: 3px;
+  width: 75px;
+  height: 27px;
+  line-height: 27px;
 }
 .selectAvro {
   div {

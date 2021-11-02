@@ -3,24 +3,23 @@
     <div class="bodyleft">
       <div class="tabbody">
         <rankchart class="piechart" :titleFontSize="titleFontSize"></rankchart>
-
         <div class="tabbodyafter"></div>
       </div>
       <div class="tabbody">
-        <piechart class="piechart" :titleFontSize="titleFontSize" :pieData="pieData"></piechart>
+        <piechart
+          class="piechart"
+          :titleFontSize="titleFontSize"
+          :pieData="pieData"
+        ></piechart>
         <div class="tabbodyafter"></div>
       </div>
     </div>
     <div class="tabmid">
       <div class="tabmidtop">
         <div class="tabmidtopTitle">2021年统计</div>
-        <div  class="tabmidtopBody" >
+        <div class="tabmidtopBody">
           <div class="tabmidtopBodyLeft">
-            <counTo
-              :startVal="0"
-              :endVal="totalCount"
-              :duration="3000"
-            />
+            <counTo :startVal="0" :endVal="totalCount" :duration="3000" />
             <span> 单</span>
           </div>
           <div class="tabmidtopBodyRight">
@@ -33,13 +32,9 @@
             <span> 万元</span>
           </div>
         </div>
-        <div  class="tabmidtopBottom" >
-          <div>
-            销售单量
-          </div>
-          <div>
-            销售额
-          </div>
+        <div class="tabmidtopBottom">
+          <div>销售单量</div>
+          <div>销售额</div>
         </div>
       </div>
       <mapChina @backMapData="backMapData"></mapChina>
@@ -89,7 +84,7 @@ export default {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     const _this = this
     const erd = elementResizeDetectorMaker()
-    erd.listenTo(document.getElementById('body'), element => {
+    erd.listenTo(document.getElementById('body'), (element) => {
       _this.$nextTick(() => {
         // 监听到事件后执行的业务逻辑
         this.screenAdapter()
@@ -108,7 +103,7 @@ export default {
      */
     backMapData (pieData, totalCount, totalValue) {
       this.totalCount = totalCount
-      this.totalValue = Math.round(totalValue / 10000 * 100) / 100
+      this.totalValue = Math.round((totalValue / 10000) * 100) / 100
       this.pieData = pieData
     }
   }
@@ -119,7 +114,13 @@ export default {
   height: 100%;
   width: 100%;
   // background: #0d3465;
-  background: radial-gradient(220% 105% at bottom center, #0b2570 10%, #04044b 40%, #0b2570 65%, #0070aa);
+  background: radial-gradient(
+    220% 105% at bottom center,
+    #0b2570 10%,
+    #04044b 40%,
+    #0b2570 65%,
+    #0070aa
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -210,9 +211,9 @@ export default {
   /* height: 20%; */
   height: 120px;
   width: 60%;
-  border: 2px solid rgba(13, 31, 107.0.6);
+  border: 2px solid rgba(13, 31, 107.6);
   left: 50%;
-  background-color: rgba(13, 31, 107,0.6);
+  background-color: rgba(13, 31, 107, 0.6);
   transform: translate(-50%, 0);
   /* 50%为自身尺寸的一半 */
 }
@@ -240,7 +241,7 @@ export default {
   text-align: center;
   font-size: 2vw;
   line-height: 50px;
-  font-family: 'electronicFont';
+  font-family: "electronicFont";
   span {
     &:nth-child(2) {
       font-size: 1vw;
@@ -274,7 +275,7 @@ export default {
   text-align: center;
   font-size: 2vw;
   line-height: 50px;
-  font-family: 'electronicFont';
+  font-family: "electronicFont";
   span {
     &:nth-child(2) {
       font-size: 1vw;

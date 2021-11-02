@@ -7,35 +7,50 @@
       :close-on-press-escape="false"
       :show-close="false"
       top="30px"
-      width="1000px">
+      width="1000px"
+    >
       <div class="topText">
         <slot></slot>
       </div>
-      <div class="tableRole" >
+      <div class="tableRole">
         <div class="tableRoleTopAdd">
           <div class="textRole">
-            <span  v-show="!showAdd" style="font-weight:700;">仓库操作列表</span>
-            <el-select style="width: 220px;" v-show="showAdd" v-model="addData.itemid" placeholder="请选择" >
+            <span v-show="!showAdd" style="font-weight: 700">仓库操作列表</span>
+            <el-select
+              style="width: 220px"
+              v-show="showAdd"
+              v-model="addData.itemid"
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in optionsId"
                 :key="item.itemid"
                 :label="item.itemtype"
-                :value="item.itemtype">
+                :value="item.itemtype"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="textRole">
-            <el-select style="width: 220px;" v-show="showAdd" v-model="addData.name" placeholder="请选择" >
+            <el-select
+              style="width: 220px"
+              v-show="showAdd"
+              v-model="addData.name"
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in optionsType"
                 :key="item.itemid"
                 :label="item.itemtype"
-                :value="item.itemtype">
+                :value="item.itemtype"
+              >
               </el-option>
             </el-select>
           </div>
           <div class="textRole">
-            <span v-show="showAdd">{{openType ? currentList.needid : currentList.buyid }}</span>
+            <span v-show="showAdd">{{
+              openType ? currentList.needid : currentList.buyid
+            }}</span>
           </div>
           <div class="textRole">
             <el-input-number
@@ -48,94 +63,125 @@
             ></el-input-number>
           </div>
           <div class="textRole">
-            <el-select style="width: 220px;" v-show="showAdd" v-model="addData.unit" placeholder="请选择" >
+            <el-select
+              style="width: 220px"
+              v-show="showAdd"
+              v-model="addData.unit"
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in optionsUnit"
                 :key="item.itemid"
                 :label="item.itemtype"
-                :value="item.itemtype">
+                :value="item.itemtype"
+              >
               </el-option>
             </el-select>
           </div>
 
-          <div class="textRole">
-
-          </div>
+          <div class="textRole"></div>
           <div class="textRole" v-if="!showAdd">
             <button class="bodyadd" @click="getAdd()">
               <i class="el-icon-plus"></i>添加
             </button>
           </div>
-          <div class="textRole"  v-if="showAdd">
-            <button class="modify" @click="saveAddData()"  >
-              保存
-            </button>
-            <button class="delete" @click="cancelAddData()">
-              取消
-            </button>
+          <div class="textRole" v-if="showAdd">
+            <button class="modify" @click="saveAddData()">保存</button>
+            <button class="delete" @click="cancelAddData()">取消</button>
           </div>
-
         </div>
         <div class="tableRoleTop">
-          <div  v-for="(item,key) in tableList.tableTitle" :key="key">
+          <div v-for="(item, key) in tableList.tableTitle" :key="key">
             <div class="textRole">
-              {{item}}
+              {{ item }}
             </div>
           </div>
         </div>
-        <div class="tableRoleBody" v-for="(data,index) in list" :key="index" >
-          <div v-for="(curr,ind) in tableList.tableBody" :key="ind" v-show="!data.editType">
-            <div class="textRole" v-if="curr !== 'opetation2' && curr !== 'opetation1'">
-              {{data[curr]}}
+        <div class="tableRoleBody" v-for="(data, index) in list" :key="index">
+          <div
+            v-for="(curr, ind) in tableList.tableBody"
+            :key="ind"
+            v-show="!data.editType"
+          >
+            <div
+              class="textRole"
+              v-if="curr !== 'opetation2' && curr !== 'opetation1'"
+            >
+              {{ data[curr] }}
             </div>
-            <div class="textRole" v-if="curr==='opetation1'">
-                <button class="roleBtn" @click="upStock(data)" v-if="!data.status">
-                  {{openType ? '出 库' : '入 库'}}
-                </button>
-                <span  v-if="data.status">
-                  {{openType ? '已出库' : '已入库'}}
-                </span>
+            <div class="textRole" v-if="curr === 'opetation1'">
+              <button
+                class="roleBtn"
+                @click="upStock(data)"
+                v-if="!data.status"
+              >
+                {{ openType ? "出 库" : "入 库" }}
+              </button>
+              <span v-if="data.status">
+                {{ openType ? "已出库" : "已入库" }}
+              </span>
             </div>
-            <div class="textRole" v-if="curr==='opetation2'">
-              <button class="modify" @click="editData(data,index)" v-if="!data.status">
+            <div class="textRole" v-if="curr === 'opetation2'">
+              <button
+                class="modify"
+                @click="editData(data, index)"
+                v-if="!data.status"
+              >
                 编辑
               </button>
-              <el-popover
-                placement="top"
-                width="160"
-                v-model="data.visible">
+              <el-popover placement="top" width="160" v-model="data.visible">
                 <p>这是一段内容确定删除吗？</p>
                 <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="data.visible = false">取消</el-button>
-                  <el-button type="primary" size="mini" @click="deletedata(data.id,index)">确定</el-button>
+                  <el-button
+                    size="mini"
+                    type="text"
+                    @click="data.visible = false"
+                    >取消</el-button
+                  >
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="deletedata(data.id, index)"
+                    >确定</el-button
+                  >
                 </div>
                 <button class="delete" slot="reference">删除</button>
               </el-popover>
             </div>
           </div>
           <div class="editBox" v-if="data.editType">
-            <div class="textRole" >
-              <el-select style="width: 220px;" v-model="editForm[index].itemid" placeholder="请选择" >
+            <div class="textRole">
+              <el-select
+                style="width: 220px"
+                v-model="editForm[index].itemid"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in optionsId"
                   :key="item.itemid"
                   :label="item.itemtype"
-                  :value="item.itemtype">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="textRole" >
-              <el-select style="width: 220px;" v-model="editForm[index].name" placeholder="请选择" >
-                <el-option
-                  v-for="item in optionsType"
-                  :key="item.itemid"
-                  :label="item.itemtype"
-                  :value="item.itemtype">
+                  :value="item.itemtype"
+                >
                 </el-option>
               </el-select>
             </div>
             <div class="textRole">
-               {{openType ? editForm[index].needid : editForm[index].buyid }}
+              <el-select
+                style="width: 220px"
+                v-model="editForm[index].name"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in optionsType"
+                  :key="item.itemid"
+                  :label="item.itemtype"
+                  :value="item.itemtype"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <div class="textRole">
+              {{ openType ? editForm[index].needid : editForm[index].buyid }}
             </div>
             <div class="textRole">
               <el-input-number
@@ -146,24 +192,29 @@
                 label="描述文字"
               ></el-input-number>
             </div>
-            <div class="textRole" >
-              <el-select style="width: 220px;" v-model="editForm[index].unit" placeholder="请选择" >
+            <div class="textRole">
+              <el-select
+                style="width: 220px"
+                v-model="editForm[index].unit"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in optionsUnit"
                   :key="item.itemid"
                   :label="item.itemtype"
-                  :value="item.itemtype">
+                  :value="item.itemtype"
+                >
                 </el-option>
               </el-select>
             </div>
-            <div class="textRole" >
-              {{editForm[index].time}}
+            <div class="textRole">
+              {{ editForm[index].time }}
             </div>
             <div class="textRole">
-              <button class="modify" @click="saveeditData(data,index)"  >
+              <button class="modify" @click="saveeditData(data, index)">
                 保存
               </button>
-              <button class="delete" @click="cancelEditData(index)"  >
+              <button class="delete" @click="cancelEditData(index)">
                 取消
               </button>
             </div>
@@ -171,18 +222,18 @@
         </div>
       </div>
       <div class="table-bottom">
-          <!-- 底部页码功能 -->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="params.page"
-            :page-sizes="[5, 10, 15]"
-            :page-size="params.limit"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="params.total"
-          >
-          </el-pagination>
-        </div>
+        <!-- 底部页码功能 -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="params.page"
+          :page-sizes="[5, 10, 15]"
+          :page-size="params.limit"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="params.total"
+        >
+        </el-pagination>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog()">关 闭</el-button>
         <!-- <el-button type="primary" @click="upCurrentPermissionList">确 定</el-button> -->
@@ -276,9 +327,7 @@ export default {
       optionsId: []
     }
   },
-  created () {
-
-  },
+  created () {},
   mounted () {
     this.getUnit()
     this.getType()
@@ -296,21 +345,27 @@ export default {
      * @desc 获取代办数据
      */
     async search () {
-      this.tableList = this.openType ? this.$tables.controlOutStockList : this.$tables.controlInStockList
+      this.tableList = this.openType
+        ? this.$tables.controlOutStockList
+        : this.$tables.controlInStockList
       const url = this.url.search
-      this.params.selectName = this.openType ? this.currentList.needid : this.currentList.buyid
+      this.params.selectName = this.openType
+        ? this.currentList.needid
+        : this.currentList.buyid
       const params = this.params
-      await this.$api(url, { params }).then((res) => {
-        res.list.forEach(item => {
-          item.editType = false
-          item.visible = false
+      await this.$api(url, { params })
+        .then((res) => {
+          res.list.forEach((item) => {
+            item.editType = false
+            item.visible = false
+          })
+          this.list = res.list || [] // 获取里面的data数据
+          this.params.total = res.count // 获取后台传过来的总数据条数
+          this.loading2 = false
         })
-        this.list = res.list || [] // 获取里面的data数据
-        this.params.total = res.count // 获取后台传过来的总数据条数
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
-      })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 编辑按钮点击事件
@@ -324,13 +379,15 @@ export default {
      */
     saveeditData (data, index) {
       const url = this.url.edit
-      this.$api(url, data).then(res => {
-        if (res.code === '101') {
-          this.$message.success('修改成功！')
-          this.cancelEditData(index)
-          this.search()
-        }
-      }).catch(() => {})
+      this.$api(url, data)
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message.success('修改成功！')
+            this.cancelEditData(index)
+            this.search()
+          }
+        })
+        .catch(() => {})
     },
     /**
      * @desc 取消编辑
@@ -344,14 +401,16 @@ export default {
     upStock (item) {
       const data = { ...item }
       const url = this.url.Repos
-      this.$api(url, data).then(res => {
-        if (res.code === '101') {
-          this.$message.success('仓库操作成功！')
-          this.search()
-        } else {
-          this.$message.error(res.error)
-        }
-      }).catch(() => {})
+      this.$api(url, data)
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message.success('仓库操作成功！')
+            this.search()
+          } else {
+            this.$message.error(res.error)
+          }
+        })
+        .catch(() => {})
     },
     /**
      * @desc 添加按钮事件
@@ -372,13 +431,15 @@ export default {
       }
       const data = { ...this.addData }
       const url = this.url.add
-      this.$api(url, data).then(res => {
-        if (res.code === '101') {
-          this.$message.success('添加成功！')
-          this.cancelAddData()
-          this.search()
-        }
-      }).catch(() => {})
+      this.$api(url, data)
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message.success('添加成功！')
+            this.cancelAddData()
+            this.search()
+          }
+        })
+        .catch(() => {})
     },
     /**
      * @desc 添加按钮验证
@@ -404,12 +465,14 @@ export default {
       this.list[index].visible = false
       const params = { id: id }
       const url = this.url.delete
-      this.$api(url, { params }).then(res => {
-        if (res.code === '101') {
-          this.$message.success('删除成功！')
-          this.search()
-        }
-      }).catch(() => {})
+      this.$api(url, { params })
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message.success('删除成功！')
+            this.search()
+          }
+        })
+        .catch(() => {})
     },
     /**
      * @desc 页码
@@ -426,46 +489,44 @@ export default {
      * @desc 获取单位筛选框数据
      */
     getUnit () {
-      this.$api('home/item/findItemName', { params: { itemid: 7 } }).then(res => {
-        this.optionsUnit = res.list
-      }).catch(() => {
-
-      })
+      this.$api('home/item/findItemName', { params: { itemid: 7 } })
+        .then((res) => {
+          this.optionsUnit = res.list
+        })
+        .catch(() => {})
     },
     /**
      * @desc 获取物料类别筛选框数据
      */
     getType () {
-      this.$api('home/item/findItemName', { params: { itemid: 1 } }).then(res => {
-        this.optionsType = res.list
-      }).catch(() => {
-
-      })
+      this.$api('home/item/findItemName', { params: { itemid: 1 } })
+        .then((res) => {
+          this.optionsType = res.list
+        })
+        .catch(() => {})
     },
     /**
      * @desc 获取编码筛选框数据
      */
     getId () {
-      this.$api('home/item/findItemName', { params: { itemid: 16 } }).then(res => {
-        this.optionsId = res.list
-      }).catch(() => {
-
-      })
+      this.$api('home/item/findItemName', { params: { itemid: 16 } })
+        .then((res) => {
+          this.optionsId = res.list
+        })
+        .catch(() => {})
     }
   }
-
 }
 </script>
 
 <style lang="less" scoped>
-
 .tableRole {
   max-height: 500px;
   min-height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 15px;
-  /deep/ .el-input__inner{
+  /deep/ .el-input__inner {
     border: none;
     padding: 0;
     text-align: center;
@@ -480,7 +541,7 @@ export default {
     display: flex;
     border-bottom: 1px solid rgb(235, 238, 245);
     &Add {
-       display: flex;
+      display: flex;
       border-top: 1px solid rgb(235, 238, 245);
     }
   }
@@ -513,25 +574,24 @@ export default {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 300px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .textRole {
-
     display: flex;
     justify-content: center;
     align-items: center;
     color: rgb(111, 115, 116);
     font-size: 15px;
     width: 120px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .btnRole {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 60px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .modify {
@@ -587,6 +647,5 @@ export default {
   .editBox {
     display: flex;
   }
-
 }
 </style>

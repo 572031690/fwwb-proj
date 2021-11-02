@@ -1,32 +1,33 @@
 <template>
   <div class="personal">
     <div class="personal-table">
-      <el-descriptions direction="horizontal" :column="1" border class="style" >
-        <el-descriptions-item label="登陆账户" >
-          {{userData.username}}
+      <el-descriptions direction="horizontal" :column="1" border class="style">
+        <el-descriptions-item label="登陆账户">
+          {{ userData.username }}
         </el-descriptions-item>
-        <el-descriptions-item label="姓名">{{ userData.realname }}</el-descriptions-item>
+        <el-descriptions-item label="姓名">{{
+          userData.realname
+        }}</el-descriptions-item>
         <!-- <el-descriptions-item label="所属部门">
           {{userData.department}}
         </el-descriptions-item> -->
         <el-descriptions-item label="工号">
-           {{userData.employeeid}}
+          {{ userData.employeeid }}
         </el-descriptions-item>
         <el-descriptions-item label="手机号码">
-          {{userData.telNum}}
-       </el-descriptions-item>
+          {{ userData.telNum }}
+        </el-descriptions-item>
         <el-descriptions-item label="用户角色">
           {{ userData.role }}
         </el-descriptions-item>
-         <el-descriptions-item label="账号状态">
-          {{userData.isDisabled ? '禁用' : '正常'}}
+        <el-descriptions-item label="账号状态">
+          {{ userData.isDisabled ? "禁用" : "正常" }}
         </el-descriptions-item>
         <el-descriptions-item label="密码">
           <el-button type="primary" size="small" @click="changepassword()"
             >修改密码</el-button
           >
         </el-descriptions-item>
-
       </el-descriptions>
     </div>
     <div id="register">
@@ -94,14 +95,13 @@
 import { desensitization } from '../../assets/utils/index'
 
 export default {
-
   computed: {
     showRoleData: function () {
       // val为传进来的值
       return function (val) {
         if (!val) return
         const rolaArr = []
-        this.rolaSelect.forEach(item => {
+        this.rolaSelect.forEach((item) => {
           if (val.includes(parseInt(item.roleId))) rolaArr.push(item.rolename)
         })
         return rolaArr.join(',')
@@ -202,7 +202,7 @@ export default {
     showDepartData (val) {
       if (!val) return
       let depart
-      this.rolaSelect.forEach(item => {
+      this.rolaSelect.forEach((item) => {
         if (val.includes(parseInt(item.value))) depart = item.depart
       })
       return depart
@@ -251,17 +251,19 @@ export default {
         ...this.form
       }
       data.userid = this.userData.userid
-      await this.$api(url, data).then((res) => {
-        if (res.code === '101') {
-          this.$message.success('修改成功')
-          sessionStorage.clear() // 删除所有数据
-          this.$router.push({ name: 'login' }) // 直接跳转
-        } else if (res.code === '102') {
-          this.$message.error('原密码不正确')
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      await this.$api(url, data)
+        .then((res) => {
+          if (res.code === '101') {
+            this.$message.success('修改成功')
+            sessionStorage.clear() // 删除所有数据
+            this.$router.push({ name: 'login' }) // 直接跳转
+          } else if (res.code === '102') {
+            this.$message.error('原密码不正确')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -284,16 +286,14 @@ export default {
     box-sizing: border-box;
     font-size: 16px;
     color: #303133;
-
   }
-  .style{
+  .style {
     .el-descriptions__body .el-descriptions__table .el-descriptions-item__cell {
-        box-sizing: border-box;
-        text-align: center;
-        font-weight: 400;
-        line-height: 3;
+      box-sizing: border-box;
+      text-align: center;
+      font-weight: 400;
+      line-height: 3;
     }
   }
 }
-
 </style>

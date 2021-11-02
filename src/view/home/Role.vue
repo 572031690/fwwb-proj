@@ -25,7 +25,10 @@
                   </div>
                 </div>
               </el-col>
-              <el-col :span="8" v-if="$store.getters.getPermission.includes('admin:addRole')">
+              <el-col
+                :span="8"
+                v-if="$store.getters.getPermission.includes('admin:addRole')"
+              >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
                 </button></el-col
@@ -40,55 +43,75 @@
         >
           <div class="mytable">
             <div class="table-top">
-                <div v-for="(item,index) in tableText.tableTitle"
-                  :key="index"
-                  colspan="1"
-                  rowspan="1"
-                  :class="
-                  item === '描述'?'htop-th3'
-                  :'htop-th1'">
-                  <div class="cell">{{item}}</div>
-                </div>
+              <div
+                v-for="(item, index) in tableText.tableTitle"
+                :key="index"
+                colspan="1"
+                rowspan="1"
+                :class="item === '描述' ? 'htop-th3' : 'htop-th1'"
+              >
+                <div class="cell">{{ item }}</div>
+              </div>
             </div>
             <vNone v-if="!list.length" />
-            <div class="tbody" >
+            <div class="tbody">
               <div class="bodyLine" v-for="(item, key) in list" :key="key">
-
-                <div v-for="(data,index) in tableText.tableBody"
-                :key="index"
-                :class="{'body-td4': data==='description'}" >
-
-                  <div class="cell" v-if="data!=='isDeleted' && data!=='opetation' && data!=='opetationRole' && data!=='index'">
+                <div
+                  v-for="(data, index) in tableText.tableBody"
+                  :key="index"
+                  :class="{ 'body-td4': data === 'description' }"
+                >
+                  <div
+                    class="cell"
+                    v-if="
+                      data !== 'isDeleted' &&
+                      data !== 'opetation' &&
+                      data !== 'opetationRole' &&
+                      data !== 'index'
+                    "
+                  >
                     {{ item[data] }}
                   </div>
-                   <div class="cell" v-if="data==='isDeleted'">
+                  <div class="cell" v-if="data === 'isDeleted'">
                     <el-switch
                       :name="item.roleId.toString()"
                       v-model="item.isDisabled"
                       active-color="#ff4949"
                       inactive-color="#13ce66"
-                      @change="setStatus(item.roleId,key)"
+                      @change="setStatus(item.roleId, key)"
                     >
                     </el-switch>
-                    {{ item[data]? '禁用' : '正常' }}
+                    {{ item[data] ? "禁用" : "正常" }}
                   </div>
-                  <div class="cell" v-if="data==='index'">
-                    {{key + 1}}
+                  <div class="cell" v-if="data === 'index'">
+                    {{ key + 1 }}
                   </div>
-                  <div class="cell" v-if="data==='opetationRole'">
-                    <button class="roleBtn" @click="getRole(item)">分配权限</button>
+                  <div class="cell" v-if="data === 'opetationRole'">
+                    <button class="roleBtn" @click="getRole(item)">
+                      分配权限
+                    </button>
                   </div>
-                  <div class="cell" v-if="data==='opetation'">
+                  <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
-                    <button class="delete" @click="deletedata({roleId: item.roleId},'home/role/deleteRole')">删除</button>
+                    <button
+                      class="delete"
+                      @click="
+                        deletedata(
+                          { roleId: item.roleId },
+                          'home/role/deleteRole'
+                        )
+                      "
+                    >
+                      删除
+                    </button>
                   </div>
                 </div>
-
-              </div >
+              </div>
             </div>
           </div>
 
-          <vDialog ref="addDialog"
+          <vDialog
+            ref="addDialog"
             :dialogFormShow="dialogFormShow"
             @updata="search"
             @closeaddDialog="closeaddDialog"
@@ -96,10 +119,13 @@
             :currentList="currentList"
             :openType="openType"
             name="roleList"
-        >
-        </vDialog>
-        <permissionDialog :dialogVisibleRole="dialogVisibleRole" @closeDialog="closeDialog"  :roleId='roleId'/>
-
+          >
+          </vDialog>
+          <permissionDialog
+            :dialogVisibleRole="dialogVisibleRole"
+            @closeDialog="closeDialog"
+            :roleId="roleId"
+          />
         </div>
         <div class="table-bottom">
           <!-- 底部页码功能 -->
@@ -167,15 +193,17 @@ export default {
           searchName: this.params.dname, // 传递搜索参数
           selectName: this.params.selectValue // 筛选参数
         }
-      }).then((res) => {
-        this.list = res.list || [] // 获取里面的data数据
-        this.getEmitData()
-        this.params.total = res.count // 获取后台传过来的总数据条数
-        this.params.page = res.page // 将后端的当前页反传回来
-        this.loading2 = false
-      }).catch(() => {
-        this.loading2 = false
       })
+        .then((res) => {
+          this.list = res.list || [] // 获取里面的data数据
+          this.getEmitData()
+          this.params.total = res.count // 获取后台传过来的总数据条数
+          this.params.page = res.page // 将后端的当前页反传回来
+          this.loading2 = false
+        })
+        .catch(() => {
+          this.loading2 = false
+        })
     },
     /**
      * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
@@ -207,13 +235,15 @@ export default {
         roleId: id,
         isDisabled: this.list[key].isDisabled ? 1 : 0
       }
-      await this.$api(url, data).then(() => {
-        this.$message.success('更改状态成功')
-      }).catch(() => {
-        setTimeout(() => {
-          this.list[key].isDisabled = !this.list[key].isDisabled
-        }, 400)
-      })
+      await this.$api(url, data)
+        .then(() => {
+          this.$message.success('更改状态成功')
+        })
+        .catch(() => {
+          setTimeout(() => {
+            this.list[key].isDisabled = !this.list[key].isDisabled
+          }, 400)
+        })
     },
     /**
      * @desc 关闭权限弹窗

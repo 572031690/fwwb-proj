@@ -3,7 +3,8 @@
     <el-dialog
       title="分配权限"
       :visible.sync="dialogVisibleRole"
-      width="1000px">
+      width="1000px"
+    >
       <div class="tableRole">
         <div class="tableRoleTop">
           <div class="btnRole">选择</div>
@@ -14,20 +15,32 @@
           <div class="textRole">状态</div>
         </div>
         <el-checkbox-group v-model="currentPermission">
-          <div class="tableRoleBody" v-for="(item,index) in permissionData" :key="index">
-            <div class="btnRole"><el-checkbox :label="item.id">{{''}}</el-checkbox></div>
-            <div class="textRoleName">{{item.name}}</div>
-            <div class="textLongRole">{{item.permission}}</div>
-            <div class="textRole">{{item.type}}</div>
-            <div class="textLongRole">{{item.url}}</div>
-            <div class="textRole" :style="{ color: item.isDisabled ? 'red': 'green'}">{{item.isDisabled ? '禁用' : '正常'}}</div>
-
+          <div
+            class="tableRoleBody"
+            v-for="(item, index) in permissionData"
+            :key="index"
+          >
+            <div class="btnRole">
+              <el-checkbox :label="item.id">{{ "" }}</el-checkbox>
+            </div>
+            <div class="textRoleName">{{ item.name }}</div>
+            <div class="textLongRole">{{ item.permission }}</div>
+            <div class="textRole">{{ item.type }}</div>
+            <div class="textLongRole">{{ item.url }}</div>
+            <div
+              class="textRole"
+              :style="{ color: item.isDisabled ? 'red' : 'green' }"
+            >
+              {{ item.isDisabled ? "禁用" : "正常" }}
+            </div>
           </div>
         </el-checkbox-group>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog()">取 消</el-button>
-        <el-button type="primary" @click="upCurrentPermissionList">确 定</el-button>
+        <el-button type="primary" @click="upCurrentPermissionList"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -79,7 +92,7 @@ export default {
       }
       await this.$api(url, { params }).then((res) => {
         this.currentPermission = []
-        res.rolePerm.forEach(element => {
+        res.rolePerm.forEach((element) => {
           this.currentPermission.push(element.permId)
         })
       })
@@ -113,7 +126,6 @@ export default {
       })
     }
   }
-
 }
 </script>
 
@@ -133,28 +145,28 @@ export default {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 300px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .textRoleName {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 200px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .textRole {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 150px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
   .btnRole {
     color: rgb(111, 115, 116);
     font-size: 14px;
     width: 60px;
-    height:50px;
+    height: 50px;
     line-height: 50px;
   }
 }
