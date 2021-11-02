@@ -16,8 +16,8 @@
         <div class="tableRoleTopAdd">
           <div :class="showAdd ? 'textRole' : 'textRoleTitle'">
             <span v-show="!showAdd" style="font-weight: 700">
-              仓库操作列表 出库{{ geTotalNum }}/总共{{
-                openType ? currentList.neednum : currentList.num
+              仓库操作列表 {{ openType ? '出库' : '入库' }}{{ geTotalNum + currentList.unit}}/总共{{
+                (openType ? currentList.neednum : currentList.num) + currentList.unit
               }}
             </span>
             <el-select
@@ -88,7 +88,8 @@
             class="textRole"
             v-if="
               !showAdd &&
-              (list.outRept === 1 || list.inRept === 1)
+              ( geTotalNum <
+                (openType ? currentList.neednum : currentList.num))
             "
           >
             <button class="bodyadd" @click="getAdd()">
