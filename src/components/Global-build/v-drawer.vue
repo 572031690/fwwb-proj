@@ -319,6 +319,8 @@ export default {
      * @desc 关闭抽屉之前回调
      */
     handleClose () {
+      this.list = []
+      this.opinion = ''
       this.dialog = !this.dialog
     },
     /**
@@ -384,6 +386,8 @@ export default {
             this.loading = false
             this.dialog = !this.dialog
             this.$message.success('审批成功')
+            this.list = []
+            this.opinion = ''
             this.$emit('close')
           }
         })

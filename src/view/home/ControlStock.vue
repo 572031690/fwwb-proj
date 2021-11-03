@@ -244,10 +244,16 @@ export default {
     this.tableText = this.$tables.controlNeedList
   },
   mounted () {
+    this.thistime = setInterval(() => {
+      this.search()
+    }, 8000)
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
+  },
+  beforeDestroy () {
+    clearInterval(this.thistime)
   },
   methods: {
     /**

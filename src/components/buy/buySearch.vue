@@ -108,7 +108,7 @@ export default {
     return {
       pickerOptions: {
         disabledDate: (time) => {
-          return time.getTime() > Date.now() - 8.64e7
+          return time.getTime() > Date.now()
         }
       },
       searchForm: {

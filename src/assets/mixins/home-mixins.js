@@ -10,7 +10,8 @@ export default {
       },
       searchUrl: '',
       currentList: {},
-      openType: 'edit'
+      openType: 'edit',
+      thistime: ''
     }
   },
   methods: {

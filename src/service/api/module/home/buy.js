@@ -10,6 +10,7 @@ export default [
       itemtype: '',
       itemid: '',
       num: '',
+      unit: '',
       importance: '',
       department: '',
       comment: ''
@@ -34,6 +35,7 @@ export default [
       buytitle: '',
       btime: '',
       itemtype: '',
+      unit: '',
       itemid: '',
       num: '',
       importance: '',

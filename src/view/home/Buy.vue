@@ -169,7 +169,7 @@
                     "
                   >
                     {{
-                      data === "neednum"
+                      data === "num"
                         ? item[data] + (item.unit || "")
                         : item[data]
                     }}
@@ -418,8 +418,14 @@ export default {
     this.currentRouter = sessionStorage.getItem('currentRouter')
   },
   mounted () {
+    this.thistime = setInterval(() => {
+      this.search()
+    }, 8000)
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getTyp()
+  },
+  beforeDestroy () {
+    clearInterval(this.thistime)
   },
   methods: {
     /**
@@ -435,6 +441,33 @@ export default {
       }
       // this.params[tips] = 1 - this.params[tips]
       this.search()
+    },
+    /**
+     * @desc 提交送审表单
+     */
+    upData (item) {
+      if (!item.importance) {
+        this.$message.error('请补全采购数据！')
+        return
+      }
+      this.$confirm('是否确定提交审批申请?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          this.startApproval(item)
+        })
+        .catch(err => {
+          if (err === 'cancel') {
+            this.$message('取消提交')
+          } else {
+            this.$message({
+              type: 'error',
+              message: err
+            })
+          }
+        })
     },
     /**
      * @desc 导出请求

@@ -122,6 +122,17 @@ export const addEditList = {
         dataName: 'num'
       },
       {
+        label: '材料单位',
+        putType: 'selectUrl',
+        url: 'home/item/findItemName',
+        queryParams: {
+          itemid: 7
+        },
+        selectData: [],
+        dataName: 'unit',
+        linkage: ''
+      },
+      {
         label: '重要程度',
         putType: 'select',
         selectData: [

@@ -159,8 +159,8 @@ export default {
               // areaColor: '#005DDC',
               areaColor: 'rgb(0, 0, 0)', // 'rgba(0,27,95,0.4)',
               // borderColor: '#004db5',
-              borderWidth: 0,
-              opacity: 0.1 // 图形透明度
+              borderWidth: 0
+              // opacity: 0.1 // 图形透明度
             },
             zlevel: 1,
             silent: true
@@ -308,12 +308,12 @@ export default {
       this.chartInstance.setOption(setOption)
       // 跟随屏幕自适应
       window.onresize = this.chartInstance.resize
-      this.setonClick()
+      this.setOnClick()
     },
     /**
      * @desc 设置点击事件
      */
-    async setonClick () {
+    async setOnClick () {
       // 监听点击
       this.chartInstance.on('click', async (arg) => {
         if (this.inflag || arg.componentSubType !== 'map') return

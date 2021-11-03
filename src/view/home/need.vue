@@ -396,8 +396,14 @@ export default {
     this.currentRouter = sessionStorage.getItem('currentRouter')
   },
   mounted () {
+    this.thistime = setInterval(() => {
+      this.search()
+    }, 8000)
     this.getTyp()
     this.getCurrentType()
+  },
+  beforeDestroy () {
+    clearInterval(this.thistime)
   },
   methods: {
     /**

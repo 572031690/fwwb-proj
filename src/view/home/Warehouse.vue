@@ -152,10 +152,16 @@ export default {
     }
   },
   mounted () {
+    this.thistime = setInterval(() => {
+      this.search()
+    }, 10000)
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
+  },
+  beforeDestroy () {
+    clearInterval(this.thistime)
   },
   methods: {
     /**
