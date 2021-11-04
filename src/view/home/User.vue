@@ -103,7 +103,7 @@
                         : item[data]
                     }}
                   </div>
-                  <el-tooltip
+                  <!-- <el-tooltip
                     class="item"
                     effect="dark"
                     :content="showRoleData(item[data])"
@@ -113,7 +113,7 @@
                     <div class="cell">
                       {{ showRoleData(item[data]) }}
                     </div>
-                  </el-tooltip>
+                  </el-tooltip> -->
 
                   <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>

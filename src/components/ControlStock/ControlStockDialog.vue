@@ -312,7 +312,7 @@ export default {
       let total = 0
       this.list.forEach((item) => {
         if (item.status) {
-          total += this.openType ? item.neednum : item.num
+          total += item.num
         }
       })
       return total

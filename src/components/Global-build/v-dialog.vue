@@ -302,7 +302,9 @@ export default {
       if (
         this.dialogData.dataTableList[0].dataName === this.topChange &&
         this.topChange
-      ) { this.dialogData.dataTableList.splice(0, 1) }
+      ) {
+        this.dialogData.dataTableList.splice(0, 1)
+      }
       for (const i in this.dialogData.formList) {
         this.dialogData.formList[i] = ''
       }
@@ -333,7 +335,9 @@ export default {
       if (
         this.dialogData.dataTableList[0].dataName !== this.topChange &&
         this.topChange
-      ) { this.dialogData.dataTableList.splice(0, 0, this.topData) }
+      ) {
+        this.dialogData.dataTableList.splice(0, 0, this.topData)
+      }
       for (const i in this.dialogData.formList) {
         if (this.IntList.includes(i)) {
           this.dialogData.formList[i] = this.currentList[i]
@@ -373,9 +377,13 @@ export default {
       if (
         this.dialogData.dataTableList[0].dataName !== this.topChange &&
         this.topChange
-      ) { this.dialogData.dataTableList.splice(0, 0, this.topData) }
+      ) {
+        this.dialogData.dataTableList.splice(0, 0, this.topData)
+      }
       for (const i in this.dialogData.formList) {
-        if (this.IntList.includes(i)) { this.dialogData.formList[i] = parseInt(this.currentList[i]) } else this.dialogData.formList[i] = this.currentList[i]
+        if (this.IntList.includes(i)) {
+          this.dialogData.formList[i] = parseInt(this.currentList[i])
+        } else this.dialogData.formList[i] = this.currentList[i]
       }
     },
     /**
@@ -469,8 +477,7 @@ export default {
         .then((res) => {
           this.itemList = res.list
         })
-        .catch(() => {
-        })
+        .catch(() => {})
     },
     /**
      * @desc 启动审批请求
@@ -509,8 +516,7 @@ export default {
         .then((res) => {
           this.dialogData.dataTableList[index].selectData = res.list
         })
-        .catch(() => {
-        })
+        .catch(() => {})
     }
   }
 }
