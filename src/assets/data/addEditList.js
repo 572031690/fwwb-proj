@@ -338,9 +338,9 @@ export const addEditList = {
       },
       {
         label: '员工号',
-        putType: 'numput',
+        putType: 'input',
         dataName: 'employeeid',
-        placeholder: '例如: 12531'
+        placeholder: '例如: ZNKC20211412500'
       }
     ],
     formList: {

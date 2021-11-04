@@ -27,7 +27,7 @@ export const rulesData = {
   departmentid: [{ required: true, message: '请选择部门编号', trigger: 'change' }],
   employeeid: [
     { required: true, message: '请输入员工编号', trigger: 'change' },
-    { type: 'number', message: '编号为数字值', trigger: 'blur' }
+    { min: 15, max: 15, message: '员工号必须为由大写英文字母和数字组成的15位号码', trigger: 'blur' }
   ],
   address: [{ required: true, message: '请填写地址', trigger: 'blur' }],
   needid: [

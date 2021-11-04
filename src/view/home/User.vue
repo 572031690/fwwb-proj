@@ -234,7 +234,7 @@ export default {
       constIndex: 0,
       editDisabled: ['username'],
       dialogFormShow: false,
-      IntList: ['departmentid', 'employeeid', 'userid'],
+      IntList: ['departmentid', 'userid'],
       topChange: 'userid',
       list: [],
       loading2: true,
