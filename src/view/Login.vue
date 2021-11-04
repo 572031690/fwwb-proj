@@ -148,6 +148,7 @@ export default {
      * @desc 生成800个动画星星
      */
     getStar () {
+      // transformOrigin设置旋转元素的基点位置
       this.startList.forEach((item, key) => {
         var s = 0.2 + Math.random() * 1
         var curR = 800 + Math.random() * 300

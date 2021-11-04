@@ -418,13 +418,15 @@ export default {
   display: flex;
   flex-direction: row;
   //background: radial-gradient(220% 105% at top center, rgb(82, 81, 81) 10%, #000035 40%, #0b2570 65%, #0070aa);
-  background: linear-gradient(
-    to top left,
-    rgb(242, 246, 253),
-    rgb(209, 223, 245),
-    rgb(242, 246, 253),
-    rgb(199, 206, 218)
-  );
+  // background: linear-gradient(
+  //   to top left,
+  //   rgb(242, 246, 253),
+  //   rgb(209, 223, 245),
+  //   rgb(242, 246, 253),
+  //   rgb(199, 206, 218)
+  // );
+  background-image: url('../assets/img/back-img.png');
+  background-size: 100% 100%;
 }
 .leftNavigation {
   /* position: fixed; */
@@ -640,12 +642,12 @@ export default {
   display: flex;
   flex-direction: row;
   // background-color: #fff;
-  background: linear-gradient(
-    to right,
-    rgb(242, 246, 253),
-    rgb(235, 240, 248),
-    rgb(242, 246, 253)
-  );
+  // background: linear-gradient(
+  //   to right,
+  //   rgb(242, 246, 253),
+  //   rgb(235, 240, 248),
+  //   rgb(242, 246, 253)
+  // );
   border-bottom: 1px solid #dadce0;
   border-top: 1px solid #dadce0;
   span {
