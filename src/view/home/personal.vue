@@ -1,5 +1,6 @@
 <template>
   <div class="personal">
+    <div class="personal-title">个 人 中 心</div>
     <div class="personal-table">
       <el-descriptions direction="horizontal" :column="1" border class="style">
         <el-descriptions-item label="登陆账户">
@@ -273,8 +274,14 @@ export default {
   height: 95%;
   width: 40%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  &-title {
+    color: red;
+    margin: 20px 0;
+    font-size: 30px;
+  }
 
   &-table {
     height: 90%;
