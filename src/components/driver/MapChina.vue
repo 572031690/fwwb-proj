@@ -5,6 +5,12 @@
     <div class="earthmap2"></div>
     <div class="earthmap3"></div>
     <div ref="map_ref" class="map"></div>
+    <img
+      id="imgsss"
+      v-show="false"
+      src="@/assets/img/mapBj.png"
+      alt=""
+    />
   </div>
 </template>
 
@@ -25,6 +31,7 @@ export default {
       labelFormatter: [],
       lineSc: [],
       planePath,
+      imgDom: '',
       inflag: false
     }
   },
@@ -32,6 +39,7 @@ export default {
     this.getMap()
     this.getCountryData()
     this.getCompanyData()
+    this.imgDom = document.querySelector('#imgsss') // 获取地图背景图dom
   },
   methods: {
     /**
@@ -132,6 +140,9 @@ export default {
             itemStyle: {
               normal: {
                 areaColor: '#416cbb', // 地图区域的颜色。
+                // areaColor: {
+                //   image: this.imgDom  // 可以将地图背景替换成区域图片
+                // },
                 borderColor: '#fff', // 图形的描边颜色。支持的颜色格式同 color，不支持回调函数。
                 shadowColor: 'black', // 阴影颜色。#41587f
                 shadowBlur: 8, // 图形阴影的模糊大小。
@@ -332,7 +343,12 @@ export default {
         const changeOption = {
           geo: [
             {
-              map: provinceInfo.key
+              map: provinceInfo.key,
+              itemStyle: {
+                areaColor: { // 双击后切换地图背景为图片
+                  image: this.imgDom
+                }
+              }
             },
             {
               map: provinceInfo.key

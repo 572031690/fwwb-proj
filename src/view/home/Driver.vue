@@ -1,5 +1,5 @@
 <template>
-  <div class="welbody" ref="body_ref" id="body">
+  <div class="welbody" ref="body_ref" id="bodyMap">
     <div class="bodyleft">
       <div class="tabbody">
         <rankchart class="piechart" :titleFontSize="titleFontSize"></rankchart>
@@ -84,7 +84,7 @@ export default {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     const _this = this
     const erd = elementResizeDetectorMaker()
-    erd.listenTo(document.getElementById('body'), (element) => {
+    erd.listenTo(document.getElementById('bodyMap'), (element) => {
       _this.$nextTick(() => {
         // 监听到事件后执行的业务逻辑
         this.screenAdapter()
