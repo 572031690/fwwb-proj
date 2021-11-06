@@ -7,28 +7,31 @@
             <el-row>
               <el-col :span="8"
                 ><img src="../../assets/img/查询数据列表.png" />
-                <span>权限列表</span></el-col
+                <span>仓库列表</span></el-col
               >
               <el-col :span="8">
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div class="search">
-                    <div class="search-right">
+                    <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入用户姓名"
+                        placeholder="请输入材料名称"
                         @change="search"
                         v-model="params.dname"
                       />
-                      <button type="button" @click="search"></button>
-                    </div>
+                      <button type="button"></button>
+                    </form>
                   </div>
                 </div>
               </el-col>
               <el-col
                 :span="8"
-                v-if="$store.getters.getPermission.includes('admin:addPerm')"
-                class="topRightBox"
+                v-if="
+                  $store.getters.getPermission.includes(
+                    'depository:addDepository'
+                  )
+                "
               >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
@@ -68,32 +71,18 @@
                   :key="index"
                   :class="{ 'body-td4': data === 'comment' }"
                 >
-                  <div
-                    class="cell"
-                    v-if="data !== 'opetation' && data !== 'isDisabled'"
-                  >
-                    {{ data === "index" ? key + 1 : item[data] }}
-                  </div>
-                  <div class="cell" v-if="data === 'isDisabled'">
-                    <el-switch
-                      :name="item.id.toString()"
-                      v-model="item.isDisabled"
-                      active-color="#ff4949"
-                      inactive-color="#13ce66"
-                      @change="setStatus(item.id, key)"
-                    >
-                    </el-switch>
-                    {{ item.isDisabled ? "禁用" : "正常" }}
+                  <div class="cell" v-if="data !== 'opetation'">
+                    {{ item[data] }}
                   </div>
 
                   <div class="cell" v-if="data === 'opetation'">
-                    <button class="modify" @click="seeData(item)">编辑</button>
+                    <button class="modify" @click="seeData(item)">修改</button>
                     <button
                       class="delete"
                       @click="
                         deletedata(
                           { id: item.id },
-                          'home/permission/deletePerm'
+                          'home/warehouse/deleteDepository'
                         )
                       "
                     >
@@ -111,9 +100,10 @@
             @updata="search"
             :editDisabled="editDisabled"
             @closeaddDialog="closeaddDialog"
+            :IntList="IntList"
             :currentList="currentList"
             :openType="openType"
-            name="permissionList"
+            name="warehouse"
           >
           </vDialog>
         </div>
@@ -144,86 +134,41 @@ export default {
       editDisabled: ['id'],
       tableText: '',
       dialogFormShow: false,
+      IntList: ['stock', 'totalstock'],
       list: [],
       loading2: true
     }
   },
   created () {
-    this.tableText = this.$tables.permList
+    if (
+      this.$store.getters.getPermission.includes(
+        'depository:updateDepository'
+      ) &&
+      this.$store.getters.getPermission.includes('depository:deleteDepository')
+    ) {
+      this.tableText = this.$tables.warehouseList
+    } else {
+      this.tableText = this.$tables.warehouseSeeList
+    }
   },
   mounted () {
+    this.thistime = setInterval(() => {
+      this.search()
+    }, 10000)
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getSearchUrl()
     // 调用方法获取后端数据
     this.search()
   },
+  beforeDestroy () {
+    clearInterval(this.thistime)
+  },
   methods: {
-    /**
-     * @desc 请求用户数据
-     */
-    async search () {
-      await this.$api(this.searchUrl, {
-        params: {
-          page: this.params.page, // 传递当前是第几页参数
-          limit: this.params.limit, // 传递每页显示多少条记录参数
-          searchName: this.params.dname, // 传递搜索参数
-          selectName: this.params.selectValue // 筛选参数
-        }
-      })
-        .then((res) => {
-          this.list = res.list || [] // 获取里面的data数据
-          this.getEmitData()
-          this.params.total = res.count // 获取后台传过来的总数据条数
-          this.params.page = res.page // 将后端的当前页反传回来
-          this.loading2 = false
-        })
-        .catch(() => {
-          this.loading2 = false
-        })
-    },
-    /**
-     * @desc 更改状态
-     */
-    async setStatus (id, key) {
-      const url = 'home/permission/updatePermissionStatus'
-      const data = {
-        id: id,
-        isDisabled: this.list[key].isDisabled ? 1 : 0
-      }
-      await this.$api(url, data)
-        .then(() => {
-          this.$message.success('更改状态成功')
-        })
-        .catch(() => {
-          setTimeout(() => {
-            this.list[key].isDisabled = !this.list[key].isDisabled
-          }, 400)
-        })
-    },
-    /**
-     * @desc 初始化请求得到的list里的isDisabled，把1变成true，0变成false
-     */
-    getEmitData () {
-      this.list.forEach(function (item) {
-        if (item.isDisabled) {
-          item.isDisabled = true
-        } else {
-          item.isDisabled = false
-        }
-      })
-    },
-    /**
-     * @desc 添加方法打开界面
-     */
-    gethomeAdd () {
-      this.openType = 'add'
-      this.dialogFormShow = true
-    },
     /**
      * @desc 请求列表数据
      */
     getSearchUrl () {
-      this.searchUrl = 'home/permission/listPerm'
+      this.searchUrl = 'home/warehouse/findDepository'
     }
   }
 }

@@ -74,6 +74,7 @@
   margin-right: 15px;
   margin-left: auto;
   vertical-align: middle;
+  // width: 150px;
   color: #8c959c;
   cursor: pointer;
   >div {
@@ -100,6 +101,7 @@
   }
 }
 .search {
+  
   float: left;
   width: 100%;
   height: 30px;
@@ -107,18 +109,19 @@
   &-right {
     position: relative;
     width: 70%;
+    // border: 1px solid red;
   }
   input {
     border: none;
     outline: none;
-    width: calc(99% - 95px);
+    width: calc(99% - 105px);
     height: 30px;
-    padding-left: 95px;
+    padding-left: 105px;
     border: 2px solid #dadce0;
     border-right: 0;
     border-radius: 4px 2px 2px 4px;
     color: black;
-    font-size: 16px;
+    font-size: 15px;
   }
   button {
     border: none;
@@ -185,6 +188,7 @@
     display: flex;
     justify-content: center;
     padding: 10px 0;
+    // border: 1px solid red;
   }
   .htop-th1 {
     flex: 1;
@@ -206,8 +210,11 @@
 .tablebody {
   margin: 0 auto;
   margin-top: 25px;
+  // border: 0.5px solid #dadce0;
   border-radius: 4px;
   position: flex;
+  // align-content: space-between;
+  // justify-content: center;
 
 }
 .tbody {
@@ -216,6 +223,7 @@
     width: 100%;
     display: flex;
     & > div {
+      // border: 1px solid red;
       overflow: hidden;
       flex: 1;
       padding: 8px 0;
@@ -244,18 +252,11 @@
     display: flex;
     justify-content: center;
     line-height: 28px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .cell-text {
-    height: 28px;
-    width: 100%;
-    line-height: 28px;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
   }
   .cell1 {
     height: 28px;

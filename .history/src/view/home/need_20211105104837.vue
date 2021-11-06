@@ -13,6 +13,34 @@
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div style="opacity: 0">.</div>
+                  <!-- <div class="search" v-if="false">
+                        <el-select
+                          v-model="params.selectValue"
+                          @change="search"
+                          placeholder="选择状态"
+                          clearable
+                          size="small"
+                          class="selectAvro"
+                        >
+                          <el-option
+                            style="padding:0 18px 0 10px;"
+                            v-for="item in select"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                        <form v-on:submit.prevent="search">
+                          <input
+                            type="text"
+                            placeholder="请输入需求标题"
+                            @change="search"
+                            v-model="params.dname"
+                          />
+                          <button type="button"></button>
+                        </form>
+                      </div> -->
                 </div>
               </el-col>
               <el-col :span="8" class="topRightBox">

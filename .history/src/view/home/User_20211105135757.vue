@@ -44,7 +44,6 @@
               </el-col>
               <el-col
                 :span="8"
-                v-if="$store.getters.getPermission.includes('admin:addUser')"
               >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
@@ -87,7 +86,7 @@
                   }"
                 >
                   <div
-                    class="cell-text"
+                    class="cell"
                     v-if="
                       data !== 'opetation' &&
                       data !== 'opetationRole' &&
@@ -103,7 +102,7 @@
                         : item[data]
                     }}
                   </div>
-                  <!-- <el-tooltip
+                  <el-tooltip
                     class="item"
                     effect="dark"
                     :content="showRoleData(item[data])"
@@ -113,7 +112,7 @@
                     <div class="cell">
                       {{ showRoleData(item[data]) }}
                     </div>
-                  </el-tooltip> -->
+                  </el-tooltip>
 
                   <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
@@ -236,7 +235,15 @@ export default {
       dialogFormShow: false,
       IntList: ['departmentid', 'userid'],
       topChange: 'userid',
-      list: [],
+      list: [
+        {
+          employeeid: '456456415',
+          username: '顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶',
+          realname: '456846',
+          telNum: 454546,
+          roleStatus: true
+        }
+      ],
       loading2: true,
       roleId: 0,
       rolaData: [
@@ -259,11 +266,11 @@ export default {
     }
   },
   created () {
-    if (this.$store.getters.getPermission.includes('admin:addUser')) {
-      this.tableText = this.$tables.userListedit
-    } else {
-      this.tableText = this.$tables.userListsee
-    }
+    // if (this.$store.getters.getPermission.includes('admin:addUser')) {
+    //   this.tableText = this.$tables.userListedit
+    // } else {
+    //   this.tableText = this.$tables.userListsee
+    // }
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)

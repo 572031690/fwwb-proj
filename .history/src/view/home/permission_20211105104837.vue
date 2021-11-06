@@ -13,15 +13,15 @@
                 <div class="searchfa">
                   <!-- 搜索框 -->
                   <div class="search">
-                    <div class="search-right">
+                    <form v-on:submit.prevent="search">
                       <input
                         type="text"
-                        placeholder="请输入用户姓名"
+                        placeholder="请输入名称"
                         @change="search"
                         v-model="params.dname"
                       />
-                      <button type="button" @click="search"></button>
-                    </div>
+                      <button type="button"></button>
+                    </form>
                   </div>
                 </div>
               </el-col>

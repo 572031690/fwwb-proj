@@ -44,7 +44,6 @@
               </el-col>
               <el-col
                 :span="8"
-                v-if="$store.getters.getPermission.includes('admin:addUser')"
               >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
@@ -103,7 +102,7 @@
                         : item[data]
                     }}
                   </div>
-                  <!-- <el-tooltip
+                  <el-tooltip
                     class="item"
                     effect="dark"
                     :content="showRoleData(item[data])"
@@ -113,7 +112,7 @@
                     <div class="cell">
                       {{ showRoleData(item[data]) }}
                     </div>
-                  </el-tooltip> -->
+                  </el-tooltip>
 
                   <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>

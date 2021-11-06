@@ -14,7 +14,7 @@ export default {
 
 <style scoped>
 .noneData {
-  padding-top: 50px;
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

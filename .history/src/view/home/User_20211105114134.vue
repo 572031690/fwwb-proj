@@ -30,21 +30,20 @@
                       >
                       </el-option>
                     </el-select>
-                    <div class="search-right">
+                    <form v-on:submit.prevent="search">
                       <input
                         type="text"
                         placeholder="请输入用户姓名"
                         @change="search"
                         v-model="params.dname"
                       />
-                      <button type="button" @click="search"></button>
-                    </div>
+                      <button type="button"></button>
+                    </form>
                   </div>
                 </div>
               </el-col>
               <el-col
                 :span="8"
-                v-if="$store.getters.getPermission.includes('admin:addUser')"
               >
                 <button class="bodyadd" @click="gethomeAdd()">
                   <i class="el-icon-plus"></i>添加
@@ -87,7 +86,7 @@
                   }"
                 >
                   <div
-                    class="cell-text"
+                    class="cell"
                     v-if="
                       data !== 'opetation' &&
                       data !== 'opetationRole' &&
@@ -103,7 +102,7 @@
                         : item[data]
                     }}
                   </div>
-                  <!-- <el-tooltip
+                  <el-tooltip
                     class="item"
                     effect="dark"
                     :content="showRoleData(item[data])"
@@ -113,7 +112,7 @@
                     <div class="cell">
                       {{ showRoleData(item[data]) }}
                     </div>
-                  </el-tooltip> -->
+                  </el-tooltip>
 
                   <div class="cell" v-if="data === 'opetation'">
                     <button class="modify" @click="seeData(item)">编辑</button>
@@ -259,11 +258,11 @@ export default {
     }
   },
   created () {
-    if (this.$store.getters.getPermission.includes('admin:addUser')) {
-      this.tableText = this.$tables.userListedit
-    } else {
-      this.tableText = this.$tables.userListsee
-    }
+    // if (this.$store.getters.getPermission.includes('admin:addUser')) {
+    //   this.tableText = this.$tables.userListedit
+    // } else {
+    //   this.tableText = this.$tables.userListsee
+    // }
   },
   mounted () {
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
@@ -422,7 +421,7 @@ export default {
       await this.$api(url).then((res) => {
         this.rolaData = res.roleList
         this.rolaSelect = res.roleList
-      }).catch(() => {})
+      })
     },
     /**
      * @desc 更改用户状态
@@ -448,12 +447,6 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
-.searchfa {
-  /deep/ .el-input__inner {
-    padding: 0 5px;
-  }
-}
-
 .tableRole {
   &Top {
     display: flex;
