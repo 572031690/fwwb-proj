@@ -559,6 +559,7 @@ export default {
   width: 75px;
   height: 27px;
   line-height: 27px;
+  text-align: center;
 }
 </style>
 <style lang="less">

@@ -1,109 +1,39 @@
-<template>
-  <div id="Login" ref="loginview">
-    <div class="stars-spot-anima" ref="stars">
-      <div
-        class="star-spot-anima"
-        v-for="(item, key) in startList"
-        :key="key"
-        :ref="'star' + key"
-      ></div>
-    </div>
-    <div ref="appref">
-      <div class="top-backhome">
-        <img
-          src="../assets/img/titleImportant.png"
-          height="50px"
-          style="vertical-align: middle"
-        />
-        <span>智能制造协同共享平台</span>
-      </div>
-      <div class="login-top">
-        <img src="../assets/img/center-login.png" class="filImg" />
-        <div class="login-center">
-          <transition name="centerboxout">
-            <div class="centerbox" v-show="centerbox">
-              <div class="center-heart">
-                <div class="imgtop">
-                  <img src="../assets/img/login-top.png" />
-                </div>
-                <div class="logintext">登录</div>
-                <form>
-                  <div class="inputbox">
-                    <span class="userimg"></span>
-                    <input
-                      v-focus
-                      @keyup.enter="login()"
-                      type="text"
-                      class="name"
-                      placeholder="username"
-                      ref="logintext"
-                      v-model="logindata.uname"
-                    />
-                    <div class="logintip">
-                      {{ tips1 }}
-                    </div>
-                  </div>
-                  <div class="inputbox">
-                    <span class="passimg"></span>
-                    <input
-                      @keyup.enter="login()"
-                      type="password"
-                      class="password"
-                      ref="passwordeye"
-                      placeholder="password"
-                      v-model="logindata.pass"
-                    />
-                    <img
-                      :src="studyDataPic"
-                      class="passeyes"
-                      ref="passeyes"
-                      @click="eyeschange()"
-                    />
-                    <div class="logintip">
-                      {{ tips2 }}
-                    </div>
-                  </div>
-                  <div class="regiserbox">
-                    <span>验证码：</span>
-                    <input
-                      type="text"
-                      class="regisertext"
-                      v-model="inputVal"
-                      @keyup.enter="login()"
-                    />
-                    <!-- 验证码组件 -->
-                    <v-validateCode
-                      ref="ref_validateCode"
-                      @change="changeCode"
-                      class="regiserimg"
-                    ></v-validateCode>
-                  </div>
-                  <div class="logintip">
-                    {{ result }}
-                  </div>
-                  <div class="loginbutton">
-                    <button type="button" id="login" @click="login()">
-                      登陆
-                    </button>
-                    <button
-                      type="button"
-                      id="regiser"
-                      @click="seeData"
-                      v-if="false"
-                    >
-                      注册
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </transition>
-          <!-- 注册表单 -->
-          <register ref="registertable"></register>
-        </div>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  #Login(ref="loginview")
+      .stars-spot-anima(ref="stars")
+          .star-spot-anima(v-for="(item, key) in startList" :key="key" :ref="'star' + key")
+      div(ref="appref")
+          .top-backhome
+              img(src="../assets/img/titleImportant.png" height="50px" style="vertical-align: middle")
+              span 智能制造协同共享平台
+          .login-top
+              img.filImg(src="../assets/img/center-login.png")
+              .login-center
+                  transition(name="centerboxout")
+                      .centerbox(v-show="centerbox")
+                          .center-heart
+                              .imgtop
+                                  img(src="../assets/img/login-top.png")
+                              .logintext 登陆
+                              form
+                                  .inputbox
+                                      span.userimg
+                                      input.name(v-focus @keyup.enter="login()" type="text" placeholder="username" ref="logintext" v-model="logindata.uname")
+                                      .logintip {{tips1}}
+                                  .inputbox
+                                      span.passimg
+                                      input.password(@keyup.enter="login()" type="password" ref="passwordeye" placeholder="password" v-model="logindata.pass")
+                                      img.passeyes(:src="studyDataPic" ref="passeyes" @click="eyeschange()")
+                                      .logintip {{tips2}}
+                                  .regiserbox
+                                      span 验证码：
+                                      input.regisertext(type="text" v-model="inputVal"  @keyup.enter="login()")
+                                      v-validateCode.regiserimg(ref="ref_validateCode" @change="changeCode")
+                                  .logintip {{result}}
+                                  .loginbutton
+                                      button#login(type="button"  @click="login()") 登陆
+                                      button#regiser(type="button" @click="seeData" v-if="false" ) 注册
+              register(ref="registertable")
 </template>
 
 <script>
@@ -282,284 +212,219 @@ export default {
   }
 }
 </script>
-<style >
-body {
-  /* background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000); */
-  background: radial-gradient(
-    220% 105% at top center,
-    #000 10%,
-    #000035 40%,
-    #0b2570 65%,
-    #0070aa
-  );
-  background-attachment: fixed;
-  overflow: hidden;
-}
-/* .bodyss {
-    height: 100%;
-    width: 100%;
-    background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
-    background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
-    background-attachment: fixed;
-    overflow: hidden;
-  } */
+<style  lang="stylus" >
+body
+    background radial-gradient(220% 105% at top center,#000 10%,#000035 40%,#0b2570 65%,#0070aa)
+    background-attachment fixed
+    overflow hidden
+@keyframes rotatestar
+  0%
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0)
+  100%
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(-360deg)
 
-@keyframes rotatestar {
-  0% {
-    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
-  }
+.stars-spot-anima
+    transform perspective(500px)
+    transform-style preserve-3d
+    position absolute
+    bottom 0
+    perspective-origin 50% 100%
+    left 50%
+    animation rotatestar 90s infinite linear
 
-  100% {
-    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg)
-      rotateY(-360deg);
-  }
-}
+.star-spot-anima
+  width 2px
+  height 2px
+  background #f7f7b6
+  position absolute
+  top 0
+  left 0
+  transform-origin 0 0 -300px
+  transform translate3d(0, 0, -300px)
+  backface-visibility hidden /* 旋转元素背面不可见*/
+  animation none
+  opacity 1
 
-.stars-spot-anima {
-  transform: perspective(500px);
-  transform-style: preserve-3d;
-  position: absolute;
-  bottom: 0;
-  perspective-origin: 50% 100%;
-  left: 50%;
-  animation: rotatestar 90s infinite linear;
-}
-
-.star-spot-anima {
-  width: 2px;
-  height: 2px;
-  background: #f7f7b6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: 0 0 -300px;
-  transform: translate3d(0, 0, -300px);
-  backface-visibility: hidden; /* 旋转元素背面不可见*/
-  animation: none;
-  opacity: 1;
-}
 </style>
-<style lang="less" scoped>
-/*无法选中图片文字方法*/
-span,
-div,
-img {
-  user-select: none;
-}
-.topline {
-  height: 0.1px;
-  width: 100%;
-  border-top: 0.5px solid #eee;
-}
-.top-backhome {
-  font-size: 30px;
-  line-height: 30px;
-  padding: 20px 0 0 15px;
-  span {
-    margin-left: 15px;
-    color: white;
-    text-decoration: none;
-    transition: all 0.2s;
-    &:hover {
-      color: #409eff;
-    }
-  }
-}
-.login-top {
-  position: relative;
-  display: flex;
-  align-content: space-between;
-  justify-content: center;
-  margin-top: 180px;
-  height: 380px;
-  background: rgba(64, 158, 255, 0.5);
-  .filImg {
-    width: 100%;
-    height: 100%;
-  }
-}
-.login-center {
-  border-radius: 5px;
-  position: absolute;
-  bottom: 20px;
-  height: 390px;
-  width: 390px;
-  border: none;
-  background: #409eff;
-  box-shadow: 0 0 12px #f3f3f3;
-  /*阴影 */
-}
-/* .centerboxout-enter-active {
-  transition: all 0.8s;
-}
-.centerboxout-enter {
-  opacity: 0;
-} */
-.centerbox {
-  margin-top: 10px;
-  background-color: white;
-  height: 380px;
-  border-radius: 5px;
-  border: none;
-}
-.center-heart {
-  margin-left: 25px;
-  margin-top: 25px;
-  /* background: yellow; */
-  height: 360px;
-  width: 340px;
-  display: flex;
-  /* align-content: space-between; */
-  /* justify-content: space-between; */
-  flex-direction: column;
-  /* display: table-cell;
-text-align: center; */
-}
-.imtop {
-  display: flex;
-  align-content: space-between;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-.imgtop {
-  img {
-    margin-left: 120px;
-  }
-}
-.logintip {
-  align-items: center;
-  height: 15px;
-  font-size: 14px;
-  line-height: 14px;
-  color: red;
-}
-.logintext {
-  margin: 5px 0;
-  font-size: 26px;
-  color: #409eff;
-  text-align: center;
-}
-input {
-  &::-webkit-input-placeholder {
-    color: #ecedee;
-  }
-}
-.inputbox {
-  position: relative;
-}
-.name {
-  /* background-image: url(../assets/img/登陆.png); 设置小图标 */
-  /* background-size: 25px 25px;
-  background-repeat: no-repeat;
-  background-position: 5px 6px; */
-  height: 38px;
-  border: 2px solid #ddd;
-  padding: 0 15px 0 42px;
-  width: 281px;
-  font-size: 22px;
-  border-radius: 5px;
-  margin: 15px 0 0 0;
-  outline: none;
-}
-.password {
-  height: 38px;
-  border: 2px solid #ddd;
-  padding: 0 41px 0 42px;
-  width: 255px;
-  font-size: 22px;
-  border-radius: 5px;
-  outline: none;
-}
-.userimg {
-  &::after {
-    content: "";
-    background: url(../assets/img/登陆.png);
-    background-size: 30px 30px;
-    background-repeat: no-repeat;
-    top: 23px;
-    left: 5px;
-    height: 38px;
-    width: 38px;
-    position: absolute;
-  }
-}
-.passimg {
-  &::after {
-    content: "";
-    background: url(../assets/img/密码.png);
-    background-size: 32px 32px;
-    background-repeat: no-repeat;
-    top: 5px;
-    left: 3px;
-    height: 38px;
-    width: 38px;
-    position: absolute;
-  }
-}
-.passeyes {
-  height: 22px;
-  width: 24px;
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  cursor: pointer;
-}
-.regiserbox {
-  display: flex;
-  margin-top: 5px;
-  span {
-    margin-top: 9px;
-    font-size: 22px;
-    line-height: 22px;
-  }
-  .regisertext {
-    height: 35px;
-    width: 75px;
-    font-size: 21px;
-    padding: 0 6px;
-    outline: none;
-  }
-  .regiserimg {
-    margin-left: 13px;
-  }
-}
-.loginbutton {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 12px;
-  button {
-    width: 70%;
-    color: white;
-    font-size: 18px;
-    background-color: #409eff;
-    height: 38px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.5s;
-    /*缓慢hover显示 */
-    &:hover {
-      background-color: #73b8fe;
-      box-shadow: 0 0 12px#73b8fe;
-    }
-    &:active {
-      position: relative;
-      top: 0.5px;
-      left: 0.5px;
-    }
-  }
-}
-#regiser {
-  margin-left: 15px;
-}
-#login {
-  margin-left: 7px;
-}
-/*css设置不可点击时置灰*/
-/* .el-button.disabled-style {
-  background-color: #eeeeee;
-  color: #cccccc;
-} */
+<style lang="stylus" scoped >
+span,div,img
+    user-select none
+.topline
+    height 0.1px
+    width 100%
+    border-top 0.5px solid #eee
+.top-backhome
+    font-size 30px
+    line-height 30px
+    padding 20px 0 0 15px
+    span
+        margin-left 15px
+        color white
+        text-decoration none
+        transition all 0.2s
+        &:hover
+            color #409eff
+.login-top
+    position relative
+    display flex
+    align-content space-between
+    justify-content center
+    margin-top 180px
+    height 380px
+    background rgba(64, 158, 255, 0.5)
+    .filImg
+        width 100%
+        height 100%
+.login-center
+    border-radius 5px
+    position absolute
+    bottom 20px
+    height 390px
+    width 390px
+    border none
+    background #409eff
+    box-shadow 0 0 12px #f3f3f3
+.centerbox
+    margin-top 10px
+    background-color white
+    height 380px
+    border-radius 5px
+    border none
+
+.center-heart
+    margin-left 25px
+    margin-top 25px
+    height 360px
+    width 340px
+    display flex
+    flex-direction column
+
+.imtop
+    display flex
+    align-content space-between
+    justify-content space-between
+    margin-top 5px
+
+.imgtop
+    img
+        margin-left 120px
+
+.logintip
+    align-items center
+    height 15px
+    font-size 14px
+    line-height 14px
+    color red
+
+.logintext
+    margin 5px 0
+    font-size 26px
+    color #409eff
+    text-align center
+
+input
+    &::-webkit-input-placeholder
+        color #ecedee
+
+.inputbox
+    position relative
+
+.name
+    height 38px
+    border 2px solid #ddd
+    padding 0 15px 0 42px
+    width 281px
+    font-size 22px
+    border-radius 5px
+    margin 15px 0 0 0
+    outline none
+
+.password
+    height 38px
+    border 2px solid #ddd
+    padding 0 41px 0 42px
+    width 255px
+    font-size 22px
+    border-radius 5px
+    outline none
+
+.userimg
+    &::after
+        content ""
+        background url(../assets/img/loginIcon.png)
+        background-size 30px 30px
+        background-repeat no-repeat
+        top 23px
+        left 5px
+        height 38px
+        width 38px
+        position absolute
+
+.passimg
+    &::after
+        content ""
+        background url(../assets/img/passIcon.png)
+        background-size 32px 32px
+        background-repeat no-repeat
+        top 5px
+        left 3px
+        height 38px
+        width 38px
+        position absolute
+
+.passeyes
+    height 22px
+    width 24px
+    position absolute
+    right 10px
+    top 12px
+    cursor pointer
+
+.regiserbox
+    display flex
+    margin-top 5px
+    span
+        margin-top 9px
+        font-size 22px
+        line-height 22px
+
+    .regisertext
+        height 35px
+        width 75px
+        font-size 21px
+        padding 0 6px
+        outline none
+
+    .regiserimg
+        margin-left 13px
+
+.loginbutton
+    display flex
+    flex-direction row
+    justify-content center
+    margin-top 12px
+    button
+        width 70%
+        color white
+        font-size 18px
+        background-color #409eff
+        height 38px
+        border none
+        border-radius 3px
+        cursor pointer
+        transition all 0.5s
+        &:hover
+            background-color #73b8fe
+            box-shadow 0 0 12px#73b8fe
+
+        &:active
+            position relative
+            top 0.5px
+            left 0.5px
+
+#regiser
+    margin-left 15px
+
+#login
+    margin-left 7px
 </style>
-close
