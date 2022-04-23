@@ -16,10 +16,10 @@
     </div>
     <div class="tabmid">
       <div class="tabmidtop">
-        <div class="tabmidtopTitle">2021年统计</div>
+        <div class="tabmidtopTitle">2021年{{currMapPri.name}}统计</div>
         <div class="tabmidtopBody">
           <div class="tabmidtopBodyLeft">
-            <counTo :startVal="0" :endVal="totalCount" :duration="3000" />
+            <counTo :startVal="0" :endVal="totalCount" :duration="2500" />
             <span> 单</span>
           </div>
           <div class="tabmidtopBodyRight">
@@ -27,7 +27,7 @@
               :startVal="0"
               :decimals="2"
               :endVal="totalValue"
-              :duration="3000"
+              :duration="2500"
             />
             <span> 万元</span>
           </div>
@@ -37,7 +37,7 @@
           <div>销售额</div>
         </div>
       </div>
-      <mapChina @backMapData="backMapData"></mapChina>
+      <mapChina @backMapData="backMapData" @changeCurMap="changeCurMap"></mapChina>
     </div>
     <div class="bodyright">
       <div class="tabbody">
@@ -74,10 +74,17 @@ export default {
   },
   data () {
     return {
+      RemTotalValue: 0,
+      RemTotalCount: 0,
       totalCount: 0,
       totalValue: 0,
       pieData: [],
-      titleFontSize: 15
+      titleFontSize: 15,
+      currMapPri: {
+        name: '',
+        count: '',
+        value: ''
+      }
     }
   },
   mounted () {
@@ -98,12 +105,24 @@ export default {
     screenAdapter () {
       this.titleFontSize = (this.$refs.body_ref.clientWidth / 100) * 0.8 // 15
     },
+    changeCurMap (val) {
+      this.currMapPri = val
+      if (!val.name) {
+        this.totalCount = this.RemTotalCount
+        this.totalValue = this.RemTotalValue
+      } else {
+        this.totalCount = val.count
+        this.totalValue = Math.round((val.count * val.value / 10000) * 100) / 100
+      }
+    },
     /**
      * @desc 地图传递饼状图全国销量统计数据
      */
     backMapData (pieData, totalCount, totalValue) {
       this.totalCount = totalCount
+      this.RemTotalCount = totalCount
       this.totalValue = Math.round((totalValue / 10000) * 100) / 100
+      this.RemTotalValue = this.totalValue
       this.pieData = pieData
     }
   }

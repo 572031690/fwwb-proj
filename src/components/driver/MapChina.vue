@@ -1,17 +1,12 @@
 <template>
-  <div id="mapchina" @dblclick="revertMap">
-    <div class="tipsText" v-if="inflag">双击任意位置返回中国地图</div>
-    <div class="earthmap1"></div>
-    <div class="earthmap2"></div>
-    <div class="earthmap3"></div>
-    <div ref="map_ref" class="map"></div>
-    <img
-      id="imgsss"
-      v-show="false"
-      src="@/assets/img/mapBj.png"
-      alt=""
-    />
-  </div>
+    <div id="mapchina" @dblclick="revertMap">
+        <div class="tipsText" v-if="inflag">双击任意位置返回中国地图</div>
+        <div class="earthmap1"></div>
+        <div class="earthmap2"></div>
+        <div class="earthmap3"></div>
+        <div ref="map_ref" class="map"></div>
+        <img id="imgsss" v-show="false" src="@/assets/img/mapBj.png" alt="" />
+    </div>
 </template>
 
 <script>
@@ -43,8 +38,8 @@ export default {
   },
   methods: {
     /**
-     * @desc 获取地区销量统计数据
-     */
+                 * @desc 获取地区销量统计数据
+                 */
     async getCountryData () {
       const url = 'home/driver/countrySale'
       await this.$api(url).then((res) => {
@@ -74,8 +69,8 @@ export default {
       })
     },
     /**
-     * @desc 获取交易公司信息
-     */
+                 * @desc 获取交易公司信息
+                 */
     async getCompanyData () {
       const url = 'home/driver/findAllCompany'
       await this.$api(url).then((res) => {
@@ -104,13 +99,13 @@ export default {
       })
     },
     /**
-     * @desc 构建地图
-     */
+                 * @desc 构建地图
+                 */
     async getMap () {
       // 基于准备好的dom，初始化echarts实例
       this.chartInstance = this.$echarts.init(this.$refs.map_ref, this.theme)
       const ret = await this.$ajax.get(
-        'http://localhost:8077/static/map/china.json'
+        'http://localhost:3078/static/map/china.json'
       ) // 获得地图数据
       this.$echarts.registerMap('chinaMap', ret.data) // 注册map数据
       var that = this
@@ -327,6 +322,8 @@ export default {
     async setOnClick () {
       // 监听点击
       this.chartInstance.on('click', async (arg) => {
+        // console.log(arg.name, this.airData[arg.dataIndex].count, arg.value, 'arg')
+
         if (this.inflag || arg.componentSubType !== 'map') return
         // 调用外部方法获取中文身份的拼音
         const provinceInfo = getProvinceMapInfo(arg.name)
@@ -334,8 +331,9 @@ export default {
         if (!this.mapData[provinceInfo.key]) {
           // 获取这个省份的地图矢量数据
           const ret = await this.$ajax.get(
-            'http://localhost:8077' + provinceInfo.path
+            'http://localhost:3078' + provinceInfo.path
           )
+          console.log('object')
           // 缓存数据
           this.mapData[provinceInfo.key] = ret.data
           this.$echarts.registerMap(provinceInfo.key, ret.data)
@@ -357,6 +355,11 @@ export default {
         }
         this.chartInstance.setOption(changeOption)
         this.inflag = true
+        this.$emit('changeCurMap', {
+          name: arg.name,
+          count: this.airData[arg.dataIndex].count,
+          value: arg.value
+        })
       })
     },
     /**
@@ -400,9 +403,9 @@ export default {
               formatter: function (params, ticket, callback) {
                 return (
                   params.data.fromName +
-                  '采购：<br/> 木材：' +
-                  params.data.value +
-                  '万吨'
+                    '采购：<br/> 木材：' +
+                    params.data.value +
+                    '万吨'
                 )
               }
             }
@@ -449,6 +452,11 @@ export default {
       }
       this.chartInstance.setOption(revertOption)
       this.inflag = false
+      this.$emit('changeCurMap', {
+        name: '',
+        count: '',
+        value: ''
+      })
     }
   }
 }
@@ -456,78 +464,88 @@ export default {
 
 <style scoped>
 #mapchina {
-  position: relative;
-  width: 40vw;
-  height: 40vw;
-  overflow: hidden;
-  margin: 0 auto;
-  margin-top: 93px;
+    position: relative;
+    width: 40vw;
+    height: 40vw;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 93px;
 }
+
 .earthmap1,
 .earthmap2,
 .earthmap3 {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%); /* 50%为自身尺寸的一半 */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* 50%为自身尺寸的一半 */
 }
-.earthmap1 {
-  background: url(../../assets/img/map.png) no-repeat;
-  background-size: 100% 100%;
-  width: 70%;
-  opacity: 0.3;
-  height: 70%;
-}
-.earthmap2 {
-  background: url(../../assets/img/lbx.png) no-repeat;
-  background-size: 100% 100%;
-  opacity: 0.5;
-  width: 80%;
-  height: 80%;
-  animation: rotate 15s linear infinite; /* infinite代表无限循环 */
-}
-.earthmap3 {
-  background: url(../../assets/img/jt.png) no-repeat;
-  background-size: 100% 100%;
-  width: 75%;
-  opacity: 0.5;
-  height: 75%;
-  border-radius: 50%;
 
-  animation: rotateline 10s linear infinite;
+.earthmap1 {
+    background: url(../../assets/img/map.png) no-repeat;
+    background-size: 100% 100%;
+    width: 70%;
+    opacity: 0.3;
+    height: 70%;
+}
+
+.earthmap2 {
+    background: url(../../assets/img/lbx.png) no-repeat;
+    background-size: 100% 100%;
+    opacity: 0.5;
+    width: 80%;
+    height: 80%;
+    animation: rotate 15s linear infinite;
+    /* infinite代表无限循环 */
+}
+
+.earthmap3 {
+    background: url(../../assets/img/jt.png) no-repeat;
+    background-size: 100% 100%;
+    width: 75%;
+    opacity: 0.5;
+    height: 75%;
+    border-radius: 50%;
+
+    animation: rotateline 10s linear infinite;
 }
 
 @keyframes rotate {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 @keyframes rotateline {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(-360deg);
-  }
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+    }
 }
+
 .map {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  /* color: rgba(204, 229, 248, 0.7); */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* color: rgba(204, 229, 248, 0.7); */
 }
+
 .tipsText {
-  position: absolute;
-  color: white;
-  top: 10%;
-  opacity: 0.8;
-  z-index: 99999;
-  background-color: rgb(84, 116, 177);
-  border: 1px solid #031942;
-  padding: 2px 5px;
+    position: absolute;
+    color: white;
+    top: 10%;
+    opacity: 0.8;
+    z-index: 99999;
+    background-color: rgb(84, 116, 177);
+    border: 1px solid #031942;
+    padding: 2px 5px;
 }
 </style>

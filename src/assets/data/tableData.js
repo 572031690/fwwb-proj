@@ -8,11 +8,11 @@ export const tableList = {
     tableBody: ['needid', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'comment', 'opetation2']
   },
   buyList: {
-    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '状态', '操作'],
+    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '紧急程度', '状态', '操作'],
     tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation2', 'opetation1']
   },
   buyListHistry: {
-    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交专员编号', '重要程度', '状态'],
+    tableTitle: ['编号', '订单标题', '需求日期', '到货日期', '物料名称', '物料编号', '数量', '提交专员编号', '紧急程度', '状态'],
     tableBody: ['buyid', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'opetation2']
   },
   departmentList: {
@@ -48,7 +48,7 @@ export const tableList = {
     tableBody: ['index', 'needtitle', 'itemtype', 'itemid', 'neednum', 'needday', 'neederid', 'department', 'approvaltype', 'comment', 'opetation']
   },
   constrolBuyList: {
-    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '重要程度', '入库状态', '详情', '操作'],
+    tableTitle: ['序号', '订单标题', '创建日期', '到货日期', '物料名称', '物料编号', '数量', '提交人编号', '紧急程度', '入库状态', '详情', '操作'],
     tableBody: ['index', 'buytitle', 'btime', 'arrivaltime', 'itemtype', 'itemid', 'num', 'buyerid', 'importance', 'buytype', 'comment', 'opetation']
   },
   roleList: {

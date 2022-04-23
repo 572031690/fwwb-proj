@@ -110,7 +110,7 @@
                 <div
                   class="cell"
                   v-show="
-                    item !== '重要程度' &&
+                    item !== '紧急程度' &&
                     item !== '到货日期' &&
                     item !== '需求日期' &&
                     item !== '编号'
@@ -122,7 +122,7 @@
                   class="cellSort"
                   @click="checkTriangle(sortList[item])"
                   v-show="
-                    item === '重要程度' ||
+                    item === '紧急程度' ||
                     item === '到货日期' ||
                     item === '需求日期' ||
                     item === '编号'
@@ -372,7 +372,7 @@ export default {
       },
       sortList: {
         编号: '',
-        重要程度: 1,
+        紧急程度: 1,
         到货日期: 2,
         需求日期: 3
       },
@@ -523,7 +523,7 @@ export default {
         '物料名称',
         '物料编号',
         '数量',
-        '重要程度',
+        '紧急程度',
         '审批状态'
       ]
       let keys = 0

@@ -278,7 +278,7 @@ export default {
   align-items: center;
   justify-content: center;
   &-title {
-    color: red;
+    color: rgba(255,255,255,.6);
     margin: 20px 0;
     font-size: 30px;
   }

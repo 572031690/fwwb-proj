@@ -14,20 +14,20 @@
                           .center-heart
                               .imgtop
                                   img(src="../assets/img/login-top.png")
-                              .logintext 登陆
+                              .logintext 登录
                               form
                                   .inputbox
                                       span.userimg
-                                      input.name(v-focus @keyup.enter="login()" type="text" placeholder="username" ref="logintext" v-model="logindata.uname")
+                                      input.name(v-focus @keyup.enter="login()" type="text" placeholder="username" ref="logintext" v-model.trim="logindata.uname")
                                       .logintip {{tips1}}
                                   .inputbox
                                       span.passimg
-                                      input.password(@keyup.enter="login()" type="password" ref="passwordeye" placeholder="password" v-model="logindata.pass")
+                                      input.password(@keyup.enter="login()" type="password" ref="passwordeye" placeholder="password" v-model.trim="logindata.pass")
                                       img.passeyes(:src="studyDataPic" ref="passeyes" @click="eyeschange()")
                                       .logintip {{tips2}}
                                   .regiserbox
                                       span 验证码：
-                                      input.regisertext(type="text" v-model="inputVal"  @keyup.enter="login()")
+                                      input.regisertext(type="text" v-model.trim="inputVal"  @keyup.enter="login()")
                                       v-validateCode.regiserimg(ref="ref_validateCode" @change="changeCode")
                                   .logintip {{result}}
                                   .loginbutton

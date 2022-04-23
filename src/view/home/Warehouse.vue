@@ -120,17 +120,21 @@
           >
           </el-pagination>
         </div>
+
+        <!-- <div class="echarts" ref="echarts"></div> -->
       </div>
     </div>
   </div>
 </template>
 <script>
 import homeMix from '../../assets/mixins/home-mixins'
+import { monthData } from '../../assets/data/month'
 
 export default {
   mixins: [homeMix],
   data () {
     return {
+      allData: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'], // 服务器返回的数据 // 服务器返回的数据
       editDisabled: ['id'],
       tableText: '',
       dialogFormShow: false,
@@ -155,6 +159,8 @@ export default {
     this.thistime = setInterval(() => {
       this.search()
     }, 10000)
+    // this.getCharts()
+    // this.getData()
     this.$emit('changeRouterIndex', this.$route.query.routerIndex)
     this.getSearchUrl()
     // 调用方法获取后端数据
@@ -164,6 +170,135 @@ export default {
     clearInterval(this.thistime)
   },
   methods: {
+    /**
+     * @desc 获取服务器的数据
+     */
+    async getData () {
+      const url = 'home/driver/monthSales'
+      await this.$api(url).then((res) => {
+        const series = []
+        res.forEach((item) => {
+          const type = {
+            barWidth: 15,
+            data: [],
+            name: item.materiakName,
+            stack: '信访', // 关键是stack一致
+            type: 'bar'
+          }
+          this.allData.forEach((value) => {
+            type.data.push(item[monthData[value]])
+          })
+          series.push(type)
+        })
+        console.log(series, 'series')
+        this.getCharts(series)
+      })
+    },
+    getCharts (series) {
+      this.$nextTick(() => {
+        const chance = this.$echarts.init(this.$refs.echarts)
+        chance.setOption(this.getOption(series))
+        // 跟随屏幕自适应
+        window.onresize = chance.resize
+      })
+    },
+    getOption (series) {
+      const color = ['#1976d2', '#03a9f4', '#85c941', '#d9cc4c', '#ee8e00']
+      const xdata = this.allData
+      const option = {
+        title: {
+          text: '2021材料月销量统计',
+          left: 'center',
+          top: 15,
+          textStyle: {
+            color: 'rgba(0,0,0,0.6)',
+            fontWeight: 700,
+            fontSize: 20
+          }
+        },
+        tooltip: { // 过滤掉统计的series
+
+          trigger: 'axis',
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: function (params) {
+            const resultArr = params.reverse()
+            let str = `<div><div>${params[0].axisValue}</div>`
+            resultArr.forEach(item => {
+              str += `<div style="display:flex;height:20px;align-items:center;">
+                        <div style="width: 140px">${item.seriesName}</div>
+                        <div style='font-family:Bebas Neue;color: ${color[item.componentIndex]};font-size: 16px;'>${item.value}</div>
+                        <span>万吨</span>
+                    </div></div>`
+            })
+            return str
+          }
+        },
+        color,
+        grid: {
+          top: '65',
+          left: '60',
+          bottom: 40,
+          right: '20'
+        },
+        xAxis: [
+          {
+            type: 'category',
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              color: '#000',
+              fontSize: 20,
+              interval: 0
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#038b8f'
+              }
+            },
+            data: xdata
+          }
+        ],
+        yAxis: [
+          {
+            name: '(万吨)',
+            nameTextStyle: {
+              fontSize: 16,
+              color: 'rgba(0,0,0, 0.6)',
+              fontWeight: 'bold',
+              padding: [0, 30, 4, 0] // 设置位置
+            },
+
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            splitArea: {
+              show: true,
+              areaStyle: {
+                color: ['rgba(3,139,143,0.1)', 'rgba(255,255,255,0)']
+              },
+              interval: 1
+            },
+            axisLabel: {
+              color: 'rgba(0,0,0,0.6)',
+              fontWeight: 'bold',
+              fontSize: 16
+            }
+          }
+        ],
+        series: series
+      }
+      return option
+    },
     /**
      * @desc 请求列表数据
      */
@@ -175,7 +310,14 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../assets/less/right-table.less");
-
+.echarts {
+    height: 380px;
+    width: 82%;
+    margin: 20px auto 0;
+    // border: 1px solid red;
+    background: rgba(255,255,255,1);
+    border-radius: 15px
+}
 .searchfa {
   margin-left: 35px;
 }
@@ -210,7 +352,7 @@ export default {
     border-radius: 0 5px 5px 0;
     &:hover {
       background-color: #c8c8c8;
-      box-shadow: 0 0 3px#c8c8c8;
+      box-shadow: 0 0 3px #c8c8c8;
     }
     &:active {
       padding-left: 1px;

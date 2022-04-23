@@ -133,7 +133,7 @@ export const addEditList = {
         linkage: ''
       },
       {
-        label: '重要程度',
+        label: '紧急程度',
         putType: 'select',
         selectData: [
           {
